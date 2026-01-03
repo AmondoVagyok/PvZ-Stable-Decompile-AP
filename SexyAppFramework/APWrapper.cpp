@@ -1,6 +1,5 @@
 #include "APWrapper.h"
 
-#define WSWRAP_NO_SSL
 #define APCLIENT_DEBUG
 
 #define _WIN32_WINNT 0x0600
