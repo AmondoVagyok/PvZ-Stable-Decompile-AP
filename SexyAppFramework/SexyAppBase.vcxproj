@@ -63,25 +63,25 @@
     <_ProjectFileVersion>16.0.29511.113</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>

@@ -1,7 +1,6 @@
 #include "APWrapper.h"
 
 #define WSWRAP_NO_SSL
-#define WSWRAP_NO_COMPRESSION
 #define APCLIENT_DEBUG
 
 #define _WIN32_WINNT 0x0600
@@ -176,6 +175,26 @@ enum APWrapper::ConnectionStatus APWrapper::ConnectionStatus() const
     }
     
     return ConnectionStatus::Disconnected;
+}
+
+std::string APWrapper::PlayerDisplayName(int slot) const
+{
+    if (!d->mAP) return "";
+    
+    auto players = d->mAP->get_players();
+    for (const auto& player : d->mAP->get_players())
+    {
+        if (player.slot != slot) continue;
+        if (player.alias.empty())
+        {
+            return player.name;
+        }
+        else
+        {
+            return player.name + " (" + player.alias + ")";
+        }
+    }
+    return "";
 }
 
 void APWrapper::Poll() const

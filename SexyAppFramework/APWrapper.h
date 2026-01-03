@@ -50,6 +50,8 @@ public:
     std::string Password() const;
     ConnectionStatus ConnectionStatus() const;
     
+    std::string PlayerDisplayName(int slot) const;
+    
     void Poll() const;
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
