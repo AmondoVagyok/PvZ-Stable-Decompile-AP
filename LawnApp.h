@@ -367,6 +367,9 @@ public:
 	bool							TryToInitializePA();
 
 	void							DoConfirmRIPMode();
+	
+private:
+	void							SetupArchipelago();
 };
 
 SexyString							LawnGetCurrentLevelName();

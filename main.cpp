@@ -1,6 +1,3 @@
-#define WSWRAP_NO_SSL
-#define WSWRAP_NO_COMPRESSION
-
 #include "LawnApp.h"
 #include "Resources.h"
 #include "Sexy.TodLib/TodStringFile.h"

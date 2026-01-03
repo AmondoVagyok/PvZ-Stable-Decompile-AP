@@ -11,7 +11,7 @@
 #include "SharedImage.h"
 #include "Ratio.h"
 
-class APClient;
+class APWrapper;
 
 namespace ImageLib
 {
@@ -337,7 +337,7 @@ public:
 	bool					mIsTouch;
 	int						mResolutionMode;
 	
-	APClient*				mAP;
+	APWrapper*				mAP;
 
 protected:	
 	void					RehupFocus();

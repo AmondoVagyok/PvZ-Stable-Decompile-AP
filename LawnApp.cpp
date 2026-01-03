@@ -62,6 +62,8 @@
 #include <windows.h>
 #include <windowsx.h>
 
+#include "SexyAppFramework/APWrapper.h"
+
 bool gIsPartnerBuild = false;
 bool gSlowMo = false;  //0x6A9EAA
 bool gFastMo = false;  //0x6A9EAB
@@ -169,6 +171,8 @@ LawnApp::LawnApp()
 	mRIPMode = false;
 	memset(&mDirtyBushes, 0, sizeof(mDirtyBushes));
 	mPlayerLevelRef = -1;
+	
+	SetupArchipelago();
 }
 
 //0x44EDD0、0x44EDF0
@@ -4238,4 +4242,12 @@ void LawnApp::DoConfirmRIPMode()
 		_S(""),
 		Dialog::BUTTONS_YES_NO
 	);
+}
+
+void LawnApp::SetupArchipelago()
+{
+	this->mAP->AddServerChatMessageListener([this](const std::string& message)
+	{
+		this->DoDialog(Dialogs::DIALOG_INFO, true, "Message from Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
+	});
 }

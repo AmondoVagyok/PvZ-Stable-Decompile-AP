@@ -48,8 +48,7 @@
 
 #include "../LawnApp.h"
 
-// #include <apclient.hpp>
-// #include <apuuid.hpp>
+#include "APWrapper.h"
 
 //Touch
 #include <WinUser.h>
@@ -259,11 +258,7 @@ SexyAppBase::SexyAppBase()
 
 	ImageLib::InitJPEG2000();
 	
-	// mAP = new APClient(ap_get_uuid("uuid.txt"), "Plants vs. Zombies: Replanted");
-	// mAP->set_print_handler([](const std::string& print_line)
-	// {
-		// std::cout << "Archipelago: " << print_line << std::endl;
-	// });
+	mAP = new APWrapper();
 
 	mMutex = NULL;
 	mNotifyGameMessage = 0;
@@ -6224,6 +6219,7 @@ void SexyAppBase::DoMainLoop()
 	{
 		if (mExitToTop)
 			mExitToTop = false;
+		mAP->Poll();
 		UpdateApp();
 	}
 }
