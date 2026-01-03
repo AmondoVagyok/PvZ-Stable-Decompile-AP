@@ -11,6 +11,7 @@
 class APWrapper_Private {
 public:
     std::vector<std::function<void(const std::string&)>> server_chat_listeners;
+    std::vector<std::function<void(const std::list<APItem>&)>> item_received_listeners;
     
     APClient* mAP;
 };
@@ -40,7 +41,28 @@ APWrapper::APWrapper() : d(new APWrapper_Private)
     });
     d->mAP->set_socket_connected_handler([this]
     {
-        d->mAP->ConnectSlot("Player1", "", 0);
+        d->mAP->ConnectSlot("Player1", "", 0b111 /* Everything! */);
+    });
+    d->mAP->set_items_received_handler([this](const std::list<APClient::NetworkItem>& items) {
+        std::list<APItem> ap_items;
+        for (auto item : items)
+        {
+            ap_items.push_back(APItem {
+                item.item,
+                item.location,
+                item.player,
+                item.flags
+            });
+        }
+
+        for (auto item_received_listener : this->d->item_received_listeners)
+        {
+            item_received_listener(ap_items);
+        }
+    });
+    d->mAP->set_data_package_changed_handler([this](const nlohmann::json& data_package)
+    {
+        
     });
 }
 
@@ -55,7 +77,18 @@ void APWrapper::Poll() const
     this->d->mAP->poll();
 }
 
-void APWrapper::AddServerChatMessageListener(std::function<void(const std::string&)> listener)
+void APWrapper::CheckLocations(const std::list<int64_t>& location_ids) const
+{
+    this->d->mAP->LocationChecks(location_ids);
+}
+
+void APWrapper::AddServerChatMessageListener(std::function<void(const std::string&)> listener) const
 {
     this->d->server_chat_listeners.push_back(listener);
 }
+
+void APWrapper::AddItemsReceivedListener(std::function<void(const std::list<APItem>&)> listener) const
+{
+    this->d->item_received_listeners.push_back(listener);
+}
+

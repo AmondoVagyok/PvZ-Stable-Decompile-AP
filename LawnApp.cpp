@@ -4250,4 +4250,13 @@ void LawnApp::SetupArchipelago()
 	{
 		this->DoDialog(Dialogs::DIALOG_INFO, true, "Message from Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
 	});
+	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
+	{
+		std::string items_string;
+		for (const auto item : items)
+		{
+			items_string.append("Item #" + std::to_string(item.item));
+		}
+		this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
+	});
 }
