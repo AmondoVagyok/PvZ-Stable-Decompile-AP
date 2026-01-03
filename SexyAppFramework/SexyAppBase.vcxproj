@@ -247,6 +247,7 @@
     <ClCompile Include="..\Lawn\System\SaveGame.cpp" />
     <ClCompile Include="..\Lawn\System\TypingCheck.cpp" />
     <ClCompile Include="..\Lawn\Widget\AchievementsScreen.cpp" />
+    <ClCompile Include="..\Lawn\Widget\ArchipelagoStatusDialog.cpp" />
     <ClCompile Include="..\Lawn\Widget\ImageScrollbar.cpp" />
     <ClCompile Include="..\Lawn\Widget\LanguageScreen.cpp" />
     <ClCompile Include="..\Lawn\Widget\QuickplayScreen.cpp" />
@@ -956,6 +957,7 @@
     <ClInclude Include="..\Lawn\System\SaveGame.h" />
     <ClInclude Include="..\Lawn\System\TypingCheck.h" />
     <ClInclude Include="..\Lawn\Widget\AchievementsScreen.h" />
+    <ClInclude Include="..\Lawn\Widget\ArchipelagoStatusDialog.h" />
     <ClInclude Include="..\Lawn\Widget\ImageScrollbar.h" />
     <ClInclude Include="..\Lawn\Widget\LanguageScreen.h" />
     <ClInclude Include="..\Lawn\Widget\QuickplayScreen.h" />

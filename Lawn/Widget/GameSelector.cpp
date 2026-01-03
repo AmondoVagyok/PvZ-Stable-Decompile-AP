@@ -1806,7 +1806,7 @@ void GameSelector::ButtonDepress(int theId)
 		mApp->DoNewOptions(true);
 		break;
 	case GameSelector::GameSelector_ChangeUser:
-		mApp->DoUserDialog();
+		mApp->DoArchipelagoStatusDialog();
 		break;
 	case GameSelector::GameSelector_Store:
 	{

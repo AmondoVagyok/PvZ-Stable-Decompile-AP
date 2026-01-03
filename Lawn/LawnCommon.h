@@ -31,6 +31,8 @@ public:
 
 	virtual void			KeyDown(KeyCode theKey);
 	virtual void			KeyChar(char theChar);
+	
+	void DisableAutocap();
 };
 
 // ====================================================================================================

@@ -87,6 +87,11 @@ void LawnEditWidget::KeyChar(char theChar)
     EditWidget::KeyChar(theChar);
 }
 
+void LawnEditWidget::DisableAutocap()
+{
+    mAutoCapFirstLetter = false;
+}
+
 //0x4567B0
 LawnEditWidget* CreateEditWidget(int theId, EditListener* theListener, Dialog* theDialog)
 {

@@ -62,6 +62,7 @@
 #include <windows.h>
 #include <windowsx.h>
 
+#include "Lawn/Widget/ArchipelagoStatusDialog.h"
 #include "SexyAppFramework/APWrapper.h"
 
 bool gIsPartnerBuild = false;
@@ -1022,6 +1023,16 @@ void LawnApp::FinishCreateUserDialog(bool isYes)
 	}
 }
 
+//0x450A10
+void LawnApp::DoArchipelagoStatusDialog()
+{
+	KillDialog(Dialogs::DIALOG_ARCHIPELAGO_STATUS);
+
+	ArchipelagoStatusDialog* aDialog = new ArchipelagoStatusDialog(this);
+	CenterDialog(aDialog, aDialog->mWidth, aDialog->mHeight);
+	AddDialog(Dialogs::DIALOG_ARCHIPELAGO_STATUS, aDialog);
+}
+
 //0x450E20
 void LawnApp::DoConfirmDeleteUserDialog(const SexyString& theName)
 {
@@ -1080,6 +1091,8 @@ void LawnApp::FinishConfirmDeleteUserDialog(bool isYes)
 	{
 		mGameSelector->SyncProfile(true);
 	}
+			
+	DoArchipelagoStatusDialog();
 }
 
 //0x451180
@@ -4258,5 +4271,9 @@ void LawnApp::SetupArchipelago()
 			items_string.append("Item #" + std::to_string(item.item));
 		}
 		this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
+	});
+	this->mAP->AddConnectionCompleteListener([this]
+	{
+		this->KillDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING);
 	});
 }
