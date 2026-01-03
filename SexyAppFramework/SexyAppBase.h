@@ -11,6 +11,8 @@
 #include "SharedImage.h"
 #include "Ratio.h"
 
+class APClient;
+
 namespace ImageLib
 {
 	class Image;
@@ -334,6 +336,8 @@ public:
 	bool					mIsParticleEditor;
 	bool					mIsTouch;
 	int						mResolutionMode;
+	
+	APClient*				mAP;
 
 protected:	
 	void					RehupFocus();

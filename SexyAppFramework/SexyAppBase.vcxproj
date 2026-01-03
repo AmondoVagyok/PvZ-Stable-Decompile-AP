@@ -63,33 +63,33 @@
     <_ProjectFileVersion>16.0.29511.113</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp</IncludePath>
     <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)lua;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/wd4996 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WIN32_WINNT=0x0600;WIN32_LEAN_AND_MEAN;_HAS_STD_BYTE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -97,6 +97,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -118,8 +119,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|Win32'">
     <ClCompile>
-      <AdditionalOptions>/wd4996 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_GOTY;GOTY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/wd4996 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WIN32_WINNT=0x0600;WIN32_LEAN_AND_MEAN;_HAS_STD_BYTE=0;_GOTY;GOTY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -128,6 +129,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -149,10 +151,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>/Oy- /wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Oy- /wd4996 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_WIN32_WINNT=0x0600;WIN32_LEAN_AND_MEAN;_HAS_STD_BYTE=0;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -169,6 +171,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -188,10 +191,10 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|Win32'">
     <ClCompile>
-      <AdditionalOptions>/Oy- /wd4996 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Oy- /wd4996 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <WholeProgramOptimization>true</WholeProgramOptimization>
-      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;NDEBUG;_GOTY;GOTY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_LIB;_WINDOWS;_VISUALC_;_JPEGLIB_;OPTIMIZE_SOFTWARE_DRAWING;DO_FIX_BUGS;_ENABLE_DRM_FOR__DEBUGGING;_WIN32;WIN32;_WIN32_WINNT=0x0600;WIN32_LEAN_AND_MEAN;_HAS_STD_BYTE=0;NDEBUG;_GOTY;GOTY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -209,6 +212,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>

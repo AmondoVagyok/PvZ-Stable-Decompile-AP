@@ -48,6 +48,9 @@
 
 #include "../LawnApp.h"
 
+// #include <apclient.hpp>
+// #include <apuuid.hpp>
+
 //Touch
 #include <WinUser.h>
 
@@ -255,6 +258,12 @@ SexyAppBase::SexyAppBase()
 	gGetLastInputInfoFunc = (GetLastInputInfoFunc) GetProcAddress(GetModuleHandleA("user32.dll"),"GetLastInputInfo");
 
 	ImageLib::InitJPEG2000();
+	
+	// mAP = new APClient(ap_get_uuid("uuid.txt"), "Plants vs. Zombies: Replanted");
+	// mAP->set_print_handler([](const std::string& print_line)
+	// {
+		// std::cout << "Archipelago: " << print_line << std::endl;
+	// });
 
 	mMutex = NULL;
 	mNotifyGameMessage = 0;

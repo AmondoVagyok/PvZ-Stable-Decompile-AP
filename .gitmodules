@@ -1,0 +1,18 @@
+[submodule "SexyAppFramework/ArchipelagoLibs/apclientpp"]
+	path = ArchipelagoLibs/apclientpp
+	url = https://github.com/black-sliver/apclientpp.git
+[submodule "SexyAppFramework/ArchipelagoLibs/nhlomann-json"]
+	path = ArchipelagoLibs/nhlomann-json
+	url = https://github.com/nlohmann/json.git
+[submodule "SexyAppFramework/ArchipelagoLibs/valijson"]
+	path = ArchipelagoLibs/valijson
+	url = https://github.com/tristanpenman/valijson.git
+[submodule "SexyAppFramework/ArchipelagoLibs/wswrap"]
+	path = ArchipelagoLibs/wswrap
+	url = https://github.com/black-sliver/wswrap.git
+[submodule "SexyAppFramework/ArchipelagoLibs/websocketpp"]
+	path = ArchipelagoLibs/websocketpp
+	url = https://github.com/zaphoyd/websocketpp.git
+[submodule "SexyAppFramework/ArchipelagoLibs/asio"]
+	path = ArchipelagoLibs/asio
+	url = https://github.com/chriskohlhoff/asio.git
