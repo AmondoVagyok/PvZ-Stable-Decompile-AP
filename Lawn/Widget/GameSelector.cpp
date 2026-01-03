@@ -1707,6 +1707,11 @@ void GameSelector::ButtonPress(int theId, int theClickCount)
 //0x44C590
 void GameSelector::ClickedAdventure()
 {
+	if (!mApp->EnsureArchipelagoConnected())
+	{
+		return;
+	}
+	
 	if (mApp->IsTrialStageLocked() && (mLevel >= 25 || mApp->HasFinishedAdventure()))
 	{
 		if (mApp->LawnMessageBox(

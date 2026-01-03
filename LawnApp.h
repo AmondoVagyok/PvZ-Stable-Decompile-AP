@@ -369,6 +369,8 @@ public:
 
 	void							DoConfirmRIPMode();
 	
+	bool							EnsureArchipelagoConnected();
+	
 private:
 	void							SetupArchipelago();
 };

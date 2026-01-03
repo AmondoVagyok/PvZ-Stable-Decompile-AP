@@ -4257,6 +4257,24 @@ void LawnApp::DoConfirmRIPMode()
 	);
 }
 
+bool LawnApp::EnsureArchipelagoConnected()
+{
+	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+	{
+		DoDialog(
+			Dialogs::DIALOG_INFO,
+			true,
+			"Archipelago",
+			"Please connect to Archipelago first.",
+			"OK",
+			Dialog::BUTTONS_FOOTER
+		);
+		return false;
+	}
+	
+	return true;
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddServerChatMessageListener([this](const std::string& message)
@@ -4275,5 +4293,37 @@ void LawnApp::SetupArchipelago()
 	this->mAP->AddConnectionCompleteListener([this]
 	{
 		this->KillDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING);
+	});
+	this->mAP->AddSlotRefusedListener([this](const std::string& reason)
+	{
+		this->KillDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING);
+		
+		std::string message = "Check your parameters and try again";
+		if (reason == "InvalidSlot")
+		{
+			message = "Check the slot name and try again.";
+		}
+		else if (reason == "InvalidGame")
+		{
+#ifdef GOTY
+			message = "This slot is not configured for Plants vs. Zombies: Game of the Year edition.";
+#else
+			message = "This slot is not configured for Plants vs. Zombies.";
+#endif
+		}
+		else if (reason == "IncompatibleVersion")
+		{
+#ifdef GOTY
+			message = "This version of Plants vs. Zombies: Game of the Year edition is not compatible with the server.";
+#else
+			message = "This version of Plants vs. Zombies is not compatible with the server.";
+#endif
+		}
+		else if (reason == "InvalidPassword")
+		{
+			message = "Check the password and try again";
+		}
+		
+		this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
 	});
 }

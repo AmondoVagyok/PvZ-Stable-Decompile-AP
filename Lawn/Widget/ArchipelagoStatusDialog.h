@@ -4,6 +4,7 @@
 #include "LawnDialog.h"
 #include "../../SexyAppFramework/EditListener.h"
 
+class ListenerHandle;
 class LawnApp;
 
 class ArchipelagoStatusDialog : public LawnDialog, public EditListener
@@ -14,7 +15,10 @@ public:
 	LawnEditWidget*			mSlotEditWidget;
 	LawnEditWidget*			mPasswordEditWidget;
 	LawnStoneButton*		mConnectButton;
-
+	
+	ListenerHandle*			mConnectionListener;
+	ListenerHandle*			mDisconnectionListener;
+	
 public:
     ArchipelagoStatusDialog(LawnApp* theApp);
 	virtual ~ArchipelagoStatusDialog();
@@ -28,6 +32,8 @@ public:
 	virtual bool		AllowChar(int, SexyChar theChar);
 	
 	void ButtonDepress(int theId) override;
+	
+	void UpdateArchipelagoStatus();
 };
 
 #endif

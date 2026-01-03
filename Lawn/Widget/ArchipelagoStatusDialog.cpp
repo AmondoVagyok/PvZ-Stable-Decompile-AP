@@ -34,10 +34,17 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
 	mConnectButton = MakeButton(20, this, "Connect to Archipelago");
 	
     CalcSize(110, 300);
+	
+	mConnectionListener = mApp->mAP->AddConnectionCompleteListener([this] { UpdateArchipelagoStatus(); });
+	mDisconnectionListener = mApp->mAP->AddDisconnectionListener([this] { UpdateArchipelagoStatus(); });
+	
+	UpdateArchipelagoStatus();
 }
 
 ArchipelagoStatusDialog::~ArchipelagoStatusDialog()
 {
+	delete mConnectionListener;
+	
 	delete mPasswordEditWidget;
 	delete mSlotEditWidget;
 	delete mHostEditWidget;
@@ -89,6 +96,14 @@ void ArchipelagoStatusDialog::Draw(Graphics* g)
 	TodDrawString(g, "Archipelago Host and Port", mContentInsets.mLeft + 12, mHostEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
 	TodDrawString(g, "Archipelago Slot", mContentInsets.mLeft + 12, mSlotEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
 	TodDrawString(g, "Archipelago Password (optional)", mContentInsets.mLeft + 12, mPasswordEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
+	
+	if (!mHostEditWidget->mVisible)
+	{
+		Sexy::Color aTextColor(255, 255, 255);
+		TodDrawString(g, mApp->mAP->ServerName(), mContentInsets.mLeft + 12, mHostEditWidget->Top() + 17, FONT_PICO129, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
+		TodDrawString(g, mApp->mAP->SlotName(), mContentInsets.mLeft + 12, mSlotEditWidget->Top() + 17, FONT_PICO129, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
+		TodDrawString(g, mApp->mAP->Password(), mContentInsets.mLeft + 12, mPasswordEditWidget->Top() + 17, FONT_PICO129, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
+	}
 }
 
 void ArchipelagoStatusDialog::EditWidgetText(int theId, const SexyString& theString)
@@ -108,8 +123,38 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 	{
 	case 20:
 		// Connect button
-		mApp->mAP->Connect(mHostEditWidget->mString, mSlotEditWidget->mString, mPasswordEditWidget->mString);
-		mApp->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "", Dialog::BUTTONS_NONE);
+		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Disconnected)
+		{
+			mApp->mAP->Connect(mHostEditWidget->mString, mSlotEditWidget->mString, mPasswordEditWidget->mString);
+			mApp->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "", Dialog::BUTTONS_NONE);
+		}
+		else
+		{
+			mApp->mAP->DisconnectNow();
+			UpdateArchipelagoStatus();
+		}
 		break;
+	}
+}
+
+void ArchipelagoStatusDialog::UpdateArchipelagoStatus()
+{
+	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Disconnected)
+	{
+		mConnectButton->SetLabel( "Connect to Archipelago");
+		mHostEditWidget->SetVisible(true);
+		mSlotEditWidget->SetVisible(true);
+		mPasswordEditWidget->SetVisible(true);
+		
+		mDialogLines = "Connect to Archipelago by entering\nthe connection details below";
+	}
+	else
+	{
+		mConnectButton->SetLabel("Disconnect from Archipelago");
+		mHostEditWidget->SetVisible(false);
+		mSlotEditWidget->SetVisible(false);
+		mPasswordEditWidget->SetVisible(false);
+		
+		mDialogLines = "Connected to Archipelago";
 	}
 }
