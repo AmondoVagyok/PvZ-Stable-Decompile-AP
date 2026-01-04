@@ -1,7 +1,8 @@
 name: Build GOTY
 on:
   push:
-    - archipelago
+    branches:
+      - archipelago
 
 jobs:
   build:
