@@ -13,6 +13,7 @@ public:
     std::map<uint64_t, std::function<void()>> connection_complete_listener;
     std::map<uint64_t, std::function<void()>> disconnection_listener;
     std::map<uint64_t, std::function<void(const std::string&)>> slot_refused_listeners;
+    std::map<uint64_t, std::function<void(const std::string&, const std::string&)>> deathlink_listeners;
     
     uint64_t next_listener_id = 0;
     
@@ -21,6 +22,11 @@ public:
     std::string slot_name;
     std::string password;
     nlohmann::json slot_data;
+    
+    std::list<std::string> tags;
+    float last_sent_deathlink;
+    std::string last_deathlink_source;
+    std::string last_deathlink_cause;
     
     bool delete_on_next_poll = false;
 };
@@ -56,6 +62,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->server_name = server_name;
     d->slot_name = slot_name;
     d->password = password;
+    d->tags.clear();
     
     d->mAP = new APClient(ap_get_uuid("uuid.txt"), "Plants vs. Zombies: Replanted", server_name);
     d->mAP->set_print_handler([](const std::string& print_line)
@@ -80,7 +87,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_socket_connected_handler([this, slot_name, password]
     {
-        d->mAP->ConnectSlot(slot_name, password, 0b111 /* Everything! */);
+        d->mAP->ConnectSlot(slot_name, password, 0b111 /* Everything! */, d->tags);
     });
     d->mAP->set_slot_connected_handler([this](const nlohmann::json& slot_data)
     {
@@ -132,6 +139,35 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             disconnection_listener.second();
         }
         this->Disconnect();
+    });
+    d->mAP->set_bounced_handler([this](const nlohmann::json& bounce_data)
+    {
+        auto tags = bounce_data["tags"];
+        if (tags.size() > 0 && tags[0] == "DeathLink")
+        {
+            // Handle DeathLink packet
+            auto data = bounce_data["data"];
+            std::string source = data["source"];
+            auto cause = data["cause"]; // string
+            double time = data["time"]; // number_float
+            
+            if (time != d->last_sent_deathlink)
+            {
+                d->last_deathlink_source = source;
+                if (cause.is_string())
+                {
+                    d->last_deathlink_cause = cause;
+                } else
+                {
+                    d->last_deathlink_cause = "";
+                }
+                    
+                for (const auto& deathlink_listener : this->d->deathlink_listeners)
+                {
+                    deathlink_listener.second(source, d->last_deathlink_cause);
+                }
+            }
+        }
     });
 }
 
@@ -235,6 +271,58 @@ void APWrapper::CheckLocations(const std::list<int64_t>& location_ids) const
     this->d->mAP->LocationChecks(location_ids);
 }
 
+void APWrapper::EnableDeathLink(bool enable) const
+{
+    if (!enable)
+    {
+        d->tags.remove_if([](std::string tag)
+        {
+            return tag == "DeathLink";
+        });
+    }
+    else
+    {
+        d->tags.emplace_back("DeathLink");
+    }
+    
+    this->UpdateConnectionInformation();
+}
+
+void APWrapper::SendDeathLink(const std::string& reason) const
+{
+    // Ensure DeathLink is on
+    for (const auto& tag : d->tags)
+    {
+        if (tag == "DeathLink")
+        {
+            auto time = d->mAP->get_server_time();
+            d->last_sent_deathlink = time;
+            d->mAP->Bounce({
+                {"time", time},
+                {"source", this->PlayerDisplayName(this->MySlot())},
+                {"cause", reason}
+            }, {}, {}, {"DeathLink"});
+            return;
+        }
+    }
+}
+
+void APWrapper::ClearLastDeathLink() const
+{
+    d->last_deathlink_cause = "";
+    d->last_deathlink_source = "";
+}
+
+std::string APWrapper::LastDeathLinkSource() const
+{
+    return d->last_deathlink_source;
+}
+
+std::string APWrapper::LastDeathLinkCause() const
+{
+    return d->last_deathlink_cause;
+}
+
 ListenerHandle* APWrapper::AddServerChatMessageListener(std::function<void(const std::string&)> listener) const
 {
     auto id = d->next_listener_id++;
@@ -273,5 +361,20 @@ ListenerHandle* APWrapper::AddDisconnectionListener(std::function<void()> listen
     this->d->disconnection_listener.insert_or_assign(id, listener);
     
     return new ListenerHandle([this, id] { this->d->disconnection_listener.erase(id); });
+}
+
+ListenerHandle* APWrapper::AddDeathLinkListener(std::function<void(const std::string&, const std::string&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->deathlink_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->deathlink_listeners.erase(id); });
+}
+
+void APWrapper::UpdateConnectionInformation() const
+{
+    if (!d->mAP) return;
+    
+    d->mAP->ConnectUpdate(0b111, d->tags);
 }
 

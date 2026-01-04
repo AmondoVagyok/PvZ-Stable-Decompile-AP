@@ -62,14 +62,23 @@ public:
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
     
+    void EnableDeathLink(bool enable) const;
+    void SendDeathLink(const std::string& reason) const;
+    void ClearLastDeathLink() const;
+    std::string LastDeathLinkSource() const;
+    std::string LastDeathLinkCause() const;
+    
     ListenerHandle* AddServerChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddItemsReceivedListener(std::function<void(const std::list<APItem>&)>) const;
     ListenerHandle* AddConnectionCompleteListener(std::function<void()>) const;
     ListenerHandle* AddSlotRefusedListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddDisconnectionListener(std::function<void()>) const;
+    ListenerHandle* AddDeathLinkListener(std::function<void(const std::string&, const std::string&)>) const;
 
 private:
     APWrapper_Private* d;
+    
+    void UpdateConnectionInformation() const;
 };
 
 #endif

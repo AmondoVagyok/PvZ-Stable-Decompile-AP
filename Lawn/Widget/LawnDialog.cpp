@@ -9,6 +9,7 @@
 #include "../../Sexy.TodLib/Reanimator.h"
 #include "../../Sexy.TodLib/EffectSystem.h"
 #include "../../Sexy.TodLib/TodStringFile.h"
+#include "../../SexyAppFramework/APWrapper.h"
 #include "../../SexyAppFramework/ImageFont.h"
 
 
@@ -471,8 +472,15 @@ GameOverDialog::GameOverDialog(const SexyString& theMessage, bool theShowChallen
     {
         mDialogHeader = TodStringTranslate(mApp->GetCurrentChallengeDef().mChallengeName);
     }
+    
+    if (!gLawnApp->mAP->LastDeathLinkSource().empty())
+    {
+        mDialogHeader = "Death granted by " + gLawnApp->mAP->LastDeathLinkSource();
+        mDialogLines = gLawnApp->mAP->LastDeathLinkCause();
+        gLawnApp->mAP->ClearLastDeathLink();
+    }
 
-    if (theMessage.size() == 0)
+    if (mDialogLines.size() == 0)
     {
         mContentInsets.mTop += 15;
     }

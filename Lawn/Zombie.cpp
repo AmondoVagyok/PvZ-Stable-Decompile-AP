@@ -18,6 +18,8 @@
 #include "../Sexy.TodLib/TodParticle.h"
 #include "Widget/AchievementsScreen.h"
 #include "../Sexy.TodLib/EffectSystem.h"
+#include "../SexyAppFramework/APWrapper.h"
+#include "../Sexy.TodLib/TodStringFile.h"
 
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE") },
@@ -5243,6 +5245,12 @@ void Zombie::CheckForBoardEdge()
         }
         else
         {
+            if (mApp->mAP->LastDeathLinkSource().empty())
+            {
+                // No DeathLink queued, so send one now
+                auto zombie_definition = GetZombieDefinition(mZombieType);
+                mApp->mAP->SendDeathLink(TodStringTranslate(StrFormat(_S("%s"), zombie_definition.mZombieName)) + " ate " + mApp->mAP->PlayerDisplayName(mApp->mAP->MySlot()) + "'s brains!");
+            }
             mBoard->ZombiesWon(this);
         }
     }

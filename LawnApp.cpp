@@ -4338,4 +4338,11 @@ void LawnApp::SetupArchipelago()
 		
 		this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
 	});
+	this->mAP->AddDeathLinkListener([this](const std::string& player, const std::string& reason)
+	{
+		if (this->mBoard)
+		{
+			this->mBoard->ZombiesWon(nullptr);
+		}
+	});
 }
