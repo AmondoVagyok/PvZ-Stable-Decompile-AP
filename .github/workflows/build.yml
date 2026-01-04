@@ -18,7 +18,7 @@ jobs:
         run: |
           msbuild /p:Configuration=ReleaseGOTY /p:Platform=x86 PlantsVsZombies.sln
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: PlantsVsZombies-GOTY
           path: |
