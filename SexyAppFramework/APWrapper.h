@@ -61,6 +61,7 @@ public:
     void Poll() const;
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
+    void SetGoal() const;
     
     void EnableDeathLink(bool enable) const;
     void SendDeathLink(const std::string& reason) const;

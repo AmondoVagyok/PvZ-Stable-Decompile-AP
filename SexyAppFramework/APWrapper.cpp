@@ -271,6 +271,12 @@ void APWrapper::CheckLocations(const std::list<int64_t>& location_ids) const
     this->d->mAP->LocationChecks(location_ids);
 }
 
+void APWrapper::SetGoal() const
+{
+    if (!d->mAP) return;
+    this->d->mAP->StatusUpdate(APClient::ClientStatus::GOAL);
+}
+
 void APWrapper::EnableDeathLink(bool enable) const
 {
     if (!enable)

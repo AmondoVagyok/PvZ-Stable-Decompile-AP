@@ -1764,9 +1764,25 @@ bool CutScene::IsCutSceneOver()
 //0x43C910
 void CutScene::ZombieWonClick()
 {
-	if (IsCutSceneOver() || mApp->mTodCheatKeys)
+	if (IsCutSceneOver())
 	{
 		mApp->EndLevel();
+	}
+	else
+	{
+		if (mApp->IsSurvivalMode() || mApp->IsLastStandEndless(mApp->mGameMode))
+		{
+			int aFlagsCompleted = mBoard->GetSurvivalFlagsCompleted();
+			SexyString aFlagsStr = mApp->Pluralize(aFlagsCompleted, _S("[ONE_FLAG]"), _S("[COUNT_FLAGS]"));
+			SexyString aStr = TodReplaceString(_S("[SURVIVAL_DEATH_MESSAGE]"), _S("{FLAGS}"), aFlagsStr);
+			GameOverDialog* aDialog = new GameOverDialog(aStr, true);
+			mApp->AddDialog(Dialogs::DIALOG_GAME_OVER, aDialog);
+		}
+		else
+		{
+			GameOverDialog* aDialog = new GameOverDialog(_S(""), false);
+			mApp->AddDialog(Dialogs::DIALOG_GAME_OVER, aDialog);
+		}
 	}
 }
 
