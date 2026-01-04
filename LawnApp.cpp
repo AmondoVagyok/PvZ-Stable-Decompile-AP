@@ -4286,7 +4286,7 @@ void LawnApp::SetupArchipelago()
 		std::string items_string;
 		for (const auto item : items)
 		{
-			items_string.append("Item #" + std::to_string(item.item));
+			items_string.append(this->mAP->ItemName(item) + "\n");
 		}
 		this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
 	});

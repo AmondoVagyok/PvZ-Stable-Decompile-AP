@@ -27,6 +27,7 @@ struct APItem
     int64_t location;
     int player;
     unsigned flags;
+    int index = -1; // to sync items, not actually part of NetworkItem
 };
 
 class APWrapper
@@ -51,6 +52,8 @@ public:
     ConnectionStatus ConnectionStatus() const;
     
     std::string PlayerDisplayName(int slot) const;
+    
+    std::string ItemName(const APItem& item) const;
     
     void Poll() const;
     

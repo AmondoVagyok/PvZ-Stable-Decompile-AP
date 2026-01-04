@@ -51,7 +51,9 @@
 #include "APWrapper.h"
 
 //Touch
+#include <filesystem>
 #include <WinUser.h>
+#include <asio/buffer.hpp>
 
 #define WM_TOUCH 0x0240
 #define HTOUCHINPUT HANDLE
@@ -6838,30 +6840,35 @@ void SexyAppBase::Init()
 	InitPropertiesHook();
 	ReadFromRegistry();	
 
-	if (CheckForVista())
-	{
-		HMODULE aMod;
-		SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath(_S("shell32.dll"), &aMod);
-		if (aFunc == NULL || aMod == NULL)
-			SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath(_S("shfolder.dll"), &aMod);
-
-		if (aMod != NULL)
-		{
-			SexyChar aPath[MAX_PATH];
-			aFunc(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, aPath);
-
-			SexyString aDataPath = RemoveTrailingSlash(aPath) + _S("\\") + mFullCompanyName + _S("\\") + mProdName;
-			SetAppDataFolder(aDataPath + _S("\\"));
-			//MkDir(aDataPath);
-			//AllowAllAccess(aDataPath);
-			if (mDemoFileName.length() < 2 || (mDemoFileName[1] != ':' && mDemoFileName[2] != '\\'))
-			{
-				mDemoFileName = GetAppDataFolder() + mDemoFileName;
-			}
-
-			FreeLibrary(aMod);
-		}
-	}
+	// if (CheckForVista())
+	// {
+	// 	HMODULE aMod;
+	// 	SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath(_S("shell32.dll"), &aMod);
+	// 	if (aFunc == NULL || aMod == NULL)
+	// 		SHGetFolderPathFunc aFunc = (SHGetFolderPathFunc)GetSHGetFolderPath(_S("shfolder.dll"), &aMod);
+	//
+	// 	if (aMod != NULL)
+	// 	{
+	// 		SexyChar aPath[MAX_PATH];
+	// 		aFunc(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, aPath);
+	//
+	// 		SexyString aDataPath = RemoveTrailingSlash(aPath) + _S("\\") + mFullCompanyName + _S("\\") + mProdName;
+	// 		SetAppDataFolder(aDataPath + _S("\\"));
+	// 		//MkDir(aDataPath);
+	// 		//AllowAllAccess(aDataPath);
+	// 		if (mDemoFileName.length() < 2 || (mDemoFileName[1] != ':' && mDemoFileName[2] != '\\'))
+	// 		{
+	// 			mDemoFileName = GetAppDataFolder() + mDemoFileName;
+	// 		}
+	//
+	// 		FreeLibrary(aMod);
+	// 	}
+	// }
+	
+	char directory_buffer[MAX_PATH];
+	GetModuleFileNameA(NULL, directory_buffer, MAX_PATH);
+	auto parent_path = std::filesystem::path(directory_buffer).parent_path().append("data");
+	SetAppDataFolder(parent_path.string());
 	
 	if (!mCmdLineParsed)
 		DoParseCmdLine();

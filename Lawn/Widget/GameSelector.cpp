@@ -22,6 +22,7 @@
 #include "../../SexyAppFramework/WidgetManager.h"
 #include "../../Sexy.TodLib/TodStringFile.h"
 #include "../../GameConstants.h"
+#include "../../SexyAppFramework/APWrapper.h"
 
 static float gFlowerCenter[3][2] = { { 765.0f, 483.0f }, { 663.0f, 455.0f }, { 701.0f, 439.0f } };  //0x665430
 
@@ -746,10 +747,9 @@ void GameSelector::Draw(Graphics* g)
 		);
 	}
 
-	if (mApp->mPlayerInfo && mApp->mPlayerInfo->mName.size() &&
-		mSelectorState != SelectorAnimState::SELECTOR_OPEN && mSelectorState != SelectorAnimState::SELECTOR_NEW_USER)
+	if (mSelectorState != SelectorAnimState::SELECTOR_OPEN && mSelectorState != SelectorAnimState::SELECTOR_NEW_USER)
 	{
-		SexyString aWelcomeStr = mApp->mPlayerInfo->mName + _S('!');
+		SexyString aWelcomeStr = mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected ? mApp->mAP->SlotName() + _S('!') : _S("- Not connected -");
 
 		int aSignIdx = aWoodSignReanim->FindTrackIndex("woodsign1");
 		SexyTransform2D aOverlayMatrix;
@@ -1246,18 +1246,22 @@ void GameSelector::Update()
 			
 			if (mApp->mPlayerInfo == nullptr)
 			{
-				mApp->DoCreateUserDialog();
-				if (gIsPartnerBuild)
-					AddPreviewProfiles();
-
-				mSelectorState = SelectorAnimState::SELECTOR_NEW_USER;
+				// TODO: Is it worth creating a different profile for each game that has been connected to?
+				// Maybe a UUID in the slot data?
+				mApp->mPlayerInfo = mApp->mProfileMgr->AddProfile("Archipelago");
+				
+			// 	mApp->DoCreateUserDialog();
+			// 	if (gIsPartnerBuild)
+			// 		AddPreviewProfiles();
+			//
+			// 	mSelectorState = SelectorAnimState::SELECTOR_NEW_USER;
 			}
-			else
-			{
+			// else
+			// {
 				aSelectorReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
 				aWoodSignReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
 				mSelectorState = SelectorAnimState::SELECTOR_IDLE;
-			}
+			// }
 
 			if (mHasTrophy)
 				AddTrophySparkle();

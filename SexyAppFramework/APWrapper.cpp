@@ -20,6 +20,7 @@ public:
     std::string server_name;
     std::string slot_name;
     std::string password;
+    nlohmann::json slot_data;
     
     bool delete_on_next_poll = false;
 };
@@ -84,6 +85,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->mAP->set_slot_connected_handler([this](const nlohmann::json& slot_data)
     {
         // TODO: Save slot data
+        this->d->slot_data = slot_data;
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
             connection_complete_listener.second();
@@ -109,7 +111,8 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
                 item.item,
                 item.location,
                 item.player,
-                item.flags
+                item.flags,
+                item.index
             });
         }
 
@@ -120,7 +123,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_data_package_changed_handler([this](const nlohmann::json& data_package)
     {
-        
+        data_package;
     });
     d->mAP->set_socket_disconnected_handler([this]
     {
@@ -188,12 +191,15 @@ std::string APWrapper::PlayerDisplayName(int slot) const
         {
             return player.name;
         }
-        else
-        {
-            return player.name + " (" + player.alias + ")";
-        }
+        return player.name + " (" + player.alias + ")";
     }
     return "";
+}
+
+std::string APWrapper::ItemName(const APItem& item) const
+{
+    const auto player_game = d->mAP->get_player_game(item.player);
+    return d->mAP->get_item_name(item.item, player_game);
 }
 
 void APWrapper::Poll() const
