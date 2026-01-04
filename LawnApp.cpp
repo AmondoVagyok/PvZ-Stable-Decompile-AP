@@ -4286,9 +4286,21 @@ void LawnApp::SetupArchipelago()
 		std::string items_string;
 		for (const auto item : items)
 		{
-			items_string.append(this->mAP->ItemName(item) + "\n");
+			if (item.player == 0 || item.player == this->mAP->MySlot())
+			{
+				items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()));
+			}
+			else
+			{
+				items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + " from " + this->mAP->PlayerDisplayName(item.player));
+			}
 		}
-		this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
+		
+		if (this->mBoard)
+		{
+			this->mBoard->DisplayAdviceAgain(items_string, MESSAGE_STYLE_ARCHIPELAGO_UPDATE, ADVICE_AP_GOT_ITEM);
+		}
+		// this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
 	});
 	this->mAP->AddConnectionCompleteListener([this]
 	{

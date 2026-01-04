@@ -23,6 +23,7 @@
 #include "../Sexy.TodLib/Reanimator.h"
 #include "../Sexy.TodLib/TodParticle.h"
 #include "../Sexy.TodLib/TodStringFile.h"
+#include "../SexyAppFramework/APWrapper.h"
 #include "../SexyAppFramework/PerfTimer.h"
 #include "../SexyAppFramework/WidgetManager.h"
 
@@ -1031,7 +1032,7 @@ void CutScene::StartLevelIntro()
 		}
 	}
 
-	aHouseMessage = TodReplaceString(aHouseMessage, _S("{PLAYER}"), mApp->mPlayerInfo->mName);
+	aHouseMessage = TodReplaceString(aHouseMessage, _S("{PLAYER}"), mApp->mAP->SlotName());
 	if (!aHouseMessage.empty())
 	{
 		mBoard->DisplayAdvice(aHouseMessage, MessageStyle::MESSAGE_STYLE_HOUSE_NAME, AdviceType::ADVICE_NONE);

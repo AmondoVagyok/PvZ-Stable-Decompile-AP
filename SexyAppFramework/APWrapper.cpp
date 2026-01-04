@@ -179,9 +179,17 @@ enum APWrapper::ConnectionStatus APWrapper::ConnectionStatus() const
     return ConnectionStatus::Disconnected;
 }
 
+int64_t APWrapper::MySlot() const
+{
+    if (!d->mAP) return -1;
+    return d->mAP->get_player_number();
+}
+
 std::string APWrapper::PlayerDisplayName(int slot) const
 {
     if (!d->mAP) return "";
+    
+    if (slot == 0) return "Archipelago";
     
     auto players = d->mAP->get_players();
     for (const auto& player : d->mAP->get_players())
@@ -200,6 +208,12 @@ std::string APWrapper::ItemName(const APItem& item) const
 {
     const auto player_game = d->mAP->get_player_game(item.player);
     return d->mAP->get_item_name(item.item, player_game);
+}
+
+std::string APWrapper::ItemName(const int64_t item, const int64_t slot) const
+{
+    const auto player_game = d->mAP->get_player_game(slot);
+    return d->mAP->get_item_name(item, player_game);
 }
 
 void APWrapper::Poll() const

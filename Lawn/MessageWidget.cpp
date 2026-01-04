@@ -113,6 +113,10 @@ void MessageWidget::SetLabel(const SexyString& theNewLabel, MessageStyle theMess
 		case MessageStyle::MESSAGE_STYLE_ACHIEVEMENT: // @Patoke: implemented
 			mDuration = 250;
 			break;
+			
+		case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_UPDATE:
+			mDuration = 250;
+			
 
 		default:
 			TOD_ASSERT();
@@ -295,6 +299,7 @@ Font* MessageWidget::GetFont()
 	case MessageStyle::MESSAGE_STYLE_HUGE_WAVE:
 	case MessageStyle::MESSAGE_STYLE_ZEN_GARDEN_LONG:
 	case MessageStyle::MESSAGE_STYLE_ACHIEVEMENT: // @Patoke: implemented
+	case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_UPDATE:
 		return Sexy::FONT_HOUSEOFTERROR28;
 
 	case MessageStyle::MESSAGE_STYLE_SLOT_MACHINE:
@@ -394,6 +399,11 @@ void MessageWidget::Draw(Graphics* g)
 		aColor = Color(253, 245, 173);
 		aMinAlpha = 192;
 		break;
+		
+	case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_UPDATE:
+		aPosY = 550;
+		aColor = Color(255, 255, 0, 255);
+		aFadeOut = true;
 
 	default:
 		TOD_ASSERT();

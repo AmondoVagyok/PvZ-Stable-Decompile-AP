@@ -51,10 +51,13 @@ public:
     std::string Password() const;
     ConnectionStatus ConnectionStatus() const;
     
+    int64_t MySlot() const;
+    
     std::string PlayerDisplayName(int slot) const;
     
     std::string ItemName(const APItem& item) const;
-    
+    std::string ItemName(int64_t item, int64_t slot) const;
+
     void Poll() const;
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
