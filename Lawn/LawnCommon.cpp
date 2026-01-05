@@ -71,7 +71,7 @@ LawnEditWidget::~LawnEditWidget()
 void LawnEditWidget::KeyDown(KeyCode theKey)
 {
     EditWidget::KeyDown(theKey);
-    if (theKey == KeyCode::KEYCODE_ESCAPE)
+    if (theKey == KeyCode::KEYCODE_ESCAPE && mDialog)
         mDialog->KeyDown(KeyCode::KEYCODE_ESCAPE);
 }
 

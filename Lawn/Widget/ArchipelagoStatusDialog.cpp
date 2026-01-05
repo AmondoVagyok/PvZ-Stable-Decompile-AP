@@ -94,7 +94,7 @@ void ArchipelagoStatusDialog::Draw(Graphics* g)
 	
 	Sexy::Color aTextColor(107, 109, 145);
 	TodDrawString(g, "Archipelago Host and Port", mContentInsets.mLeft + 12, mHostEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
-	TodDrawString(g, "Archipelago Slot", mContentInsets.mLeft + 12, mSlotEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
+	TodDrawString(g, "Archipelago Slot Name", mContentInsets.mLeft + 12, mSlotEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
 	TodDrawString(g, "Archipelago Password (optional)", mContentInsets.mLeft + 12, mPasswordEditWidget->Top() - 15, FONT_DWARVENTODCRAFT15, aTextColor, DrawStringJustification::DS_ALIGN_LEFT);
 	
 	if (!mHostEditWidget->mVisible)

@@ -63,6 +63,7 @@
 #include <windowsx.h>
 
 #include "Lawn/Widget/ArchipelagoStatusDialog.h"
+#include "Lawn/Widget/ArchipelagoTextClient.h"
 #include "SexyAppFramework/APWrapper.h"
 
 bool gIsPartnerBuild = false;
@@ -172,6 +173,7 @@ LawnApp::LawnApp()
 	mRIPMode = false;
 	memset(&mDirtyBushes, 0, sizeof(mDirtyBushes));
 	mPlayerLevelRef = -1;
+	mAPTextClient = nullptr;
 	
 	SetupArchipelago();
 }
@@ -277,6 +279,11 @@ LawnApp::~LawnApp()
 	{
 		mWidgetManager->RemoveWidget(mParticleScreen);
 		delete mParticleScreen;
+	}
+	if (mAPTextClient)
+	{
+		mWidgetManager->RemoveWidget(mAPTextClient);
+		delete mAPTextClient;
 	}
 
 	delete mProfileMgr;
@@ -1505,6 +1512,8 @@ void LawnApp::Start()
 		return;
 
 	SexyAppBase::Start();
+	
+	mWidgetManager->AddWidget(mAPTextClient);
 }
 
 int LawnApp::AudioCallback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData) {
@@ -4255,6 +4264,31 @@ void LawnApp::DoConfirmRIPMode()
 		_S(""),
 		Dialog::BUTTONS_YES_NO
 	);
+}
+
+void LawnApp::ShowAPTextClient()
+{
+	if (!mAPTextClient)
+	{
+		mAPTextClient = new ArchipelagoTextClient(this);
+		mWidgetManager->AddWidget(mAPTextClient);
+	}
+	mWidgetManager->BringToFront(mAPTextClient);
+}
+
+bool LawnApp::APTextClientVisible()
+{
+	return mAPTextClient != nullptr;
+}
+
+void LawnApp::KillAPTextClient()
+{
+	if (mAPTextClient)
+	{
+		mWidgetManager->RemoveWidget(mAPTextClient);
+		SafeDeleteWidget(mAPTextClient);
+		mAPTextClient = nullptr;
+	}
 }
 
 bool LawnApp::EnsureArchipelagoConnected()

@@ -31,6 +31,8 @@ public:
     std::string last_deathlink_source;
     std::string last_deathlink_cause;
     
+    std::list<std::string> chat_messages;
+    
     bool delete_on_next_poll = false;
 };
 
@@ -66,6 +68,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->slot_name = slot_name;
     d->password = password;
     d->tags.clear();
+    d->chat_messages.clear();
     
     d->mAP = new APClient(ap_get_uuid("uuid.txt"), "Plants vs. Zombies: Replanted", server_name);
     d->mAP->set_print_handler([](const std::string& print_line)
@@ -74,19 +77,21 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_print_json_handler([this](const APClient::PrintJSONArgs& print_line)
     {
+        std::string concatenated_message;
+        for (const auto& node : print_line.data)
+        {
+            concatenated_message.append(node.text);
+        }
+        
+        d->chat_messages.push_back(concatenated_message);
+        
         if (print_line.type == "ServerChat")
         {
-            std::string concatenated_message;
-            for (const auto& node : print_line.data)
-            {
-                concatenated_message.append(node.text);
-            }
             for (const auto& server_chat_listener : this->d->server_chat_listeners)
             {
                 server_chat_listener.second(concatenated_message);
             }
         }
-        std::cout << "Archipelago: " << print_line.message << std::endl;
     });
     d->mAP->set_socket_connected_handler([this, slot_name, password]
     {
@@ -235,6 +240,12 @@ enum APWrapper::ConnectionStatus APWrapper::ConnectionStatus() const
     return ConnectionStatus::Disconnected;
 }
 
+void APWrapper::SendAPMessage(const std::string& message) const
+{
+    if (!d->mAP) return;
+    d->mAP->Say(message);
+}
+
 int64_t APWrapper::MySlot() const
 {
     if (!d->mAP) return -1;
@@ -362,6 +373,11 @@ std::string APWrapper::LastDeathLinkSource() const
 std::string APWrapper::LastDeathLinkCause() const
 {
     return d->last_deathlink_cause;
+}
+
+std::list<std::string> APWrapper::ChatMessages() const
+{
+    return d->chat_messages;
 }
 
 ListenerHandle* APWrapper::AddServerChatMessageListener(std::function<void(const std::string&)> listener) const

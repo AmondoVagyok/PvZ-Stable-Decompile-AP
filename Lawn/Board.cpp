@@ -9663,7 +9663,11 @@ void Board::KeyDown(KeyCode theKey)
 	}
 	else if (theKey == KeyCode::KEYCODE_ESCAPE)
 	{
-		if (mApp->mGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN || mApp->mGameMode == GAMEMODE_TREE_OF_WISDOM)
+		if (mApp->APTextClientVisible())
+		{
+			mApp->KillAPTextClient();
+		}
+		else if (mApp->mGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN || mApp->mGameMode == GAMEMODE_TREE_OF_WISDOM)
 		{
 			TryToSaveGame();
 			mApp->DoBackToMain();
@@ -10408,27 +10412,27 @@ void Board::KeyChar(SexyChar theChar)
 		mFogBlownCountDown = 2200;
 		return;
 	}
-	if (theChar == _S('t'))
-	{
-		if (!CanAddBobSled())
-		{
-			int aRow = Rand(5);
-			int aPos = 400;
-			if (StageHasPool())
-			{
-				aRow = Rand(2);
-			}
-			else if (StageHasRoof())
-			{
-				aPos = 500;
-			}
-			mIceTimer[aRow] = 3000;
-			mIceMinX[aRow] = aPos;
-		}
-
-		AddZombie(ZombieType::ZOMBIE_BOBSLED, Zombie::ZOMBIE_WAVE_DEBUG);
-		return;
-	}
+	// if (theChar == _S('t'))
+	// {
+	// 	if (!CanAddBobSled())
+	// 	{
+	// 		int aRow = Rand(5);
+	// 		int aPos = 400;
+	// 		if (StageHasPool())
+	// 		{
+	// 			aRow = Rand(2);
+	// 		}
+	// 		else if (StageHasRoof())
+	// 		{
+	// 			aPos = 500;
+	// 		}
+	// 		mIceTimer[aRow] = 3000;
+	// 		mIceMinX[aRow] = aPos;
+	// 	}
+	//
+	// 	AddZombie(ZombieType::ZOMBIE_BOBSLED, Zombie::ZOMBIE_WAVE_DEBUG);
+	// 	return;
+	// }
 	if (theChar == _S('r'))
 	{
 		SpawnZombiesFromGraves();

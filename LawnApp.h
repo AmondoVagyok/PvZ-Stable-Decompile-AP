@@ -16,6 +16,7 @@
 #define FRAMES_PER_BUFFER 256
 #define SHOUT_THRESHOLD 0.2f 
 
+class ArchipelagoTextClient;
 class Board;
 class GameSelector;
 class ChallengeDefinition;
@@ -144,6 +145,7 @@ public:
 	PaStream*						mPortAudioStream;
 	float							mVoiceVolume;
 	MemoryImage*					mBoardCamera;
+	ArchipelagoTextClient*		    mAPTextClient;
 	//lua_State*						L;
 
 	Rect							gBoardBounds;
@@ -368,6 +370,10 @@ public:
 	bool							TryToInitializePA();
 
 	void							DoConfirmRIPMode();
+	
+	void							ShowAPTextClient();
+	bool							APTextClientVisible();
+	void							KillAPTextClient();
 	
 	bool							EnsureArchipelagoConnected();
 	

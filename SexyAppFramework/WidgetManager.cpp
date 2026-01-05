@@ -7,6 +7,8 @@
 #include "SexyAppBase.h"
 #include "PerfTimer.h"
 #include "Debug.h"
+#include "EditWidget.h"
+#include "../LawnApp.h"
 
 using namespace Sexy;
 using namespace std;
@@ -782,9 +784,20 @@ bool WidgetManager::KeyDown(KeyCode key)
 
 	if ((key >= 0) && (key < 0xFF))
 		mKeyDown[key] = true;
-
-	if (mFocusWidget != NULL)
-		mFocusWidget->KeyDown(key);
+	
+	if (key == 84 /* T */ && !dynamic_cast<EditWidget*>(mFocusWidget) && !dynamic_cast<LawnApp*>(mApp)->APTextClientVisible())
+	{
+		dynamic_cast<LawnApp*>(mApp)->ShowAPTextClient();
+	}
+	else if (key == KEYCODE_ESCAPE && dynamic_cast<LawnApp*>(mApp)->APTextClientVisible())
+	{
+		dynamic_cast<LawnApp*>(mApp)->KillAPTextClient();
+	}
+	else
+	{
+		if (mFocusWidget != NULL)
+			mFocusWidget->KeyDown(key);
+	}
 	
 	return true;
 }
