@@ -464,6 +464,8 @@ bool WidgetManager::DrawScreen()
 
 			++anItr;
 		}
+		
+		dynamic_cast<LawnApp*>(mApp)->DrawArchipelagoOverlayElements(&g);
 	}
 	
 	FlushDeferredOverlayWidgets(0x7FFFFFFF);
@@ -487,6 +489,7 @@ bool WidgetManager::UpdateFrame()
 	mUpdateCnt++;
 	mLastWMUpdateCount = mUpdateCnt;	
 	UpdateAll(&aModalFlags);
+	dynamic_cast<LawnApp*>(mApp)->UpdateArchipelagoOverlayElements();
 
 	return mDirty;
 }

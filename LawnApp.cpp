@@ -62,6 +62,7 @@
 #include <windows.h>
 #include <windowsx.h>
 
+#include "Lawn/MessageWidget.h"
 #include "Lawn/Widget/ArchipelagoStatusDialog.h"
 #include "Lawn/Widget/ArchipelagoTextClient.h"
 #include "SexyAppFramework/APWrapper.h"
@@ -174,6 +175,7 @@ LawnApp::LawnApp()
 	memset(&mDirtyBushes, 0, sizeof(mDirtyBushes));
 	mPlayerLevelRef = -1;
 	mAPTextClient = nullptr;
+	mAPCountdown = nullptr;
 	
 	SetupArchipelago();
 }
@@ -1512,8 +1514,6 @@ void LawnApp::Start()
 		return;
 
 	SexyAppBase::Start();
-	
-	mWidgetManager->AddWidget(mAPTextClient);
 }
 
 int LawnApp::AudioCallback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData) {
@@ -4309,6 +4309,22 @@ bool LawnApp::EnsureArchipelagoConnected()
 	return true;
 }
 
+void LawnApp::DrawArchipelagoOverlayElements(Graphics* g)
+{
+	if (mAPCountdown)
+	{
+		mAPCountdown->Draw(g);
+	}
+}
+
+void LawnApp::UpdateArchipelagoOverlayElements()
+{
+	if (mAPCountdown)
+	{
+		mAPCountdown->Update();
+	}
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
@@ -4374,5 +4390,13 @@ void LawnApp::SetupArchipelago()
 		{
 			this->mBoard->ZombiesWon(nullptr);
 		}
+	});
+	this->mAP->AddCountdownChatMessageListener([this](const std::string& message)
+	{
+		if (!this->mAPCountdown)
+		{
+			this->mAPCountdown = new MessageWidget(this, true);
+		}
+		this->mAPCountdown->SetLabel(message, MESSAGE_STYLE_ARCHIPELAGO_COUNTDOWN);
 	});
 }

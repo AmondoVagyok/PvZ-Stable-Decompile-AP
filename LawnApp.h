@@ -16,6 +16,7 @@
 #define FRAMES_PER_BUFFER 256
 #define SHOUT_THRESHOLD 0.2f 
 
+class MessageWidget;
 class ArchipelagoTextClient;
 class Board;
 class GameSelector;
@@ -146,6 +147,7 @@ public:
 	float							mVoiceVolume;
 	MemoryImage*					mBoardCamera;
 	ArchipelagoTextClient*		    mAPTextClient;
+	MessageWidget*					mAPCountdown;
 	//lua_State*						L;
 
 	Rect							gBoardBounds;
@@ -376,6 +378,8 @@ public:
 	void							KillAPTextClient();
 	
 	bool							EnsureArchipelagoConnected();
+	void							DrawArchipelagoOverlayElements(Graphics* g);
+	void							UpdateArchipelagoOverlayElements();
 	
 private:
 	void							SetupArchipelago();

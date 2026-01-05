@@ -75,6 +75,7 @@ public:
     void SendAPMessage(const std::string& message) const;
     
     ListenerHandle* AddServerChatMessageListener(std::function<void(const std::string&)>) const;
+    ListenerHandle* AddCountdownChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddItemsReceivedListener(std::function<void(const std::list<APItem>&)>) const;
     ListenerHandle* AddConnectionCompleteListener(std::function<void()>) const;
     ListenerHandle* AddSlotRefusedListener(std::function<void(const std::string&)>) const;

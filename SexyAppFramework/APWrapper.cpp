@@ -9,6 +9,7 @@
 class APWrapper_Private {
 public:
     std::map<uint64_t, std::function<void(const std::string&)>> server_chat_listeners;
+    std::map<uint64_t, std::function<void(const std::string&)>> countdown_chat_listeners;
     std::map<uint64_t, std::function<void(const std::list<APItem>&)>> item_received_listeners;
     std::map<uint64_t, std::function<void()>> connection_complete_listener;
     std::map<uint64_t, std::function<void()>> disconnection_listener;
@@ -91,6 +92,14 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             for (const auto& server_chat_listener : this->d->server_chat_listeners)
             {
                 server_chat_listener.second(concatenated_message);
+            }
+        }
+        else if (print_line.type == "Countdown")
+        {
+            auto countdown_remaining = *print_line.countdown == 0 ? "GO!" : std::to_string(*print_line.countdown);
+            for (const auto& countdown_chat_listener : this->d->countdown_chat_listeners)
+            {
+                countdown_chat_listener.second(countdown_remaining);
             }
         }
         
@@ -392,6 +401,14 @@ ListenerHandle* APWrapper::AddServerChatMessageListener(std::function<void(const
     this->d->server_chat_listeners.insert_or_assign(id, listener);
     
     return new ListenerHandle([this, id] { this->d->server_chat_listeners.erase(id); });
+}
+
+ListenerHandle* APWrapper::AddCountdownChatMessageListener(std::function<void(const std::string&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->countdown_chat_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->countdown_chat_listeners.erase(id); });
 }
 
 ListenerHandle* APWrapper::AddItemsReceivedListener(std::function<void(const std::list<APItem>&)> listener) const

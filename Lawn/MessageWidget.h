@@ -27,9 +27,10 @@ public:
 	int					mSlideOffTime;							//+0x294
 	SexyChar			mLabelNext[MAX_MESSAGE_LENGTH];			//+0x298
 	MessageStyle		mMessageStyleNext;						//+0x318
+	bool				mGlobal;
 
 public:
-	MessageWidget(LawnApp* theApp);
+	MessageWidget(LawnApp* theApp, bool global);
 	~MessageWidget() { ClearReanim(); }
 
 	/*inline*/ void		SetLabel(const SexyString& theNewLabel, MessageStyle theMessageStyle);

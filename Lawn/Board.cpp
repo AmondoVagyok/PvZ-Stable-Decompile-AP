@@ -178,7 +178,7 @@ Board::Board(LawnApp* theApp)
 	mShowShovel = false;
 	mToolTip = new ToolTipWidget();
 	mDebugFont = new SysFont("Arial Unicode MS", 10, true, false, false);
-	mAdvice = new MessageWidget(mApp);
+	mAdvice = new MessageWidget(mApp, false);
 	mBackground = BackgroundType::BACKGROUND_1_DAY;
 	mMainCounter = 0;
 	mTutorialState = TutorialState::TUTORIAL_OFF;

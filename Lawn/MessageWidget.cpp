@@ -9,9 +9,10 @@
 #include "../Sexy.TodLib/TodStringFile.h"
 
 //(0x4081F1)
-MessageWidget::MessageWidget(LawnApp* theApp)
+MessageWidget::MessageWidget(LawnApp* theApp, bool theGlobal)
 {
 	mApp = theApp;
+	mGlobal = theGlobal;
 	mDuration = 0;
 	mLabel[0] = _S('\0');
 	mMessageStyle = MessageStyle::MESSAGE_STYLE_OFF;
@@ -116,7 +117,11 @@ void MessageWidget::SetLabel(const SexyString& theNewLabel, MessageStyle theMess
 			
 		case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_UPDATE:
 			mDuration = 250;
+			break;
 			
+		case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_COUNTDOWN:
+			mDuration = 150;
+			break;
 
 		default:
 			TOD_ASSERT();
@@ -184,7 +189,7 @@ void MessageWidget::LayoutReanimText()
 //0x4594B0
 void MessageWidget::Update()
 {
-	if (!mApp->mBoard || mApp->mBoard->mPaused)
+	if (!mGlobal && (!mApp->mBoard || mApp->mBoard->mPaused))
 		return;
 
 	// 更新字幕的剩余时间倒计时和下一轮字幕的切换
@@ -300,6 +305,7 @@ Font* MessageWidget::GetFont()
 	case MessageStyle::MESSAGE_STYLE_ZEN_GARDEN_LONG:
 	case MessageStyle::MESSAGE_STYLE_ACHIEVEMENT: // @Patoke: implemented
 	case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_UPDATE:
+	case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_COUNTDOWN:
 		return Sexy::FONT_HOUSEOFTERROR28;
 
 	case MessageStyle::MESSAGE_STYLE_SLOT_MACHINE:
@@ -404,7 +410,14 @@ void MessageWidget::Draw(Graphics* g)
 		aPosY = 550;
 		aColor = Color(255, 255, 0, 255);
 		aFadeOut = true;
-
+		break;
+		
+	case MessageStyle::MESSAGE_STYLE_ARCHIPELAGO_COUNTDOWN:
+		aPosY = 550;
+		aColor = Color(255, 0, 0, 255);
+		aFadeOut = true;
+		break;
+		
 	default:
 		TOD_ASSERT();
 		break;
@@ -443,7 +456,7 @@ void MessageWidget::Draw(Graphics* g)
 		}
 		else
 		{
-			Rect aRect(aPosX - mApp->mBoard->mX - BOARD_WIDTH / 2, aPosY - aFont->mAscent, BOARD_WIDTH, BOARD_HEIGHT);
+			Rect aRect(aPosX - (mGlobal ? 0 : mApp->mBoard->mX) - BOARD_WIDTH / 2, aPosY - aFont->mAscent, BOARD_WIDTH, BOARD_HEIGHT);
 			if (aOutlineFont)
 			{
 				TodDrawStringWrapped(g, mLabel, aRect, aOutlineFont, aOutlineColor, DrawStringJustification::DS_ALIGN_CENTER);
