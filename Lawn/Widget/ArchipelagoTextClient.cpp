@@ -1,5 +1,7 @@
 #include "ArchipelagoTextClient.h"
 
+#include <sstream>
+
 #include "../../LawnApp.h"
 #include "../../SexyAppFramework/WidgetManager.h"
 #include "../../Sexy.TodLib/TodCommon.h"
@@ -20,7 +22,7 @@ ArchipelagoTextClient::ArchipelagoTextClient(LawnApp* theApp)
     mMessageEditWidget->SetFont(FONT_PICO129);
     mMessageEditWidget->Resize(0, BOARD_HEIGHT - FONT_PICO129->GetHeight() - 10, CHAT_WIDTH, FONT_PICO129->GetHeight());
     
-    Widget::Resize(0, 0, BOARD_HEIGHT, BOARD_WIDTH);
+    Widget::Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 }
 
 void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
@@ -31,7 +33,7 @@ void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
     
     auto font_height = FONT_PICO129->GetHeight();
     
-    g->SetColor({0, 0, 0, 100});
+    g->SetColor({0, 0, 0, 150});
     g->FillRect(0, BOARD_HEIGHT - 40 - 10 - font_height * CHAT_LINE_HEIGHT, CHAT_WIDTH, font_height * CHAT_LINE_HEIGHT + 10);
     g->FillRect(0, BOARD_HEIGHT - 15 - font_height, CHAT_WIDTH, font_height + 10);
     
@@ -41,11 +43,65 @@ void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
     auto i = 0;
     for (auto message = chat_messages.rbegin(); message != chat_messages.rend(); ++message)
     {
-        TodDrawString(g, *message, 0, BOARD_HEIGHT - 45 - font_height * i, FONT_PICO129, aTextColor, DS_ALIGN_LEFT);
-        i++;
-        if (i == CHAT_LINE_HEIGHT) break;
+        std::vector<std::string> lines;
+        std::string line;
+        std::stringstream ss(*message);
+
+        // Split by newline
+        while (std::getline(ss, line)) {
+            lines.push_back(line);
+        }
+        
+        for (auto line = lines.rbegin(); line != lines.rend(); ++line)
+        {
+            std::vector<std::string> wraps;
+            
+            // Split the line as necessary
+            std::string rest = *line;
+            
+            while (!rest.empty())
+            {
+                // If the string fits, we don't need to wrap
+                if (FONT_PICO129->StringWidth(rest) <= CHAT_WIDTH)
+                {
+                    wraps.push_back(rest);
+                    break;
+                }
+                
+                // Find the longest substring that fits
+                auto break_max = rest.length();
+                while (break_max > 0 && FONT_PICO129->StringWidth(rest.substr(0, break_max)) > CHAT_WIDTH)
+                {
+                    break_max--;
+                }
+
+                auto break_at = rest.find_last_of(" \t", break_max);
+                if (break_at != std::string::npos && break_at > 0)
+                {
+                    // Break at the whitespace
+                    wraps.push_back(rest.substr(0, break_at));
+                    
+                    // Ignore the whitespace
+                    rest = rest.substr(break_at + 1);
+                }
+                else
+                {
+                    // Force a brake because there is no whitespace
+                    wraps.push_back(rest.substr(0, break_max));
+                    rest = rest.substr(break_max);
+                }
+            }
+            
+            for (auto wrap = wraps.rbegin(); wrap != wraps.rend(); ++wrap)
+            {
+                TodDrawString(g, *wrap, 0, BOARD_HEIGHT - 45 - font_height * i, FONT_PICO129, aTextColor, DS_ALIGN_LEFT);
+                i++;
+                if (i == CHAT_LINE_HEIGHT) goto terminate_drawing;
+            }
+        }
     }
     
+terminate_drawing:
     g->PopState();
 }
 
