@@ -62,6 +62,7 @@ public:
     void Poll() const;
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
+    APItem ItemAtLocation(int64_t location) const;
     void SetGoal() const;
     
     void EnableDeathLink(bool enable) const;

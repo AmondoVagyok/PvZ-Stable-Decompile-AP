@@ -131,7 +131,9 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 		}
 		else
 		{
-			mApp->mAP->DisconnectNow();
+			auto scout = mApp->mAP->ItemAtLocation(1000);
+			mApp->DoDialog(Dialogs::DIALOG_INFO, true, "Scout result", mApp->mAP->ItemName(scout), "OK", BUTTONS_FOOTER);
+			// mApp->mAP->DisconnectNow();
 			UpdateArchipelagoStatus();
 		}
 		break;

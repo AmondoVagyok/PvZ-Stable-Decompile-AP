@@ -24,6 +24,7 @@ public:
     nlohmann::json slot_data;
     
     std::list<APItem> received_items;
+    std::map<int64_t, APItem> location_scouts;
     
     std::list<std::string> tags;
     float last_sent_deathlink;
@@ -93,8 +94,14 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_slot_connected_handler([this](const nlohmann::json& slot_data)
     {
-        // TODO: Save slot data
         this->d->slot_data = slot_data;
+        
+        // Scout all locations and cache them
+        auto scouted_locations = this->d->mAP->get_missing_locations();
+        scouted_locations.merge(this->d->mAP->get_checked_locations());
+        
+        d->mAP->LocationScouts(std::list(scouted_locations.begin(), scouted_locations.end()), 0);
+        
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
             connection_complete_listener.second();
@@ -114,7 +121,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_items_received_handler([this](const std::list<APClient::NetworkItem>& items) {
         std::list<APItem> ap_items;
-        for (auto item : items)
+        for (const auto item : items)
         {
             ap_items.push_back(APItem {
                 item.item,
@@ -131,10 +138,6 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         {
             item_received_listener.second(ap_items);
         }
-    });
-    d->mAP->set_data_package_changed_handler([this](const nlohmann::json& data_package)
-    {
-        data_package;
     });
     d->mAP->set_socket_disconnected_handler([this]
     {
@@ -171,6 +174,19 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
                     deathlink_listener.second(source, d->last_deathlink_cause);
                 }
             }
+        }
+    });
+    d->mAP->set_location_info_handler([this](const std::list<APClient::NetworkItem>& location_info)
+    {
+        for (const auto& location : location_info)
+        {
+            d->location_scouts[location.location] = APItem {
+                location.item,
+                location.location,
+                location.player,
+                location.flags,
+                location.index
+            };
         }
     });
 }
@@ -283,6 +299,11 @@ void APWrapper::CheckLocations(const std::list<int64_t>& location_ids) const
 {
     if (!d->mAP) return;
     this->d->mAP->LocationChecks(location_ids);
+}
+
+APItem APWrapper::ItemAtLocation(int64_t location) const
+{
+    return d->location_scouts[location];
 }
 
 void APWrapper::SetGoal() const
