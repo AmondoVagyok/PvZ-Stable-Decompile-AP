@@ -4311,10 +4311,6 @@ bool LawnApp::EnsureArchipelagoConnected()
 
 void LawnApp::SetupArchipelago()
 {
-	this->mAP->AddServerChatMessageListener([this](const std::string& message)
-	{
-		this->DoDialog(Dialogs::DIALOG_INFO, true, "Message from Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
-	});
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
 	{
 		std::string items_string;

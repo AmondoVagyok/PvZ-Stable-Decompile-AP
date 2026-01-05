@@ -132,7 +132,7 @@ void ArchipelagoTextClient::UpdateLines()
             while (!rest.empty())
             {
                 // If the string fits, we don't need to wrap
-                if (FONT_PICO129->StringWidth(rest) <= CHAT_WIDTH)
+                if (FONT_PICO129->StringWidth(rest) <= CHAT_WIDTH + 10)
                 {
                     wraps.push_back(rest);
                     break;
@@ -140,7 +140,7 @@ void ArchipelagoTextClient::UpdateLines()
                 
                 // Find the longest substring that fits
                 auto break_max = rest.length();
-                while (break_max > 0 && FONT_PICO129->StringWidth(rest.substr(0, break_max)) > CHAT_WIDTH)
+                while (break_max > 0 && FONT_PICO129->StringWidth(rest.substr(0, break_max)) > CHAT_WIDTH + 10)
                 {
                     break_max--;
                 }
@@ -166,7 +166,7 @@ void ArchipelagoTextClient::UpdateLines()
             {
                 if (i < mScroll) continue;
                 
-                mLines.push_front(*wrap);
+                mLines.push_front(" " + *wrap);
                 i++;
                 if (i == CHAT_LINE_HEIGHT + mScroll) return;
             }
