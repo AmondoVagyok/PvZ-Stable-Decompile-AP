@@ -81,7 +81,7 @@ const int           STORESCREEN_PAGESTRING_Y = 500;
 #define _HAS_ZOMBATAR
 // Unused or Restored
 #define _HAS_LEVELSELECTOR 
-#define _HAS_MORESCREEN
+// #define _HAS_MORESCREEN
 #endif
 
 #ifdef _DEBUG

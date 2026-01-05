@@ -1732,11 +1732,11 @@ void GameSelector::ClickedAdventure()
 		mApp->EraseFile(GetSavedGameName(GameMode::GAMEMODE_ADVENTURE, mApp->mPlayerInfo->mId));
 	}
 
-	/*if (mApp->mPlayerInfo->mLevel > 1)
+	if (mApp->mPlayerInfo->mLevel > 1)
 	{
 		ShowQuickplayScreen();
 		return;
-	}*/
+	}
 
 	mApp->mMusic->StopAllMusic();
 	mApp->PlaySample(Sexy::SOUND_LOSEMUSIC);
@@ -2045,7 +2045,9 @@ void GameSelector::ShowQuickplayScreen() {
 	mLevelSelectorWidget->SelectStage(1, false);
 	mLevelSelectorWidget->mHasFinishedSliding = false;
 	mLevelSelectorWidget->mIsSlidingOut = false;
+#ifdef _HAS_MORESCREEN
 	mMoreWidget->DisableButtons(true);
+#endif
 #endif
 	DisableButtons(true);
 }
