@@ -1,5 +1,6 @@
 #include "ArchipelagoTextClient.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "../../LawnApp.h"
@@ -16,6 +17,7 @@ ArchipelagoTextClient::ArchipelagoTextClient(LawnApp* theApp)
 {
     mApp = theApp;
     mFirstCharTyped = false;
+    mScroll = 0;
     
     mMessageEditWidget = CreateEditWidget(0, this, nullptr);
     mMessageEditWidget->DisableAutocap();
@@ -23,6 +25,18 @@ ArchipelagoTextClient::ArchipelagoTextClient(LawnApp* theApp)
     mMessageEditWidget->Resize(0, BOARD_HEIGHT - FONT_PICO129->GetHeight() - 10, CHAT_WIDTH, FONT_PICO129->GetHeight());
     
     Widget::Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+    
+    mAnyChatHandler = mApp->mAP->AddAnyChatMessageListener([this](const std::string&)
+    {
+        UpdateLines();
+    });
+    UpdateLines();
+}
+
+ArchipelagoTextClient::~ArchipelagoTextClient()
+{
+    delete mMessageEditWidget;
+    delete mAnyChatHandler;
 }
 
 void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
@@ -39,6 +53,62 @@ void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
     
     // Get the last 10 lines of text
     Sexy::Color aTextColor(255, 255, 255);
+    auto i = 0;
+    for (auto message = mLines.rbegin(); message != mLines.rend(); ++message)
+    {
+        TodDrawString(g, *message, 0, BOARD_HEIGHT - 45 - font_height * i, FONT_PICO129, aTextColor, DS_ALIGN_LEFT);
+        i++;
+    }
+    
+    g->PopState();
+}
+
+void ArchipelagoTextClient::AddedToManager(Sexy::WidgetManager* theWidgetManager)
+{
+    Widget::AddedToManager(theWidgetManager);
+    AddWidget(mMessageEditWidget);
+    theWidgetManager->SetFocus(mMessageEditWidget);
+}
+
+void ArchipelagoTextClient::RemovedFromManager(Sexy::WidgetManager* theWidgetManager)
+{
+    Widget::RemovedFromManager(theWidgetManager);
+    RemoveWidget(mMessageEditWidget);
+}
+
+void ArchipelagoTextClient::EditWidgetText(int theId, const SexyString& theString)
+{
+    EditListener::EditWidgetText(theId, theString);
+    mApp->mAP->SendAPMessage(theString);
+    mMessageEditWidget->SetText("");
+}
+
+bool ArchipelagoTextClient::AllowChar(int theId, SexyChar theChar)
+{
+    // Avoid t appearing in the chat when first opening it
+    if (!mFirstCharTyped)
+    {
+        mFirstCharTyped = true;
+        return false;
+    }
+    return EditListener::AllowChar(theId, theChar);
+}
+
+void ArchipelagoTextClient::MouseWheel(int theDelta)
+{
+    Widget::MouseWheel(theDelta);
+    
+    mScroll += theDelta;
+    mScroll = std::max<int64_t>(mScroll, 0);
+    
+    UpdateLines();
+}
+
+void ArchipelagoTextClient::UpdateLines()
+{
+    mLines.clear();
+    
+    // Get the last 10 lines of text
     auto chat_messages = mApp->mAP->ChatMessages();
     auto i = 0;
     for (auto message = chat_messages.rbegin(); message != chat_messages.rend(); ++message)
@@ -94,44 +164,12 @@ void ArchipelagoTextClient::Draw(Sexy::Graphics* g)
             
             for (auto wrap = wraps.rbegin(); wrap != wraps.rend(); ++wrap)
             {
-                TodDrawString(g, *wrap, 0, BOARD_HEIGHT - 45 - font_height * i, FONT_PICO129, aTextColor, DS_ALIGN_LEFT);
+                if (i < mScroll) continue;
+                
+                mLines.push_front(*wrap);
                 i++;
-                if (i == CHAT_LINE_HEIGHT) goto terminate_drawing;
+                if (i == CHAT_LINE_HEIGHT + mScroll) return;
             }
         }
     }
-    
-terminate_drawing:
-    g->PopState();
-}
-
-void ArchipelagoTextClient::AddedToManager(Sexy::WidgetManager* theWidgetManager)
-{
-    Widget::AddedToManager(theWidgetManager);
-    AddWidget(mMessageEditWidget);
-    theWidgetManager->SetFocus(mMessageEditWidget);
-}
-
-void ArchipelagoTextClient::RemovedFromManager(Sexy::WidgetManager* theWidgetManager)
-{
-    Widget::RemovedFromManager(theWidgetManager);
-    RemoveWidget(mMessageEditWidget);
-}
-
-void ArchipelagoTextClient::EditWidgetText(int theId, const SexyString& theString)
-{
-    EditListener::EditWidgetText(theId, theString);
-    mApp->mAP->SendAPMessage(theString);
-    mMessageEditWidget->SetText("");
-}
-
-bool ArchipelagoTextClient::AllowChar(int theId, SexyChar theChar)
-{
-    // Avoid t appearing in the chat when first opening it
-    if (!mFirstCharTyped)
-    {
-        mFirstCharTyped = true;
-        return false;
-    }
-    return EditListener::AllowChar(theId, theChar);
 }

@@ -14,6 +14,7 @@ public:
     std::map<uint64_t, std::function<void()>> disconnection_listener;
     std::map<uint64_t, std::function<void(const std::string&)>> slot_refused_listeners;
     std::map<uint64_t, std::function<void(const std::string&, const std::string&)>> deathlink_listeners;
+    std::map<uint64_t, std::function<void(const std::string&)>> any_chat_listeners;
     
     uint64_t next_listener_id = 0;
     
@@ -91,6 +92,11 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             {
                 server_chat_listener.second(concatenated_message);
             }
+        }
+        
+        for (const auto& any_chat_listener : this->d->any_chat_listeners)
+        {
+            any_chat_listener.second(concatenated_message);
         }
     });
     d->mAP->set_socket_connected_handler([this, slot_name, password]
@@ -426,6 +432,14 @@ ListenerHandle* APWrapper::AddDeathLinkListener(std::function<void(const std::st
     this->d->deathlink_listeners.insert_or_assign(id, listener);
     
     return new ListenerHandle([this, id] { this->d->deathlink_listeners.erase(id); });
+}
+
+ListenerHandle* APWrapper::AddAnyChatMessageListener(std::function<void(const std::string&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->any_chat_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->any_chat_listeners.erase(id); });
 }
 
 void APWrapper::UpdateConnectionInformation() const

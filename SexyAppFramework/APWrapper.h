@@ -50,7 +50,6 @@ public:
     std::string SlotName() const;
     std::string Password() const;
     ConnectionStatus ConnectionStatus() const;
-    void SendAPMessage(const std::string& message) const;
     
     int64_t MySlot() const;
     
@@ -73,6 +72,7 @@ public:
     std::string LastDeathLinkCause() const;
     
     std::list<std::string> ChatMessages() const;
+    void SendAPMessage(const std::string& message) const;
     
     ListenerHandle* AddServerChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddItemsReceivedListener(std::function<void(const std::list<APItem>&)>) const;
@@ -80,6 +80,7 @@ public:
     ListenerHandle* AddSlotRefusedListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddDisconnectionListener(std::function<void()>) const;
     ListenerHandle* AddDeathLinkListener(std::function<void(const std::string&, const std::string&)>) const;
+    ListenerHandle* AddAnyChatMessageListener(std::function<void(const std::string&)>) const;
 
 private:
     APWrapper_Private* d;
