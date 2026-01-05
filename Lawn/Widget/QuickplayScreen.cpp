@@ -112,7 +112,7 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 	thePreviousId = -1;
 	theCurrentId = 1;
 
-	const int aPlayerLevel = mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
+	const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
 	for (int i = 0; i < FINAL_LEVEL; i++) {
 		int aLevel = i + 1;
@@ -318,7 +318,7 @@ void QuickplayWidget::Update() {
 			mSwitchStagesCounter = 50;
 			mHasFinishedSliding = true;
 
-			const int aPlayerLevel = mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
+			const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
 			if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
 			{
@@ -552,7 +552,7 @@ void QuickplayWidget::ButtonDepress(int theId)
 			mApp->mRIPMode = false;
 		}
 
-		const int aPlayerLevel = mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
+		const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
 		if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
 		{
@@ -664,7 +664,7 @@ void QuickplayWidget::SelectStage(int theId, bool doTransition)
 		mSwitchStagesCounter = 100;
 
 		{
-			const int aPlayerLevel = mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
+			const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
 			int aCurStage = max(QuickplayWidget::Quickplay_DayStage, min(theCurrentId, QuickplayWidget::Quickplay_RIP)) - 1;
 			for (int aLevel = 0; aLevel < 10; aLevel++) {

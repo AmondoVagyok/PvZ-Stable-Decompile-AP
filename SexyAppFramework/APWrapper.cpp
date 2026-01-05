@@ -23,6 +23,8 @@ public:
     std::string password;
     nlohmann::json slot_data;
     
+    std::list<APItem> received_items;
+    
     std::list<std::string> tags;
     float last_sent_deathlink;
     std::string last_deathlink_source;
@@ -122,6 +124,8 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
                 item.index
             });
         }
+        
+        d->received_items.splice(d->received_items.end(), ap_items);
 
         for (const auto& item_received_listener : this->d->item_received_listeners)
         {
@@ -250,6 +254,16 @@ std::string APWrapper::ItemName(const int64_t item, const int64_t slot) const
 {
     const auto player_game = d->mAP->get_player_game(slot);
     return d->mAP->get_item_name(item, player_game);
+}
+
+int64_t APWrapper::ReceivedItemCount(int item) const
+{
+    auto count = 0;
+    for (const auto& received_item : d->received_items)
+    {
+        if (received_item.item == item) count++;
+    }
+    return count;
 }
 
 void APWrapper::Poll() const
