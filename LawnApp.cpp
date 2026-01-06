@@ -176,6 +176,7 @@ LawnApp::LawnApp()
 	memset(&mDirtyBushes, 0, sizeof(mDirtyBushes));
 	mPlayerLevelRef = -1;
 	mAPTextClient = nullptr;
+	mAPUpdateMessage = nullptr;
 	mAPCountdown = nullptr;
 	
 	SetupArchipelago();
@@ -4280,6 +4281,11 @@ void LawnApp::LoadProfile(PlayerInfo* profile)
 		}
 	}
 	mPlayerLevelRef = mPlayerInfo->GetLevel();
+	
+	for (auto item : mAP->ReceivedItems())
+	{
+		ProcessAPItem(item);
+	}
 }
 
 void LawnApp::ShowAPTextClient()
@@ -4327,6 +4333,19 @@ bool LawnApp::EnsureArchipelagoConnected()
 
 void LawnApp::DrawArchipelagoOverlayElements(Graphics* g)
 {
+	if (mAPUpdateMessage)
+	{
+		mAPUpdateMessage->Draw(g);
+		
+		if (mAPUpdateMessage->mDuration == 0 && !mAPPendingUpdates.empty())
+		{
+			auto next_update = mAPPendingUpdates.front();
+			mAPPendingUpdates.pop();
+			mAPUpdateMessage->SetLabel(next_update, MESSAGE_STYLE_ARCHIPELAGO_UPDATE);
+		}
+	}
+	
+	
 	if (mAPCountdown)
 	{
 		mAPCountdown->Draw(g);
@@ -4335,6 +4354,11 @@ void LawnApp::DrawArchipelagoOverlayElements(Graphics* g)
 
 void LawnApp::UpdateArchipelagoOverlayElements()
 {
+	if (mAPUpdateMessage)
+	{
+		mAPUpdateMessage->Update();
+	}
+	
 	if (mAPCountdown)
 	{
 		mAPCountdown->Update();
@@ -4345,24 +4369,13 @@ void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
 	{
+		if (!mPlayerInfo) return;
+		
 		std::string items_string;
 		for (const auto item : items)
 		{
-			if (item.player == 0 || item.player == this->mAP->MySlot())
-			{
-				items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()));
-			}
-			else
-			{
-				items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + " from " + this->mAP->PlayerDisplayName(item.player));
-			}
+			ProcessAPItem(item);
 		}
-		
-		if (this->mBoard)
-		{
-			this->mBoard->DisplayAdviceAgain(items_string, MESSAGE_STYLE_ARCHIPELAGO_UPDATE, ADVICE_AP_GOT_ITEM);
-		}
-		// this->DoDialog(Dialogs::DIALOG_INFO, true, "Got items from Archipelago", items_string, "OK", Dialog::BUTTONS_FOOTER);
 	});
 	this->mAP->AddConnectionCompleteListener([this]
 	{
@@ -4452,4 +4465,36 @@ void LawnApp::SetupArchipelago()
 			LoadProfile(profile);
 		}
 	});
+}
+
+void LawnApp::ProcessAPItem(const APItem& item)
+{
+	if (!mPlayerInfo) return;
+	
+	if (item.index > mPlayerInfo->mLastItemIndex)
+	{
+		std::string items_string;
+		if (item.player == 0 || item.player == this->mAP->MySlot())
+		{
+			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()));
+		}
+		else
+		{
+			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + " from " + this->mAP->PlayerDisplayName(item.player));
+		}
+				
+		mPlayerInfo->mLastItemIndex = item.index;
+		WriteCurrentUserConfig();
+		DisplayAPUpdate(items_string);
+	}
+	
+}
+
+void LawnApp::DisplayAPUpdate(const std::string& message)
+{
+	if (!this->mAPUpdateMessage)
+	{
+		this->mAPUpdateMessage = new MessageWidget(this, true);
+	}
+	mAPPendingUpdates.push(message);
 }

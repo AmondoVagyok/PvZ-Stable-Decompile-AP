@@ -23,6 +23,16 @@ PlayerInfo::PlayerInfo()
 	catch (...) { \
 		/*Do Nothing*/\
 	} \
+	
+#define SyncOldVersionMarker \
+	{ \
+		bool versionMarker = true; \
+		SafeSync(theSync.SyncBool(versionMarker)); \
+		if (!versionMarker) { \
+			return; \
+		} \
+	  \
+	}
 
 //0x468310
 void PlayerInfo::SyncSummary(DataSync& theSync)
@@ -107,6 +117,30 @@ void PlayerInfo::SyncDetails(DataSync& theSync)
 #endif
 	SafeSync(theSync.SyncBool(mDidRIPMode));
 	SafeSync(theSync.SyncLong(mRIPLevel));
+	
+	// End of vanilla PvZ save data
+	
+	/******************************************************
+	 * -- HOW TO SAVE ADDITIONAL DATA --
+	 * 
+	 * Each version of PvZ data is delimited by a boolean.
+	 * When adding new data to the save file, add a call to
+	 * SyncOldVersionMarker. When reading a save file, this will
+	 * read the next boolean and return early if it is false.
+	 * When writing a save file, this will write true, instructing
+	 * future reads to continue reading the save file.
+	 * 
+	 * The final version marker at the end should always be false.
+	 * This ensures that future versions of the PvZ randomiser
+	 * stops reading data at this point.
+	 * ************************************************/
+	
+	SafeSync(theSync.SyncLong(mLastItemIndex));
+	
+	// SyncOldVersionMarker
+	
+	bool finalVersionMarker = false;
+	SafeSync(theSync.SyncBool(finalVersionMarker));
 }
 
 //0x469400
@@ -198,6 +232,8 @@ void PlayerInfo::Reset()
 #endif
 	mDidRIPMode = false;
 	mRIPLevel = 1;
+	
+	mLastItemIndex = 0;
 }
 
 void PlayerInfo::AddCoins(int theAmount)

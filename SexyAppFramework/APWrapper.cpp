@@ -301,7 +301,8 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             });
         }
         
-        d->received_items.splice(d->received_items.end(), ap_items);
+        auto ap_items_clone = ap_items;
+        d->received_items.splice(d->received_items.end(), ap_items_clone);
 
         for (const auto& item_received_listener : this->d->item_received_listeners)
         {
@@ -489,6 +490,13 @@ int64_t APWrapper::ReceivedItemCount(int item) const
         if (received_item.item == item) count++;
     }
     return count;
+}
+
+std::list<APItem> APWrapper::ReceivedItems() const
+{
+    std::list<APItem> items = d->received_items;
+    items.sort([](const APItem& a, const APItem& b) { return a.index < b.index; });
+    return items;
 }
 
 void APWrapper::Poll() const

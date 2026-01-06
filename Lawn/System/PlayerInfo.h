@@ -84,6 +84,8 @@ public:
 #endif
     bool                mDidRIPMode;
     int                 mRIPLevel;
+    
+    long                mLastItemIndex;
 
 public:
     PlayerInfo();

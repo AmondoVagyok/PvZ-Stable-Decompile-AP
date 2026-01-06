@@ -94,6 +94,7 @@ public:
     std::string ItemName(const APItem& item) const;
     std::string ItemName(int64_t item, int64_t slot) const;
     int64_t ReceivedItemCount(int item) const;
+    std::list<APItem> ReceivedItems() const;
 
     void Poll() const;
     

@@ -1242,26 +1242,10 @@ void GameSelector::Update()
 #ifdef _HAS_MORESCREEN
 			mQuickPlayButton->mMouseVisible = true;
 #endif
-
 			
-			if (mApp->mPlayerInfo == nullptr)
-			{
-				// TODO: Is it worth creating a different profile for each game that has been connected to?
-				// Maybe a UUID in the slot data?
-				mApp->mPlayerInfo = mApp->mProfileMgr->AddProfile("Archipelago");
-				
-			// 	mApp->DoCreateUserDialog();
-			// 	if (gIsPartnerBuild)
-			// 		AddPreviewProfiles();
-			//
-			// 	mSelectorState = SelectorAnimState::SELECTOR_NEW_USER;
-			}
-			// else
-			// {
-				aSelectorReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
-				aWoodSignReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
-				mSelectorState = SelectorAnimState::SELECTOR_IDLE;
-			// }
+			aSelectorReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
+			aWoodSignReanim->PlayReanim("anim_sign", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 30.0f);
+			mSelectorState = SelectorAnimState::SELECTOR_IDLE;
 
 			if (mHasTrophy)
 				AddTrophySparkle();

@@ -125,6 +125,9 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 		// Connect button
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Disconnected)
 		{
+			// Clear the current profile
+			mApp->mPlayerInfo = nullptr;
+			
 			mApp->mAP->Connect(mHostEditWidget->mString, mSlotEditWidget->mString, mPasswordEditWidget->mString);
 			mApp->mAP->EnableDeathLink(true); // TODO: Set with options
 			mApp->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "", Dialog::BUTTONS_NONE);

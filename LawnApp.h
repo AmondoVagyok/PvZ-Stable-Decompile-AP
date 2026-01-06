@@ -6,6 +6,8 @@
 
 #include "portaudio.h"
 #include <lua.hpp>
+#include <queue>
+
 #include "SexyAppFramework/DDImage.h"
 #include "SexyAppFramework/SexyMatrix.h"
 #include "Sexy.TodLib/FilterEffect.h"
@@ -16,6 +18,7 @@
 #define FRAMES_PER_BUFFER 256
 #define SHOUT_THRESHOLD 0.2f 
 
+struct APItem;
 class MessageWidget;
 class ArchipelagoTextClient;
 class Board;
@@ -147,7 +150,9 @@ public:
 	float							mVoiceVolume;
 	MemoryImage*					mBoardCamera;
 	ArchipelagoTextClient*		    mAPTextClient;
+	MessageWidget*					mAPUpdateMessage;
 	MessageWidget*					mAPCountdown;
+	std::queue<std::string>			mAPPendingUpdates;
 	//lua_State*						L;
 
 	Rect							gBoardBounds;
@@ -385,6 +390,8 @@ public:
 	
 private:
 	void							SetupArchipelago();
+	void							ProcessAPItem(const APItem& item);
+	void							DisplayAPUpdate(const std::string& message);
 };
 
 SexyString							LawnGetCurrentLevelName();
