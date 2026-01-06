@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <string>
+#include <nlohmann/json_fwd.hpp>
 
 class APWrapper;
 class APWrapper_Private;
@@ -30,6 +31,41 @@ struct APItem
     int index = -1; // to sync items, not actually part of NetworkItem
 };
 
+struct DataStoragePendingOperationPrivate;
+
+class DataStoragePendingOperation
+{
+public:
+    ~DataStoragePendingOperation();
+    
+    DataStoragePendingOperation replace(nlohmann::json value);
+    DataStoragePendingOperation de_fault(nlohmann::json value);
+    DataStoragePendingOperation add(nlohmann::json value);
+    DataStoragePendingOperation mul(nlohmann::json value);
+    DataStoragePendingOperation pow(nlohmann::json value);
+    DataStoragePendingOperation mod(nlohmann::json value);
+    DataStoragePendingOperation floor(nlohmann::json value);
+    DataStoragePendingOperation ceil(nlohmann::json value);
+    DataStoragePendingOperation maximum(nlohmann::json value);
+    DataStoragePendingOperation minimum(nlohmann::json value);
+    DataStoragePendingOperation and(nlohmann::json value);
+    DataStoragePendingOperation or(nlohmann::json value);
+    DataStoragePendingOperation xor(nlohmann::json value);
+    DataStoragePendingOperation left_shift(nlohmann::json value);
+    DataStoragePendingOperation right_shift(nlohmann::json value);
+    DataStoragePendingOperation remove(nlohmann::json value);
+    DataStoragePendingOperation pop(nlohmann::json value);
+    DataStoragePendingOperation update(nlohmann::json value);
+    
+protected:
+    friend APWrapper;
+    explicit DataStoragePendingOperation(APWrapper* parent, std::string key, nlohmann::json& default_value);
+    explicit DataStoragePendingOperation(std::unique_ptr<DataStoragePendingOperationPrivate> d);
+    
+private:
+    std::unique_ptr<DataStoragePendingOperationPrivate> d;
+};
+
 class APWrapper
 {
 public:
@@ -43,7 +79,7 @@ public:
         Connected
     };
     
-    void Connect(const std::string& server_name, const std::string& slot_name, const std::string& password = "") const;
+    void Connect(const std::string& server_name, const std::string& slot_name, const std::string& password = "");
     void Disconnect() const;
     void DisconnectNow() const;
     std::string ServerName() const;
@@ -74,6 +110,10 @@ public:
     std::list<std::string> ChatMessages() const;
     void SendAPMessage(const std::string& message) const;
     
+    std::string DataStorageSlotPrefixed(std::string key) const;
+    nlohmann::json ReadDataStorage(std::string key) const;
+    DataStoragePendingOperation WriteDataStorage(std::string key, nlohmann::json default_value);
+    
     ListenerHandle* AddServerChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddCountdownChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddItemsReceivedListener(std::function<void(const std::list<APItem>&)>) const;
@@ -82,8 +122,10 @@ public:
     ListenerHandle* AddDisconnectionListener(std::function<void()>) const;
     ListenerHandle* AddDeathLinkListener(std::function<void(const std::string&, const std::string&)>) const;
     ListenerHandle* AddAnyChatMessageListener(std::function<void(const std::string&)>) const;
+    ListenerHandle* AddDataStorageValueChangeListener(std::function<void(const std::string&, const nlohmann::json&)>) const;
 
-private:
+protected:
+    friend DataStoragePendingOperation;
     APWrapper_Private* d;
     
     void UpdateConnectionInformation() const;

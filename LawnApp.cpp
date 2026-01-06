@@ -61,6 +61,7 @@
 
 #include <windows.h>
 #include <windowsx.h>
+#include <nlohmann/json.hpp>
 
 #include "Lawn/MessageWidget.h"
 #include "Lawn/Widget/ArchipelagoStatusDialog.h"
@@ -4266,6 +4267,21 @@ void LawnApp::DoConfirmRIPMode()
 	);
 }
 
+void LawnApp::LoadProfile(PlayerInfo* profile)
+{
+	if (profile)
+	{
+		mPlayerInfo = profile;
+		mWidgetManager->MarkAllDirty();
+
+		if (mGameSelector)
+		{
+			mGameSelector->SyncProfile(true);
+		}
+	}
+	mPlayerLevelRef = mPlayerInfo->GetLevel();
+}
+
 void LawnApp::ShowAPTextClient()
 {
 	if (!mAPTextClient)
@@ -4398,5 +4414,42 @@ void LawnApp::SetupArchipelago()
 			this->mAPCountdown = new MessageWidget(this, true);
 		}
 		this->mAPCountdown->SetLabel(message, MESSAGE_STYLE_ARCHIPELAGO_COUNTDOWN);
+	});
+	this->mAP->AddDataStorageValueChangeListener([this](const std::string& key, const nlohmann::json& value)
+	{
+		if (key == this->mAP->DataStorageSlotPrefixed("profileGuids"))
+		{
+			// Switch to the correct profile
+			std::list<std::string> strings = value;
+			auto profiles = this->mProfileMgr->GetProfileMap();
+			for (auto [name, profile] : profiles)
+			{
+				if (std::find(strings.begin(), strings.end(), name) != strings.end())
+				{
+					PlayerInfo* aProfile = mProfileMgr->GetProfile(name);
+					LoadProfile(aProfile);
+					return;
+				}
+			}
+			
+			// The profile doesn't exist. Create one now
+			GUID guid;
+			if (CoCreateGuid(&guid) != S_OK)
+			{
+				// TODO: Disconnect from AP and show error dialog
+			}
+			
+			char buffer[40];
+			sprintf_s(buffer, "%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X",
+				guid.Data1, guid.Data2, guid.Data3,
+				guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3],
+				guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
+
+			std::string profile_guid(buffer);
+			this->mAP->WriteDataStorage(this->mAP->DataStorageSlotPrefixed("profileGuids"), nlohmann::json::array()).add(nlohmann::json::array({profile_guid}));
+			auto profile = mProfileMgr->AddProfile(profile_guid);
+			mProfileMgr->Save();
+			LoadProfile(profile);
+		}
 	});
 }

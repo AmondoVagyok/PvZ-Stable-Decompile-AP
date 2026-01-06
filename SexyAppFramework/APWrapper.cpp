@@ -16,6 +16,7 @@ public:
     std::map<uint64_t, std::function<void(const std::string&)>> slot_refused_listeners;
     std::map<uint64_t, std::function<void(const std::string&, const std::string&)>> deathlink_listeners;
     std::map<uint64_t, std::function<void(const std::string&)>> any_chat_listeners;
+    std::map<uint64_t, std::function<void(const std::string&, const nlohmann::json&)>> data_storage_value_change_listeners;
     
     uint64_t next_listener_id = 0;
     
@@ -34,6 +35,7 @@ public:
     std::string last_deathlink_cause;
     
     std::list<std::string> chat_messages;
+    std::map<std::string, nlohmann::json> data_storage;
     
     bool delete_on_next_poll = false;
 };
@@ -48,6 +50,144 @@ ListenerHandle::ListenerHandle(std::function<void()> on_delete)
 {
 }
 
+struct DataStoragePendingOperationPrivate
+{
+    APWrapper* parentWrapper;
+    std::string key;
+    nlohmann::json default_value;
+    std::list<APClient::DataStorageOperation> ops;
+};
+
+DataStoragePendingOperation DataStoragePendingOperation::replace(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"replace", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::de_fault(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"default", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::add(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"add", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::mul(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"mul", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::pow(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"pow", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::mod(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"mod", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::floor(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"floor", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::ceil(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"ceil", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::maximum(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"max", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::minimum(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"min", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::and(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"and", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::or(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"or", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::xor(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"xor", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::left_shift(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"left_shift", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::right_shift(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"right_shift", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::remove(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"remove", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::pop(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"pop", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation DataStoragePendingOperation::update(nlohmann::json value)
+{
+    d->ops.emplace_back(APClient::DataStorageOperation{"update", value});
+    return DataStoragePendingOperation(std::move(d));
+}
+
+DataStoragePendingOperation::DataStoragePendingOperation(APWrapper* parent, std::string key,
+                                                         nlohmann::json& default_value)
+{
+    d = std::make_unique<DataStoragePendingOperationPrivate>();
+    d->parentWrapper = parent;
+    d->key = key;
+    d->default_value = default_value;
+}
+
+DataStoragePendingOperation::DataStoragePendingOperation(std::unique_ptr<DataStoragePendingOperationPrivate> d)
+{
+    this->d = std::move(d);
+}
+
+DataStoragePendingOperation::~DataStoragePendingOperation()
+{
+    if (d)
+    {
+        d->parentWrapper->d->mAP->Set(d->key, d->default_value, true, d->ops);
+    }
+}
+
 APWrapper::APWrapper() : d(new APWrapper_Private)
 {
 }
@@ -58,7 +198,7 @@ APWrapper::~APWrapper()
     delete d;
 }
 
-void APWrapper::Connect(const std::string& server_name, const std::string& slot_name, const std::string& password) const
+void APWrapper::Connect(const std::string& server_name, const std::string& slot_name, const std::string& password)
 {
     // Already connected
     if (d->mAP)
@@ -71,6 +211,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->password = password;
     d->tags.clear();
     d->chat_messages.clear();
+    d->data_storage.clear();
     
     d->mAP = new APClient(ap_get_uuid("uuid.txt"), "Plants vs. Zombies: Replanted", server_name);
     d->mAP->set_print_handler([](const std::string& print_line)
@@ -121,6 +262,14 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         scouted_locations.merge(this->d->mAP->get_checked_locations());
         
         d->mAP->LocationScouts(std::list(scouted_locations.begin(), scouted_locations.end()), 0);
+        
+        auto data_storage_requested_keys = {
+            DataStorageSlotPrefixed("profileGuids")
+        };
+        d->mAP->SetNotify(data_storage_requested_keys);
+        
+        // Default profile GUIDs
+        this->WriteDataStorage(DataStorageSlotPrefixed("profileGuids"), nlohmann::json::array()).de_fault(nlohmann::json::array());
         
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
@@ -209,6 +358,25 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             };
         }
     });
+    d->mAP->set_set_reply_handler([this](const std::string& key, const nlohmann::json& value, const nlohmann::json& original_value)
+    {
+        d->data_storage.insert_or_assign(key, value);
+        for (auto data_storage_value_change_listener : d->data_storage_value_change_listeners)
+        {
+            data_storage_value_change_listener.second(key, value);
+        }
+    });
+    d->mAP->set_retrieved_handler([this](const std::map<std::string, nlohmann::json>& keys, const nlohmann::json& message)
+    {
+        for (const auto& [key, value] : keys)
+        {
+            d->data_storage.insert_or_assign(key, value);     
+            for (auto data_storage_value_change_listener : d->data_storage_value_change_listeners)
+            {
+                data_storage_value_change_listener.second(key, value);
+            }
+        }
+    });
 }
 
 void APWrapper::Disconnect() const
@@ -259,6 +427,21 @@ void APWrapper::SendAPMessage(const std::string& message) const
 {
     if (!d->mAP) return;
     d->mAP->Say(message);
+}
+
+std::string APWrapper::DataStorageSlotPrefixed(std::string key) const
+{
+    return "Slot:" + std::to_string(d->mAP->get_player_number()) + ":" + key;
+}
+
+nlohmann::json APWrapper::ReadDataStorage(std::string key) const
+{
+    return d->data_storage[key];
+}
+
+DataStoragePendingOperation APWrapper::WriteDataStorage(std::string key, nlohmann::json value)
+{
+    return DataStoragePendingOperation(this, key, value);
 }
 
 int64_t APWrapper::MySlot() const
@@ -459,10 +642,18 @@ ListenerHandle* APWrapper::AddAnyChatMessageListener(std::function<void(const st
     return new ListenerHandle([this, id] { this->d->any_chat_listeners.erase(id); });
 }
 
+ListenerHandle* APWrapper::AddDataStorageValueChangeListener(
+    std::function<void(const std::string&, const nlohmann::json&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->data_storage_value_change_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->data_storage_value_change_listeners.erase(id); });
+}
+
 void APWrapper::UpdateConnectionInformation() const
 {
     if (!d->mAP) return;
     
     d->mAP->ConnectUpdate(0b111, d->tags);
 }
-

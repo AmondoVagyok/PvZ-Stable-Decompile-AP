@@ -373,6 +373,8 @@ public:
 
 	void							DoConfirmRIPMode();
 	
+	void							LoadProfile(PlayerInfo* profile);
+	
 	void							ShowAPTextClient();
 	bool							APTextClientVisible();
 	void							KillAPTextClient();
