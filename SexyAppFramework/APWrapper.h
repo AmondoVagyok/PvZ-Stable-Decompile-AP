@@ -117,6 +117,7 @@ public:
     
     ListenerHandle* AddServerChatMessageListener(std::function<void(const std::string&)>) const;
     ListenerHandle* AddCountdownChatMessageListener(std::function<void(const std::string&)>) const;
+    ListenerHandle* AddItemsSentListener(std::function<void(const APItem&, const int&)>) const;
     ListenerHandle* AddItemsReceivedListener(std::function<void(const std::list<APItem>&)>) const;
     ListenerHandle* AddConnectionCompleteListener(std::function<void()>) const;
     ListenerHandle* AddSlotRefusedListener(std::function<void(const std::string&)>) const;

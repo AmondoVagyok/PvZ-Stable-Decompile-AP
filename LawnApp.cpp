@@ -4371,10 +4371,16 @@ void LawnApp::SetupArchipelago()
 	{
 		if (!mPlayerInfo) return;
 		
-		std::string items_string;
 		for (const auto item : items)
 		{
 			ProcessAPItem(item);
+		}
+	});
+	this->mAP->AddItemsSentListener([this](const APItem& item, const int& receiver)
+	{
+		if (item.player == this->mAP->MySlot() && receiver != this->mAP->MySlot())
+		{
+			DisplayAPUpdate(this->mAP->ItemName(item.item, receiver) + " was sent to " + this->mAP->PlayerDisplayName(receiver) + "!");
 		}
 	});
 	this->mAP->AddConnectionCompleteListener([this]
@@ -4476,11 +4482,11 @@ void LawnApp::ProcessAPItem(const APItem& item)
 		std::string items_string;
 		if (item.player == 0 || item.player == this->mAP->MySlot())
 		{
-			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()));
+			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + "!");
 		}
 		else
 		{
-			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + " from " + this->mAP->PlayerDisplayName(item.player));
+			items_string.append("Got " + this->mAP->ItemName(item.item, this->mAP->MySlot()) + " from " + this->mAP->PlayerDisplayName(item.player) + "!");
 		}
 				
 		mPlayerInfo->mLastItemIndex = item.index;

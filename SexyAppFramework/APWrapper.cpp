@@ -10,6 +10,7 @@ class APWrapper_Private {
 public:
     std::map<uint64_t, std::function<void(const std::string&)>> server_chat_listeners;
     std::map<uint64_t, std::function<void(const std::string&)>> countdown_chat_listeners;
+    std::map<uint64_t, std::function<void(const APItem&, const int&)>> item_sent_listeners;
     std::map<uint64_t, std::function<void(const std::list<APItem>&)>> item_received_listeners;
     std::map<uint64_t, std::function<void()>> connection_complete_listener;
     std::map<uint64_t, std::function<void()>> disconnection_listener;
@@ -233,6 +234,20 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             for (const auto& server_chat_listener : this->d->server_chat_listeners)
             {
                 server_chat_listener.second(concatenated_message);
+            }
+        }
+        else if (print_line.type == "ItemSend")
+        {
+            APItem item {
+                print_line.item->item,
+                print_line.item->location,
+                print_line.item->player,
+                print_line.item->flags,
+                print_line.item->index
+            };
+            for (const auto& item_sent_listener : this->d->item_sent_listeners)
+            {
+                item_sent_listener.second(item, *print_line.receiving);
             }
         }
         else if (print_line.type == "Countdown")
@@ -461,7 +476,7 @@ std::string APWrapper::PlayerDisplayName(int slot) const
     for (const auto& player : d->mAP->get_players())
     {
         if (player.slot != slot) continue;
-        if (player.alias.empty())
+        if (player.alias.empty() || player.alias == player.name)
         {
             return player.name;
         }
@@ -600,6 +615,14 @@ ListenerHandle* APWrapper::AddCountdownChatMessageListener(std::function<void(co
     this->d->countdown_chat_listeners.insert_or_assign(id, listener);
     
     return new ListenerHandle([this, id] { this->d->countdown_chat_listeners.erase(id); });
+}
+
+ListenerHandle* APWrapper::AddItemsSentListener(std::function<void(const APItem&, const int&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->item_sent_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->item_sent_listeners.erase(id); });
 }
 
 ListenerHandle* APWrapper::AddItemsReceivedListener(std::function<void(const std::list<APItem>&)> listener) const
