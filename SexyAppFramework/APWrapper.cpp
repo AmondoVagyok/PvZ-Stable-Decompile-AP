@@ -31,7 +31,7 @@ public:
     std::map<int64_t, APItem> location_scouts;
     
     std::list<std::string> tags;
-    float last_sent_deathlink;
+    double last_sent_deathlink;
     std::string last_deathlink_source;
     std::string last_deathlink_cause;
     
@@ -343,7 +343,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             auto cause = data["cause"]; // string
             double time = data["time"]; // number_float
             
-            if (time != d->last_sent_deathlink)
+            if (abs(time - d->last_sent_deathlink) > 0.001)
             {
                 d->last_deathlink_source = source;
                 if (cause.is_string())

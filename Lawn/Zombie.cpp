@@ -5250,7 +5250,7 @@ void Zombie::CheckForBoardEdge()
             {
                 // No DeathLink queued, so send one now
                 auto zombie_definition = GetZombieDefinition(mZombieType);
-                mApp->mAP->SendDeathLink(TodStringTranslate(StrFormat(_S("%s"), zombie_definition.mZombieName)) + " ate " + mApp->mAP->PlayerDisplayName(mApp->mAP->MySlot()) + "'s brains!");
+                mApp->mAP->SendDeathLink( mApp->mAP->PlayerDisplayName(mApp->mAP->MySlot()) + " lost their brains to a " + TodStringTranslate(StrFormat(_S("[%s]"), zombie_definition.mZombieName)));
             }
             mBoard->ZombiesWon(this);
         }

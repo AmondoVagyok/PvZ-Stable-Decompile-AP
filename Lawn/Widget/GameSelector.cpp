@@ -1707,24 +1707,8 @@ void GameSelector::ClickedAdventure()
 	{
 		return;
 	}
-	
-	if (mApp->IsTrialStageLocked() && (mLevel >= 25 || mApp->HasFinishedAdventure()))
-	{
-		if (mApp->LawnMessageBox(
-			Dialogs::DIALOG_MESSAGE,
-			_S("[REPLAY_LEVEL_HEADER]"),
-			_S("[REPLAY_LEVEL_BODY]"),
-			_S("[DIALOG_BUTTON_YES]"),
-			_S("[DIALOG_BUTTON_NO]"),
-			Dialog::BUTTONS_YES_NO) == Dialog::ID_NO)
-			return;
 
-		mApp->mPlayerInfo->mLevel = 24;
-		mApp->mPlayerInfo->mFinishedAdventure = 0;
-		mApp->EraseFile(GetSavedGameName(GameMode::GAMEMODE_ADVENTURE, mApp->mPlayerInfo->mId));
-	}
-
-	if (mApp->mPlayerInfo->mLevel > 1)
+	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(1, 1)))
 	{
 		ShowQuickplayScreen();
 		return;
