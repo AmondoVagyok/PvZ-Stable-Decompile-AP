@@ -22,6 +22,7 @@
 #include "../../SexyAppFramework/WidgetManager.h"
 #include "../../Sexy.TodLib/TodStringFile.h"
 #include "../../GameConstants.h"
+#include "../../SexyAppFramework/APData.h"
 #include "../../SexyAppFramework/APWrapper.h"
 
 static float gFlowerCenter[3][2] = { { 765.0f, 483.0f }, { 663.0f, 455.0f }, { 701.0f, 439.0f } };  //0x665430
@@ -430,11 +431,18 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mLevelSelectorWidget->Move(mApp->mWidth, 0);
 #endif
 	TodHesitationTrace("gameselectorinit");
+	
+	mAPItemHandler = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>&)
+	{
+		this->SyncProfile(false);
+	});
 }
 
 //0x449D00¡¢0x449D20
 GameSelector::~GameSelector()
 {
+	delete mAPItemHandler;
+	
 	if (mAdventureButton)
 		delete mAdventureButton;
 	if (mMinigameButton)
@@ -623,42 +631,42 @@ void GameSelector::SyncProfile(bool theShowLoading)
 		aTrophyParticle->ParticleSystemDie();
 		mTrophyParticleID = ParticleSystemID::PARTICLESYSTEMID_NULL;
 	}
-
+	
 	mLevel = 1;
 	if (mApp->mPlayerInfo)
 		mLevel = mApp->mPlayerInfo->GetLevel();
 	mApp->mPlayerLevelRef = mLevel;
 	mShowStartButton = true;
-	mMinigamesLocked = true;
-	mPuzzleLocked = true;
-	mSurvivalLocked = true;
-	if (mApp->mPlayerInfo && !mApp->IsIceDemo())
-	{
-		// @Inliothixi: implemented
-		if (mApp->SaveFileExists() || mApp->HasFinishedAdventure() || mApp->mPlayerInfo->mLevel > 1)
-			mShowStartButton = false;
-
-		if (mApp->HasFinishedAdventure())
-		{
-			mMinigamesLocked = false;
-			mSurvivalLocked = false;
-			mPuzzleLocked = false;
-			mShowStartButton = false;
-		}
-
-		if (mApp->mPlayerInfo->mHasUnlockedMinigames)
-			mMinigamesLocked = false;
-		if (mApp->mPlayerInfo->mHasUnlockedPuzzleMode)
-			mPuzzleLocked = false;
-		if (mApp->mPlayerInfo->mHasUnlockedSurvivalMode)
-			mSurvivalLocked = false;
-
-		if (mApp->IsTrialStageLocked())
-		{
-			mPuzzleLocked = true;
-			mSurvivalLocked = true;
-		}
-	}
+	mMinigamesLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::MINIGAMES);
+	mPuzzleLocked =  !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PUZZLE_MODE);
+	mSurvivalLocked =  !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::SURVIVAL_MODE);
+	// if (mApp->mPlayerInfo && !mApp->IsIceDemo())
+	// {
+	// 	// @Inliothixi: implemented
+	// 	if (mApp->SaveFileExists() || mApp->HasFinishedAdventure() || mApp->mPlayerInfo->mLevel > 1)
+	// 		mShowStartButton = false;
+	//
+	// 	if (mApp->HasFinishedAdventure())
+	// 	{
+	// 		mMinigamesLocked = false;
+	// 		mSurvivalLocked = false;
+	// 		mPuzzleLocked = false;
+	// 		mShowStartButton = false;
+	// 	}
+	//
+	// 	if (mApp->mPlayerInfo->mHasUnlockedMinigames)
+	// 		mMinigamesLocked = false;
+	// 	if (mApp->mPlayerInfo->mHasUnlockedPuzzleMode)
+	// 		mPuzzleLocked = false;
+	// 	if (mApp->mPlayerInfo->mHasUnlockedSurvivalMode)
+	// 		mSurvivalLocked = false;
+	//
+	// 	if (mApp->IsTrialStageLocked())
+	// 	{
+	// 		mPuzzleLocked = true;
+	// 		mSurvivalLocked = true;
+	// 	}
+	// }
 
 	if (mApp->HasFinishedAdventure() && !mApp->IsTrialStageLocked())
 		mHasTrophy = true;
@@ -1754,20 +1762,28 @@ void GameSelector::ButtonDepress(int theId)
 {
 	if (mSlideCounter > 0 || mStartingGame)
 		return;
+	
+	if (theId == GameSelector::GameSelector_Minigame || theId == GameSelector::GameSelector_Puzzle || theId == GameSelector::GameSelector_Survival || theId == GameSelector_Store)
+	{
+		if (!mApp->EnsureArchipelagoConnected())
+		{
+			return;
+		}
+	}
 
 	if (theId == GameSelector::GameSelector_Minigame && mMinigamesLocked)
 	{
-		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("[MINIGAME_LOCKED_MESSAGE]"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
+		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("Obtain the Mini-games item from Archipelago to play minigames"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 	if (theId == GameSelector::GameSelector_Puzzle && mPuzzleLocked)
 	{
-		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("[PUZZLE_LOCKED_MESSAGE]"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
+		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("Obtain the Puzzle Mode item from Archipelago to play puzzle mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 	if (theId == GameSelector::GameSelector_Survival && mSurvivalLocked)
 	{
-		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("[SURVIVAL_LOCKED_MESSAGE]"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
+		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), _S("Obtain the Survival Mode item from Archipelago to play survival mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 

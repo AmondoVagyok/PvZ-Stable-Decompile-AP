@@ -9,6 +9,7 @@
 #include "MoreScreen.h"
 #include "QuickplayScreen.h"
 
+class ListenerHandle;
 class LawnApp;
 class ToolTipWidget;
 namespace Sexy
@@ -109,6 +110,8 @@ public:
 #endif
     ReanimationID               mWoodSignID;            
     ReanimationID               mSpotLightID;
+    
+    ListenerHandle*             mAPItemHandler;
 
 public:
     GameSelector(LawnApp* theApp);

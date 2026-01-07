@@ -2881,7 +2881,10 @@ bool LawnApp::CanShowAlmanac()
 	if (mPlayerInfo == nullptr)
 		return false;
 
-	return HasFinishedAdventure() || mPlayerInfo->mLevel >= 15;
+	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+		return false;
+	
+	return mAP->ReceivedItemCount(PVZRAPData::Items::ALMANAC) > 0;
 }
 
 //0x454090
@@ -2893,7 +2896,11 @@ bool LawnApp::CanShowStore()
 	if (mPlayerInfo == nullptr)
 		return false;
 
-	return HasFinishedAdventure() || mPlayerInfo->mHasSeenUpsell || mPlayerInfo->mLevel >= 25;
+
+	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+		return false;
+	
+	return mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0;
 }
 
 //0x4540C0
@@ -2905,7 +2912,11 @@ bool LawnApp::CanShowZenGarden()
 	if (IsTrialStageLocked())
 		return false;
 
-	return HasFinishedAdventure() || mPlayerInfo->mLevel >= 45;
+
+	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+		return false;
+	
+	return mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0;
 }
 
 bool LawnApp::CanSpawnYetis()
