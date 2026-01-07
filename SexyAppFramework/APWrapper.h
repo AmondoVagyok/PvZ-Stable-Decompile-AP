@@ -91,6 +91,7 @@ public:
     std::string Password() const;
     ConnectionStatus ConnectionStatus() const;
     
+    nlohmann::json SlotData();
     int64_t MySlot() const;
     
     std::string PlayerDisplayName(int slot) const;

@@ -44,6 +44,7 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
 ArchipelagoStatusDialog::~ArchipelagoStatusDialog()
 {
 	delete mConnectionListener;
+	delete mDisconnectionListener;
 	
 	delete mPasswordEditWidget;
 	delete mSlotEditWidget;

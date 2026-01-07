@@ -1,4 +1,7 @@
 #include "QuickplayScreen.h"
+
+#include <nlohmann/json.hpp>
+
 #include "../../Resources.h"
 #include "../../LawnApp.h"
 #include "../../Sexy.TodLib/TodCommon.h"
@@ -11,6 +14,8 @@
 #include "../../Sexy.TodLib/Reanimator.h"
 #include "../System/PlayerInfo.h"
 #include "../../Sexy.TodLib/TodStringFile.h"
+#include "../../SexyAppFramework/APData.h"
+#include "../../SexyAppFramework/APWrapper.h"
 
 const Rect aScrollArea = {10, 221, BOARD_WIDTH - 20, 5};
 
@@ -123,14 +128,6 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 		aLevelButton->mDoFinger = true;
 		aLevelButton->mFrameNoDraw = true;
 		aLevelButton->Resize(10 + 186 * aSubLevel, -IMAGE_LEVELSELECTOR_LEVEL_BUTTON_HIGHLIGHT->mHeight, IMAGE_LEVELSELECTOR_LEVEL_BUTTON_HIGHLIGHT->mWidth, IMAGE_LEVELSELECTOR_LEVEL_BUTTON_HIGHLIGHT->mHeight);
-		if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-		{
-			aLevelButton->mVisible = true;
-		}
-		else
-		{
-			aLevelButton->mVisible = i < aPlayerLevel;
-		}
 	}
 
 	mPreviousScrollPosition = 0;
@@ -143,26 +140,8 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 	{
 		mMaxScrollPosition = 20 + 186 * min(aPlayerLevel - 1, 9) + 175 - BOARD_WIDTH;
 	}
-
-	if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-	{
-		mNightStageButton->SetDisabled(false);
-		mPoolStageButton->SetDisabled(false);
-		mFogStageButton->SetDisabled(false);
-		mRoofStageButton->SetDisabled(false);
-	}
-	else
-	{
-		mNightStageButton->SetDisabled(aPlayerLevel < 11);
-		mPoolStageButton->SetDisabled(aPlayerLevel < 21);
-		mFogStageButton->SetDisabled(aPlayerLevel < 31);
-		mRoofStageButton->SetDisabled(aPlayerLevel < 41);
-	}
-
-	mNightStageButton->mVisible = !mNightStageButton->mDisabled;
-	mPoolStageButton->mVisible = !mPoolStageButton->mDisabled;
-	mFogStageButton->mVisible = !mFogStageButton->mDisabled;
-	mRoofStageButton->mVisible = !mRoofStageButton->mDisabled;
+	
+	this->UpdateLevelButtons();
 
 	mBackButton = MakeNewButton(
 		QuickplayWidget::Quickplay_Back,
@@ -191,9 +170,21 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 	mRIPButton->Resize(11.85f, 311, 99, 96);
 	mRIPButton->mTranslateX = 0;
 	mRIPButton->mTranslateY = 0;
+	
+	mItemListener = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>&)
+	{
+		this->UpdateLevelButtons();
+	});
+	mItemSentListener = mApp->mAP->AddItemsSentListener([this](const APItem&, const int&)
+	{
+		this->UpdateLevelButtons();
+	});
 }
 
 QuickplayWidget::~QuickplayWidget() {
+	delete mItemListener;
+	delete mItemSentListener;
+	
 	if (mPoolStageButton)
 		delete mPoolStageButton;
 	if (mNightStageButton)
@@ -320,42 +311,7 @@ void QuickplayWidget::Update() {
 
 			const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
-			if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-			{
-				mNightStageButton->SetDisabled(false);
-				mPoolStageButton->SetDisabled(false);
-				mFogStageButton->SetDisabled(false);
-				mRoofStageButton->SetDisabled(false);
-			}
-			else 
-			{
-				mNightStageButton->SetDisabled(aPlayerLevel < 11);
-				mPoolStageButton->SetDisabled(aPlayerLevel < 21);
-				mFogStageButton->SetDisabled(aPlayerLevel < 31);
-				mRoofStageButton->SetDisabled(aPlayerLevel < 41);
-			}
-
-			mNightStageButton->mVisible = !mNightStageButton->mDisabled;
-			mPoolStageButton->mVisible = !mPoolStageButton->mDisabled;
-			mFogStageButton->mVisible = !mFogStageButton->mDisabled;
-			mRoofStageButton->mVisible = !mRoofStageButton->mDisabled;
-
-			{
-				int aCurStage = max(QuickplayWidget::Quickplay_DayStage, min(theCurrentId, QuickplayWidget::Quickplay_RoofStage)) - 1;
-				for (int aLevel = 0; aLevel < 10; aLevel++) {
-					const int theLevel = 10 * aCurStage + aLevel;
-					ButtonWidget* aLevelButton = mLevelButtons[theLevel];
-
-					if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-					{
-						aLevelButton->mVisible = true;
-					}
-					else
-					{
-						aLevelButton->mVisible = theLevel < aPlayerLevel;
-					}
-				}
-			}
+			UpdateLevelButtons();
 		}
 
 
@@ -403,15 +359,6 @@ void QuickplayWidget::Update() {
 			else if (mSwitchStagesCounter == 0)
 			{
 				mSwitchStagesCounter = -1;
-
-				if (thePreviousId != theCurrentId && thePreviousId >= QuickplayWidget::Quickplay_DayStage && thePreviousId <= QuickplayWidget::Quickplay_RoofStage)
-				{
-					int aCurStage = max(QuickplayWidget::Quickplay_DayStage, min(thePreviousId, QuickplayWidget::Quickplay_RoofStage)) - 1;
-					for (int aLevel = 0; aLevel < 10; aLevel++) {
-						ButtonWidget* aLevelButton = mLevelButtons[10 * aCurStage + aLevel];
-						aLevelButton->mVisible = false;
-					}
-				}
 
 				DisableButtons(false);
 				mIsScrollable = mMaxScrollPosition > 0;
@@ -554,40 +501,10 @@ void QuickplayWidget::ButtonDepress(int theId)
 
 		const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
 
-		if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-		{
-			mNightStageButton->SetDisabled(false);
-			mPoolStageButton->SetDisabled(false);
-			mFogStageButton->SetDisabled(false);
-			mRoofStageButton->SetDisabled(false);
-		}
-		else
-		{
-			mNightStageButton->SetDisabled(aPlayerLevel < 11);
-			mPoolStageButton->SetDisabled(aPlayerLevel < 21);
-			mFogStageButton->SetDisabled(aPlayerLevel < 31);
-			mRoofStageButton->SetDisabled(aPlayerLevel < 41);
-		}
-
-		mNightStageButton->mVisible = !mNightStageButton->mDisabled;
-		mPoolStageButton->mVisible = !mPoolStageButton->mDisabled;
-		mFogStageButton->mVisible = !mFogStageButton->mDisabled;
-		mRoofStageButton->mVisible = !mRoofStageButton->mDisabled;
+		UpdateLevelButtons();
 
 		{
 			int aCurStage = max(QuickplayWidget::Quickplay_DayStage, min(theCurrentId, QuickplayWidget::Quickplay_RIP)) - 1;
-			for (int aLevel = 0; aLevel < 10; aLevel++) {
-				const int theLevel = 10 * aCurStage + aLevel;
-				ButtonWidget* aLevelButton = mLevelButtons[theLevel];
-				if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-				{
-					aLevelButton->mVisible = true;
-				}
-				else
-				{
-					aLevelButton->mVisible = theLevel < aPlayerLevel;
-				}
-			}
 
 			mPreviousScrollPosition = mScrollPosition;
 			if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
@@ -664,21 +581,9 @@ void QuickplayWidget::SelectStage(int theId, bool doTransition)
 		mSwitchStagesCounter = 100;
 
 		{
-			const int aPlayerLevel = FINAL_LEVEL; // mApp->mRIPMode ? mApp->mPlayerInfo->mRIPLevel : mApp->mPlayerInfo->mLevel;
+			const int aPlayerLevel = FINAL_LEVEL;
 
 			int aCurStage = max(QuickplayWidget::Quickplay_DayStage, min(theCurrentId, QuickplayWidget::Quickplay_RIP)) - 1;
-			for (int aLevel = 0; aLevel < 10; aLevel++) {
-				const int theLevel = 10 * aCurStage + aLevel;
-				ButtonWidget* aLevelButton = mLevelButtons[theLevel];
-				if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
-				{
-					aLevelButton->mVisible = true;
-				}
-				else
-				{
-					aLevelButton->mVisible = theLevel < aPlayerLevel;
-				}
-			}
 
 			mPreviousScrollPosition = mScrollPosition;
 			if (mApp->HasFinishedAdventure() && !mApp->mRIPMode)
@@ -836,4 +741,78 @@ void QuickplayWidget::DisableButtons(bool isDisabled)
 	mBackButton->SetDisabled(isDisabled);
 
 	for (ButtonWidget* aLevelButton : mLevelButtons)	aLevelButton->SetDisabled(isDisabled);
+}
+
+void QuickplayWidget::UpdateLevelButtons()
+{
+	if (mApp->mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+	{
+		return;
+	}
+	
+	auto slot_data = mApp->mAP->SlotData();
+	
+	// 0: Linear
+	// 1: Area Unlock Items
+	// 2: Open Area Unlock Items
+	int adventure_mode_progression = slot_data["adventure_mode_progression"];
+	bool require_all_levels = slot_data["require_all_levels"];
+	
+	if (adventure_mode_progression == 0)
+	{
+		mDayStageButton->SetDisabled(false);
+		mNightStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(1, 10) == 0));
+		mPoolStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(2, 10) == 0));
+		mFogStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(3, 10) == 0));
+		mRoofStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(4, 10) == 0));
+	}
+	else
+	{
+		mDayStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) == 0);
+		mNightStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::NIGHT_ACCESS) == 0);
+		mPoolStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::POOL_ACCESS) == 0);
+		mFogStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::FOG_ACCESS) == 0);
+		mRoofStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) == 0);
+	}
+
+	mDayStageButton->mVisible = !mDayStageButton->mDisabled;
+	mNightStageButton->mVisible = !mNightStageButton->mDisabled;
+	mPoolStageButton->mVisible = !mPoolStageButton->mDisabled;
+	mFogStageButton->mVisible = !mFogStageButton->mDisabled;
+	mRoofStageButton->mVisible = !mRoofStageButton->mDisabled;
+	
+	auto i = 0;
+	for (auto levelButton : mLevelButtons)
+	{
+		if (i == 49 && require_all_levels)
+		{
+			// Check all levels before enabling
+			auto zomboss_enabled = true;
+			for (auto j = 1; j <= 48; j++)
+			{
+				zomboss_enabled &= (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(j)) == 0);
+			}
+			levelButton->SetVisible(zomboss_enabled);
+		}
+		else if (i % 10 == 0)
+		{
+			// The first stage in every mode is unlocked
+			levelButton->SetVisible(true);
+		}
+		else
+		{
+			// TODO: Based on the slot data, unlock every stage
+			if (adventure_mode_progression == 2)
+			{
+				// Every stage is unlocked once the stage before is cleared
+				SetVisible(true);
+			}
+			else
+			{
+				// Every stage is unlocked once the stage before is cleared
+				levelButton->SetVisible(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)) != 0);
+			}
+		}
+		i++;
+	}
 }

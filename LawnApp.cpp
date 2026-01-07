@@ -4301,6 +4301,8 @@ void LawnApp::LoadProfile(PlayerInfo* profile)
 	}
 	mPlayerLevelRef = mPlayerInfo->GetLevel();
 	
+	// if (mQuick)
+	
 	for (auto item : mAP->ReceivedItems())
 	{
 		ProcessAPItem(item);

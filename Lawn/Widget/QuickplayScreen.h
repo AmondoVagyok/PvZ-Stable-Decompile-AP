@@ -6,6 +6,7 @@
 #include "../../SexyAppFramework/ButtonListener.h"
 #include "GameButton.h"
 
+class ListenerHandle;
 class LawnApp;
 
 using namespace Sexy;
@@ -53,6 +54,9 @@ public:
 	bool						mIsSlidingOut;
 	int							mSlidingOutCounter;
 	float						mPreviousScrollPosition;
+	
+	ListenerHandle*				mItemListener;
+	ListenerHandle*				mItemSentListener;
 
 public:
 	QuickplayWidget(LawnApp* theApp);
@@ -71,5 +75,7 @@ public:
 	virtual void				MouseUp(int theX, int theY);
 	virtual void				MouseMove(int theX, int theY);
 	void						DisableButtons(bool isDisabled);
+	
+	void						UpdateLevelButtons();
 };
 #endif

@@ -387,6 +387,7 @@ GameSelector::GameSelector(LawnApp* theApp)
 	//TODO: replace "woodsign3" with the original 2009 sprite when Zombatar is disabled
 #endif
 
+	mLevelSelectorWidget = nullptr;
 	SyncProfile(false);
 
 	TrackButton(mAdventureButton, mShowStartButton ? "SelectorScreen_StartAdventure_button" : "SelectorScreen_Adventure_button", 0.0f, 0.0f);
@@ -595,6 +596,11 @@ void GameSelector::SyncButtons()
 		mAdventureButton->mButtonImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_BUTTON;
 		mAdventureButton->mOverImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT;
 		mAdventureButton->mDownImage = Sexy::IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT;
+	}
+	
+	if (mLevelSelectorWidget)
+	{
+		mLevelSelectorWidget->UpdateLevelButtons();
 	}
 }
 

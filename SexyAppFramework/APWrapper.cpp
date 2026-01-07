@@ -439,6 +439,11 @@ enum APWrapper::ConnectionStatus APWrapper::ConnectionStatus() const
     return ConnectionStatus::Disconnected;
 }
 
+nlohmann::json APWrapper::SlotData()
+{
+    return d->slot_data;
+}
+
 void APWrapper::SendAPMessage(const std::string& message) const
 {
     if (!d->mAP) return;
