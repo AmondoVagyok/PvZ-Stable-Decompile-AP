@@ -5,7 +5,6 @@
 #include "SexyAppFramework/SexyApp.h"
 
 #include "portaudio.h"
-#include <lua.hpp>
 #include <queue>
 
 #include "SexyAppFramework/DDImage.h"
@@ -157,9 +156,7 @@ public:
 	SexyString						mCliApHost;
 	SexyString						mCliApSlot;
 	SexyString						mCliApPassword;
-
-	//lua_State*						L;
-
+	
 	Rect							gBoardBounds;
 	std::vector<SexyString>			mDebugTexts;
 	MemoryImage*					mDirtyBushes[6];
@@ -167,6 +164,7 @@ public:
 	bool							mRIPMode;
 
 	int								mPlayerLevelRef;
+	bool                            mEnableFPS;
 
 public:
 	LawnApp();
@@ -371,17 +369,14 @@ public:
 
 	static int						AudioCallback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
 	
-	static int						PutZombieInWaveL(lua_State* L);
-	static int						TodStringTranslateL(lua_State* L);
-	static int						ChangeBackgroundL(lua_State* L);
-	static int						ChangeMusicL(lua_State* L);
-	
 	void							DrawBoardCamera(Graphics* g, SexyTransform2D theTransform, Color theColor, int theDrawMode, Rect theClipRect, FilterEffect theFilterEffect, bool drawOnlyCamera);
 
 	void							ShowParticleEditor();
 	bool							TryToInitializePA();
 
 	void							DoConfirmRIPMode();
+	void							DoMoreSettingsDialog();
+	void							KillMoreSettingsDialog();
 	
 	void							LoadProfile(PlayerInfo* profile);
 	
