@@ -533,6 +533,13 @@ void APWrapper::CheckLocations(const std::list<int64_t>& location_ids) const
     this->d->mAP->LocationChecks(location_ids);
 }
 
+bool APWrapper::IsLocationChecked(const int64_t& location) const
+{
+    if (!d->mAP) return false;
+    auto checked_locations = this->d->mAP->get_checked_locations();
+    return checked_locations.find(location) != checked_locations.end();
+}
+
 APItem APWrapper::ItemAtLocation(int64_t location) const
 {
     return d->location_scouts[location];

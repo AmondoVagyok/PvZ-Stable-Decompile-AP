@@ -16,6 +16,8 @@
 #include "../Sexy.TodLib/Attachment.h"
 #include "Widget/AchievementsScreen.h"
 #include "../Sexy.TodLib/FilterEffect.h"
+#include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 
 Coin::Coin()
 {
@@ -833,7 +835,12 @@ SeedType Coin::GetFinalSeedPacketType()
 {
     if (mApp->IsFirstTimeAdventureMode() && mBoard && mBoard->mLevel <= 50)
     {
-        return mApp->GetAwardSeedForLevel(mBoard->mLevel);
+        auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(mBoard->mLevel));
+        // TODO: Make sure this is actually a PvZ item
+        auto seed = PVZRAPData::Items::SeedItem(item.item);
+        if (seed == SeedType::SEED_NONE) return SeedType::SEED_ZOMBIE_BALLOON;
+        return seed;
+        // return mApp->GetAwardSeedForLevel(mBoard->mLevel);
     }
 
     return SeedType::SEED_NONE;
@@ -1229,7 +1236,7 @@ void Coin::Collect()
                 StartFade();
             }
         }
-        else if (mApp->IsAdventureMode() && mBoard->mLevel < mApp->mPlayerInfo->GetLevel())
+        else if (mApp->IsAdventureMode())
         {
             if (mType == CoinType::COIN_AWARD_MONEY_BAG)
             {
@@ -1257,11 +1264,11 @@ void Coin::Collect()
         {
             FanOutCoins(CoinType::COIN_DIAMOND, 5);
         }
-        else if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel == 4)
+        else if (mType == CoinType::COIN_SHOVEL)
         {
             mApp->PlaySample(SOUND_SHOVEL);
         }
-        else if (mApp->IsFirstTimeAdventureMode() && (mBoard->mLevel == 24 || mBoard->mLevel == 34 || mBoard->mLevel == 44))
+        else if (mType == CoinType::COIN_CARKEYS || mType == CoinType::COIN_ALMANAC || mType == CoinType::COIN_TACO)
         {
             mApp->PlaySample(SOUND_TAP2);
         }
@@ -1279,6 +1286,11 @@ void Coin::Collect()
         {
             mApp->PlaySample(SOUND_SEEDLIFT);
             mApp->PlaySample(SOUND_TAP2);
+        }
+        
+        if (mApp->IsAdventureMode())
+        {
+            mApp->mAP->CheckLocations({PVZRAPData::Locations::LevelClear(mBoard->mLevel)});
         }
 
         mApp->AddTodParticle(mPosX + 30.0f, mPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_STARBURST);

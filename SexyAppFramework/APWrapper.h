@@ -99,6 +99,7 @@ public:
     void Poll() const;
     
     void CheckLocations(const std::list<int64_t>& location_ids) const;
+    bool IsLocationChecked(const int64_t& location) const;
     APItem ItemAtLocation(int64_t location) const;
     void SetGoal() const;
     

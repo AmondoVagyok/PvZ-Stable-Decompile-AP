@@ -2,6 +2,7 @@
 #define APDATA_H
 
 #include <cstdint>
+#include <stdexcept>
 
 #include "../ConstEnums.h"
 
@@ -12,18 +13,43 @@ namespace PVZRAPData
         /// Get the AP location ID for clearing a level
         /// For example, LevelClear(3, 2) will get the AP location ID for Level 2-2
         /// Dr. Zomboss is 5-10
-        constexpr int64_t LevelClear(const int location, const int level)
+        inline int64_t LevelClear(const int location, const int level)
         {
-            static_assert(location >= 1, "Location must be >= 1");
-            static_assert(location <= 5, "Location must be <= 5");
-            static_assert(level >= 1, "Level must be >= 1");
-            static_assert(level <= 10, "Level must be <= 10");
+            if (location < 1)
+            {
+                return -1;
+            }
+            else if (location > 5)
+            {
+                return -1;
+            }
+            else if (level < 1)
+            {
+                return -1;
+            }
+            else if (level > 10)
+            {
+                return -1;
+            }
+            
             return 1000 + (location - 1) * 10 + (level - 1);
         }
-        
-        constexpr int64_t Twiddydinkie(const int index)
+
+        inline int64_t LevelClear(const int level)
         {
-            static_assert(index >= 1 && index <= 16, "Index must be >= 1 and <= 16");
+            if (level < 1 || level > 50)
+            {
+                return -1;
+            }
+            return 1000 + level - 1;
+        }
+
+        inline int64_t Twiddydinkie(const int index)
+        {
+            if (index < 1 || index > 16)
+            {
+                return -1;
+            }
             return 5000 + index - 1;
         }
         
@@ -85,110 +111,13 @@ namespace PVZRAPData
     
     namespace Items
     {
-        constexpr int64_t Seed(SeedType seed)
+        inline int64_t Seed(SeedType seed)
         {
-            switch (seed)
+            if (seed < SEED_PEASHOOTER || seed > SEED_IMITATER)
             {
-            case SEED_PEASHOOTER:
-                return 500;
-            case SEED_SUNFLOWER:
-                return 501;
-            case SEED_CHERRYBOMB:
-                return 502;
-            case SEED_WALLNUT:
-                return 503;
-            case SEED_POTATOMINE:
-                return 504;
-            case SEED_SNOWPEA:
-                return 505;
-            case SEED_CHOMPER:
-                return 506;
-            case SEED_REPEATER:
-                return 507;
-            case SEED_PUFFSHROOM:
-                return 508;
-            case SEED_SUNSHROOM:
-                return 509;
-            case SEED_FUMESHROOM:
-                return 510;
-            case SEED_GRAVEBUSTER:
-                return 511;
-            case SEED_HYPNOSHROOM:
-                return 512;
-            case SEED_SCAREDYSHROOM:
-                return 513;
-            case SEED_ICESHROOM:
-                return 514;
-            case SEED_DOOMSHROOM:
-                return 515;
-            case SEED_LILYPAD:
-                return 516;
-            case SEED_SQUASH:
-                return 517;
-            case SEED_THREEPEATER:
-                return 518;
-            case SEED_TANGLEKELP:
-                return 519;
-            case SEED_JALAPENO:
-                return 520;
-            case SEED_SPIKEWEED:
-                return 521;
-            case SEED_TORCHWOOD:
-                return 522;
-            case SEED_TALLNUT:
-                return 523;
-            case SEED_SEASHROOM:
-                return 524;
-            case SEED_PLANTERN:
-                return 525;
-            case SEED_CACTUS:
-                return 526;
-            case SEED_BLOVER:
-                return 527;
-            case SEED_SPLITPEA:
-                return 528;
-            case SEED_STARFRUIT:
-                return 529;
-            case SEED_PUMPKINSHELL:
-                return 530;
-            case SEED_MAGNETSHROOM:
-                return 531;
-            case SEED_CABBAGEPULT:
-                return 532;
-            case SEED_FLOWERPOT:
-                return 533;
-            case SEED_KERNELPULT:
-                return 534;
-            case SEED_INSTANT_COFFEE:
-                return 535;
-            case SEED_GARLIC:
-                return 536;
-            case SEED_UMBRELLA:
-                return 537;
-            case SEED_MARIGOLD:
-                return 538;
-            case SEED_MELONPULT:
-                return 539;
-            case SEED_GATLINGPEA:
-                return 540;
-            case SEED_TWINSUNFLOWER:
-                return 541;
-            case SEED_GLOOMSHROOM:
-                return 542;
-            case SEED_CATTAIL:
-                return 543;
-            case SEED_WINTERMELON:
-                return 544;
-            case SEED_GOLD_MAGNET:
-                return 545;
-            case SEED_SPIKEROCK:
-                return 546;
-            case SEED_COBCANNON:
-                return 547;
-            case SEED_IMITATER:
-                return 548;
+                return -1;
             }
-            static_assert(false, "Invalid seed type");
+            return 100 + seed;
         }
         
         constexpr int64_t MUSIC_VIDEO = 1;
@@ -230,6 +159,15 @@ namespace PVZRAPData
         constexpr int64_t TRAP_POWER_DEPLOY = 70;
         constexpr int64_t TRAP_PACKET_COOLDOWN = 71;
         constexpr int64_t TRAP_ZOMBIE_AMBUSH = 72;
+        
+        inline SeedType SeedItem(int64_t item)
+        {
+            if (item < 100 || item > 100 + SEED_IMITATER)
+            {
+                return SEED_NONE;
+            }
+            return static_cast<SeedType>(item - 100);
+        }
     }
 }
 

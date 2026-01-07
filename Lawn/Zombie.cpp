@@ -20,6 +20,7 @@
 #include "../Sexy.TodLib/EffectSystem.h"
 #include "../SexyAppFramework/APWrapper.h"
 #include "../Sexy.TodLib/TodStringFile.h"
+#include "../SexyAppFramework/APData.h"
 
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE") },
@@ -8465,47 +8466,83 @@ bool Zombie::TrySpawnLevelAward()
     }
     else if (mApp->IsAdventureMode() && mBoard->mLevel <= 50)
     {
-        if (mBoard->mLevel < mApp->mPlayerInfo->GetLevel())
+        if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mBoard->mLevel)))
         {
+            // This level is already cleared
             aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
-        }
-        else if (mBoard->mLevel == 9 || mBoard->mLevel == 19 || mBoard->mLevel == 29 || mBoard->mLevel == 39 || mBoard->mLevel == 49)
+        } else
         {
-            aCoinType = CoinType::COIN_NOTE;
+            auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(mBoard->mLevel));
+            if (item.player == mApp->mAP->MySlot())
+            {
+                switch (item.item)
+                {
+                case PVZRAPData::Items::MUSIC_VIDEO:
+                    aCoinType = CoinType::COIN_AWARD_SILVER_SUNFLOWER;
+                    break;
+                case PVZRAPData::Items::SHOVEL:
+                    aCoinType = CoinType::COIN_SHOVEL;
+                    break;
+                case PVZRAPData::Items::ALMANAC:
+                    aCoinType = CoinType::COIN_ALMANAC;
+                    break;
+                case PVZRAPData::Items::CAR_KEYS:
+                    aCoinType = CoinType::COIN_CARKEYS;
+                    break;
+                case PVZRAPData::Items::ZEN_GARDEN:
+                    aCoinType = CoinType::COIN_WATERING_CAN;
+                    break;
+                default:
+                    aCoinType = CoinType::COIN_FINAL_SEED_PACKET;
+                }
+            }
+            else
+            {
+                // This is someone else's item
+                aCoinType = CoinType::COIN_FINAL_SEED_PACKET;
+            }
         }
-        else if (mBoard->mLevel == 50)
-        {
-            aCoinType = mApp->HasFinishedAdventure() ? CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_AWARD_SILVER_SUNFLOWER;
-            if (!mApp->HasFinishedAdventure()) ReportAchievement::GiveAchievement(mApp, AchievementId::HomeSecurity, true);
-        }
-        else if (mApp->HasFinishedAdventure())
-        {
-            aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
-        }
-        else if (mBoard->mLevel == 4)
-        {
-            aCoinType = CoinType::COIN_SHOVEL;
-        }
-        else if (mBoard->mLevel == 14)
-        {
-            aCoinType = CoinType::COIN_ALMANAC;
-        }
-        else if (mBoard->mLevel == 24)
-        {
-            aCoinType = CoinType::COIN_CARKEYS;
-        }
-        else if (mBoard->mLevel == 34)
-        {
-            aCoinType = CoinType::COIN_TACO;
-        }
-        else if (mBoard->mLevel == 44)
-        {
-            aCoinType = CoinType::COIN_WATERING_CAN;
-        }
-        else
-        {
-            aCoinType = CoinType::COIN_FINAL_SEED_PACKET;
-        }
+        // if (mBoard->mLevel < mApp->mPlayerInfo->GetLevel())
+        // {
+        //     aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
+        // }
+        // else if (mBoard->mLevel == 9 || mBoard->mLevel == 19 || mBoard->mLevel == 29 || mBoard->mLevel == 39 || mBoard->mLevel == 49)
+        // {
+        //     aCoinType = CoinType::COIN_NOTE;
+        // }
+        // else if (mBoard->mLevel == 50)
+        // {
+        //     aCoinType = mApp->HasFinishedAdventure() ? CoinType::COIN_AWARD_MONEY_BAG : CoinType::COIN_AWARD_SILVER_SUNFLOWER;
+        //     if (!mApp->HasFinishedAdventure()) ReportAchievement::GiveAchievement(mApp, AchievementId::HomeSecurity, true);
+        // }
+        // else if (mApp->HasFinishedAdventure())
+        // {
+        //     aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
+        // }
+        // else if (mBoard->mLevel == 4)
+        // {
+        //     aCoinType = CoinType::COIN_SHOVEL;
+        // }
+        // else if (mBoard->mLevel == 14)
+        // {
+        //     aCoinType = CoinType::COIN_ALMANAC;
+        // }
+        // else if (mBoard->mLevel == 24)
+        // {
+        //     aCoinType = CoinType::COIN_CARKEYS;
+        // }
+        // else if (mBoard->mLevel == 34)
+        // {
+        //     aCoinType = CoinType::COIN_TACO;
+        // }
+        // else if (mBoard->mLevel == 44)
+        // {
+        //     aCoinType = CoinType::COIN_WATERING_CAN;
+        // }
+        // else
+        // {
+        //     aCoinType = CoinType::COIN_FINAL_SEED_PACKET;
+        // }
     }
     else if (mBoard->IsSurvivalStageWithRepick())
     {
