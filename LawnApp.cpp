@@ -4511,8 +4511,45 @@ void LawnApp::ProcessAPItem(const APItem& item)
 		}
 				
 		mPlayerInfo->mLastItemIndex = item.index;
-		WriteCurrentUserConfig();
 		DisplayAPUpdate(items_string);
+		
+		switch (item.item)
+		{
+		case PVZRAPData::Items::SILVER_COIN:
+			{
+				PlayFoley(FoleyType::FOLEY_COIN);
+				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_SILVER));
+				if (mBoard)
+				{
+					mBoard->ShowCoinBank();
+				}
+			}
+			break;
+			
+		case PVZRAPData::Items::GOLD_COIN:
+			{
+				PlayFoley(FoleyType::FOLEY_COIN);
+				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_GOLD));
+				if (mBoard)
+				{
+					mBoard->ShowCoinBank();
+				}
+			}
+			break;
+		
+		case PVZRAPData::Items::DIAMOND:
+			{
+				PlaySample(SOUND_DIAMOND);
+				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_DIAMOND));
+				if (mBoard)
+				{
+					mBoard->ShowCoinBank();
+				}
+				break;
+			}
+		}
+		
+		WriteCurrentUserConfig();
 	}
 	
 }

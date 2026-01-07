@@ -1354,10 +1354,10 @@ void Coin::Collect()
     }
 
     AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_COIN_PICKUP_ARROW, nullptr);
-    if (mApp->IsFirstTimeAdventureMode() && mBoard && mBoard->mLevel == 11 && (mType == CoinType::COIN_GOLD || mType == CoinType::COIN_SILVER))
-    {
-        mBoard->DisplayAdvice(_S("[ADVICE_CLICKED_ON_COIN]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_CLICKED_ON_COIN);
-    }
+    // if (mApp->IsFirstTimeAdventureMode() && mBoard && mBoard->mLevel == 11 && (mType == CoinType::COIN_GOLD || mType == CoinType::COIN_SILVER))
+    // {
+    //     mBoard->DisplayAdvice(_S("[ADVICE_CLICKED_ON_COIN]"), MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_CLICKED_ON_COIN);
+    // }
 }
 
 float Coin::GetSunScale()
