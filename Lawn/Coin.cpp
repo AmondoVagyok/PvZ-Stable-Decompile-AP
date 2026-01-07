@@ -1213,6 +1213,7 @@ void Coin::Collect()
 
     if (IsLevelAward())
     {
+        // TODO: Send the check for this level
         if (aIsEndlessAward)
         {
             if (mType == CoinType::COIN_AWARD_BAG_DIAMOND)

@@ -1306,6 +1306,7 @@
     <ClInclude Include="..\Lawn\Zombie.h" />
     <ClInclude Include="..\Sexy.TodLib\TodStringFile.h" />
     <ClInclude Include="..\Sexy.TodLib\Trail.h" />
+    <ClInclude Include="APData.h" />
     <ClInclude Include="APWrapper.h" />
     <ClInclude Include="AutoCrit.h" />
     <ClInclude Include="BassLoader.h" />
