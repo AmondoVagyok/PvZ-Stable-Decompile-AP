@@ -404,12 +404,12 @@ void Challenge::InitLevel()
 	{
 		ScaryPotterPopulate();
 	}
-	if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel == 5)
-	{
-		mBoard->NewPlant(5, 1, SEED_PEASHOOTER, SEED_NONE);
-		mBoard->NewPlant(7, 2, SEED_PEASHOOTER, SEED_NONE);
-		mBoard->NewPlant(6, 3, SEED_PEASHOOTER, SEED_NONE);
-	}
+	// if (mApp->IsFirstTimeAdventureMode() && mBoard->mLevel == 5)
+	// {
+	// 	mBoard->NewPlant(5, 1, SEED_PEASHOOTER, SEED_NONE);
+	// 	mBoard->NewPlant(7, 2, SEED_PEASHOOTER, SEED_NONE);
+	// 	mBoard->NewPlant(6, 3, SEED_PEASHOOTER, SEED_NONE);
+	// }
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_BEGHOULED_TWIST)
 	{
 		mChallengeGridX = -1;

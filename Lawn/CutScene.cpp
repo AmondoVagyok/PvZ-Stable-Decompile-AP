@@ -23,6 +23,7 @@
 #include "../Sexy.TodLib/Reanimator.h"
 #include "../Sexy.TodLib/TodParticle.h"
 #include "../Sexy.TodLib/TodStringFile.h"
+#include "../SexyAppFramework/APData.h"
 #include "../SexyAppFramework/APWrapper.h"
 #include "../SexyAppFramework/PerfTimer.h"
 #include "../SexyAppFramework/WidgetManager.h"
@@ -793,7 +794,7 @@ void CutScene::StartLevelIntro()
 	mApp->mWidgetManager->SetFocus(mBoard);
 
 	int aLevel = mBoard->mLevel;
-	if (mApp->IsFirstTimeAdventureMode() && (aLevel == 1 || aLevel == 2 || aLevel == 4) && mApp->mPlayerLevelRef <= 4)
+	if (!mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel)) && (aLevel == 1 || aLevel == 2 || aLevel == 4))
 	{
 		mSodTime = TimeRollSodEnd - TimeRollSodStart;
 		mBoard->mSodPosition = 0;
@@ -818,7 +819,7 @@ void CutScene::StartLevelIntro()
 		}
 	}
 
-	if (mApp->IsFirstTimeAdventureMode() && aLevel <= 2)
+	if (!mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel)) && aLevel <= 2)
 	{
 		mReadySetPlantTime = 0;
 	}
@@ -873,16 +874,16 @@ void CutScene::StartLevelIntro()
 	}
 	else if (mApp->IsWallnutBowlingLevel() && mApp->IsAdventureMode())
 	{
-		if (mApp->IsFirstTimeAdventureMode())
-		{
-			mCrazyDaveDialogStart = 2400;
-		}
-		else
-		{
+		// if (mApp->IsFirstTimeAdventureMode())
+		// {
+		// 	mCrazyDaveDialogStart = 2400;
+		// }
+		// else
+		// {
 			mCrazyDaveDialogStart = 2411;
 			mBoard->mChallenge->mShowBowlingLine = true;
-		}
-		mBoard->mShowShovel = true;
+		// }
+		mBoard->mShowShovel = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::SHOVEL) != 0;
 	}
 	else if (mApp->IsFirstTimeAdventureMode() && aLevel == 21)
 	{
@@ -1531,10 +1532,7 @@ void CutScene::ShowShovel()
 		mApp->IsIZombieLevel())
 		return;
 
-	if (!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4)
-	{
-		mBoard->mShowShovel = true;
-	}
+	mBoard->mShowShovel = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::SHOVEL) != 0;
 }
 
 //0x43C1E0
