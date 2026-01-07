@@ -15,3 +15,6 @@ SexyAppFramework/ReleaseGOTY/*
 /Output/*.ilk
 /Output/*.pdb
 /Output/data
+portaudio/*
+!portaudio/include/
+!portaudio/include/**
