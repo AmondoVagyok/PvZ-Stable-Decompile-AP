@@ -790,7 +790,7 @@ void QuickplayWidget::UpdateLevelButtons()
 			auto zomboss_enabled = true;
 			for (auto j = 1; j <= 48; j++)
 			{
-				zomboss_enabled &= (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(j)) == 0);
+				zomboss_enabled &= mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(j));
 			}
 			levelButton->SetVisible(zomboss_enabled);
 		}
@@ -810,7 +810,7 @@ void QuickplayWidget::UpdateLevelButtons()
 			else
 			{
 				// Every stage is unlocked once the stage before is cleared
-				levelButton->SetVisible(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)) != 0);
+				levelButton->SetVisible(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)));
 			}
 		}
 		i++;

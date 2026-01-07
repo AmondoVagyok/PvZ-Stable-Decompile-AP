@@ -1565,6 +1565,9 @@ bool LawnApp::UpdatePlayerProfileForFinishingLevel()
 	{
 		if (abs(mBoard->mLevel) == FINAL_LEVEL)
 		{
+			// Goal AP
+			mAP->SetGoal();
+			
 			if (mPlayerInfo->mFinishedAdventure == 1)
 			{
 				if (mBoard->mLevel >= 0)
