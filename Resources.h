@@ -2021,6 +2021,9 @@ namespace Sexy
     extern Image* IMAGE_RIP_LEVER_HOLDER;
     extern Image* IMAGE_RIP_LEVER_STICK;
     extern Image* IMAGE_RIP_LEVER_STICK_PRESSED;
+    
+    // AP resources
+    extern Image* IMAGE_ARCHIPELAGO_ITEM;
 
 
     bool                ExtractResourcesByName(ResourceManager* theResourceManager, const char* theName);

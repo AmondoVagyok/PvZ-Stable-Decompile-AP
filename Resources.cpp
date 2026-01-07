@@ -1226,6 +1226,8 @@ Image* Sexy::IMAGE_SPEEDUP_BUTTON_PRESSED;
 Image* Sexy::IMAGE_SLOWDOWN_BUTTON;
 Image* Sexy::IMAGE_SLOWDOWN_BUTTON_PRESSED;
 
+Image* Sexy::IMAGE_ARCHIPELAGO_ITEM;
+
 bool Sexy::ExtractLoadingImagesResources(ResourceManager* theManager)
 {
 	gNeedRecalcVariableToIdMap = true;
@@ -1696,6 +1698,8 @@ bool Sexy::ExtractLoadingImagesResources(ResourceManager* theManager)
 		IMAGE_SPEEDUP_BUTTON_PRESSED = aMgr.GetImageThrow("IMAGE_SPEEDUP_BUTTON_PRESSED");
 		IMAGE_SLOWDOWN_BUTTON = aMgr.GetImageThrow("IMAGE_SLOWDOWN_BUTTON");
 		IMAGE_SLOWDOWN_BUTTON_PRESSED = aMgr.GetImageThrow("IMAGE_SLOWDOWN_BUTTON_PRESSED");
+		
+		IMAGE_ARCHIPELAGO_ITEM = aMgr.GetImageThrow("IMAGE_ARCHIPELAGO_ITEM");
 	}
 	catch (ResourceManagerException&)
 	{

@@ -14,3 +14,4 @@ SexyAppFramework/ReleaseGOTY/*
 /Output/crash.txt
 /Output/*.ilk
 /Output/*.pdb
+/Output/data

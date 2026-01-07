@@ -5321,14 +5321,30 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
     {
         if (aSeedType == SeedType::SEED_AP_OFFWORLD_ITEM)
         {
-            Image* aPlantImage = Sexy::IMAGE_CHOCOLATE;
+            Image* aPlantImage = Sexy::IMAGE_ARCHIPELAGO_ITEM;
             if (aPlantImage->mNumCols <= 2)
             {
                 aCelCol = aPlantImage->mNumCols - 1;
             }
-            aOffsetX -= 100.0f * g->mScaleX;
-            aOffsetY -= 100.0f * g->mScaleY;
-            TodDrawImageCelScaledF(g, aPlantImage, thePosX + aOffsetX, thePosY + aOffsetY, aCelCol, aCelRow, g->mScaleX, g->mScaleY);
+            aOffsetX -= 130.0f * g->mScaleX;
+            aOffsetY -= 135.0f * g->mScaleY;
+            
+            // auto aspect = aPlantImage->mWidth / aPlantImage->mHeight;
+            auto scaleX = 115.0f / aPlantImage->mWidth;
+            auto scaleY = 115.0f / aPlantImage->mHeight;
+            float scale;
+            if (scaleX > scaleY)
+            {
+                aOffsetX += (scaleX - scaleY) * 115.0f / 4.0f;
+                scale = scaleY;
+            }
+            else
+            {
+                aOffsetY += (scaleY - scaleX) * 115.0f / 4.0f;
+                scale = scaleX;
+            }
+            
+            TodDrawImageCelScaledF(g, aPlantImage, thePosX + aOffsetX, thePosY + aOffsetY, aCelCol, aCelRow, g->mScaleX * scale, g->mScaleY * scale);
         }
         else
         {
