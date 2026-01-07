@@ -66,6 +66,7 @@
 #include "Lawn/MessageWidget.h"
 #include "Lawn/Widget/ArchipelagoStatusDialog.h"
 #include "Lawn/Widget/ArchipelagoTextClient.h"
+#include "SexyAppFramework/APData.h"
 #include "SexyAppFramework/APWrapper.h"
 
 bool gIsPartnerBuild = false;
@@ -631,10 +632,11 @@ void LawnApp::KillGameSelector()
 }
 
 //0x44FA20
-void LawnApp::ShowAwardScreen(AwardType theAwardType, bool theShowAchievements)
+void LawnApp::ShowAwardScreen(AwardType theAwardType, int level, bool theShowAchievements)
 {
 	mGameScene = GameScenes::SCENE_AWARD;
 	mAwardScreen = new AwardScreen(this, theAwardType, theShowAchievements);
+	mAwardScreen->mLevel = level + 1;
 	mAwardScreen->Resize(0, 0, mWidth, mHeight);
 	mWidgetManager->AddWidget(mAwardScreen);
 	mWidgetManager->BringToBack(mAwardScreen);
@@ -1715,36 +1717,36 @@ void LawnApp::CheckForGameEnd()
 		bool isReplaying = mBoard->mIsReplay;
 		KillBoard();
 
-		if (!isReplaying)
-		{
-			if (IsFirstTimeAdventureMode() && aLevel < 50)
+		// if (!isReplaying)
+		// {
+			if (aLevel < 50 && !mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel)))
 			{
-				ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+				ShowAwardScreen(AwardType::AWARD_FORLEVEL, aLevel, true);
 			}
 			else if (aLevel == FINAL_LEVEL && mPlayerInfo->mFinishedAdventure == 1)
 			{
 				if (mPlayerInfo->mFinishedAdventure > 1)
 				{
-					ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+					ShowAwardScreen(AwardType::AWARD_FORLEVEL, aLevel, true);
 				}
 				else
 				{
-					ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, true);
+					ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, aLevel, true);
 				}
 			}
 			else if (aLevel == 9 || aLevel == 19 || aLevel == 29 || aLevel == 39 || aLevel == 49)
 			{
-				ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+				ShowAwardScreen(AwardType::AWARD_FORLEVEL, aLevel, true);
 			}
 			else
 			{
-				PreNewGame(mGameMode, false);
+				DoBackToMain();
 			}
-		}
-		else
-		{
-			DoBackToMain();
-		}
+		// }
+		// else
+		// {
+		// 	DoBackToMain();
+		// }
 	}
 	else if (IsLastStandEndless(mGameMode))
 	{
@@ -1761,7 +1763,7 @@ void LawnApp::CheckForGameEnd()
 
 			if (aUnlockedNewChallenge && HasFinishedAdventure())
 			{
-				ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+				ShowAwardScreen(AwardType::AWARD_FORLEVEL, 0, true);
 			}
 			else
 			{
@@ -1782,7 +1784,7 @@ void LawnApp::CheckForGameEnd()
 
 		if (aUnlockedNewChallenge)
 		{
-			ShowAwardScreen(AwardType::AWARD_FORLEVEL, true);
+			ShowAwardScreen(AwardType::AWARD_FORLEVEL, 0, true);
 		}
 		else
 		{
@@ -2686,23 +2688,29 @@ void LawnApp::CloseRequestAsync()
 //0x453A90
 SeedType LawnApp::GetAwardSeedForLevel(int theLevel)
 {
-	int aArea = (theLevel - 1) / LEVELS_PER_AREA + 1;
-	int aSub = (theLevel - 1) % LEVELS_PER_AREA + 1;
-	int aSeedsHasGot = (aArea - 1) * 8 + aSub;  // 一般来说，每大关可以获得 8 种植物，每小关可以获得 1 种植物
-	if (aSub >= 10)
-	{
-		aSeedsHasGot -= 2;  // 到达第 10 小关时，本大关中有 2 小关的奖励不是新植物
-	}
-	else if (aSub >= 5)
-	{
-		aSeedsHasGot -= 1;  // 到达第 5 小关时，本大关中有 1 小关的奖励不是新植物
-	}
-	if (aSeedsHasGot > 40)
-	{
-		aSeedsHasGot = 40;
-	}
-	
-	return (SeedType)aSeedsHasGot;
+	auto item = mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(theLevel));
+	// TODO: Make sure this is actually a PvZ item
+	auto seed = PVZRAPData::Items::SeedItem(item.item);
+	if (seed == SeedType::SEED_NONE) return SeedType::SEED_AP_OFFWORLD_ITEM;
+	return seed;
+
+	// int aArea = (theLevel - 1) / LEVELS_PER_AREA + 1;
+	// int aSub = (theLevel - 1) % LEVELS_PER_AREA + 1;
+	// int aSeedsHasGot = (aArea - 1) * 8 + aSub;  // 一般来说，每大关可以获得 8 种植物，每小关可以获得 1 种植物
+	// if (aSub >= 10)
+	// {
+	// 	aSeedsHasGot -= 2;  // 到达第 10 小关时，本大关中有 2 小关的奖励不是新植物
+	// }
+	// else if (aSub >= 5)
+	// {
+	// 	aSeedsHasGot -= 1;  // 到达第 5 小关时，本大关中有 1 小关的奖励不是新植物
+	// }
+	// if (aSeedsHasGot > 40)
+	// {
+	// 	aSeedsHasGot = 40;
+	// }
+	//
+	// return (SeedType)aSeedsHasGot;
 }
 
 //0x453AC0

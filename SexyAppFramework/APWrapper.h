@@ -29,6 +29,10 @@ struct APItem
     int player;
     unsigned flags;
     int index = -1; // to sync items, not actually part of NetworkItem
+    
+    static constexpr unsigned ITEM_FLAG_PROGRESSION = 0b001;
+    static constexpr unsigned ITEM_FLAG_USEFUL = 0b010;
+    static constexpr unsigned ITEM_FLAG_TRAP = 0b100;
 };
 
 struct DataStoragePendingOperationPrivate;

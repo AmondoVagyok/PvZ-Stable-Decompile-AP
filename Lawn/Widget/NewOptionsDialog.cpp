@@ -109,7 +109,7 @@ NewOptionsDialog::NewOptionsDialog(LawnApp* theApp, bool theFromGameSelector) :
     //}
 }
 
-//0x45C760¡¢0x45C780
+//0x45C760ï¿½ï¿½0x45C780
 NewOptionsDialog::~NewOptionsDialog()
 {
     delete mMusicVolumeSlider;
@@ -366,7 +366,7 @@ void NewOptionsDialog::ButtonDepress(int theId)
         {
             mApp->KillNewOptionsDialog();
             mApp->KillGameSelector();
-            mApp->ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, false);
+            mApp->ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, 0, false);
         }
         else if (mApp->mBoard && mApp->mBoard->NeedSaveGame())
         {

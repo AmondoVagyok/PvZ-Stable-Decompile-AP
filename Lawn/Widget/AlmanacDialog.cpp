@@ -399,7 +399,7 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 
 	g->DrawImage(Sexy::IMAGE_ALMANAC_PLANTCARD, 459, 86);
 	PlantDefinition& aPlantDef = GetPlantDefinition(mSelectedSeed);
-	SexyString aName = Plant::GetNameString(mSelectedSeed, SEED_NONE);
+	SexyString aName = Plant::GetNameString(mApp, mSelectedSeed, 0, SEED_NONE);
 	SexyString aDescriptionName = StrFormat(_S("[%s_DESCRIPTION]"), aPlantDef.mPlantName);
 	TodDrawString(g, aName, 617, 288, Sexy::FONT_DWARVENTODCRAFT18YELLOW, Color::White, DS_ALIGN_CENTER);
 	TodDrawStringWrapped(g, aDescriptionName, Rect(485, 309, 258, 230), Sexy::FONT_BRIANNETOD12, Color(40, 50, 90), DS_ALIGN_LEFT);

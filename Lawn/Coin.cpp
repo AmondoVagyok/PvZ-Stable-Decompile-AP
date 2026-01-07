@@ -833,14 +833,9 @@ Color Coin::GetColor()
 //0x4317D0
 SeedType Coin::GetFinalSeedPacketType()
 {
-    if (mApp->IsFirstTimeAdventureMode() && mBoard && mBoard->mLevel <= 50)
+    if (mBoard && mBoard->mLevel <= 50)
     {
-        auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(mBoard->mLevel));
-        // TODO: Make sure this is actually a PvZ item
-        auto seed = PVZRAPData::Items::SeedItem(item.item);
-        if (seed == SeedType::SEED_NONE) return SeedType::SEED_ZOMBIE_BALLOON;
-        return seed;
-        // return mApp->GetAwardSeedForLevel(mBoard->mLevel);
+        return mApp->GetAwardSeedForLevel(mBoard->mLevel);
     }
 
     return SeedType::SEED_NONE;

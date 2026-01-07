@@ -4124,7 +4124,7 @@ void Board::UpdateToolTip()
 		//mToolTip->SetLabel(StrFormat(_S("[%s]"),GetPlantDefinition(aUseSeedType).mPlantName));
 
 		// @Patoke: wrong function call
-		mToolTip->SetLabel(Plant::GetNameString(aUseSeedType));
+		mToolTip->SetLabel(Plant::GetNameString(mApp, aUseSeedType, mLevel));
 	}
 
 	int aPlantCost = GetCurrentPlantCost(aSeedPacket->mPacketType, aSeedPacket->mImitaterType);
@@ -4341,7 +4341,7 @@ void Board::MouseDownWithPlant(int x, int y, int theClickCount)
 		}
 		else if (aReason == PlantingReason::PLANTING_NOT_ON_ART)
 		{
-			SexyString aSeedName = Plant::GetNameString(mChallenge->GetArtChallengeSeed(aGridX, aGridY), SeedType::SEED_NONE);
+			SexyString aSeedName = Plant::GetNameString(mApp, mChallenge->GetArtChallengeSeed(aGridX, aGridY), mLevel, SeedType::SEED_NONE);
 			SexyString aMessage = TodReplaceString(_S("[ADVICE_WRONG_ART_TYPE]"), _S("{SEED}"), aSeedName);
 			DisplayAdvice(aMessage, MessageStyle::MESSAGE_STYLE_HINT_FAST, AdviceType::ADVICE_PLANT_WRONG_ART_TYPE);
 		}

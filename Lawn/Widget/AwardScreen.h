@@ -39,6 +39,7 @@ public:
 	int									mAchievementAnimTime;	//+GOTY @Patoke: 0xBC
 	bool								mShowingAchievements;	//+GOTY @Patoke: 0xD8
 	std::vector<AchievementScreenItem>	mAchievementItems;		//+GOTY @Patoke: 0xC0
+	int									mLevel;
 
 public:
 	// @Patoke: added argument

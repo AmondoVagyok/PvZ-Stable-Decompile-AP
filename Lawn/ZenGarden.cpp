@@ -461,7 +461,7 @@ void ZenGarden::MouseDownWithMoneySign(Plant* thePlant)
     }
     else
     {
-        aPlantName = Plant::GetNameString(thePlant->mSeedType, thePlant->mImitaterType);
+        aPlantName = Plant::GetNameString(mApp, thePlant->mSeedType, 0, thePlant->mImitaterType);
     }
     aMessageText = TodReplaceString(aMessageText, _S("{PLANT_TYPE}"), aPlantName);
 

@@ -210,7 +210,7 @@ public:
 	void							PreNewGame(GameMode theGameMode, bool theLookForSavedGame, int theLevel);
 	void							ShowGameSelector();
 	void							KillGameSelector();
-	void							ShowAwardScreen(AwardType theAwardType, bool theShowAchievements);
+	void							ShowAwardScreen(AwardType theAwardType, int level, bool theShowAchievements);
 	void							KillAwardScreen();
 	void							ShowSeedChooserScreen();
 	void							KillSeedChooserScreen();
@@ -289,7 +289,7 @@ public:
 	/*inline*/ bool					IsStormyNightLevel();
 	/*inline*/ bool					IsFinalBossLevel();
 	/*inline*/ bool					IsBungeeBlitzLevel();
-	static /*inline*/ SeedType		GetAwardSeedForLevel(int theLevel);
+	/*inline*/ SeedType		GetAwardSeedForLevel(int theLevel);
 	SexyString						GetCrazyDaveText(int theMessageIndex);
 	/*inline*/ bool					CanShowAlmanac();
 	/*inline*/ bool					IsNight();

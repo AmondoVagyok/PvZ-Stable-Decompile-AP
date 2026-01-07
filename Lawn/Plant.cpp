@@ -24,8 +24,10 @@
 #include "Widget/AchievementsScreen.h"
 #include "ToolTipWidget.h"
 #include "../Sexy.TodLib/FilterEffect.h"
+#include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 
-PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
+PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES + 1] = {  //0x69F2B0
     { SeedType::SEED_PEASHOOTER,        nullptr, ReanimationType::REANIM_PEASHOOTER,    0,  100,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("PEASHOOTER") },
     { SeedType::SEED_SUNFLOWER,         nullptr, ReanimationType::REANIM_SUNFLOWER,     1,  50,     750,    PlantSubClass::SUBCLASS_NORMAL,     2500,   _S("SUNFLOWER") },
     { SeedType::SEED_CHERRYBOMB,        nullptr, ReanimationType::REANIM_CHERRYBOMB,    3,  150,    5000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("CHERRY_BOMB") },
@@ -88,7 +90,8 @@ PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {  //0x69F2B0
     { SeedType::SEED_EXPLODE_O_NUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  50,     3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("EXPLODE_O_NUT") },
     { SeedType::SEED_GIANT_WALLNUT,     nullptr, ReanimationType::REANIM_WALLNUT,       2,  400,    3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("GIANT_WALLNUT") },
     { SeedType::SEED_SPROUT,            nullptr, ReanimationType::REANIM_ZENGARDEN_SPROUT,  33, 0,  3000,   PlantSubClass::SUBCLASS_NORMAL,     0,      _S("SPROUT") },
-    { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") }
+    { SeedType::SEED_LEFTPEATER,        nullptr, ReanimationType::REANIM_REPEATER,      5,  200,    750,    PlantSubClass::SUBCLASS_SHOOTER,    150,    _S("REPEATER") },
+    { SeedType::SEED_AP_OFFWORLD_ITEM,  &Sexy::IMAGE_REANIM_PEASHOOTER_HEAD_EXHAUSTED, ReanimationType::REANIM_NONE,          0,  0,      0,      PlantSubClass::SUBCLASS_NORMAL,     0,      _S("An AP offworld item") },
 };
 
 //0x401B20
@@ -5316,41 +5319,55 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
     }
     else
     {
-        const PlantDefinition& aPlantDef = GetPlantDefinition(aSeedType);
-
-        if (aSeedType == SeedType::SEED_GIANT_WALLNUT)
+        if (aSeedType == SeedType::SEED_AP_OFFWORLD_ITEM)
         {
-            g->mScaleX *= 1.4f;
-            g->mScaleY *= 1.4f;
-            TodDrawImageScaledF(g, IMAGE_REANIM_WALLNUT_BODY, thePosX - 53.0f, thePosY - 56.0f, g->mScaleX, g->mScaleY);
-        }
-        else if (aPlantDef.mReanimationType != ReanimationType::REANIM_NONE)
-        {
-            gLawnApp->mReanimatorCache->DrawCachedPlant(g, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation, aFilterVaration, theBitVariation);
-        }
-        else
-        {
-            if (aSeedType == SeedType::SEED_KERNELPULT)
-            {
-                aCelRow = 2;
-            }
-            else if (aSeedType == SeedType::SEED_TWINSUNFLOWER)
-            {
-                aCelRow = 1;
-            }
-
-            Image* aPlantImage = Plant::GetImage(aSeedType);
+            Image* aPlantImage = Sexy::IMAGE_CHOCOLATE;
             if (aPlantImage->mNumCols <= 2)
             {
                 aCelCol = aPlantImage->mNumCols - 1;
             }
-
-#ifdef _HAS_BLOOM_AND_DOOM_CONTENTS
-            if (aSeedType == SeedType::SEED_DUPLICATORCYCLER) {
-                aCelCol = 9;
-            }
-#endif
+            aOffsetX -= 100.0f * g->mScaleX;
+            aOffsetY -= 100.0f * g->mScaleY;
             TodDrawImageCelScaledF(g, aPlantImage, thePosX + aOffsetX, thePosY + aOffsetY, aCelCol, aCelRow, g->mScaleX, g->mScaleY);
+        }
+        else
+        {
+            const PlantDefinition& aPlantDef = GetPlantDefinition(aSeedType);
+
+            if (aSeedType == SeedType::SEED_GIANT_WALLNUT)
+            {
+                g->mScaleX *= 1.4f;
+                g->mScaleY *= 1.4f;
+                TodDrawImageScaledF(g, IMAGE_REANIM_WALLNUT_BODY, thePosX - 53.0f, thePosY - 56.0f, g->mScaleX, g->mScaleY);
+            }
+            else if (aPlantDef.mReanimationType != ReanimationType::REANIM_NONE)
+            {
+                gLawnApp->mReanimatorCache->DrawCachedPlant(g, thePosX + aOffsetX, thePosY + aOffsetY, aSeedType, aDrawVariation, aFilterVaration, theBitVariation);
+            }
+            else
+            {
+                if (aSeedType == SeedType::SEED_KERNELPULT)
+                {
+                    aCelRow = 2;
+                }
+                else if (aSeedType == SeedType::SEED_TWINSUNFLOWER)
+                {
+                    aCelRow = 1;
+                }
+
+                Image* aPlantImage = Plant::GetImage(aSeedType);
+                if (aPlantImage->mNumCols <= 2)
+                {
+                    aCelCol = aPlantImage->mNumCols - 1;
+                }
+
+    #ifdef _HAS_BLOOM_AND_DOOM_CONTENTS
+                if (aSeedType == SeedType::SEED_DUPLICATORCYCLER) {
+                    aCelCol = 9;
+                }
+    #endif
+                TodDrawImageCelScaledF(g, aPlantImage, thePosX + aOffsetX, thePosY + aOffsetY, aCelCol, aCelRow, g->mScaleX, g->mScaleY);
+            }
         }
     }
     g->PopState();
@@ -6599,8 +6616,13 @@ int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
 }
 //0x467C00
 // GOTY @Patoke: 0x46B6C0
-SexyString Plant::GetNameString(SeedType theSeedType, SeedType theImitaterType)
+SexyString Plant::GetNameString(LawnApp* app, SeedType theSeedType, int level, SeedType theImitaterType)
 {
+    if (theSeedType == SeedType::SEED_AP_OFFWORLD_ITEM)
+    {
+        auto item = app->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(level));
+        return app->mAP->ItemName(item);
+    }
     const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
     SexyString aName = StrFormat(_S("[%s]"), aPlantDef.mPlantName);
     SexyString aTranslatedName = TodStringTranslate(aName);
@@ -6617,8 +6639,25 @@ SexyString Plant::GetNameString(SeedType theSeedType, SeedType theImitaterType)
 }
 
 //0x467DB0
-SexyString Plant::GetToolTip(SeedType theSeedType)
+SexyString Plant::GetToolTip(LawnApp* app, SeedType theSeedType, int level)
 {
+    if (theSeedType == SeedType::SEED_AP_OFFWORLD_ITEM)
+    {
+        auto item = app->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(level));
+        if (item.flags & APItem::ITEM_FLAG_TRAP)
+        {
+            return "A trap!";
+        }
+        if (item.flags & (APItem::ITEM_FLAG_PROGRESSION | APItem::ITEM_FLAG_USEFUL))
+        {
+            return "A useful progression item!";
+        }
+        if (item.flags & APItem::ITEM_FLAG_USEFUL)
+        {
+            return "A useful item!";
+        }
+        return "An item from a world far far away";
+    }
     const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
     SexyString aToolTip = StrFormat(_S("[%s_TOOLTIP]"), aPlantDef.mPlantName);
     return TodStringTranslate(aToolTip);

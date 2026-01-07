@@ -1793,7 +1793,7 @@ void GameSelector::ButtonDepress(int theId)
 		break;
 	case GameSelector::GameSelector_Help:
 		mApp->KillGameSelector();
-		mApp->ShowAwardScreen(AwardType::AWARD_HELP_ZOMBIENOTE, false);
+		mApp->ShowAwardScreen(AwardType::AWARD_HELP_ZOMBIENOTE, 0, false);
 		break;
 	case GameSelector::GameSelector_Options:
 		mApp->DoNewOptions(true);

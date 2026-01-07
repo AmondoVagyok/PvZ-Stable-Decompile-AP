@@ -237,8 +237,8 @@ SeedChooserScreen::SeedChooserScreen()
 			mSeedsInBank++;
 		}
 	}
-	if (mApp->IsAdventureMode() && (!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4 && mBoard->mLevel < mApp->mPlayerLevelRef))
-		CrazyDavePickSeeds();
+	// if (mApp->IsAdventureMode() && (!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4 && mBoard->mLevel < mApp->mPlayerLevelRef))
+	// 	CrazyDavePickSeeds();
 	UpdateImitaterButton();
 }
 
@@ -752,8 +752,8 @@ bool SeedChooserScreen::CheckSeedUpgrade(SeedType theSeedTypeTo, SeedType theSee
 		return true;
 
 	SexyString aWarning = TodStringTranslate(_S("[SEED_CHOOSER_UPGRADE_WARNING]"));
-	aWarning = TodReplaceString(aWarning, _S("{UPGRADE_TO}"), Plant::GetNameString(theSeedTypeTo));
-	aWarning = TodReplaceString(aWarning, _S("{UPGRADE_FROM}"), Plant::GetNameString(theSeedTypeFrom));
+	aWarning = TodReplaceString(aWarning, _S("{UPGRADE_TO}"), Plant::GetNameString(mApp, theSeedTypeTo, mBoard->mLevel));
+	aWarning = TodReplaceString(aWarning, _S("{UPGRADE_FROM}"), Plant::GetNameString(mApp, theSeedTypeFrom, mBoard->mLevel));
 	return DisplayRepickWarningDialog(aWarning.c_str());
 }
 
@@ -1039,8 +1039,8 @@ void SeedChooserScreen::ShowToolTip()
 	{
 		if (mImitaterButton->IsMouseOver() && mMouseVisible)
 		{
-			mToolTip->SetLabel(Plant::GetToolTip(SEED_IMITATER));
-			mToolTip->SetTitle(Plant::GetNameString(SEED_IMITATER));
+			mToolTip->SetLabel(Plant::GetToolTip(mApp, SEED_IMITATER, mBoard->mLevel));
+			mToolTip->SetTitle(Plant::GetNameString(mApp, SEED_IMITATER, mBoard->mLevel));
 			mToolTip->SetWarningText(_S(""));
 			mToolTip->mX = (SEED_PACKET_WIDTH - mToolTip->mWidth) / 2 + mImitaterButton->mX;
 			mToolTip->mY = mImitaterButton->mY - mToolTip->mHeight;
@@ -1088,13 +1088,13 @@ void SeedChooserScreen::ShowToolTip()
 
 				if (aSeedType == SEED_IMITATER)
 				{
-					mToolTip->SetTitle(Plant::GetNameString(aSeedType, aChosenSeed.mImitaterType));
-					mToolTip->SetLabel(Plant::GetToolTip(aChosenSeed.mImitaterType));
+					mToolTip->SetTitle(Plant::GetNameString(mApp, aSeedType, mBoard->mLevel, aChosenSeed.mImitaterType));
+					mToolTip->SetLabel(Plant::GetToolTip(mApp, aChosenSeed.mImitaterType, mBoard->mLevel));
 				}
 				else
 				{
-					mToolTip->SetTitle(Plant::GetNameString(aSeedType, SEED_NONE));
-					mToolTip->SetLabel(Plant::GetToolTip(aSeedType));
+					mToolTip->SetTitle(Plant::GetNameString(mApp, aSeedType, mBoard->mLevel, SEED_NONE));
+					mToolTip->SetLabel(Plant::GetToolTip(mApp, aSeedType, mBoard->mLevel));
 				}
 
 				int aSeedX, aSeedY;
