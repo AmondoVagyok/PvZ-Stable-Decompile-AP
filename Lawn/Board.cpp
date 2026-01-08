@@ -11514,7 +11514,7 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 //0x41D2C0
 bool Board::CanDropLoot()
 {
-	return !mCutScene->ShouldRunUpsellBoard() && (!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4 && mLevel < 11 || mLevel >= 11);
+	return !mCutScene->ShouldRunUpsellBoard();
 }
 
 //0x41D320

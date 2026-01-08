@@ -1146,6 +1146,11 @@ void Coin::Collect()
 
         return;
     }
+    
+    if (mAPLocationID != -1)
+    {
+        mApp->mAP->CheckLocations({mAPLocationID});
+    }
 
     if (mType == CoinType::COIN_PRESENT_MINIGAMES)
     {
@@ -1230,11 +1235,6 @@ void Coin::Collect()
         }
 
         return;
-    }
-    
-    if (mAPLocationID != -1)
-    {
-        mApp->mAP->CheckLocations({mAPLocationID});
     }
 
     if (IsLevelAward())
