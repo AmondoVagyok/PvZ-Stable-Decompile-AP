@@ -1101,7 +1101,7 @@ void LawnApp::FinishConfirmDeleteUserDialog(bool isYes)
 		{
 			mPlayerInfo = mProfileMgr->GetAnyProfile();
 		}
-		mPlayerLevelRef = mPlayerInfo->GetLevel();
+		mPlayerLevelRef = mPlayerInfo ? mPlayerInfo->GetLevel() : -1;
 	}
 
 	mProfileMgr->Save();
