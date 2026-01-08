@@ -323,6 +323,8 @@ void ChallengeScreen::SetUnlockChallengeIndex(ChallengePage thePage, bool theIsI
 //0x42E440
 int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 {
+	return 0;
+	
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
 	if (mApp->mGameMode == GAMEMODE_UPSELL && mApp->mGameScene == SCENE_LEVEL_INTRO)
 	{
@@ -701,7 +703,11 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 				TodDrawImageScaledF(g, aLockImage, aPosX + 24 + mLockShakeX, aPosY + 9 + mLockShakeY, 0.7f, 0.7f);
 				g->SetColorizeImages(false);
 			}
-			else if (aRecord > 0)
+			else if (aChallengeButton->mDisabled)
+			{
+				TodDrawImageScaledF(g, Sexy::IMAGE_LOCK, aPosX + 24, aPosY + 9, 0.7f, 0.7f);
+			}
+			else
 			{
 				if (mApp->HasBeatenChallenge(aDef.mChallengeMode) 
 #ifdef _DS_MINIGAMES
@@ -711,23 +717,19 @@ void ChallengeScreen::DrawButton(Graphics* g, int theChallengeIndex)
 				{
 					g->DrawImage(Sexy::IMAGE_MINIGAME_TROPHY, aPosX - 6, aPosY - 2);
 				}
-				else if (mApp->IsEndlessScaryPotter(aDef.mChallengeMode) || mApp->IsEndlessIZombie(aDef.mChallengeMode))
+				else if (mApp->IsEndlessScaryPotter(aDef.mChallengeMode) || mApp->IsEndlessIZombie(aDef.mChallengeMode) && aRecord > 0)
 				{
 					SexyString aAchievement = mApp->Pluralize(aRecord, _S("[ONE_FLAG]"), _S("[COUNT_FLAGS]"));
 					TodDrawString(g, aAchievement, aPosX + 48, aPosY + 48, Sexy::FONT_CONTINUUMBOLD14OUTLINE, Color::White, DS_ALIGN_CENTER);
 					TodDrawString(g, aAchievement, aPosX + 48, aPosY + 48, Sexy::FONT_CONTINUUMBOLD14, Color(255, 0, 0), DS_ALIGN_CENTER);
 				}
-				else if (mApp->IsSurvivalEndless(aDef.mChallengeMode) || mApp->IsLastStandEndless(aDef.mChallengeMode))
+				else if (mApp->IsSurvivalEndless(aDef.mChallengeMode) || mApp->IsLastStandEndless(aDef.mChallengeMode) && aRecord > 0)
 				{
 					SexyString aAchievement = TodReplaceNumberString(_S("[LONGEST_STREAK]"), _S("{STREAK}"), aRecord);
 					Rect aRect(aPosX, aPosY + 15, 96, 200);
 					TodDrawStringWrapped(g, aAchievement, aRect, Sexy::FONT_CONTINUUMBOLD14OUTLINE, Color::White, DS_ALIGN_CENTER);
 					TodDrawStringWrapped(g, aAchievement, aRect, Sexy::FONT_CONTINUUMBOLD14, Color(255, 0, 0), DS_ALIGN_CENTER);
 				}
-			}
-			else if (aChallengeButton->mDisabled)
-			{
-				TodDrawImageScaledF(g, Sexy::IMAGE_LOCK, aPosX + 24, aPosY + 9, 0.7f, 0.7f);
 			}
 		}
 		else
