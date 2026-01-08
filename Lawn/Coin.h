@@ -40,12 +40,14 @@ public:
     int                     mTimesDropped;          //+0xCC
     FilterEffect            mFilterEffect;
     ReanimationID           mReanimationID;
+    
+    int64_t                 mAPLocationID;
 
 public:
     Coin();
     ~Coin();
 
-    void                    CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion);
+    void                    CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion, int64_t theLocationId = -1);
     void                    MouseDown(int x, int y, int theClickCount);
     bool                    MouseHitTest(int theX, int theY, HitResult* theHitResult);
     void                    Die();

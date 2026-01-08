@@ -2401,10 +2401,10 @@ void Board::ClearAdvice(AdviceType theHelpIndex)
 }
 
 //0x40CB10
-Coin* Board::AddCoin(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion)
+Coin* Board::AddCoin(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion, int64_t theLocationId)
 {
 	Coin* aCoin = mCoins.DataArrayAlloc();
-	aCoin->CoinInitialize(theX, theY, theCoinType, theCoinMotion);
+	aCoin->CoinInitialize(theX, theY, theCoinType, theCoinMotion, theLocationId);
 	if (mApp->IsFirstTimeAdventureMode() && mLevel == 1 && mApp->mPlayerInfo->GetLevel() <= 4)
 	{
 		DisplayAdvice(_S("[ADVICE_CLICK_ON_SUN]"), MessageStyle::MESSAGE_STYLE_TUTORIAL_LEVEL1_STAY, AdviceType::ADVICE_CLICK_ON_SUN);

@@ -29,7 +29,7 @@ Coin::~Coin()
 }
 
 //0x42FF60
-void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion)
+void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion theCoinMotion, int64_t theLocationId)
 {
 	mPosX = theX;
 	mPosY = theY;
@@ -54,6 +54,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
 	mPottedPlantSpec.InitializePottedPlant(SeedType::SEED_NONE);
     mFilterEffect = FilterEffect::FILTER_EFFECT_NONE;
     mReanimationID = ReanimationID::REANIMATIONID_NULL;
+    mAPLocationID = theLocationId;
 
     if (IsSun())
     {
@@ -117,7 +118,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
         mRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_ABOVE_UI, 0, 0);
     }
 
-    if (mType == CoinType::COIN_FINAL_SEED_PACKET)
+    if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET)
     {
         mWidth = IMAGE_SEEDS->GetCelWidth();
         mHeight = IMAGE_SEEDS->GetCelHeight();
@@ -341,6 +342,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
             }
         }
         if (mType == CoinType::COIN_FINAL_SEED_PACKET || 
+            mType == CoinType::COIN_FLAG_SEED_PACKET || 
             mType == CoinType::COIN_USABLE_SEED_PACKET || 
             mType == CoinType::COIN_TROPHY || 
             mType == CoinType::COIN_SHOVEL || 
@@ -589,7 +591,7 @@ void Coin::UpdateFall()
             }
 
             ParticleEffect aEffect;
-            if (mType == CoinType::COIN_FINAL_SEED_PACKET)
+            if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET)
             {
                 aEffect = ParticleEffect::PARTICLE_SEED_PACKET;
             }
@@ -674,7 +676,7 @@ void Coin::UpdateCollected()
         aDestX = 35;
         aDestY = 487;
     }
-    else if(mType == CoinType::COIN_AWARD_PRESENT || mType == CoinType::COIN_PRESENT_PLANT)
+    else if(mType == CoinType::COIN_AWARD_PRESENT || mType == CoinType::COIN_PRESENT_PLANT || mType == CoinType::COIN_FLAG_SEED_PACKET)
     {
         mDisappearCounter++;
         if (mDisappearCounter >= 200)
@@ -835,7 +837,11 @@ SeedType Coin::GetFinalSeedPacketType()
 {
     if (mBoard && mBoard->mLevel <= 50)
     {
-        return mApp->GetAwardSeedForLevel(mBoard->mLevel);
+        auto item = mApp->mAP->ItemAtLocation(mAPLocationID);
+        // TODO: Make sure this is actually a PvZ item
+        auto seed = PVZRAPData::Items::SeedItem(item.item);
+        if (seed == SeedType::SEED_NONE) return SeedType::SEED_AP_OFFWORLD_ITEM;
+        return seed;
     }
 
     return SeedType::SEED_NONE;
@@ -928,7 +934,7 @@ void Coin::Draw(Graphics* g)
     {
         return;
     }
-    else if (mType == CoinType::COIN_FINAL_SEED_PACKET)
+    else if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == COIN_FLAG_SEED_PACKET)
     {
         SeedType aSeedType = GetFinalSeedPacketType();
         g->SetScale(mScale, mScale, 0.0f, 0.0f);
@@ -1183,6 +1189,19 @@ void Coin::Collect()
 
         return;
     }
+    if (mType == CoinType::COIN_FLAG_SEED_PACKET)
+    {
+        TOD_ASSERT(mBoard);
+
+        mApp->AddTodParticle(mPosX + 30.0f, mPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_PRESENT_PICKUP);
+
+        mDisappearCounter = 0;
+        mFadeCount = 0;
+
+        AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_AWARD_PICKUP_ARROW, nullptr);
+
+        return;
+    }
 
     if (mType == CoinType::COIN_CHOCOLATE || mType == CoinType::COIN_AWARD_CHOCOLATE)
     {
@@ -1212,10 +1231,14 @@ void Coin::Collect()
 
         return;
     }
+    
+    if (mAPLocationID != -1)
+    {
+        mApp->mAP->CheckLocations({mAPLocationID});
+    }
 
     if (IsLevelAward())
     {
-        // TODO: Send the check for this level
         if (aIsEndlessAward)
         {
             if (mType == CoinType::COIN_AWARD_BAG_DIAMOND)
@@ -1281,11 +1304,6 @@ void Coin::Collect()
         {
             mApp->PlaySample(SOUND_SEEDLIFT);
             mApp->PlaySample(SOUND_TAP2);
-        }
-        
-        if (mApp->IsAdventureMode())
-        {
-            mApp->mAP->CheckLocations({PVZRAPData::Locations::LevelClear(mBoard->mLevel)});
         }
 
         mApp->AddTodParticle(mPosX + 30.0f, mPosY + 30.0f, mRenderOrder + 1, ParticleEffect::PARTICLE_STARBURST);

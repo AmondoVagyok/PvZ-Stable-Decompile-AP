@@ -10,6 +10,20 @@ namespace PVZRAPData
 {
     namespace Locations
     {
+        enum class SurvivalClass
+        {
+            DAY,
+            NIGHT,
+            POOL,
+            FOG,
+            ROOF,
+            DAY_HARD,
+            NIGHT_HARD,
+            POOL_HARD,
+            FOG_HARD,
+            ROOF_HARD
+        };
+        
         /// Get the AP location ID for clearing a level
         /// For example, LevelClear(3, 2) will get the AP location ID for Level 2-2
         /// Dr. Zomboss is 5-10
@@ -51,6 +65,34 @@ namespace PVZRAPData
                 return -1;
             }
             return 5000 + index - 1;
+        }
+        
+        // Flag is 1-based
+        inline int64_t SurvivalFlag(SurvivalClass cls, int flag)
+        {
+            switch (cls)
+            {
+            case SurvivalClass::DAY:
+                return 2063 + flag;
+            case SurvivalClass::NIGHT:
+                return 2067 + flag;
+            case SurvivalClass::POOL:
+                return 2071 + flag;
+            case SurvivalClass::FOG:
+                return 2075 + flag;
+            case SurvivalClass::ROOF:
+                return 2079 + flag;
+            case SurvivalClass::DAY_HARD:
+                return 2083 + flag;
+            case SurvivalClass::NIGHT_HARD:
+                return 2092 + flag;
+            case SurvivalClass::POOL_HARD:
+                return 2101 + flag;
+            case SurvivalClass::FOG_HARD:
+                return 2110 + flag;
+            case SurvivalClass::ROOF_HARD:
+                return 2119 + flag;
+            }
         }
         
         constexpr int64_t MINIGAME_ZOMBOTANY_CLEAR = 1050;
@@ -104,8 +146,72 @@ namespace PVZRAPData
         constexpr int64_t SURVIVAL_FOG_HARD_CLEAR = 1096;
         constexpr int64_t SURVIVAL_ROOF_HARD_CLEAR = 1097;
         
-        // TODO: Flag locations
+        constexpr int64_t FLAG_1_7_1 = 2000;
+        constexpr int64_t FLAG_1_9_1 = 2001;
+        constexpr int64_t FLAG_1_10_1 = 2002;
+        constexpr int64_t FLAG_2_2_1 = 2003;
+        constexpr int64_t FLAG_2_4_1 = 2004;
+        constexpr int64_t FLAG_2_7_1 = 2005;
+        constexpr int64_t FLAG_2_9_1 = 2006;
+        constexpr int64_t FLAG_2_10_1 = 2007;
+        constexpr int64_t FLAG_3_2_1 = 2008;
+        constexpr int64_t FLAG_3_3_1 = 2009;
+        constexpr int64_t FLAG_3_4_1 = 2010;
+        constexpr int64_t FLAG_3_4_2 = 2011;
+        constexpr int64_t FLAG_3_5_1 = 2012;
+        constexpr int64_t FLAG_3_6_1 = 2013;
+        constexpr int64_t FLAG_3_7_1 = 2014;
+        constexpr int64_t FLAG_3_7_2 = 2015;
+        constexpr int64_t FLAG_3_8_1 = 2016;
+        constexpr int64_t FLAG_3_9_1 = 2017;
+        constexpr int64_t FLAG_3_9_2 = 2018;
+        constexpr int64_t FLAG_3_10_1 = 2019;
+        constexpr int64_t FLAG_3_10_2 = 2020;
+        constexpr int64_t FLAG_4_2_1 = 2021;
+        constexpr int64_t FLAG_4_4_1 = 2022;
+        constexpr int64_t FLAG_4_7_1 = 2023;
+        constexpr int64_t FLAG_4_9_1 = 2024;
+        constexpr int64_t FLAG_4_10_1 = 2025;
+        constexpr int64_t FLAG_5_2_1 = 2026;
+        constexpr int64_t FLAG_5_3_1 = 2027;
+        constexpr int64_t FLAG_5_4_1 = 2028;
+        constexpr int64_t FLAG_5_4_2 = 2029;
+        constexpr int64_t FLAG_5_5_1 = 2030;
+        constexpr int64_t FLAG_5_6_1 = 2031;
+        constexpr int64_t FLAG_5_7_1 = 2032;
+        constexpr int64_t FLAG_5_7_2 = 2033;
+        constexpr int64_t FLAG_5_8_1 = 2034;
+        constexpr int64_t FLAG_5_9_1 = 2035;
+        constexpr int64_t FLAG_5_9_2 = 2036;
         
+        constexpr int64_t FLAG_ZOMBOTANY_1 = 2037;
+        constexpr int64_t FLAG_WALL_NUT_BOWLING_1 = 2038;
+        constexpr int64_t FLAG_RAINING_SEEDS_1 = 2039;
+        constexpr int64_t FLAG_RAINING_SEEDS_2 = 2040;
+        constexpr int64_t FLAG_RAINING_SEEDS_3 = 2041;
+        constexpr int64_t FLAG_INVISIGHOUL_1 = 2042;
+        constexpr int64_t FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_1 = 2043;
+        constexpr int64_t FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_2 = 2044;
+        constexpr int64_t FLAG_PORTAL_COMBAT_1 = 2045;
+        constexpr int64_t FLAG_COLUMN_SEE_EM_1 = 2046;
+        constexpr int64_t FLAG_COLUMN_SEE_EM_2 = 2047;
+        constexpr int64_t FLAG_BOBSLED_BONANZA_1 = 2048;
+        constexpr int64_t FLAG_BOBSLED_BONANZA_2 = 2049;
+        constexpr int64_t FLAG_BOBSLED_BONANZA_3 = 2050;
+        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_1 = 2051;
+        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_2 = 2052;
+        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_3 = 2053;
+        constexpr int64_t FLAG_LAST_STAND_1 = 2054;
+        constexpr int64_t FLAG_LAST_STAND_2 = 2055;
+        constexpr int64_t FLAG_LAST_STAND_3 = 2056;
+        constexpr int64_t FLAG_LAST_STAND_4 = 2057;
+        constexpr int64_t FLAG_ZOMBOTANY_2_1 = 2058;
+        constexpr int64_t FLAG_ZOMBOTANY_2_2 = 2059;
+        constexpr int64_t FLAG_WALL_NUT_BOWLING_2_1 = 2060;
+        constexpr int64_t FLAG_WALL_NUT_BOWLING_2_2 = 2061;
+        constexpr int64_t FLAG_POGO_PARTY_1 = 2062;
+        constexpr int64_t FLAG_POGO_PARTY_2 = 2063;
+
         
     }
     

@@ -8459,6 +8459,7 @@ bool Zombie::TrySpawnLevelAward()
     }
 
     CoinType aCoinType;
+    int64_t locationId = -1;
     if (mApp->IsScaryPotterLevel() && !mBoard->IsFinalScaryPotterStage())
     {
         aCoinType = CoinType::COIN_NONE;
@@ -8466,6 +8467,7 @@ bool Zombie::TrySpawnLevelAward()
     }
     else if (mApp->IsAdventureMode() && mBoard->mLevel <= 50)
     {
+        locationId = PVZRAPData::Locations::LevelClear(mBoard->mLevel);
         if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mBoard->mLevel)))
         {
             // This level is already cleared
@@ -8589,7 +8591,7 @@ bool Zombie::TrySpawnLevelAward()
     if (aCoinType != CoinType::COIN_NONE)
     {
         mApp->PlayFoley(FoleyType::FOLEY_SPAWN_SUN);
-        mBoard->AddCoin(aCenterX, aCenterY, aCoinType, aCoinMotion);
+        mBoard->AddCoin(aCenterX, aCenterY, aCoinType, aCoinMotion, locationId);
     }
 
     
@@ -8671,6 +8673,231 @@ void Zombie::DropLoot()
         mBoard->AddCoin(aCenterX - 30, aCenterY, CoinType::COIN_DIAMOND, CoinMotion::COIN_MOTION_COIN);
         mBoard->AddCoin(aCenterX - 40, aCenterY, CoinType::COIN_DIAMOND, CoinMotion::COIN_MOTION_COIN);
         mBoard->AddCoin(aCenterX - 50, aCenterY, CoinType::COIN_DIAMOND, CoinMotion::COIN_MOTION_COIN);
+    }
+    else if (mZombieType == ZombieType::ZOMBIE_FLAG)
+    {
+        // Find out which flag location we need
+        int64_t location = -1;
+        auto flag = mBoard->mCurrentWave / mBoard->GetNumWavesPerFlag();
+        switch (mBoard->mLevel)
+        {
+        case 7:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_1_7_1;
+            }
+            break;
+        case 9:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_1_9_1;
+            }
+            break;
+        case 10:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_1_10_1;
+            }
+            break;
+        case 12:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_2_2_1;
+            }
+            break;
+        case 14:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_2_4_1;
+            }
+            break;
+        case 17:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_2_7_1;
+            }
+            break;
+        case 19:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_2_9_1;
+            }
+            break;
+        case 20:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_2_10_1;
+            }
+            break;
+        case 22:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_2_1;
+            }
+            break;
+        case 23:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_3_1;
+            }
+            break;
+        case 24:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_4_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_3_4_2;
+            }
+            break;
+        case 25:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_5_1;
+            }
+            break;
+        case 26:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_6_1;
+            }
+            break;
+        case 27:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_7_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_3_7_2;
+            }
+            break;
+        case 28:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_8_1;
+            }
+            break;
+        case 29:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_9_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_3_9_2;
+            }
+            break;
+        case 30:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_3_10_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_3_10_2;
+            }
+            break;
+        case 32:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_4_2_1;
+            }
+            break;
+        case 34:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_4_4_1;
+            }
+            break;
+        case 37:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_4_7_1;
+            }
+            break;
+        case 39:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_4_9_1;
+            }
+            break;
+        case 40:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_4_10_1;
+            }
+            break;
+        case 42:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_2_1;
+            }
+            break;
+        case 43:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_3_1;
+            }
+            break;
+        case 44:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_4_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_5_4_2;
+            }
+            break;
+        case 45:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_5_1;
+            }
+            break;
+        case 46:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_6_1;
+            }
+            break;
+        case 47:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_7_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_5_7_2;
+            }
+            break;
+        case 48:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_8_1;
+            }
+            break;
+        case 49:
+            if (flag == 1)
+            {
+                location = PVZRAPData::Locations::FLAG_5_9_1;
+            }
+            else if (flag == 2)
+            {
+                location = PVZRAPData::Locations::FLAG_5_9_2;
+            }
+            break;
+        }
+        
+        if (location != -1)
+        {
+            if (!mApp->mAP->IsLocationChecked(location))
+            {
+                mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
+            }
+        }
     }
     else
     {

@@ -34,6 +34,7 @@
 
 #include "../Sexy.TodLib/Attachment.h"
 #include "../Sexy.TodLib/EffectSystem.h"
+#include "../SexyAppFramework/APData.h"
 
 int gZombieWaves[NUM_LEVELS] = {  //0x6A34E8
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
@@ -2344,10 +2345,12 @@ void Challenge::SpawnLevelAward(int theGridX, int theGridY)
 		mApp->IsFirstTimeAdventureMode() ? COIN_FINAL_SEED_PACKET : 
 		mApp->IsAdventureMode() || mApp->HasBeatenChallenge(mApp->mGameMode) ? COIN_AWARD_MONEY_BAG : COIN_TROPHY;
 	
+	auto locationId = PVZRAPData::Locations::LevelClear(mBoard->mLevel);
+	
 	mBoard->mLevelAwardSpawned = true;
 	mApp->mBoardResult = BOARDRESULT_WON;
 	mApp->PlayFoley(FOLEY_SPAWN_SUN);
-	Coin* aCoin = mBoard->AddCoin(aPosX, aPosY, aCoinType, COIN_MOTION_COIN);
+	Coin* aCoin = mBoard->AddCoin(aPosX, aPosY, aCoinType, COIN_MOTION_COIN, locationId);
 	mApp->AddTodParticle(BOARD_WIDTH / 2, BOARD_HEIGHT / 2, RENDER_LAYER_TOP, PARTICLE_SCREEN_FLASH);
 
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ZOMBIQUARIUM)
