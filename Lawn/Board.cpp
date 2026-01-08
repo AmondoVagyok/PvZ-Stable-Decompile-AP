@@ -10706,7 +10706,7 @@ int Board::GetNumSeedsInBank()
 		return 8;
 	}
 
-	int aNumSeeds = mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PACKET_UPGRADE] + 6;
+	int aNumSeeds = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT) + 6;
 	int aSeedsAvailable = mApp->GetSeedsAvailable();
 	return min(aNumSeeds, aSeedsAvailable);
 }
