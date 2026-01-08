@@ -301,7 +301,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_socket_error_handler([this](const std::string& error_message)
     {
-        this->Disconnect();
+        // this->Disconnect();
     });
     d->mAP->set_items_received_handler([this](const std::list<APClient::NetworkItem>& items) {
         std::list<APItem> ap_items;
