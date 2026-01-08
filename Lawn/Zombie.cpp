@@ -8459,7 +8459,7 @@ bool Zombie::TrySpawnLevelAward()
     }
 
     CoinType aCoinType;
-    int64_t locationId = -1;
+    int64_t locationId = mApp->ChallengeCompletionLocation(mApp->mGameMode);
     if (mApp->IsScaryPotterLevel() && !mBoard->IsFinalScaryPotterStage())
     {
         aCoinType = CoinType::COIN_NONE;
@@ -8567,14 +8567,15 @@ bool Zombie::TrySpawnLevelAward()
         {
             aCoinType = CoinType::COIN_AWARD_MONEY_BAG;
         }
-        else if (mApp->TrophiesNeedForGoldSunflower() == 1)
-        {
-            aCoinType = CoinType::COIN_AWARD_GOLD_SUNFLOWER;
-            ReportAchievement::GiveAchievement(mApp, AchievementId::NovelPeasPrize, false);
-        }
+        // TODO: What to do with this?
+        // else if (mApp->TrophiesNeedForGoldSunflower() == 1)
+        // {
+        //     aCoinType = CoinType::COIN_AWARD_GOLD_SUNFLOWER;
+        //     ReportAchievement::GiveAchievement(mApp, AchievementId::NovelPeasPrize, false);
+        // }
         else
         {
-            aCoinType = CoinType::COIN_TROPHY;
+            aCoinType = CoinType::COIN_FINAL_SEED_PACKET;
         }
     }
     else

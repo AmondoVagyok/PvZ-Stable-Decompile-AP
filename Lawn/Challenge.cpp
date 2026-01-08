@@ -2343,9 +2343,9 @@ void Challenge::SpawnLevelAward(int theGridX, int theGridY)
 	float aPosY = mBoard->GridToPixelY(theGridX, theGridY) + 40;
 	CoinType aCoinType = 
 		mApp->IsFirstTimeAdventureMode() ? COIN_FINAL_SEED_PACKET : 
-		mApp->IsAdventureMode() || mApp->HasBeatenChallenge(mApp->mGameMode) ? COIN_AWARD_MONEY_BAG : COIN_TROPHY;
+		mApp->IsAdventureMode() || mApp->HasBeatenChallenge(mApp->mGameMode) ? COIN_AWARD_MONEY_BAG : COIN_FINAL_SEED_PACKET;
 	
-	auto locationId = PVZRAPData::Locations::LevelClear(mBoard->mLevel);
+	auto locationId = mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE ? PVZRAPData::Locations::LevelClear(mBoard->mLevel) : mApp->ChallengeCompletionLocation(mApp->mGameMode);
 	
 	mBoard->mLevelAwardSpawned = true;
 	mApp->mBoardResult = BOARDRESULT_WON;
