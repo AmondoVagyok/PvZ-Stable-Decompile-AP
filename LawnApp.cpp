@@ -2719,6 +2719,13 @@ SeedType LawnApp::GetAwardSeedForLevel(int theLevel)
 //0x453AC0
 int LawnApp::GetSeedsAvailable()
 {
+	int availableSeeds = 0;
+	for (auto seed = SeedType::SEED_PEASHOOTER; seed <= SEED_IMITATER; seed = (SeedType)(seed + 1))
+	{
+		availableSeeds += mAP->ReceivedItemCount(PVZRAPData::Items::Seed(seed)) > 0 ? 1 : 0;
+	}
+	return availableSeeds;
+	
 	int aLevel = mBoard && mBoard->mIsReplay && mPlayerLevelRef > 4 ? mPlayerLevelRef : mPlayerInfo->GetLevel();
 	int maxPlants = 49;
 
@@ -2735,6 +2742,12 @@ int LawnApp::GetSeedsAvailable()
 //0x453B20
 bool LawnApp::HasSeedType(SeedType theSeedType)
 {
+	auto apItem = PVZRAPData::Items::Seed(theSeedType);
+	if (apItem != -1)
+	{
+		return mAP->ReceivedItemCount(apItem) != 0;
+	}
+	
 	if (IsTrialStageLocked() && theSeedType >= SeedType::SEED_JALAPENO)
 		return false;
 

@@ -37,6 +37,8 @@
 #include "ZenGarden.h"
 
 #define SEXY_PERF_ENABLED
+#include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 #include "../SexyAppFramework/PerfTimer.h"
 
 //#define SEXY_MEMTRACE
@@ -1902,10 +1904,17 @@ void Board::InitLevel()
 	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank() && mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE)
 	{
 		mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
+		SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
 		// 卡槽错误的关卡，依次填充所有卡牌
 		for (int i = 0; i < mSeedBank->mNumPackets; i++)
 		{
-			mSeedBank->mSeedPackets[i].SetPacketType((SeedType)i);
+			while (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(nextSeedType)) == 0)
+			{
+				nextSeedType = (SeedType)(nextSeedType + 1);
+			}
+			mSeedBank->mSeedPackets[i].SetPacketType(nextSeedType);
+			
+			nextSeedType = (SeedType)(nextSeedType + 1);
 		}
 	}
 	// 将所有子控件标记为已变动
@@ -6415,15 +6424,15 @@ void Board::UpdateTutorial()
 	}
 
 	// 冒险模式初期关卡，检测到向日葵数量小于 3 时，进入“更多向日葵”的教程
-	if (mApp->IsFirstTimeAdventureMode() && mLevel >= 3 && mLevel != 5 && mLevel <= 7 && mTutorialState == TutorialState::TUTORIAL_OFF &&
-		mCurrentWave >= 5 && !gShownMoreSunTutorial && mSeedBank->mSeedPackets[1].CanPickUp() && CountPlantByType(SeedType::SEED_SUNFLOWER) < 3)
-	{
-		TOD_ASSERT(!ChooseSeedsOnCurrentLevel());
-		DisplayAdvice(_S("[ADVICE_PLANT_SUNFLOWER4]"), MessageStyle::MESSAGE_STYLE_TUTORIAL_LATER_STAY, AdviceType::ADVICE_NONE);
-		gShownMoreSunTutorial = true;
-		SetTutorialState(TutorialState::TUTORIAL_MORESUN_PICK_UP_SUNFLOWER);
-		mTutorialTimer = 500;
-	}
+	// if (mApp->IsFirstTimeAdventureMode() && mLevel >= 3 && mLevel != 5 && mLevel <= 7 && mTutorialState == TutorialState::TUTORIAL_OFF &&
+	// 	mCurrentWave >= 5 && !gShownMoreSunTutorial && mSeedBank->mSeedPackets[1].CanPickUp() && CountPlantByType(SeedType::SEED_SUNFLOWER) < 3)
+	// {
+	// 	TOD_ASSERT(!ChooseSeedsOnCurrentLevel());
+	// 	DisplayAdvice(_S("[ADVICE_PLANT_SUNFLOWER4]"), MessageStyle::MESSAGE_STYLE_TUTORIAL_LATER_STAY, AdviceType::ADVICE_NONE);
+	// 	gShownMoreSunTutorial = true;
+	// 	SetTutorialState(TutorialState::TUTORIAL_MORESUN_PICK_UP_SUNFLOWER);
+	// 	mTutorialTimer = 500;
+	// }
 }
 
 //0x414CB0
