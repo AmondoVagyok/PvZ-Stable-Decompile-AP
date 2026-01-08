@@ -6587,19 +6587,19 @@ void Board::UpdateGame()
 		mNukeCounter--;
 	}
 
-	if (mMainCounter == 1 && mApp->IsFirstTimeAdventureMode() && mApp->mPlayerInfo->GetLevel() <= 4)
-	{
-		if (mLevel == 1)
-		{
-			SetTutorialState(TutorialState::TUTORIAL_LEVEL_1_PICK_UP_PEASHOOTER);
-		}
-		else if (mLevel == 2)
-		{
-			SetTutorialState(TutorialState::TUTORIAL_LEVEL_2_PICK_UP_SUNFLOWER);
-			DisplayAdvice(_S("[ADVICE_PLANT_SUNFLOWER1]"), MessageStyle::MESSAGE_STYLE_TUTORIAL_LEVEL2, AdviceType::ADVICE_NONE);
-			mTutorialTimer = 500;
-		}
-	}
+	// if (mMainCounter == 1 && mApp->IsFirstTimeAdventureMode() && mApp->mPlayerInfo->GetLevel() <= 4)
+	// {
+	// 	if (mLevel == 1)
+	// 	{
+	// 		SetTutorialState(TutorialState::TUTORIAL_LEVEL_1_PICK_UP_PEASHOOTER);
+	// 	}
+	// 	else if (mLevel == 2)
+	// 	{
+	// 		SetTutorialState(TutorialState::TUTORIAL_LEVEL_2_PICK_UP_SUNFLOWER);
+	// 		DisplayAdvice(_S("[ADVICE_PLANT_SUNFLOWER1]"), MessageStyle::MESSAGE_STYLE_TUTORIAL_LEVEL2, AdviceType::ADVICE_NONE);
+	// 		mTutorialTimer = 500;
+	// 	}
+	// }
 
 	UpdateProgressMeter();
 }
