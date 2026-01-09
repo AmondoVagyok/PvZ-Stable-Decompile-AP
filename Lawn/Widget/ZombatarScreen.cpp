@@ -428,24 +428,24 @@ void ZombatarWidget::Update() {
 }
 
 void ZombatarWidget::Draw(Graphics* g) {
-	g->PushState();
-	g->SetLinearBlend(true);
-	g->DrawImage(IMAGE_ZOMBATAR_MAIN_BG, 0, 0);
-
-	Graphics leafG(*g);
-	leafG.mTransX -= BOARD_WIDTH;
-	for (int i = 0; i < 3; i++)
-	{
-		mApp->ReanimationGet(mApp->mGameSelector->mFlowerReanimID[i])->Draw(&leafG);
-	}
-
-	g->DrawImageF(IMAGE_ZOMBATAR_DAY_GRAVE, 8.55f, 432.05f);
-
-	g->DrawImageF(IMAGE_ZOMBATAR_WIDGET_BG, 26, 25);
-	DrawZombiePortrait(g);
-	DrawZombatarItems(g);
-	DrawColorPalletes(g);
-	DrawZombieAvatar(g);
+	// g->PushState();
+	// g->SetLinearBlend(true);
+	// g->DrawImage(IMAGE_ZOMBATAR_MAIN_BG, 0, 0);
+	//
+	// Graphics leafG(*g);
+	// leafG.mTransX -= BOARD_WIDTH;
+	// for (int i = 0; i < 3; i++)
+	// {
+	// 	mApp->ReanimationGet(mApp->mGameSelector->mFlowerReanimID[i])->Draw(&leafG);
+	// }
+	//
+	// g->DrawImageF(IMAGE_ZOMBATAR_DAY_GRAVE, 8.55f, 432.05f);
+	//
+	// g->DrawImageF(IMAGE_ZOMBATAR_WIDGET_BG, 26, 25);
+	// DrawZombiePortrait(g);
+	// DrawZombatarItems(g);
+	// DrawColorPalletes(g);
+	// DrawZombieAvatar(g);
 }
 
 void ZombatarWidget::AddedToManager(WidgetManager* theWidgetManager)
