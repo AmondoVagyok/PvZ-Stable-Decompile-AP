@@ -15,6 +15,8 @@
 #include "../../Sexy.TodLib/TodCommon.h"
 #include "../../Sexy.TodLib/TodStringFile.h"
 #include "AchievementsScreen.h"
+#include "../../SexyAppFramework/APData.h"
+#include "../../SexyAppFramework/APWrapper.h"
 #include "../../SexyAppFramework/WidgetManager.h"
 
 //0x405780
@@ -261,7 +263,7 @@ void AwardScreen::DrawAwardSeed(Graphics* g)
 	SeedType aSeedType = mApp->GetAwardSeedForLevel(mLevel - 1);
 	SexyString aAward = Plant::GetNameString(mApp, aSeedType, mLevel - 1, SEED_NONE);
 	SexyString aMessage = Plant::GetToolTip(mApp, aSeedType, mLevel - 1);
-	DrawBottom(g, _S("[NEW_PLANT]"), aAward, aMessage);
+	DrawBottom(g, _S("You sent an item!"), aAward, aMessage);
 
 	g->SetScale(2, 2, 350, 129);
 	DrawSeedPacket(g, 350, 129, aSeedType, SEED_NONE, 0, 255, true, false);
@@ -325,74 +327,79 @@ void AwardScreen::Draw(Graphics* g)
 				g->DrawImage(Sexy::IMAGE_TROPHY_HI_RES, BOARD_WIDTH / 2 - Sexy::IMAGE_TROPHY_HI_RES->mWidth / 2, 137);
 			}
 		}
-		else if (aLevel == 5)
-		{
-			DrawBottom(g, _S("[GOT_SHOVEL]"), _S("[SHOVEL]"), _S("[SHOVEL_DESCRIPTION]"));
-			g->DrawImage(Sexy::IMAGE_SHOVEL_HI_RES, BOARD_WIDTH / 2 - Sexy::IMAGE_SHOVEL_HI_RES->mWidth / 2, 137);
-		}
-		else if (aLevel == 10)
-		{
-			g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE1, 131, 132);
-			TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
-		}
-		else if (aLevel == 15)
-		{
-			DrawBottom(g, _S("[FOUND_SUBURBAN_ALMANAC]"), _S("[SUBURBAN_ALMANAC]"), _S("[SUBURBAN_ALMANAC_DESCRIPTION]"));
-			g->DrawImage(Sexy::IMAGE_ALMANAC, BOARD_WIDTH / 2 - Sexy::IMAGE_ALMANAC->mWidth / 2, 160);
-		}
-		else if (aLevel == 20)
-		{
-			g->DrawImage(Sexy::IMAGE_BACKGROUND2, -700, -300, 2800, 1200);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE2, 133, 127);
-			TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
-		}
-		else if (aLevel == 25)
-		{
-			DrawBottom(g, _S("[FOUND_KEYS]"), _S("[KEYS]"), _S("[KEYS_DESCRIPTION]"));
-			g->DrawImage(Sexy::IMAGE_CARKEYS, BOARD_WIDTH / 2 - Sexy::IMAGE_CARKEYS->mWidth / 2, 160);
-		}
-		else if (aLevel == 30)
-		{
-			g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE3, 120, 117);
-			TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
-		}
-		else if (aLevel == 35)
-		{
-			DrawBottom(g, _S("[FOUND_TACO]"), _S("[TACO]"), _S("[TACO_DESCRIPTION]"));
-			g->DrawImage(Sexy::IMAGE_TACO, BOARD_WIDTH / 2 - Sexy::IMAGE_TACO->mWidth / 2, 160);
-		}
-		else if (aLevel == 40)
-		{
-			g->DrawImage(Sexy::IMAGE_BACKGROUND2, -700, -300, 2800, 1200);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE4, 102, 117);
-			TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
-		}
-		else if (aLevel == 45)
-		{
-			DrawBottom(g, _S("[FOUND_WATERING_CAN]"), _S("[WATERING_CAN]"), _S("[WATERING_CAN_DESCRIPTION]"));
-			g->DrawImage(Sexy::IMAGE_WATERINGCAN, BOARD_WIDTH / 2 - Sexy::IMAGE_WATERINGCAN->mWidth / 2, 160);
-		}
-		else if (aLevel == 50)
-		{
-			g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
-			g->DrawImage(Sexy::IMAGE_ZOMBIE_FINAL_NOTE, 114, 138);
-			TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
-		}
-		else if (aLevel == 51 && mApp->mPlayerInfo->mFinishedAdventure == 1) // aLevel == 1 // mApp->HasFinishedAdventure()
-		{
-			DrawBottom(g, _S("[WIN_MESSAGE1]"), _S("[SILVER_SUNFLOWER_TROPHY]"), _S("[WIN_MESSAGE2]"));
-			TodDrawImageCelCenterScaledF(g, Sexy::IMAGE_SUNFLOWER_TROPHY, 325, 65, 0, 0.7f, 0.7f);
-		}
 		else
 		{
-			DrawAwardSeed(g);
+			auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(aLevel));
+			auto isPvZ = mApp->mAP->IsPlayerPlayingPVZ(item.player);
+			if (item.item == PVZRAPData::Items::SHOVEL && isPvZ)
+			{
+				DrawBottom(g, _S("[GOT_SHOVEL]"), _S("[SHOVEL]"), _S("[SHOVEL_DESCRIPTION]"));
+				g->DrawImage(Sexy::IMAGE_SHOVEL_HI_RES, BOARD_WIDTH / 2 - Sexy::IMAGE_SHOVEL_HI_RES->mWidth / 2, 137);
+			}
+			// else if (aLevel == 10)
+			// {
+			// 	g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE1, 131, 132);
+			// 	TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
+			// }
+			else if (item.item == PVZRAPData::Items::ALMANAC && isPvZ)
+			{
+				DrawBottom(g, _S("[FOUND_SUBURBAN_ALMANAC]"), _S("[SUBURBAN_ALMANAC]"), _S("[SUBURBAN_ALMANAC_DESCRIPTION]"));
+				g->DrawImage(Sexy::IMAGE_ALMANAC, BOARD_WIDTH / 2 - Sexy::IMAGE_ALMANAC->mWidth / 2, 160);
+			}
+			// else if (aLevel == 20)
+			// {
+			// 	g->DrawImage(Sexy::IMAGE_BACKGROUND2, -700, -300, 2800, 1200);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE2, 133, 127);
+			// 	TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
+			// }
+			else if (item.item == PVZRAPData::Items::CAR_KEYS && isPvZ)
+			{
+				DrawBottom(g, _S("[FOUND_KEYS]"), _S("[KEYS]"), _S("[KEYS_DESCRIPTION]"));
+				g->DrawImage(Sexy::IMAGE_CARKEYS, BOARD_WIDTH / 2 - Sexy::IMAGE_CARKEYS->mWidth / 2, 160);
+			}
+			// else if (aLevel == 30)
+			// {
+			// 	g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE3, 120, 117);
+			// 	TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
+			// }
+			// else if (aLevel == 35)
+			// {
+			// 	DrawBottom(g, _S("[FOUND_TACO]"), _S("[TACO]"), _S("[TACO_DESCRIPTION]"));
+			// 	g->DrawImage(Sexy::IMAGE_TACO, BOARD_WIDTH / 2 - Sexy::IMAGE_TACO->mWidth / 2, 160);
+			// }
+			// else if (aLevel == 40)
+			// {
+			// 	g->DrawImage(Sexy::IMAGE_BACKGROUND2, -700, -300, 2800, 1200);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE4, 102, 117);
+			// 	TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
+			// }
+			else if (item.item == PVZRAPData::Items::ZEN_GARDEN && isPvZ)
+			{
+				DrawBottom(g, _S("[FOUND_WATERING_CAN]"), _S("[WATERING_CAN]"), _S("[WATERING_CAN_DESCRIPTION]"));
+				g->DrawImage(Sexy::IMAGE_WATERINGCAN, BOARD_WIDTH / 2 - Sexy::IMAGE_WATERINGCAN->mWidth / 2, 160);
+			}
+			// else if (aLevel == 50)
+			// {
+			// 	g->DrawImage(Sexy::IMAGE_BACKGROUND1, -700, -300, 2800, 1200);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_NOTE, 80, 80);
+			// 	g->DrawImage(Sexy::IMAGE_ZOMBIE_FINAL_NOTE, 114, 138);
+			// 	TodDrawString(g, _S("[FOUND_NOTE]"), BOARD_WIDTH / 2, 70, Sexy::FONT_DWARVENTODCRAFT24, Color(255, 200, 0, 255), DS_ALIGN_CENTER);
+			// }
+			else if (aLevel == 51 && mApp->mPlayerInfo->mFinishedAdventure == 1) // aLevel == 1 // mApp->HasFinishedAdventure()
+			{
+				DrawBottom(g, _S("[WIN_MESSAGE1]"), _S("[SILVER_SUNFLOWER_TROPHY]"), _S("[WIN_MESSAGE2]"));
+				TodDrawImageCelCenterScaledF(g, Sexy::IMAGE_SUNFLOWER_TROPHY, 325, 65, 0, 0.7f, 0.7f);
+			}
+			else
+			{
+				DrawAwardSeed(g);
+			}
 		}
 	}
 
@@ -493,56 +500,56 @@ void AwardScreen::StartButtonPressed()
 		}
 		else
 		{
-			if (aLevel == 15)
-			{
-				mApp->DoAlmanacDialog()->WaitForResult();
-			}
-			else if (aLevel == 25)
-			{
-				StoreScreen* aStore = mApp->ShowStoreScreen();
-				aStore->SetupForIntro(301);
-				aStore->WaitForResult(true);
-
-				if (aStore->mPurchasedFullVersion)
-				{
-					mApp->KillAwardScreen();
-					mApp->ShowGameSelector();
-					return;
-				}
-				if (mApp->IsTrialStageLocked())
-				{
-					mApp->KillAwardScreen();
-					mApp->PreNewGame(GAMEMODE_UPSELL, false);
-					if (!mApp->mPlayerInfo->mHasSeenUpsell)
-					{
-						mApp->mBoard->mStoreButton->mBtnNoDraw = true;
-						mApp->mPlayerInfo->mHasSeenUpsell = true;
-					}
-					return;
-				}
-			}
-			else if (aLevel == 35)
-			{
-				StoreScreen* aStore = mApp->ShowStoreScreen();
-				aStore->SetupForIntro(601);
-				aStore->WaitForResult(true);
-			}
-			else if (aLevel == 42)
-			{
-				StoreScreen* aStore = mApp->ShowStoreScreen();
-				aStore->SetupForIntro(3100);
-				aStore->WaitForResult(true);
-			}
-			else if (aLevel == 45)
-			{
-				mApp->KillAwardScreen();
-				mApp->PreNewGame(GAMEMODE_CHALLENGE_ZEN_GARDEN, false);
-				mApp->mZenGarden->SetupForZenTutorial();
-				return;
-			}
+			// if (aLevel == 15)
+			// {
+			// 	mApp->DoAlmanacDialog()->WaitForResult();
+			// }
+			// else if (aLevel == 25)
+			// {
+			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
+			// 	aStore->SetupForIntro(301);
+			// 	aStore->WaitForResult(true);
+			//
+			// 	if (aStore->mPurchasedFullVersion)
+			// 	{
+			// 		mApp->KillAwardScreen();
+			// 		mApp->ShowGameSelector();
+			// 		return;
+			// 	}
+			// 	if (mApp->IsTrialStageLocked())
+			// 	{
+			// 		mApp->KillAwardScreen();
+			// 		mApp->PreNewGame(GAMEMODE_UPSELL, false);
+			// 		if (!mApp->mPlayerInfo->mHasSeenUpsell)
+			// 		{
+			// 			mApp->mBoard->mStoreButton->mBtnNoDraw = true;
+			// 			mApp->mPlayerInfo->mHasSeenUpsell = true;
+			// 		}
+			// 		return;
+			// 	}
+			// }
+			// else if (aLevel == 35)
+			// {
+			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
+			// 	aStore->SetupForIntro(601);
+			// 	aStore->WaitForResult(true);
+			// }
+			// else if (aLevel == 42)
+			// {
+			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
+			// 	aStore->SetupForIntro(3100);
+			// 	aStore->WaitForResult(true);
+			// }
+			// else if (aLevel == 45)
+			// {
+			// 	mApp->KillAwardScreen();
+			// 	mApp->PreNewGame(GAMEMODE_CHALLENGE_ZEN_GARDEN, false);
+			// 	mApp->mZenGarden->SetupForZenTutorial();
+			// 	return;
+			// }
 
 			mApp->KillAwardScreen();
-			mApp->PreNewGame(GAMEMODE_ADVENTURE, false);
+			mApp->PreNewGame(GAMEMODE_ADVENTURE, false, aLevel);
 		}
 	}
 }

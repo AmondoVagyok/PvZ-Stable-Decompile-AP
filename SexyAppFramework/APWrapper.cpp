@@ -490,6 +490,22 @@ std::string APWrapper::PlayerDisplayName(int slot) const
     return "";
 }
 
+std::string APWrapper::PlayerGameName(int slot) const
+{
+    if (!d->mAP) return "";
+    
+    if (slot == 0) return "Archipelago";
+    
+    return d->mAP->get_player_game(slot);
+}
+
+bool APWrapper::IsPlayerPlayingPVZ(int slot) const
+{
+    if (!d->mAP) return false;
+    
+    return d->mAP->get_player_game(slot) == d->mAP->get_game();
+}
+
 std::string APWrapper::ItemName(const APItem& item) const
 {
     const auto player_game = d->mAP->get_player_game(item.player);

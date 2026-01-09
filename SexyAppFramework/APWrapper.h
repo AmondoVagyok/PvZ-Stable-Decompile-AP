@@ -95,6 +95,8 @@ public:
     int64_t MySlot() const;
     
     std::string PlayerDisplayName(int slot) const;
+    std::string PlayerGameName(int slot) const;
+    bool IsPlayerPlayingPVZ(int slot) const;
     
     std::string ItemName(const APItem& item) const;
     std::string ItemName(int64_t item, int64_t slot) const;

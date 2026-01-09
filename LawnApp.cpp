@@ -1722,7 +1722,8 @@ void LawnApp::CheckForGameEnd()
 
 		// if (!isReplaying)
 		// {
-			if (aLevel < 50 && !mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel)))
+			// TODO: Don't show the award screen if we are replaying the level
+			if (aLevel < 50)
 			{
 				ShowAwardScreen(AwardType::AWARD_FORLEVEL, aLevel, true);
 			}
@@ -1736,10 +1737,6 @@ void LawnApp::CheckForGameEnd()
 				{
 					ShowAwardScreen(AwardType::AWARD_CREDITS_ZOMBIENOTE, aLevel, true);
 				}
-			}
-			else if (aLevel == 9 || aLevel == 19 || aLevel == 29 || aLevel == 39 || aLevel == 49)
-			{
-				ShowAwardScreen(AwardType::AWARD_FORLEVEL, aLevel, true);
 			}
 			else
 			{
@@ -2694,7 +2691,7 @@ SeedType LawnApp::GetAwardSeedForLevel(int theLevel)
 	auto item = mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(theLevel));
 	// TODO: Make sure this is actually a PvZ item
 	auto seed = PVZRAPData::Items::SeedItem(item.item);
-	if (seed == SeedType::SEED_NONE) return SeedType::SEED_AP_OFFWORLD_ITEM;
+	if (seed == SeedType::SEED_NONE || !mAP->IsPlayerPlayingPVZ(item.player)) return SeedType::SEED_AP_OFFWORLD_ITEM;
 	return seed;
 
 	// int aArea = (theLevel - 1) / LEVELS_PER_AREA + 1;
