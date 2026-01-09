@@ -591,7 +591,7 @@ std::string SEHCatcher::ImageHelpWalk(PCONTEXT theContext, int theSkipCount)
 		{
 			DWORD lastErr = GetLastError();
 			sprintf(aBuffer, "StackWalk failed (error %d)\r\n", lastErr);
-			// aDebugDump += aBuffer;
+			aDebugDump += aBuffer;
 			break;
 		}
 
