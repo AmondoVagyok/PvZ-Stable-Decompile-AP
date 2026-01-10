@@ -22,7 +22,13 @@ CursorObject::CursorObject()
     mGlovePlantID = PlantID::PLANTID_NULL;
     mReanimCursorID = ReanimationID::REANIMATIONID_NULL;
     mPreviewCursorID = ReanimationID::REANIMATIONID_NULL;
-    
+
+    mWidth = 80;
+    mHeight = 80;
+}
+
+void CursorObject::Init()
+{
     if (mApp->IsWhackAZombieLevel())
     {
         ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_HAMMER, true);
@@ -32,9 +38,6 @@ CursorObject::CursorObject()
         aHammerReanim->mAnimTime = 1.0f;
         mReanimCursorID = mApp->ReanimationGetID(aHammerReanim);
     }
-
-    mWidth = 80;
-    mHeight = 80;
 }
 
 //0x438780

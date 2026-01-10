@@ -21,6 +21,7 @@ public:
 public:
 	CursorObject();
 
+	void                    Init();
 	void					Update();
 	void					Draw(Graphics* g);
 	void					Die();

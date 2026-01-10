@@ -1645,6 +1645,7 @@ void Board::InitLevel()
 	}
 	// 赋值当前关卡
 	mLevel = mApp->IsAdventureMode() ? mApp->mPlayerInfo->GetLevel() : 0;
+	mCursorObject->Init();
 	// 设定关卡背景
 	PickBackground();
 	// 设定关卡出怪
