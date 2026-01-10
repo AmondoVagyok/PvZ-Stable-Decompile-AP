@@ -102,8 +102,8 @@ void MessageWidget::SetLabel(const SexyString& theNewLabel, MessageStyle theMess
 		case MessageStyle::MESSAGE_STYLE_HUGE_WAVE:
 		{
 			mDuration = 750;
-			const ReanimationType rngMotion[3] = { ReanimationType::REANIM_TEXT_FADE_ON , ReanimationType::REANIM_TEXT_SLIDE_ON, ReanimationType::REANIM_TEXT_SLIDE_DOWN };
-			mReanimType = rngMotion[Rand() % 3]; //REANIM_TEXT_FADE_ON
+			const ReanimationType rngMotion[1] = { ReanimationType::REANIM_TEXT_FADE_ON };
+			mReanimType = rngMotion[Rand() % 1]; //REANIM_TEXT_FADE_ON
 			break;
 		}
 
@@ -218,10 +218,10 @@ void MessageWidget::Update()
 		}
 
 		// 设置动画速率
-		int aTextSpeed = mReanimType == ReanimationType::REANIM_TEXT_FADE_ON || mReanimType == ReanimationType::REANIM_TEXT_SLIDE_ON || mReanimType == ReanimationType::REANIM_TEXT_SLIDE_DOWN ? 100 : 1;
+		int aTextSpeed = mReanimType == ReanimationType::REANIM_TEXT_FADE_ON ? 100 : 1;
 		if (mDuration > mSlideOffTime)
 		{
-			if (mReanimType == ReanimationType::REANIM_TEXT_FADE_ON || mReanimType == ReanimationType::REANIM_TEXT_SLIDE_ON || mReanimType == ReanimationType::REANIM_TEXT_SLIDE_DOWN)
+			if (mReanimType == ReanimationType::REANIM_TEXT_FADE_ON)
 			{
 				aTextReanim->mAnimRate = 60.0f;
 			}

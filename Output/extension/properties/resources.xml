@@ -3,6 +3,36 @@
     <Resources id="LoadingImages">
         <SetDefaults path="extension/images" idprefix="IMAGE_" />
         <Image id="ARCHIPELAGO_ITEM" path="ArchipelagoItem"/>
+        <Image id="NOT_FOUND" path="NotFound"/>
+        
+        
+    </Resources>
+
+    <Resources id="DelayLoad_LevelSelector">
+        <SetDefaults path="extension/images" idprefix="IMAGE_" />
+        <Image id="LEVELSELECTOR_DAY_BUTTON" path="levelselector_day_button" />
+        <Image id="LEVELSELECTOR_DAY_BUTTON_HIGHLIGHT" path="levelselector_day_button_highlight" />
+        <Image id="LEVELSELECTOR_DAY_BUTTON_PRESSED" path="levelselector_day_button_pressed" />
+        <Image id="LEVELSELECTOR_NIGHT_BUTTON" path="levelselector_night_button" />
+        <Image id="LEVELSELECTOR_NIGHT_BUTTON_HIGHLIGHT" path="levelselector_night_button_highlight" />
+        <Image id="LEVELSELECTOR_NIGHT_BUTTON_PRESSED" path="levelselector_night_button_pressed" />
+        <Image id="LEVELSELECTOR_POOL_BUTTON" path="levelselector_pool_button" />
+        <Image id="LEVELSELECTOR_POOL_BUTTON_HIGHLIGHT" path="levelselector_pool_button_highlight" />
+        <Image id="LEVELSELECTOR_POOL_BUTTON_PRESSED" path="levelselector_pool_button_pressed" />
+        <Image id="LEVELSELECTOR_FOG_BUTTON" path="levelselector_fog_button" />
+        <Image id="LEVELSELECTOR_FOG_BUTTON_HIGHLIGHT" path="levelselector_fog_button_highlight" />
+        <Image id="LEVELSELECTOR_FOG_BUTTON_PRESSED" path="levelselector_fog_button_pressed" />
+        <Image id="LEVELSELECTOR_ROOF_BUTTON" path="levelselector_roof_button" />
+        <Image id="LEVELSELECTOR_ROOF_BUTTON_HIGHLIGHT" path="levelselector_roof_button_highlight" />
+        <Image id="LEVELSELECTOR_ROOF_BUTTON_PRESSED" path="levelselector_roof_button_pressed" />
+        <Image id="LEVELSELECTOR_DAY_THUMBNAIL" path="levelselector_day_thumbnail" />
+        <Image id="LEVELSELECTOR_NIGHT_THUMBNAIL" path="levelselector_night_thumbnail" />
+        <Image id="LEVELSELECTOR_POOL_THUMBNAIL" path="levelselector_pool_thumbnail" />
+        <Image id="LEVELSELECTOR_FOG_THUMBNAIL" path="levelselector_fog_thumbnail" />
+        <Image id="LEVELSELECTOR_ROOF_THUMBNAIL" path="levelselector_roof_thumbnail" />
+        <Image id="LEVELSELECTOR_BOSS_THUMBNAIL" path="levelselector_boss_thumbnail" />
+        <Image id="LEVELSELECTOR_LEVEL_BUTTON" path="levelselector_level_button" />
+        <Image id="LEVELSELECTOR_LEVEL_BUTTON_HIGHLIGHT" path="levelselector_level_button_highlight" />
     </Resources>
 </ResourceManifest>
         

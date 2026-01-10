@@ -1400,14 +1400,14 @@ void LawnApp::Init()
 	WIN32_FILE_ATTRIBUTE_DATA fileInfo;
 	bool IsXMLPackLoaded = mResourceManager->ParseResourcesFile(_S("properties\\resources.xml"));
 
-	if (GetFileAttributesExA("dependency\\properties\\resources.xml", GetFileExInfoStandard, &fileInfo) != 0 || IsFileInPakFile("dependency\\properties\\resources.xml"))
-	{
-		IsXMLPackLoaded &= mResourceManager->ParseResourcesFile(_S("dependency\\properties\\resources.xml"));
-	}
-	else
-	{
-		MsgBox("dependency files missing! Please get the dependency.pak from the Stable Decompile Github Repo. Contact the developers.", "Error");
-	}
+	// if (GetFileAttributesExA("dependency\\properties\\resources.xml", GetFileExInfoStandard, &fileInfo) != 0 || IsFileInPakFile("dependency\\properties\\resources.xml"))
+	// {
+	// 	IsXMLPackLoaded &= mResourceManager->ParseResourcesFile(_S("dependency\\properties\\resources.xml"));
+	// }
+	// else
+	// {
+	// 	MsgBox("dependency files missing! Please get the dependency.pak from the Stable Decompile Github Repo. Contact the developers.", "Error");
+	// }
 
 	if (GetFileAttributesExA("extension\\properties\\resources.xml", GetFileExInfoStandard, &fileInfo) != 0 || IsFileInPakFile("extension\\properties\\resources.xml"))
 		IsXMLPackLoaded &= mResourceManager->ParseResourcesFile(_S("extension\\properties\\resources.xml"));
@@ -3731,58 +3731,58 @@ void LawnApp::PreloadForUser()
 		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_ZOMBIE_HAND, true);
 		if (mCompletedLoadingThreadTasks < aNumTasks)
 			mCompletedLoadingThreadTasks += 68;
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_TEXT_SLIDE_ON, true);
-		if (mCompletedLoadingThreadTasks < aNumTasks)
-			mCompletedLoadingThreadTasks += 68;
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_TEXT_SLIDE_DOWN, true);
-		if (mCompletedLoadingThreadTasks < aNumTasks)
-			mCompletedLoadingThreadTasks += 68;
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SELECTORSCREEN_SPOTLIGHT, true);
-		if (mCompletedLoadingThreadTasks < aNumTasks)
-			mCompletedLoadingThreadTasks += 68;
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES3, true);
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES4, true);
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES5, true);
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES3, true);
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES4, true);
-		ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES5, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_TEXT_SLIDE_ON, true);
+		// if (mCompletedLoadingThreadTasks < aNumTasks)
+		// 	mCompletedLoadingThreadTasks += 68;
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_TEXT_SLIDE_DOWN, true);
+		// if (mCompletedLoadingThreadTasks < aNumTasks)
+		// 	mCompletedLoadingThreadTasks += 68;
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_SELECTORSCREEN_SPOTLIGHT, true);
+		// if (mCompletedLoadingThreadTasks < aNumTasks)
+		// 	mCompletedLoadingThreadTasks += 68;
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES3, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES4, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_BUSHES5, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES3, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES4, true);
+		// ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_NIGHT_BUSHES5, true);
 		if (mCompletedLoadingThreadTasks < aNumTasks)
 			mCompletedLoadingThreadTasks += 408;
 
-		for (int _i = 0; _i < 6; _i++)
-		{
-			const ReanimationType aReanimType = (ReanimationType)((int)ReanimationType::REANIM_BUSHES3 + _i);
-			const bool isEven = _i % 2 == 0;
-			const int aWidth = isEven ?  337 : 364;
-			const int aHeight = isEven ? 243 : 291;
-			const float aPosX = isEven ? -7.3f : 1.2f;
-			const float aPosY = isEven ? 26.6f : 39.8f;
-
-			MemoryImage* aDirtyBush = new MemoryImage();
-			aDirtyBush->mWidth = aWidth;
-			aDirtyBush->mHeight = aHeight;
-			int aNumBits = aWidth * aHeight;
-			aDirtyBush->mBits = new unsigned long[aNumBits + 1];
-			aDirtyBush->mHasTrans = true;
-			aDirtyBush->mHasAlpha = true;
-			memset(aDirtyBush->mBits, 0, aNumBits * 4);
-			aDirtyBush->mBits[aNumBits] = Sexy::MEMORYCHECK_ID;
-
-			Reanimation aBushReanim;
-			aBushReanim.ReanimationInitializeType(aPosX, aPosY, aReanimType);
-			aBushReanim.SetFramesForLayer("anim_rustle");
-			aBushReanim.mLastFrameTime = 0.0f;
-			aBushReanim.mAnimTime = 0.0f;
-			aBushReanim.mAnimRate = 0.0f;
-			aBushReanim.mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
-
-			Graphics aImage(aDirtyBush);
-			aImage.SetLinearBlend(true);
-			aImage.SetFastStretch(false);
-			aBushReanim.Draw(&aImage);
-
-			mDirtyBushes[_i] = aDirtyBush;
-		}
+		// for (int _i = 0; _i < 6; _i++)
+		// {
+		// 	const ReanimationType aReanimType = (ReanimationType)((int)ReanimationType::REANIM_BUSHES3 + _i);
+		// 	const bool isEven = _i % 2 == 0;
+		// 	const int aWidth = isEven ?  337 : 364;
+		// 	const int aHeight = isEven ? 243 : 291;
+		// 	const float aPosX = isEven ? -7.3f : 1.2f;
+		// 	const float aPosY = isEven ? 26.6f : 39.8f;
+		//
+		// 	MemoryImage* aDirtyBush = new MemoryImage();
+		// 	aDirtyBush->mWidth = aWidth;
+		// 	aDirtyBush->mHeight = aHeight;
+		// 	int aNumBits = aWidth * aHeight;
+		// 	aDirtyBush->mBits = new unsigned long[aNumBits + 1];
+		// 	aDirtyBush->mHasTrans = true;
+		// 	aDirtyBush->mHasAlpha = true;
+		// 	memset(aDirtyBush->mBits, 0, aNumBits * 4);
+		// 	aDirtyBush->mBits[aNumBits] = Sexy::MEMORYCHECK_ID;
+		//
+		// 	Reanimation aBushReanim;
+		// 	aBushReanim.ReanimationInitializeType(aPosX, aPosY, aReanimType);
+		// 	aBushReanim.SetFramesForLayer("anim_rustle");
+		// 	aBushReanim.mLastFrameTime = 0.0f;
+		// 	aBushReanim.mAnimTime = 0.0f;
+		// 	aBushReanim.mAnimRate = 0.0f;
+		// 	aBushReanim.mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
+		//
+		// 	Graphics aImage(aDirtyBush);
+		// 	aImage.SetLinearBlend(true);
+		// 	aImage.SetFastStretch(false);
+		// 	aBushReanim.Draw(&aImage);
+		//
+		// 	mDirtyBushes[_i] = aDirtyBush;
+		// }
 	}
 
 	if (mPlayerInfo)

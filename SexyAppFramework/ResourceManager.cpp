@@ -1195,6 +1195,7 @@ SharedImageRef ResourceManager::GetImageThrow(const std::string& theId)
 			return NULL;
 	}
 
+	return GetImageThrow("IMAGE_NOT_FOUND");
 
 	Fail(StrFormat("Image resource not found: %s", theId.c_str()));
 	throw ResourceManagerException(GetErrorText());

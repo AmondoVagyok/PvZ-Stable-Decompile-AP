@@ -418,8 +418,8 @@ void GridItem::DrawSquirrel(Graphics* g)
         aXPos += TodAnimateCurve(50, 0, mGridItemCounter, -80, 0, TodCurves::CURVE_EASE_IN);
     }
 
-    if(IMAGE_SQUIRREL!=0) // no need to render nothing
-        g->DrawImage(IMAGE_SQUIRREL, aXPos, aYPos);
+    // if(IMAGE_SQUIRREL!=0) // no need to render nothing
+        // g->DrawImage(IMAGE_SQUIRREL, aXPos, aYPos);
 }
 
 //0x44E090

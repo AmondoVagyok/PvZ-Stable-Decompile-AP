@@ -1266,12 +1266,12 @@ void Projectile::DoImpact(Zombie* theZombie)
 		aSplatPosY = aLastPosY + 23.0f;
 		aEffect = ParticleEffect::PARTICLE_CABBAGE_SPLAT;
 	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
-	{
-		aSplatPosX = aLastPosX - 38.0f;
-		aSplatPosY = aLastPosY + 23.0f;
-		aEffect = ParticleEffect::PARTICLE_KERNEL_SPLAT;
-	}
+	// else if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
+	// {
+		// aSplatPosX = aLastPosX - 38.0f;
+		// aSplatPosY = aLastPosY + 23.0f;
+		// aEffect = ParticleEffect::PARTICLE_KERNEL_SPLAT;
+	// }
 	else if (mProjectileType == ProjectileType::PROJECTILE_BUTTER)
 	{
 		aSplatPosX = aLastPosX - 20.0f;
@@ -1291,8 +1291,8 @@ void Projectile::DoImpact(Zombie* theZombie)
 	#endif
 	)
 	{
-		aSplatPosX -= 15.0f;
-		aEffect = ParticleEffect::PARTICLE_SPIKE_SPLAT;
+		// aSplatPosX -= 15.0f;
+		// aEffect = ParticleEffect::PARTICLE_SPIKE_SPLAT;
 	}
 
 
@@ -1528,7 +1528,7 @@ void Projectile::Draw(Graphics* g)
 	else
 	{
 		//TOD_ASSERT();
-		aImage = IMAGE_PROJECTILE;
+		aImage = IMAGE_PROJECTILEPEA;
 		aScaleX = aScaleY = 1.0f;
 	}
 
@@ -1723,7 +1723,7 @@ void Projectile::DrawShadow(Graphics* g)
 		g->SetColor(Color::White);
 		if (mVelZ < 0)
 			g->mColor.mAlpha = 255 * TodAnimateCurveFloatTime(0, -GetProjectileRect().mHeight - (mBoard->StageHas6Rows() || mBoard->StageHasRoof() ? 80.0f : 100.0f) - Sexy::IMAGE_REANIM_COBCANNON_COB->GetHeight(), mPosZ, 0.0f, 1.0f, TodCurves::CURVE_LINEAR);
-		g->DrawImageF(IMAGE_COBCANNON_TARGET_SHADOW, aShadowX - 15.0f + 57.0f, aShadowY - 37.0f + (mBoard->StageHas6Rows() || mBoard->StageHasRoof() ? 80.0f : 100.0f));
+		// g->DrawImageF(IMAGE_COBCANNON_TARGET_SHADOW, aShadowX - 15.0f + 57.0f, aShadowY - 37.0f + (mBoard->StageHas6Rows() || mBoard->StageHasRoof() ? 80.0f : 100.0f));
 		g->PopState();
 	}
 

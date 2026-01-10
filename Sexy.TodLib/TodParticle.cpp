@@ -53,7 +53,7 @@ ParticleParams gLawnParticleArray[(int)ParticleEffect::NUM_PARTICLES] = {
 	{ ParticleEffect::PARTICLE_WALLNUT_EAT_SMALL, "particles\\WallnutEatSmall.xml" },
 	{ ParticleEffect::PARTICLE_WALLNUT_EAT_LARGE, "particles\\WallnutEatLarge.xml" },
 	{ ParticleEffect::PARTICLE_PEA_SPLAT, "particles\\PeaSplat.xml" },
-	{ ParticleEffect::PARTICLE_SPIKE_SPLAT, "particles\\SpikeSplat.xml" },
+	// { ParticleEffect::PARTICLE_SPIKE_SPLAT, "particles\\SpikeSplat.xml" },
 	{ ParticleEffect::PARTICLE_BUTTER_SPLAT, "particles\\ButterSplat.xml" },
 	{ ParticleEffect::PARTICLE_CABBAGE_SPLAT, "particles\\CabbageSplat.xml" },
 	{ ParticleEffect::PARTICLE_PUFF_SPLAT, "particles\\PuffSplat.xml" },
@@ -122,7 +122,7 @@ ParticleParams gLawnParticleArray[(int)ParticleEffect::NUM_PARTICLES] = {
 	{ ParticleEffect::PARTICLE_STARBURST, "particles\\Starburst.xml" },
 	{ ParticleEffect::PARTICLE_CREDITS_FOG, "particles\\Credits_fog.xml" },
 	{ ParticleEffect::PARTICLE_PERSENT_PICK_UP_ARROW, "particles\\UpsellArrow.xml" },
-	{ ParticleEffect::PARTICLE_KERNEL_SPLAT, "particles\\KernelSplat.xml" },
+	// { ParticleEffect::PARTICLE_KERNEL_SPLAT, "particles\\KernelSplat.xml" },
 };  // 0x6A0FF0
 
 //0x515640 : (ecx = *theParticleFileName, *theParticleDef)  //esp -= 4

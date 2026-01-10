@@ -1356,21 +1356,21 @@ void Board::PickBackground()
 	}
 }
 
-const ReanimationType gReanimBushesType[] = {
-	ReanimationType::REANIM_BUSHES3,
-	ReanimationType::REANIM_BUSHES5,
-	ReanimationType::REANIM_BUSHES4,
-	ReanimationType::REANIM_NIGHT_BUSHES3,
-	ReanimationType::REANIM_NIGHT_BUSHES5,
-	ReanimationType::REANIM_NIGHT_BUSHES4,
-};
+// const ReanimationType gReanimBushesType[] = {
+// 	ReanimationType::REANIM_BUSHES3,
+// 	ReanimationType::REANIM_BUSHES5,
+// 	ReanimationType::REANIM_BUSHES4,
+// 	ReanimationType::REANIM_NIGHT_BUSHES3,
+// 	ReanimationType::REANIM_NIGHT_BUSHES5,
+// 	ReanimationType::REANIM_NIGHT_BUSHES4,
+// };
 
 void Board::InitBushes() 
 {
 	for (int i = 0; i < 6; i++) 
 	{
 		float posX = 0, posY = 0;
-		ReanimationType aReanimType = gReanimBushesType[(i + 3) % 3 + (StageIsNight() ? 3 : 0)];
+		// ReanimationType aReanimType = gReanimBushesType[(i + 3) % 3 + (StageIsNight() ? 3 : 0)];
 
 		switch (i) 
 		{
@@ -1405,18 +1405,18 @@ void Board::InitBushes()
 		/*if (i == 0)	aRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_UI_BOTTOM, 0, 0);
 		else*/ aRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_ZOMBIE, i, 9);
 
-		Reanimation* aBushReanim = mApp->AddReanimation(posX, posY, aRenderOrder, aReanimType);
-		aBushReanim->SetFramesForLayer("anim_rustle");
-		aBushReanim->mLastFrameTime = 1.0f;
-		aBushReanim->mAnimTime = 1.0f;
-		aBushReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
-		aBushReanim->mLoopCount = 0;
-		aBushReanim->mAnimRate = 12.0f;
-		for (int i = 0; i < aBushReanim->mDefinition->mTracks.count; i++)
-		{
-			aBushReanim->mTrackInstances[i].mIgnoreClipRect = true;
-		}
-		mBushesID[i] = mApp->ReanimationGetID(aBushReanim);
+		// Reanimation* aBushReanim = mApp->AddReanimation(posX, posY, aRenderOrder, aReanimType);
+		// aBushReanim->SetFramesForLayer("anim_rustle");
+		// aBushReanim->mLastFrameTime = 1.0f;
+		// aBushReanim->mAnimTime = 1.0f;
+		// aBushReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
+		// aBushReanim->mLoopCount = 0;
+		// aBushReanim->mAnimRate = 12.0f;
+		// for (int i = 0; i < aBushReanim->mDefinition->mTracks.count; i++)
+		// {
+		// 	aBushReanim->mTrackInstances[i].mIgnoreClipRect = true;
+		// }
+		// mBushesID[i] = mApp->ReanimationGetID(aBushReanim);
 	}
 }
 
@@ -7552,18 +7552,18 @@ void Board::DrawGameObjects(Graphics* g)
 		{
 			Reanimation* aReanimation = aRenderItem.mReanimation;
 
-			if (!mApp->Is3DAccelerated() && aReanimation->mReanimationType >= ReanimationType::REANIM_BUSHES3 && aReanimation->mReanimationType <= ReanimationType::REANIM_NIGHT_BUSHES5 /*&& FloatApproxEqual(aReanimation->mAnimTime, 1.0f)*/)
+			if (!mApp->Is3DAccelerated() /*&& FloatApproxEqual(aReanimation->mAnimTime, 1.0f)*/)
 			{
-				const int _i = aReanimation->mReanimationType - ReanimationType::REANIM_BUSHES3;
-				if (mApp->mDirtyBushes[_i])
-				{
-					const bool isEven = _i % 2 == 0;
-					const float aPosX = isEven ? -7.3f : 1.2f;
-					const float aPosY = isEven ? 26.6f : 39.8f;
-
-					g->DrawImage(mApp->mDirtyBushes[_i], (int)aReanimation->mOverlayMatrix.m02 - aPosX, (int)aReanimation->mOverlayMatrix.m12 - aPosY);
-					break; // Optimize draw if it exists...
-				}
+				// const int _i = aReanimation->mReanimationType - ReanimationType::REANIM_BUSHES3;
+				// if (mApp->mDirtyBushes[_i])
+				// {
+				// 	const bool isEven = _i % 2 == 0;
+				// 	const float aPosX = isEven ? -7.3f : 1.2f;
+				// 	const float aPosY = isEven ? 26.6f : 39.8f;
+				//
+				// 	g->DrawImage(mApp->mDirtyBushes[_i], (int)aReanimation->mOverlayMatrix.m02 - aPosX, (int)aReanimation->mOverlayMatrix.m12 - aPosY);
+				// 	break; // Optimize draw if it exists...
+				// }
 			}
 
 			aReanimation->Draw(g);

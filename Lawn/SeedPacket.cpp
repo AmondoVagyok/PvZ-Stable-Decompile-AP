@@ -306,20 +306,20 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 		theSeedType == SeedType::SEED_ZOMBIQUARIUM_SNORKLE ? 7 :
 		theSeedType == SeedType::SEED_ZOMBIQUARIUM_TROPHY ? 8 : 2;
 
-	if (g->mScaleX > 1 || g->mScaleY > 1)
-	{
-		if (aPacketBackground == 0)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKETIMITATER_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
-		if (aPacketBackground == 1)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKETUPGRADE_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
-		if (aPacketBackground == 2)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKET_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
-	}
+	// if (g->mScaleX > 1 || g->mScaleY > 1)
+	// {
+		// if (aPacketBackground == 0)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKETIMITATER_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
+		// if (aPacketBackground == 1)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKETUPGRADE_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
+		// if (aPacketBackground == 2)	TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDPACKET_LARGER, x, y, 0, 0, g->mScaleX * 0.5f, g->mScaleY * 0.5f);
+	// }
 	/*else if (g->mScaleX == 1 && g->mScaleY == 1)
 	{
 		g->DrawImageCel(Sexy::IMAGE_SEEDS, x, y, aPacketBackground, 0);
 	}*/
-	else
-	{
+	// else
+	// {
 		TodDrawImageCelScaledF(g, Sexy::IMAGE_SEEDS, x, y, aPacketBackground, 0, g->mScaleX, g->mScaleY);
-	}
+	// }
 
 	float aScale = 0.5f;
 	bool aDrawSeedInMiddle = true;

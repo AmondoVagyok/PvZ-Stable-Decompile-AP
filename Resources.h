@@ -69,7 +69,7 @@ namespace Sexy
         IMAGE_SEEDCHOOSER_BUTTON2_GLOW_ID,
         IMAGE_SEEDCHOOSER_IMITATERADDON_ID,
         IMAGE_SEEDS_ID,
-        IMAGE_SEEDPACKET_LARGER_ID,
+        // IMAGE_SEEDPACKET_LARGER_ID,
         IMAGE_SEEDPACKETSILHOUETTE_ID,
         IMAGE_FLAGMETER_ID,
         IMAGE_FLAGMETERLEVELPROGRESS_ID,
@@ -88,10 +88,10 @@ namespace Sexy
         IMAGE_MONEYBAG_ID,
         IMAGE_MONEYBAG_HI_RES_ID,
         IMAGE_CHOCOLATE_ID,
-        IMAGE_SEEDPACKETUPGRADE_LARGER_ID,
-        IMAGE_SEEDPACKETIMITATER_LARGER_ID,
-        IMAGE_SEED_SELECTOR_ID,
-        IMAGE_P1_ARROW_ID,
+        // IMAGE_SEEDPACKETUPGRADE_LARGER_ID,
+        // IMAGE_SEEDPACKETIMITATER_LARGER_ID,
+        // IMAGE_SEED_SELECTOR_ID,
+        // IMAGE_P1_ARROW_ID,
         IMAGE_OPTIONS_BACKTOGAMEBUTTON0_ID,
         IMAGE_OPTIONS_BACKTOGAMEBUTTON2_ID,
         IMAGE_OPTIONS_CHECKBOX0_ID,
@@ -161,7 +161,7 @@ namespace Sexy
         IMAGE_CRATER_WATER_DAY_ID,
         IMAGE_CRATER_WATER_NIGHT_ID,
         IMAGE_COBCANNON_TARGET_ID,
-        IMAGE_COBCANNON_TARGET_SHADOW_ID,
+        // IMAGE_COBCANNON_TARGET_SHADOW_ID,
         IMAGE_COBCANNON_POPCORN_ID,
         IMAGE_FERTILIZER_ID,
         IMAGE_WATERINGCAN_ID,
@@ -183,11 +183,11 @@ namespace Sexy
         IMAGE_BUG_SPRAY_ID,
         IMAGE_PLANTSPEECHBUBBLE_ID,
         IMAGE_WATERDROP_ID,
-        IMAGE_SQUIRREL_ID,
+        // IMAGE_SQUIRREL_ID,
         IMAGE_TREEFOOD_ID,
         IMAGE_PACKET_PLANTS_ID,
         IMAGE_ZEN_NEED_ICONS_ID,
-        IMAGE_PROJECTILE_ID,
+        // IMAGE_PROJECTILE_ID,
         IMAGE_PROJECTILEPEA_ID,
         IMAGE_PROJECTILESNOWPEA_ID,
         IMAGE_PROJECTILECACTUS_ID,
@@ -216,26 +216,26 @@ namespace Sexy
         IMAGE_PLANTSHADOW_ID,
         IMAGE_PLANTSHADOW2_ID,
         IMAGE_PEA_SHADOWS_ID,
-        IMAGE_GOOGLYEYE_ID,
-        IMAGE_PROPELLER_ID,
+        // IMAGE_GOOGLYEYE_ID,
+        // IMAGE_PROPELLER_ID,
         IMAGE_WALLNUT_BOWLINGSTRIPE_ID,
         IMAGE_ICE_ID,
         IMAGE_ICE_CAP_ID,
         IMAGE_ICE_SPARKLES_ID,
-        IMAGE_BEEHIVE_ID,
-        IMAGE_STINGER_ID,
-        IMAGE_CHERRYBOMB_ID,
-        IMAGE_ICEBERG_ID,
-        IMAGE_DUPLICATOR_ID,
-        IMAGE_YAMPOLINE_ID,
-        IMAGE_NUKECUMBER_ID,
+        // IMAGE_BEEHIVE_ID,
+        // IMAGE_STINGER_ID,
+        // IMAGE_CHERRYBOMB_ID,
+        // IMAGE_ICEBERG_ID,
+        // IMAGE_DUPLICATOR_ID,
+        // IMAGE_YAMPOLINE_ID,
+        // IMAGE_NUKECUMBER_ID,
         IMAGE_IMITATERSEED_ID,
         IMAGE_ALMANAC_IMITATER_ID,
         IMAGE_IMITATERSEEDDISABLED_ID,
         IMAGE_ICETRAP_ID,
         IMAGE_ICETRAP2_ID,
         IMAGE_ICETRAP_PARTICLES_ID,
-        IMAGE_ZOMBIEDOG_ID,
+        // IMAGE_ZOMBIEDOG_ID,
         IMAGE_PROPELLERZOMBIE_ID,
         IMAGE_ZOMBIE_ID,
         IMAGE_ZOMBIE_BOBSLED1_ID,
@@ -255,8 +255,8 @@ namespace Sexy
         IMAGE_WALLNUTPARTICLESSMALL_ID,
         IMAGE_WALLNUTPARTICLESLARGE_ID,
         IMAGE_PEA_SPLATS_ID,
-        IMAGE_SPIKE_PARTICLES_ID,
-        IMAGE_SPIKE_SPLATS_ID,
+        // IMAGE_SPIKE_PARTICLES_ID,
+        // IMAGE_SPIKE_SPLATS_ID,
         IMAGE_STAR_PARTICLES_ID,
         IMAGE_STAR_SPLATS_ID,
         IMAGE_PEA_PARTICLES_ID,
@@ -278,9 +278,9 @@ namespace Sexy
         IMAGE_ZOMBIEBOBSLEDHEAD_ID,
         IMAGE_ZOMBIELADDERHEAD_ID,
         IMAGE_ZOMBIEYETIHEAD_ID,
-        IMAGE_ZOMBIENEWSPAPERHEAD_ID,
-        IMAGE_ZOMBIENEWSPAPERMADHEAD_ID,
-        IMAGE_ZOMBIEJACKBOXHEAD_ID,
+        // IMAGE_ZOMBIENEWSPAPERHEAD_ID,
+        // IMAGE_ZOMBIENEWSPAPERMADHEAD_ID,
+        // IMAGE_ZOMBIEJACKBOXHEAD_ID,
         IMAGE_ZOMBIESNORKLEARM_ID,
         IMAGE_SEEDPACKETFLASH_ID,
         IMAGE_ZOMBIEJACKBOXARM_ID,
@@ -335,15 +335,15 @@ namespace Sexy
         IMAGE_PINATA_ID,
         IMAGE_ZOMBIEFUTUREGLASSES_ID,
         IMAGE_DUST_PUFFS_ID,
-        IMAGE_ZOMBIE_FLAGPOLE1_ID,
-        IMAGE_ZOMBIE_FLAGPOLE3_ID,
-        IMAGE_LENSEFLARE_ID,
-        IMAGE_LENSEFLARE2_ID,
-        IMAGE_LENSEFLARE3_ID,
-        IMAGE_LENSEFLARE4_ID,
-        IMAGE_LENSEFLARE5_ID,
-        IMAGE_LENSEFLARE6_ID,
-        IMAGE_LENSEFLARE7_ID,
+        // IMAGE_ZOMBIE_FLAGPOLE1_ID,
+        // IMAGE_ZOMBIE_FLAGPOLE3_ID,
+        // IMAGE_LENSEFLARE_ID,
+        // IMAGE_LENSEFLARE2_ID,
+        // IMAGE_LENSEFLARE3_ID,
+        // IMAGE_LENSEFLARE4_ID,
+        // IMAGE_LENSEFLARE5_ID,
+        // IMAGE_LENSEFLARE6_ID,
+        // IMAGE_LENSEFLARE7_ID,
         IMAGE_REANIM_WALLNUT_BODY_ID,
         IMAGE_REANIM_WALLNUT_CRACKED1_ID,
         IMAGE_REANIM_WALLNUT_CRACKED2_ID,
@@ -369,9 +369,9 @@ namespace Sexy
         IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET_ID,
         IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET2_ID,
         IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET3_ID,
-        IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET_ID,
-        IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET2_ID,
-        IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET3_ID,
+        // IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET_ID,
+        // IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET2_ID,
+        // IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET3_ID,
         IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_HAND_ID,
         IMAGE_REANIM_ZOMBIE_FOOTBALL_LEFTARM_UPPER2_ID,
         IMAGE_REANIM_ZOMBIE_PAPER_LEFTARM_UPPER2_ID,
@@ -393,8 +393,8 @@ namespace Sexy
         IMAGE_REANIM_ZOMBIE_DISCO_OUTERARM_UPPER2_ID,
         IMAGE_REANIM_ZOMBIE_BACKUP_INNERRARM_HAND_ID,
         IMAGE_REANIM_ZOMBIE_BACKUP_OUTERARM_UPPER2_ID,
-        IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_HAND_ID,
-        IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_UPPER2_ID,
+        // IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_HAND_ID,
+        // IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_UPPER2_ID,
         IMAGE_REANIM_ZOMBIE_DANCER_INNERARM_HAND_ID,
         IMAGE_REANIM_ZOMBIE_POLEVAULTER_OUTERARM_UPPER2_ID,
         IMAGE_REANIM_ZOMBIE_OUTERARM_HAND_ID,
@@ -448,7 +448,7 @@ namespace Sexy
         IMAGE_REANIM_ZOMBIE_BOSS_FOOT_DAMAGE2_ID,
         IMAGE_REANIM_ZOMBIE_BOSS_EYEGLOW_BLUE_ID,
         IMAGE_REANIM_ZOMBIE_BOSS_MOUTHGLOW_BLUE_ID,
-        IMAGE_REANIM_ZOMBIE_BOSS_RV2_ID,
+        // IMAGE_REANIM_ZOMBIE_BOSS_RV2_ID,
         IMAGE_REANIM_CABBAGEPULT_CABBAGE_ID,
         IMAGE_REANIM_CORNPULT_KERNAL_ID,
         IMAGE_REANIM_CORNPULT_BUTTER_ID,
@@ -657,7 +657,7 @@ namespace Sexy
         SOUND_FINALFANFARE_ID,
         SOUND_CRAZYDAVESCREAM_ID,
         SOUND_CRAZYDAVESCREAM2_ID,
-        SOUND_REVERSE_WAKEUP,
+        // SOUND_REVERSE_WAKEUP,
         IMAGE_BACKGROUND1_ID,
         IMAGE_BACKGROUND1_GAMEOVER_INTERIOR_OVERLAY_ID,
         IMAGE_BACKGROUND1_GAMEOVER_MASK_ID,
@@ -1044,7 +1044,7 @@ namespace Sexy
     extern Image* IMAGE_REANIM_ZOMBIE_BOSS_HEAD_DAMAGE2;                  //0x6A71FC
     extern Image* IMAGE_REANIM_TALLNUT_CRACKED1;                          //0x6A7200
     extern Image* IMAGE_COBCANNON_TARGET;                                 //0x6A7204
-    extern Image* IMAGE_COBCANNON_TARGET_SHADOW;                             
+    // extern Image* IMAGE_COBCANNON_TARGET_SHADOW;                             
     extern int          SOUND_ZOMBAQUARIUM_DIE;                                 //0x6A7208
     extern Image* IMAGE_REANIM_ZOMBIE_BOSS_JAW_DAMAGE2;                   //0x6A720C
     extern Image* IMAGE_REANIM_SELECTORSCREEN_CHALLENGES_HIGHLIGHT;       //0x6A7210
@@ -1141,22 +1141,22 @@ namespace Sexy
     extern int          SOUND_BUGSPRAY;                                         //0x6A7374
     extern Image* IMAGE_TREEFOOD;                                         //0x6A7378
     extern Image* IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET2;                   //0x6A737C
-    extern Image* IMAGE_BEEHIVE;
-    extern Image* IMAGE_STINGER;
-    extern Image* IMAGE_CHERRYBOMB;
-    extern Image* IMAGE_ICEBERG;
-    extern Image* IMAGE_DUPLICATOR;
-    extern Image* IMAGE_YAMPOLINE;
-    extern Image* IMAGE_NUKECUMBER;
+    // extern Image* IMAGE_BEEHIVE;
+    // extern Image* IMAGE_STINGER;
+    // extern Image* IMAGE_CHERRYBOMB;
+    // extern Image* IMAGE_ICEBERG;
+    // extern Image* IMAGE_DUPLICATOR;
+    // extern Image* IMAGE_YAMPOLINE;
+    // extern Image* IMAGE_NUKECUMBER;
     extern Image* IMAGE_IMITATERSEED;                                     //0x6A7380
     extern Font* FONT_CONTINUUMBOLD14;                                   //0x6A7384
     extern Image* IMAGE_STORE_AQUARIUMGARDENICON;                         //0x6A7388
     extern Image* IMAGE_REANIM_ZOMBIE_ZAMBONI_2_DAMAGE1;                  //0x6A738C
     extern int          SOUND_SQUASH_HMM2;                                      //0x6A7390
     extern Image* IMAGE_ZOMBIEYETIHEAD;                                   //0x6A7394
-    extern Image* IMAGE_ZOMBIENEWSPAPERHEAD;
-    extern Image* IMAGE_ZOMBIENEWSPAPERMADHEAD;
-    extern Image* IMAGE_ZOMBIEJACKBOXHEAD;
+    // extern Image* IMAGE_ZOMBIENEWSPAPERHEAD;
+    // extern Image* IMAGE_ZOMBIENEWSPAPERMADHEAD;
+    // extern Image* IMAGE_ZOMBIEJACKBOXHEAD;
     extern Image* IMAGE_ZOMBIESNORKLEARM;
     extern Image* IMAGE_REANIM_ZOMBIE_SCREENDOOR1;                        //0x6A7398
     extern Image* IMAGE_BUTTON_DOWN_LEFT;                                 //0x6A739C
@@ -1195,18 +1195,18 @@ namespace Sexy
     extern int          SOUND_PLANT_WATER;                                      //0x6A7414
     extern Image* IMAGE_POOL_CAUSTIC_EFFECT;                              //0x6A7418
     extern Image* IMAGE_DIALOG_HEADER;                                    //0x6A741C
-    extern Image* IMAGE_ZOMBIEDOG;
+    // extern Image* IMAGE_ZOMBIEDOG;
     extern Image* IMAGE_PROPELLERZOMBIE;
     extern Image* IMAGE_ZOMBIE;
     extern Image* IMAGE_ZOMBIE_BOBSLED1;                                  //0x6A7420
     extern Image* IMAGE_REANIM_ZOMBIE_BOSS_OUTERARM_HAND_DAMAGE2;         //0x6A7424
     extern Image* IMAGE_ZAMBONISMOKE;                                     //0x6A7428
     extern Image* IMAGE_SELECTORSCREEN_ZENGARDEN;                         //0x6A742C
-    extern Image* IMAGE_SEEDPACKET_LARGER;                                //0x6A7430
-    extern Image* IMAGE_SEEDPACKETUPGRADE_LARGER;
-    extern Image* IMAGE_SEEDPACKETIMITATER_LARGER;
-    extern Image* IMAGE_SEED_SELECTOR;
-    extern Image* IMAGE_P1_ARROW;
+    // extern Image* IMAGE_SEEDPACKET_LARGER;                                //0x6A7430
+    // extern Image* IMAGE_SEEDPACKETUPGRADE_LARGER;
+    // extern Image* IMAGE_SEEDPACKETIMITATER_LARGER;
+    // extern Image* IMAGE_SEED_SELECTOR;
+    // extern Image* IMAGE_P1_ARROW;
     extern Image* IMAGE_STORE_FIRSTAIDWALLNUTICON;                        //0x6A7434
     extern int          SOUND_JACK_SURPRISE;                                    //0x6A7438
     extern Image* IMAGE_PHONOGRAPH;                                       //0x6A743C
@@ -1324,11 +1324,11 @@ namespace Sexy
     extern Image* IMAGE_ZOMBIEPOLE;
     extern Image* IMAGE_ZEN_NEXTGARDEN;                                   //0x6A75B4
     extern Image* IMAGE_POOLSPARKLY;                                      //0x6A75B8
-    extern Image* IMAGE_REANIM_ZOMBIE_DISCO_OUTERARM_HAND;
-    extern Image* IMAGE_REANIM_ZOMBIE_DISCO_OUTERARM_UPPER2;
-    extern Image* IMAGE_REANIM_ZOMBIE_BACKUP_INNERARM_HAND;
-    extern Image* IMAGE_REANIM_ZOMBIE_BACKUP_OUTERARM_UPPER2;
-    extern Image* IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_HAND;              //0x6A75BC
+    // extern Image* IMAGE_REANIM_ZOMBIE_DISCO_OUTERARM_HAND;
+    // extern Image* IMAGE_REANIM_ZOMBIE_DISCO_OUTERARM_UPPER2;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BACKUP_INNERARM_HAND;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BACKUP_OUTERARM_UPPER2;
+    // extern Image* IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_HAND;              //0x6A75BC
     extern Image* IMAGE_FLAGMETERPARTS;                                   //0x6A75C0
     extern Image* IMAGE_REANIM_ZOMBIE_GARGANTUAR_BODY1_2;                 //0x6A75C4
     extern Font* FONT_HOUSEOFTERROR20;                                   //0x6A75C8
@@ -1426,7 +1426,7 @@ namespace Sexy
     extern Image* IMAGE_SPEEDUP_BUTTON_PRESSED;
     extern Image* IMAGE_SLOWDOWN_BUTTON;
     extern Image* IMAGE_SLOWDOWN_BUTTON_PRESSED;
-    extern Image* IMAGE_PROJECTILE;                                    //0x6A76A8
+    // extern Image* IMAGE_PROJECTILE;                                    //0x6A76A8
     extern Image* IMAGE_PROJECTILEPEA;                                    //0x6A76A8
     extern int          SOUND_GROAN2;                                           //0x6A76AC
     extern Image* IMAGE_REANIM_ZOMBIE_LADDER_1;                           //0x6A76B0
@@ -1447,9 +1447,9 @@ namespace Sexy
     extern int          SOUND_CRAZYDAVEEXTRALONG3;                              //0x6A76EC
     extern Image* IMAGE_DIALOG_BOTTOMRIGHT;                               //0x6A76F0
     extern Image* IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET;                    //0x6A76F4
-    extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET;
-    extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET2;
-    extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET3;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET2;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BLACK_FOOTBALL_HELMET3;
     extern Image* IMAGE_REANIM_SUNFLOWER_HEAD_WINK;                       //0x6A76F8
     extern Image* IMAGE_SEEDCHOOSER_BUTTON_DISABLED;                      //0x6A76FC
     extern Image* IMAGE_REANIM_CORNPULT_KERNAL;                           //0x6A7700
@@ -1484,7 +1484,7 @@ namespace Sexy
     extern Image* IMAGE_ZOMBIEPOGO;                                       //0x6A7768
     extern Image* IMAGE_MONEYBAG_HI_RES;                                  //0x6A776C
     extern Image* IMAGE_REANIM_ZOMBIE_BOSS_MOUTHGLOW_BLUE;                //0x6A7770
-    extern Image* IMAGE_REANIM_ZOMBIE_BOSS_RV2;
+    // extern Image* IMAGE_REANIM_ZOMBIE_BOSS_RV2;
     extern Image* IMAGE_LOCK;                                             //0x6A7774
     extern Image* IMAGE_WALLNUTPARTICLESSMALL;                            //0x6A7778
     extern int          SOUND_YUCK;                                             //0x6A777C
@@ -1494,15 +1494,15 @@ namespace Sexy
     extern Image* IMAGE_STORE_BACKGROUND;                                 //0x6A778C
     extern int          SOUND_JUICY;                                            //0x6A7790
     extern int		    SOUND_GULP;                                             //0x6A7794
-    extern Image* IMAGE_GOOGLYEYE;
-    extern Image* IMAGE_PROPELLER;
+    // extern Image* IMAGE_GOOGLYEYE;
+    // extern Image* IMAGE_PROPELLER;
     extern Image* IMAGE_BACKGROUND2_GAMEOVER_MASK;                        //0x6A7798
     extern int		    SOUND_POINTS;                                           //0x6A779C
     extern Image* IMAGE_DIRTBIG;                                          //0x6A77A0
     extern Image* IMAGE_DIALOG_CENTERMIDDLE;                              //0x6A77A4
     extern Image* IMAGE_ZOMBIEBOBSLEDHEAD;                                //0x6A77A8
     extern int          SOUND_WAKEUP;                                           //0x6A77AC
-    extern int          SOUND_REVERSE_WAKEUP;                                           
+    // extern int          SOUND_REVERSE_WAKEUP;                                           
     extern Image* IMAGE_STAR_PARTICLES;                                   //0x6A77B0
     extern Image* IMAGE_CRATER_ROOF_LEFT;                                 //0x6A77B4
     extern Font* FONT_DWARVENTODCRAFT36GREENINSET;                       //0x6A77B8
@@ -1644,15 +1644,15 @@ namespace Sexy
     extern int          SOUND_NEWSPAPER_RIP;                                    //0x6A799C
     extern Image* IMAGE_ICE_CAP;                                          //0x6A79A0
     extern Image* IMAGE_DUST_PUFFS;                                       //0x6A79A4
-    extern Image* IMAGE_ZOMBIE_FLAGPOLE1;
-    extern Image* IMAGE_ZOMBIE_FLAGPOLE3;
-    extern Image* IMAGE_LENSEFLARE;
-    extern Image* IMAGE_LENSEFLARE2;
-    extern Image* IMAGE_LENSEFLARE3;
-    extern Image* IMAGE_LENSEFLARE4;
-    extern Image* IMAGE_LENSEFLARE5;
-    extern Image* IMAGE_LENSEFLARE6;
-    extern Image* IMAGE_LENSEFLARE7;
+    // extern Image* IMAGE_ZOMBIE_FLAGPOLE1;
+    // extern Image* IMAGE_ZOMBIE_FLAGPOLE3;
+    // extern Image* IMAGE_LENSEFLARE;
+    // extern Image* IMAGE_LENSEFLARE2;
+    // extern Image* IMAGE_LENSEFLARE3;
+    // extern Image* IMAGE_LENSEFLARE4;
+    // extern Image* IMAGE_LENSEFLARE5;
+    // extern Image* IMAGE_LENSEFLARE6;
+    // extern Image* IMAGE_LENSEFLARE7;
     extern int          SOUND_LAWNMOWER;                                        //0x6A79A8
     extern int          SOUND_BOSSBOULDERATTACK;                                //0x6A79AC
     extern Image* IMAGE_ICON_ROOFCLEANER;                                 //0x6A79B0
@@ -1696,8 +1696,8 @@ namespace Sexy
     extern Image* IMAGE_VASE_CHUNKS;                                      //0x6A7A48
     extern Image* IMAGE_REANIM_ZOMBIE_BOBSLED_OUTERARM_UPPER2;            //0x6A7A4C
     extern int          SOUND_POGO_ZOMBIE;                                      //0x6A7A50
-    extern Image* IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_UPPER2;            //0x6A7A54
-    extern Image* IMAGE_SQUIRREL;
+    // extern Image* IMAGE_REANIM_ZOMBIE_JACKSON_OUTERARM_UPPER2;            //0x6A7A54
+    // extern Image* IMAGE_SQUIRREL;
     extern int          SOUND_FIREPEA;                                          //0x6A7A58
     extern Image* IMAGE_ZENSHOPBUTTON_HIGHLIGHT;                          //0x6A7A5C
     extern Image* IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET3;                   //0x6A7A60
@@ -1757,8 +1757,8 @@ namespace Sexy
     extern Image* IMAGE_SNOWPEA_PARTICLES;                                //0x6A7B30
     extern Image* IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD;                      //0x6A7B34
     extern Image* IMAGE_PEA_SPLATS;                                       //0x6A7B38
-    extern Image* IMAGE_SPIKE_PARTICLES;                                       //0x6A7B38
-    extern Image* IMAGE_SPIKE_SPLATS;                                       //0x6A7B38
+    // extern Image* IMAGE_SPIKE_PARTICLES;                                       //0x6A7B38
+    // extern Image* IMAGE_SPIKE_SPLATS;                                       //0x6A7B38
 
     extern int          SOUND_BUNGEE_SCREAM3;                                   //0x6A7B3C
     extern int          SOUND_BALLOON_POP;                                      //0x6A7B40

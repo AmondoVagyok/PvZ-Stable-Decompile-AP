@@ -4565,7 +4565,8 @@ void Plant::DrawMagnetItems(Graphics* g)
             else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_PROPELLER)
             {
                 aScale = 1.0f;
-                aImage = IMAGE_PROPELLER;
+                // aImage = IMAGE_PROPELLER;
+                aImage = IMAGE_REANIM_ZOMBIE_TRASHCAN3;
             }
             else if (aMagnetItem->mItemType >= MagnetItemType::MAGNET_ITEM_POGO_1 && aMagnetItem->mItemType <= MagnetItemType::MAGNET_ITEM_POGO_3)
             {

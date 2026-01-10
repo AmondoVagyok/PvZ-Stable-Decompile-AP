@@ -157,19 +157,20 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 	mBackButton->mTranslateX = 0;
 	mBackButton->mTranslateY = 0;
 
-	mRIPButton = MakeNewButton(
-		QuickplayWidget::Quickplay_RIP,
-		this,
-		_S(""),
-		nullptr,
-		Sexy::IMAGE_BLANK,
-		Sexy::IMAGE_BLANK,
-		Sexy::IMAGE_BLANK
-	);
-	mRIPButton->mClip = false;
-	mRIPButton->Resize(11.85f, 311, 99, 96);
-	mRIPButton->mTranslateX = 0;
-	mRIPButton->mTranslateY = 0;
+	mRIPButton = nullptr;
+	// mRIPButton = MakeNewButton(
+	// 	QuickplayWidget::Quickplay_RIP,
+	// 	this,
+	// 	_S(""),
+	// 	nullptr,
+	// 	Sexy::IMAGE_BLANK,
+	// 	Sexy::IMAGE_BLANK,
+	// 	Sexy::IMAGE_BLANK
+	// );
+	// mRIPButton->mClip = false;
+	// mRIPButton->Resize(11.85f, 311, 99, 96);
+	// mRIPButton->mTranslateX = 0;
+	// mRIPButton->mTranslateY = 0;
 	
 	mItemListener = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>&)
 	{
@@ -448,7 +449,7 @@ void QuickplayWidget::AddedToManager(WidgetManager* theWidgetManager)
 	this->AddWidget(mDayStageButton);
 	for (ButtonWidget* aButton : mLevelButtons)	this->AddWidget(aButton);
 	this->AddWidget(mBackButton);
-	this->AddWidget(mRIPButton);
+	// this->AddWidget(mRIPButton);
 }
 
 //0x44BCA0
@@ -462,7 +463,7 @@ void QuickplayWidget::RemovedFromManager(WidgetManager* theWidgetManager)
 	this->RemoveWidget(mDayStageButton);
 	for (ButtonWidget* aButton : mLevelButtons)	this->RemoveWidget(aButton);
 	this->RemoveWidget(mBackButton);
-	this->RemoveWidget(mRIPButton);
+	// this->RemoveWidget(mRIPButton);
 }
 
 //0x44BD80
@@ -475,7 +476,7 @@ void QuickplayWidget::OrderInManagerChanged()
 	this->PutInfront(mDayStageButton, this);
 	for (ButtonWidget* aButton : mLevelButtons)	this->PutInfront(aButton, this);
 	this->PutInfront(mBackButton, this);
-	this->PutInfront(mRIPButton, this);
+	// this->PutInfront(mRIPButton, this);
 	this->PutBehind(mApp->mGameSelector->mOverlayWidget, this);
 }
 

@@ -276,7 +276,7 @@ void ParticleScreen::KeyDown(KeyCode theKey)
 	ParticleEffect mPreviousParticleEffect = mParticleEffect;
 	if (theKey == KeyCode::KEYCODE_NEXT)  mParticleEffect = (ParticleEffect)(mParticleEffect + 1);
 	else if (theKey == KeyCode::KEYCODE_PRIOR) mParticleEffect = (ParticleEffect)(mParticleEffect - 1);
-	if (mParticleEffect == ParticleEffect::PARTICLE_NONE) mParticleEffect = ParticleEffect::PARTICLE_KERNEL_SPLAT;
+	// if (mParticleEffect == ParticleEffect::PARTICLE_NONE) mParticleEffect = ParticleEffect::PARTICLE_KERNEL_SPLAT;
 	if (mParticleEffect == ParticleEffect::NUM_PARTICLES) mParticleEffect = ParticleEffect::PARTICLE_MELONSPLASH;
 
 	if (theKey == KeyCode::KEYCODE_NEXT || theKey == KeyCode::KEYCODE_PRIOR)

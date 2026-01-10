@@ -2418,11 +2418,11 @@ void Challenge::DrawArtChallenge(Graphics* g)
 	}
 	
 	// Only for beta 0.1.1
-	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ART_CHALLENGE_WALLNUT)
-	{
-		g->DrawImage(Sexy::IMAGE_GOOGLYEYE, 357, 174);
-		g->DrawImage(Sexy::IMAGE_GOOGLYEYE, 516, 174);
-	}
+	// if (mApp->mGameMode == GAMEMODE_CHALLENGE_ART_CHALLENGE_WALLNUT)
+	// {
+		// g->DrawImage(Sexy::IMAGE_GOOGLYEYE, 357, 174);
+		// g->DrawImage(Sexy::IMAGE_GOOGLYEYE, 516, 174);
+	// }
 
 	g->SetColorizeImages(false);
 }
