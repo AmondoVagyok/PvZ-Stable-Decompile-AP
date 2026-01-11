@@ -1676,7 +1676,7 @@ bool LawnApp::UpdatePlayerProfileForFinishingLevel()
 		{
 			ReportAchievement::GiveAchievement(this, AchievementId::NoFungusAmongUs, false);
 		}
-		if (mBoard->StageIsDayWithoutPool() && mBoard->mMushroomAndCoffeeBeansOnly) 
+		if (!mBoard->StageIsNight() && mBoard->mMushroomAndCoffeeBeansOnly) 
 		{
 			ReportAchievement::GiveAchievement(this, AchievementId::GoodMorning, false);
 		}
