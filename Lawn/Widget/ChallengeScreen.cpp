@@ -328,6 +328,12 @@ void ChallengeScreen::SetUnlockChallengeIndex(ChallengePage thePage, bool theIsI
 //0x42E440
 int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 {
+	if (mApp->mPlayerInfo) {
+		if (mApp->mPlayerInfo->mHasUsedCheatKeys) {
+			return 0;
+		}
+	}
+
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
 	auto slot_data = mApp->mAP->SlotData();
 	
