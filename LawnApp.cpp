@@ -1672,7 +1672,7 @@ bool LawnApp::UpdatePlayerProfileForFinishingLevel()
 		{
 			ReportAchievement::GiveAchievement(this, AchievementId::Grounded, false);
 		}
-		if (mBoard->StageIsNight() && !mBoard->mMushroomsUsed) 
+		if (mBoard->StageIsNight() && !mBoard->mMushroomsUsed && mBoard->mLevel != 35 && mBoard->mLevel != 40)
 		{
 			ReportAchievement::GiveAchievement(this, AchievementId::NoFungusAmongUs, false);
 		}
@@ -2745,7 +2745,7 @@ bool LawnApp::IsChallengeWithoutSeedBank()
 
 bool LawnApp::IsNight()
 {
-	if (IsIceDemo() || mPlayerInfo == nullptr && mBoard == nullptr)
+	if (IsIceDemo() || mPlayerInfo == nullptr /*&& mBoard == nullptr*/)
 		return false;
 
 	if (mBoard)
