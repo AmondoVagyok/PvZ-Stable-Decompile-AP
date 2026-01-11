@@ -3730,7 +3730,6 @@ void LawnApp::PreloadForUser()
 		//
 		// 	Graphics aImage(aDirtyBush);
 		// 	aImage.SetLinearBlend(true);
-		// 	aImage.SetFastStretch(false);
 		// 	aBushReanim.Draw(&aImage);
 		//
 		// 	mDirtyBushes[_i] = aDirtyBush;
