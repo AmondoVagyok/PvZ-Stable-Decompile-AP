@@ -1717,7 +1717,7 @@ void GameSelector::ClickedAdventure()
 	auto levels_unlocked = 0;
 	for (auto level = 1; level <= 50; level++)
 	{
-		if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level)))
+		if (mApp->IsLevelOpen(level))
 		{
 			mLevel = level;
 			levels_unlocked++;
@@ -1727,6 +1727,7 @@ void GameSelector::ClickedAdventure()
 	if (levels_unlocked > 1)
 	{
 		ShowQuickplayScreen();
+		return;
 	}
 
 	mApp->mMusic->StopAllMusic();

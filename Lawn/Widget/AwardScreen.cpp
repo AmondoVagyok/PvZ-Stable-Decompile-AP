@@ -195,12 +195,16 @@ AwardScreen::AwardScreen(LawnApp* theApp, AwardType theAwardType, bool theShowin
 		mMenuButton->mBtnNoDraw = true;
 		mMenuButton->mDisabled = true;
 	}
-	else if (aLevel == 15)
-		mStartButton->SetLabel(_S("[VIEW_ALMANAC_BUTTON]"));
-	else if (aLevel == 25 || aLevel == 35 || aLevel == 45)
-		mStartButton->SetLabel(_S("[CONTINUE_BUTTON]"));
+	else if (!mApp->IsLevelOpen(aLevel))
+	{
+		mStartButton->SetLabel(_S("[MAIN_MENU_BUTTON]"));
+		mMenuButton->mBtnNoDraw = true;
+		mMenuButton->mDisabled = true;
+	}
 	else
+	{
 		mStartButton->SetLabel(_S("[NEXT_LEVEL_BUTTON]"));
+	}
 
 	if (mApp->EarnedGoldTrophy()) 
 		ReportAchievement::GiveAchievement(mApp, AchievementId::NovelPeasPrize, false);
@@ -500,56 +504,15 @@ void AwardScreen::StartButtonPressed()
 		}
 		else
 		{
-			// if (aLevel == 15)
-			// {
-			// 	mApp->DoAlmanacDialog()->WaitForResult();
-			// }
-			// else if (aLevel == 25)
-			// {
-			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
-			// 	aStore->SetupForIntro(301);
-			// 	aStore->WaitForResult(true);
-			//
-			// 	if (aStore->mPurchasedFullVersion)
-			// 	{
-			// 		mApp->KillAwardScreen();
-			// 		mApp->ShowGameSelector();
-			// 		return;
-			// 	}
-			// 	if (mApp->IsTrialStageLocked())
-			// 	{
-			// 		mApp->KillAwardScreen();
-			// 		mApp->PreNewGame(GAMEMODE_UPSELL, false);
-			// 		if (!mApp->mPlayerInfo->mHasSeenUpsell)
-			// 		{
-			// 			mApp->mBoard->mStoreButton->mBtnNoDraw = true;
-			// 			mApp->mPlayerInfo->mHasSeenUpsell = true;
-			// 		}
-			// 		return;
-			// 	}
-			// }
-			// else if (aLevel == 35)
-			// {
-			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
-			// 	aStore->SetupForIntro(601);
-			// 	aStore->WaitForResult(true);
-			// }
-			// else if (aLevel == 42)
-			// {
-			// 	StoreScreen* aStore = mApp->ShowStoreScreen();
-			// 	aStore->SetupForIntro(3100);
-			// 	aStore->WaitForResult(true);
-			// }
-			// else if (aLevel == 45)
-			// {
-			// 	mApp->KillAwardScreen();
-			// 	mApp->PreNewGame(GAMEMODE_CHALLENGE_ZEN_GARDEN, false);
-			// 	mApp->mZenGarden->SetupForZenTutorial();
-			// 	return;
-			// }
-
 			mApp->KillAwardScreen();
-			mApp->PreNewGame(GAMEMODE_ADVENTURE, false, aLevel);
+			
+			if (mApp->IsLevelOpen(aLevel))
+			{
+				mApp->PreNewGame(GAMEMODE_ADVENTURE, false, aLevel);
+			} else
+			{
+				mApp->ShowGameSelector();
+			}
 		}
 	}
 }
