@@ -157,11 +157,17 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mGoToTreeNow = false;
     mPurchasedFullVersion = false;
     mTrialLockedWhenStoreOpened = mApp->IsTrialStageLocked();
+    
+    mItemHandler = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>&)
+    {
+        EnableButtons(true);
+    });
 }
 
 //0x48A610、0x48A630
 StoreScreen::~StoreScreen()
 {
+    delete mItemHandler;
     mCoins.DataArrayDispose();
     if (mBackButton) delete mBackButton;
     if (mPrevButton) delete mPrevButton;
@@ -674,6 +680,8 @@ bool StoreScreen::CanInteractWithButtons()
 //0x48BF60
 void StoreScreen::Update()
 {
+    // For some reason we stop polling in the shop so poll here
+    mApp->mAP->Poll();
     mApp->mMusic->MakeSureMusicIsPlaying(MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME);
     mApp->UpdateCrazyDave();
 
@@ -871,7 +879,7 @@ void StoreScreen::ButtonPress(int theId)
 //0x48C440
 bool StoreScreen::IsPageShown(int thePage)
 {
-    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) > thePage;
+    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) >= thePage;
     // 试玩模式下，仅显示默认页
     if (mApp->IsTrialStageLocked()) return thePage == STORE_PAGE_SLOT_UPGRADES;
     // 一周目完成后，所有页全解锁
@@ -903,13 +911,13 @@ void StoreScreen::ButtonDepress(int theId)
                 mPage = mPage - 1;
                 if (mPage < 0)
                 {
-                    mPage = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) - 1;
+                    mPage = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK);
                 }
             }
             else
             {
                 mPage = mPage + 1;
-                if (mPage >= mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK))
+                if (mPage > mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK))
                 {
                     mPage = 0;
                 }

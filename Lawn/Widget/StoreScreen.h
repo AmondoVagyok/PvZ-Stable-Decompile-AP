@@ -5,6 +5,7 @@
 #include "../System/PlayerInfo.h"
 #include "../../Sexy.TodLib/DataArray.h"
 #include "../../SexyAppFramework/Dialog.h"
+class ListenerHandle;
 using namespace std;
 using namespace Sexy;
 
@@ -53,6 +54,8 @@ public:
     bool                        mPurchasedFullVersion;          //+0x22E
     bool                        mTrialLockedWhenStoreOpened;    //+0x22F
     int                         mCrazyDaveLastTalkIndex;
+    
+    ListenerHandle*             mItemHandler;
 
 public:
     StoreScreen(LawnApp* theApp);
