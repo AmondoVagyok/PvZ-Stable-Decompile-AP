@@ -4758,6 +4758,7 @@ void LawnApp::SetupArchipelago()
 	this->mAP->AddConnectionCompleteListener([this]
 	{
 		this->KillDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING);
+		mAP->EnableDeathLink(this->mAP->SlotData()["deathlink_enabled"] == 1);
 	});
 	this->mAP->AddSlotRefusedListener([this](const std::string& reason)
 	{
