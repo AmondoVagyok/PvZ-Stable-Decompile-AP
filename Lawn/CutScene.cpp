@@ -745,33 +745,18 @@ bool CutScene::IsScrolledLeftAtStart()
 //0x43A820
 bool CutScene::CanGetPacketUpgrade()
 {
-	int aCost = StoreScreen::GetItemCost(StoreItem::STORE_ITEM_PACKET_UPGRADE);
-
-	return
-		mApp->mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PACKET_UPGRADE] == 0 &&
-		mApp->mPlayerInfo->mCoins >= aCost &&
-		mApp->mPlayerInfo->mDidntPurchasePacketUpgrade < 2;
+	return false;
 }
 
 //0x43A890
 bool CutScene::CanGetSecondPacketUpgrade()
 {
-	int aCost = StoreScreen::GetItemCost(StoreItem::STORE_ITEM_PACKET_UPGRADE);
-
-	return
-		mApp->mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PACKET_UPGRADE] == 1 &&
-		mApp->mPlayerInfo->mCoins >= aCost &&
-		mApp->mPlayerInfo->mDidntPurchasePacketUpgrade < 2;
+	return false;
 }
 
 bool CutScene::CanGetPacketUpgrade(int theUpgradeIndex)
 {
-	int aCost = StoreScreen::GetItemCost(StoreItem::STORE_ITEM_PACKET_UPGRADE);
-
-	return 
-		mApp->mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_PACKET_UPGRADE] == theUpgradeIndex &&  // theUpgradeIndex 从首次为 0 开始计算
-		mApp->mPlayerInfo->mCoins >= aCost && 
-		mApp->mPlayerInfo->mDidntPurchasePacketUpgrade < 2;
+	return false;
 }
 
 //0x43A900
@@ -1854,7 +1839,7 @@ void CutScene::AdvanceCrazyDaveDialog(bool theJustSkipping)
 	// （推销卡槽）“听起来怎么样”
 	if ((aMessageIndex == 1503 || aMessageIndex == 1553) && !theJustSkipping)
 	{
-		int aCost = StoreScreen::GetItemCost(StoreItem::STORE_ITEM_PACKET_UPGRADE);
+		int aCost = 0;
 		int aNumPackets = mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PACKET_UPGRADE];
 		SexyString aBodyString = TodReplaceNumberString(_S("[UPGRADE_DIALOG_BODY]"), _S("{SLOTS}"), 6 + aNumPackets + 1);
 		SexyString aAmountString = mApp->GetMoneyString(aCost);

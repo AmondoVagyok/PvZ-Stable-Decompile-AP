@@ -2429,7 +2429,7 @@ void ZenGarden::OpenStore()
         mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_FERTILIZER] = PURCHASE_COUNT_OFFSET + 5;
     }
     aStore->mBackButton->SetLabel(_S("[STORE_BACK_TO_GAME]"));
-    aStore->mPage = StorePages::STORE_PAGE_ZEN1;
+    aStore->mPage = 0;
     aStore->WaitForResult(true);
 
     if (aStore->mGoToTreeNow)

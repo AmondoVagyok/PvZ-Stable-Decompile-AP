@@ -6006,7 +6006,7 @@ void Challenge::TreeOfWisdomOpenStore()
 	TreeOfWisdomLeave();
 	StoreScreen* aStore = mApp->ShowStoreScreen();
 	aStore->mBackButton->SetLabel(_S("[STORE_BACK_TO_GAME]"));
-	aStore->mPage = STORE_PAGE_ZEN2;
+	aStore->mPage = 0;
 	aStore->WaitForResult(true);
 	mApp->mMusic->MakeSureMusicIsPlaying(MUSIC_TUNE_ZEN_GARDEN);
 }

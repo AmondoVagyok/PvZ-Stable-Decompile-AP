@@ -60,11 +60,11 @@ namespace PVZRAPData
 
         inline int64_t Twiddydinkie(const int index)
         {
-            if (index < 1 || index > 16)
+            if (index < 0 || index > 15)
             {
                 return -1;
             }
-            return 5000 + index - 1;
+            return 5000 + index;
         }
         
         // Flag is 1-based

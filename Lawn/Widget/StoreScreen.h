@@ -37,8 +37,8 @@ public:
     bool                        mBubbleClickToContinue;         //+0x188
     int                         mAmbientSpeechCountDown;        //+0x18C
     int                         mPreviousAmbientSpeechIndex;    //+0x190
-    StorePages                  mPage;                          //+0x194
-    StoreItem                   mMouseOverItem;                 //+0x198
+    int                  mPage;                          //+0x194
+    int                   mMouseOverItem;                 //+0x198
     int                         mHatchTimer;                    //+0x19C
     bool                        mHatchOpen;                     //+0x1A0
     int                         mShakeX;                        //+0x1A4
@@ -62,7 +62,7 @@ public:
     bool                        IsFullVersionOnly(StoreItem theStoreItem);
     static /*inline*/ bool      IsPottedPlant(StoreItem theStoreItem);
     bool                        IsComingSoon(StoreItem theStoreItem);
-    bool                        IsItemSoldOut(StoreItem theStoreItem);
+    bool                        IsItemSoldOut(int theIndex);
     bool                        IsItemUnavailable(StoreItem theStoreItem);
     static /*inline*/ void      GetStorePosition(int theSpotIndex, int& thePosX, int& thePosY);
     void                        DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theItemType, bool theIsForHighlight);
@@ -70,6 +70,7 @@ public:
     virtual void                Draw(Graphics* g);
     virtual void                DrawOverlay(Graphics* g);
     /*inline*/ void             SetBubbleText(int theCrazyDaveMessage, int theTime, bool theClickToContinue);
+    /*inline*/ void             SetBubbleText(std::string message, int theTime, bool theClickToContinue);
     void                        UpdateMouse();
     void                        StorePreload();
     /*inline*/ bool             CanInteractWithButtons();
@@ -77,12 +78,12 @@ public:
     virtual void                AddedToManager(WidgetManager* theWidgetManager);
     virtual void                RemovedFromManager(WidgetManager* theWidgetManager);
     virtual void                ButtonPress(int theId);
-    /*inline*/ bool             IsPageShown(StorePages thePage);
+    /*inline*/ bool             IsPageShown(int thePage);
     virtual void                ButtonDepress(int theId);
     virtual void                KeyChar(char theChar);
-    static /*inline*/ int		GetItemCost(StoreItem theStoreItem);
-    /*inline*/ bool             CanAffordItem(StoreItem theStoreItem);
-    void                        PurchaseItem(StoreItem theStoreItem);
+    /*inline*/ int		GetItemCost(int theIndex);
+    /*inline*/ bool             CanAffordItem(int theIndex);
+    void                        PurchaseItem(int theIndex);
     void                        AdvanceCrazyDaveDialog();
     virtual void                MouseDown(int x, int y, int theClickCount);
     /*inline*/ void             EnableButtons(bool theEnable);

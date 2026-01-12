@@ -1233,6 +1233,7 @@ enum StoreItem
     STORE_ITEM_TREE_FOOD,
     STORE_ITEM_FIRSTAID,
     STORE_ITEM_PVZ,
+    STORE_ITEM_AP,
     STORE_ITEM_INVALID = -1
 };
 enum StorePages : int

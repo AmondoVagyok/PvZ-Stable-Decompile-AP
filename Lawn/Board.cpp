@@ -11504,7 +11504,7 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 	if (mApp->IsFirstTimeAdventureMode() && mLevel == 11)
 	{
 		int aMoney = Coin::GetCoinValue(CoinType::COIN_GOLD) * mLawnMowers.mSize;
-		int aCost = StoreScreen::GetItemCost(StoreItem::STORE_ITEM_PACKET_UPGRADE);
+		int aCost = 0;
 		aMoney += mApp->mPlayerInfo->mCoins + CountCoinsBeingCollected();
 		if (Coin::GetCoinValue(aCoinType) + aMoney >= aCost)
 		{
