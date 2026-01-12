@@ -60,7 +60,7 @@ namespace PVZRAPData
 
         inline int64_t Twiddydinkie(const int index)
         {
-            if (index < 0 || index > 15)
+            if (index < 0 || index > 63)
             {
                 return -1;
             }
