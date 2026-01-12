@@ -274,6 +274,15 @@ namespace PVZRAPData
             }
             return static_cast<SeedType>(item - 100);
         }
+        
+        inline int Level(const int level)
+        {
+            if (level < 1 || level > 50)
+            {
+                return -1;
+            }
+            return 200 + level;
+        }
     }
 }
 

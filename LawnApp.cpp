@@ -4582,6 +4582,161 @@ void LawnApp::UpdateArchipelagoOverlayElements()
 	}
 }
 
+bool LawnApp::IsLevelOpen(int level) const
+{
+	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
+	{
+		return false;
+	}
+	
+	auto slot_data = mAP->SlotData();
+	
+	// 0: Linear
+	// 1: Area Unlock Items
+	// 2: Open Area Unlock Items
+	// 3: Level Items
+	int adventure_mode_progression = slot_data["adventure_mode_progression"];
+	
+	// 0: Off
+	// 1: On
+	int fast_goal = slot_data["fast_goal"];
+	
+	if (level == 50)
+	{
+		int adventure_areas_goal = slot_data["adventure_areas_goal"];
+		int minigame_levels_goal = slot_data["minigame_levels_goal"];
+		int puzzle_levels_goal = slot_data["puzzle_levels_goal"];
+		int survival_levels_goal = slot_data["survival_levels_goal"];
+		
+		int adventure_areas_complete = 0;
+		for (auto i = 1; i <= 50; i++)
+		{
+			if (mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)))
+			{
+				adventure_areas_complete++;
+			}
+		}
+		
+		if (adventure_areas_complete < adventure_areas_goal)
+		{
+			return false;
+		}
+		
+		int minigame_levels_complete = 0;
+		for (auto i = PVZRAPData::Locations::MINIGAME_ZOMBOTANY_CLEAR; i <= PVZRAPData::Locations::MINIGAME_ZOMBOSS_REVENGE_CLEAR; i++)
+		{
+			if (mAP->IsLocationChecked(i))
+			{
+				minigame_levels_complete++;
+			}			
+		}
+		if (minigame_levels_complete < minigame_levels_goal)
+		{
+			return false;
+		}
+		
+		int puzzle_levels_complete = 0;
+		for (auto i = PVZRAPData::Locations::PUZZLE_VASEBREAKER_CLEAR; i <= PVZRAPData::Locations::PUZZLE_BRAINZ_BELONG_TO_US_CLEAR; i++)
+		{
+			if (mAP->IsLocationChecked(i))
+			{
+				puzzle_levels_complete++;
+			}
+		}
+		if (puzzle_levels_complete < puzzle_levels_goal)
+		{
+			return false;
+		}
+		
+		int survival_levels_complete = 0;
+		for (auto i = PVZRAPData::Locations::SURVIVAL_DAY_CLEAR; i <= PVZRAPData::Locations::SURVIVAL_ROOF_HARD_CLEAR; i++)
+		{
+			if (mAP->IsLocationChecked(i))
+			{
+				survival_levels_complete++;
+			}
+		}
+		if (survival_levels_complete < survival_levels_goal)
+		{
+			return false;
+		}
+		
+		if (fast_goal)
+		{
+			return true;
+		}
+		
+		// Now check the standard requirements for 5-10
+	}
+	
+	if (adventure_mode_progression == 1)
+	{
+		if (level == 1)
+		{
+			return true;
+		}
+		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
+	}
+	if (adventure_mode_progression == 2)
+	{
+		if (level >= 1 && level <= 10 && mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) == 0)
+		{
+			return false;
+		}
+		if (level >= 11 && level <= 20 && mAP->ReceivedItemCount(PVZRAPData::Items::NIGHT_ACCESS) == 0)
+		{
+			return false;
+		}
+		if (level >= 21 && level <= 30 && mAP->ReceivedItemCount(PVZRAPData::Items::POOL_ACCESS) == 0)
+		{
+			return false;
+		}
+		if (level >= 31 && level <= 40 && mAP->ReceivedItemCount(PVZRAPData::Items::FOG_ACCESS) == 0)
+		{
+			return false;
+		}
+		if (level >= 41 && level <= 50 && mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) == 0)
+		{
+			return false;
+		}
+			
+		if (level % 10 == 1)
+		{
+			return true;
+		}
+		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
+	}
+	if (adventure_mode_progression == 3)
+	{
+		if (level >= 1 && level <= 10)
+		{
+			return mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) > 0;
+		}
+		if (level >= 11 && level <= 20)
+		{
+			return mAP->ReceivedItemCount(PVZRAPData::Items::NIGHT_ACCESS) > 0;
+		}
+		if (level >= 21 && level <= 30)
+		{
+			return mAP->ReceivedItemCount(PVZRAPData::Items::POOL_ACCESS) > 0;
+		}
+		if (level >= 31 && level <= 40)
+		{
+			return mAP->ReceivedItemCount(PVZRAPData::Items::FOG_ACCESS) > 0;
+		}
+		if (level >= 41 && level <= 50)
+		{
+			return mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) > 0;
+		}
+	}
+	if (adventure_mode_progression == 4)
+	{
+		return mAP->ReceivedItemCount(level) > 0;
+	}
+
+	return false;
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)

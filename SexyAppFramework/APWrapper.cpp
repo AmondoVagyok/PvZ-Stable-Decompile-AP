@@ -561,6 +561,14 @@ bool APWrapper::IsLocationChecked(const int64_t& location) const
     return checked_locations.find(location) != checked_locations.end();
 }
 
+bool APWrapper::IsLocationPresent(const int64_t& location) const
+{
+    if (!d->mAP) return false;
+    auto locations = this->d->mAP->get_missing_locations();
+    locations.merge(this->d->mAP->get_checked_locations());
+    return locations.find(location) != locations.end();
+}
+
 APItem APWrapper::ItemAtLocation(int64_t location) const
 {
     return d->location_scouts[location];

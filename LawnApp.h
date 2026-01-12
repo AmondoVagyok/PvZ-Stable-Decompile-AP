@@ -388,6 +388,7 @@ public:
 	bool							EnsureArchipelagoConnected();
 	void							DrawArchipelagoOverlayElements(Graphics* g);
 	void							UpdateArchipelagoOverlayElements();
+	bool                            IsLevelOpen(int level) const;
 	
 private:
 	void							SetupArchipelago();

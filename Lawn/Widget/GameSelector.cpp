@@ -1713,11 +1713,20 @@ void GameSelector::ClickedAdventure()
 	{
 		return;
 	}
-
-	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(1, 1)))
+	
+	auto levels_unlocked = 0;
+	for (auto level = 1; level <= 50; level++)
+	{
+		if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level)))
+		{
+			mLevel = level;
+			levels_unlocked++;
+		}
+	}
+	
+	if (levels_unlocked > 1)
 	{
 		ShowQuickplayScreen();
-		return;
 	}
 
 	mApp->mMusic->StopAllMusic();

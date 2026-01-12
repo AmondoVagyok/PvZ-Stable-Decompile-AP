@@ -751,69 +751,53 @@ void QuickplayWidget::UpdateLevelButtons()
 		return;
 	}
 	
-	auto slot_data = mApp->mAP->SlotData();
+	bool isDayOpen = false;
+	bool isNightOpen = false;
+	bool isPoolOpen = false;
+	bool isFogOpen = false;
+	bool isRoofOpen = false;
 	
-	// 0: Linear
-	// 1: Area Unlock Items
-	// 2: Open Area Unlock Items
-	int adventure_mode_progression = slot_data["adventure_mode_progression"];
-	bool require_all_levels = slot_data["require_all_levels"];
 	
-	if (adventure_mode_progression == 0)
+	auto i = 1;
+	for (auto levelButton : mLevelButtons)
 	{
-		mDayStageButton->SetDisabled(false);
-		mNightStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(1, 10) == 0));
-		mPoolStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(2, 10) == 0));
-		mFogStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(3, 10) == 0));
-		mRoofStageButton->SetDisabled(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(4, 10) == 0));
+		auto isOpen = mApp->IsLevelOpen(i);
+		if (isOpen)
+		{
+			if (i <= 10)
+			{
+				isDayOpen = true;
+			}
+			else if (i <= 20)
+			{
+				isNightOpen = true;
+			}
+			else if (i <= 30)
+			{
+				isPoolOpen = true;
+			}
+			else if (i <= 40)
+			{
+				isFogOpen = true;
+			}
+			else if (i <= 50)
+			{
+				isRoofOpen = true;
+			}
+		}
+		levelButton->SetVisible(isOpen);
+		i++;
 	}
-	else
-	{
-		mDayStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) == 0);
-		mNightStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::NIGHT_ACCESS) == 0);
-		mPoolStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::POOL_ACCESS) == 0);
-		mFogStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::FOG_ACCESS) == 0);
-		mRoofStageButton->SetDisabled(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) == 0);
-	}
+	
+	mDayStageButton->SetDisabled(!isDayOpen);
+	mNightStageButton->SetDisabled(!isNightOpen);
+	mPoolStageButton->SetDisabled(!isPoolOpen);
+	mFogStageButton->SetDisabled(!isFogOpen);
+	mRoofStageButton->SetDisabled(!isRoofOpen);
 
 	mDayStageButton->mVisible = !mDayStageButton->mDisabled;
 	mNightStageButton->mVisible = !mNightStageButton->mDisabled;
 	mPoolStageButton->mVisible = !mPoolStageButton->mDisabled;
 	mFogStageButton->mVisible = !mFogStageButton->mDisabled;
 	mRoofStageButton->mVisible = !mRoofStageButton->mDisabled;
-	
-	auto i = 0;
-	for (auto levelButton : mLevelButtons)
-	{
-		if (i == 49 && require_all_levels)
-		{
-			// Check all levels before enabling
-			auto zomboss_enabled = true;
-			for (auto j = 1; j <= 48; j++)
-			{
-				zomboss_enabled &= mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(j));
-			}
-			levelButton->SetVisible(zomboss_enabled);
-		}
-		else if (i % 10 == 0)
-		{
-			// The first stage in every mode is unlocked
-			levelButton->SetVisible(true);
-		}
-		else
-		{
-			// TODO: Based on the slot data, unlock every stage
-			if (adventure_mode_progression == 2)
-			{
-				// Every stage is unlocked once the stage before is cleared
-				SetVisible(true);
-			}
-			else
-			{
-				// Every stage is unlocked once the stage before is cleared
-				levelButton->SetVisible(mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)));
-			}
-		}
-		i++;
-	}
 }
