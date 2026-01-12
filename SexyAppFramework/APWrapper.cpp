@@ -6,6 +6,8 @@
 #include <apclient.hpp>
 #include <apuuid.hpp>
 
+const std::string EXPECTED_SLOT_DATA_VERSION = "1.2";
+
 class APWrapper_Private {
 public:
     std::map<uint64_t, std::function<void(const std::string&)>> server_chat_listeners;
@@ -270,6 +272,28 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_slot_connected_handler([this](const nlohmann::json& slot_data)
     {
+        auto gen_version = slot_data["gen_version"];
+        std::string gen_version_string;
+        if (gen_version.is_number_float())
+        {
+            std::stringstream ss;
+            ss << std::fixed << std::setprecision(1) << gen_version;
+            gen_version_string = ss.str();
+        } else
+        {
+            gen_version_string = gen_version.get<std::string>();
+        }
+        if (gen_version_string != EXPECTED_SLOT_DATA_VERSION)
+        {
+            // Call the slot refused listener
+            for (const auto& slot_refused_listener : this->d->slot_refused_listeners)
+            {
+                slot_refused_listener.second("IncompatibleSlotData:" + gen_version_string + ":" + EXPECTED_SLOT_DATA_VERSION);
+            }
+            this->Disconnect();
+            return;
+        }
+        
         this->d->slot_data = slot_data;
         
         // Scout all locations and cache them

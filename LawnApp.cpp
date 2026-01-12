@@ -55,6 +55,7 @@
 
 #include "portaudio.h"
 #include <lua.hpp>
+#include <sstream>
 
 #include "Particle/ParticleScreen.h"
 #include "SexyAppFramework/D3DInterface.h"
@@ -4764,12 +4765,20 @@ void LawnApp::SetupArchipelago()
 	{
 		this->KillDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING);
 		
+		std::vector<std::string> args;
+		std::stringstream ss(reason);
+		std::string token;
+		while (std::getline(ss, token, ':'))
+		{
+			args.push_back(token);
+		}
+		
 		std::string message = "Check your parameters and try again";
-		if (reason == "InvalidSlot")
+		if (args[0] == "InvalidSlot")
 		{
 			message = "Check the slot name and try again.";
 		}
-		else if (reason == "InvalidGame")
+		else if (args[0] == "InvalidGame")
 		{
 #ifdef GOTY
 			message = "This slot is not configured for Plants vs. Zombies: Game of the Year edition.";
@@ -4777,7 +4786,7 @@ void LawnApp::SetupArchipelago()
 			message = "This slot is not configured for Plants vs. Zombies.";
 #endif
 		}
-		else if (reason == "IncompatibleVersion")
+		else if (args[0] == "IncompatibleVersion")
 		{
 #ifdef GOTY
 			message = "This version of Plants vs. Zombies: Game of the Year edition is not compatible with the server.";
@@ -4785,9 +4794,21 @@ void LawnApp::SetupArchipelago()
 			message = "This version of Plants vs. Zombies is not compatible with the server.";
 #endif
 		}
-		else if (reason == "InvalidPassword")
+		else if (args[0] == "InvalidPassword")
 		{
 			message = "Check the password and try again";
+		}
+		else if (args[0] == "IncompatibleSlotData")
+		{
+			auto gen_version = args[1];
+			auto expected_version = args[2];
+#ifdef GOTY
+			message = "This version of Plants vs. Zombies: Game of the Year edition is not compatible with the server.";
+#else
+			message = "This version of Plants vs. Zombies is not compatible with the server.";
+#endif
+			message.append("\nThe server game was generated on version " + gen_version);
+			message.append("\nThe game client is compatible with version " + expected_version);
 		}
 		
 		this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);
