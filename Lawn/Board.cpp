@@ -2004,7 +2004,7 @@ void Board::InitLawnMowers()
 #ifdef _CONSOLE_MINIGAMES
 		aGameMode == GameMode::GAMEMODE_CHALLENGE_BUTTERED_POPCORN ||
 #endif
-		mApp->IsSquirrelLevel() || mApp->IsIZombieLevel() || (StageHasRoof() && !mApp->mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_ROOF_CLEANER]))
+		mApp->IsSquirrelLevel() || mApp->IsIZombieLevel() || (StageHasRoof() && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_CLEANERS) == 0))
 		return;
 
 	for (int aRow = 0; aRow < MAX_GRID_SIZE_Y; aRow++)
@@ -2027,6 +2027,11 @@ void Board::InitLawnMowers()
 				) ||   // 这里原版没有对于行的判断，故冒险模式 4-5 关卡有 6 行小推车
 			(!mApp->IsScaryPotterLevel() && mPlantRow[aRow] != PlantRowType::PLANTROW_DIRT))  // 除冒险模式 4-5 关卡外的破罐者模式关卡无小推车
 		{
+			if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::LAWN_MOWERS) == 0 || (mPlantRow[aRow] != PlantRowType::PLANTROW_POOL && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::POOL_CLEANERS) == 0 && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::LAWN_MOWERS) == 0))
+			{
+				continue;
+			}
+			
 			LawnMower* aLawnMower = mLawnMowers.DataArrayAlloc();
 			aLawnMower->LawnMowerInitialize(aRow);
 			aLawnMower->mVisible = false;

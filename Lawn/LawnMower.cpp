@@ -5,6 +5,8 @@
 #include "System/ReanimationLawn.h"
 #include "../Sexy.TodLib/TodFoley.h"
 #include "../Sexy.TodLib/Reanimator.h"
+#include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 
 //0x458000
 void LawnMower::LawnMowerInitialize(int theRow)
@@ -29,7 +31,7 @@ void LawnMower::LawnMowerInitialize(int theRow)
         mMowerType = LawnMowerType::LAWNMOWER_ROOF;
         aReanimType = ReanimationType::REANIM_ROOF_CLEANER;
     }
-    else if (mBoard->mPlantRow[mRow] == PlantRowType::PLANTROW_POOL && mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_POOL_CLEANER])
+    else if (mBoard->mPlantRow[mRow] == PlantRowType::PLANTROW_POOL && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::POOL_CLEANERS) > 0)
     {
         mMowerType = LawnMowerType::LAWNMOWER_POOL;
         aReanimType = ReanimationType::REANIM_POOL_CLEANER;
