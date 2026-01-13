@@ -1344,8 +1344,8 @@ void SeedChooserScreen::KeyChar(SexyChar theChar)
 {
 	if (mChooseState == CHOOSE_VIEW_LAWN && mViewLawnTime > 251 && (theChar == ' ' || theChar == '\r' || theChar == '\u001B'))
 		CancelLawnView();
-	else if (mApp->mTodCheatKeys && theChar == '\u001B' && mBoard->mCutScene->mSeedChoosing)
-		PickRandomSeeds();
+	// else if (mApp->mTodCheatKeys && theChar == '\u001B' && mBoard->mCutScene->mSeedChoosing)
+	// 	PickRandomSeeds();
 	else mBoard->KeyChar(theChar);
 }
 

@@ -289,8 +289,11 @@ Board::Board(LawnApp* theApp)
 					for (int i = 0; i < SEEDBANK_MAX; i++)
 					{
 						auto seed_packet = mSeedBank->mSeedPackets[i];
-						seed_packet.mRefreshing = true;
-						seed_packet.mRefreshTime = Plant::GetRefreshTime(seed_packet.mPacketType, seed_packet.mImitaterType);
+						if (seed_packet.mPacketType != SeedType::SEED_NONE)
+						{
+							seed_packet.mRefreshing = true;
+							seed_packet.mRefreshTime = Plant::GetRefreshTime(seed_packet.mPacketType, seed_packet.mImitaterType);
+						}
 					}
 				}
 			case PVZRAPData::Items::TRAP_ZOMBIE_AMBUSH:
@@ -2086,8 +2089,14 @@ bool Board::ChooseSeedsOnCurrentLevel()
 
 	if (mApp->mGameMode >= GameMode::GAMEMODE_LAST_STAND_STAGE_1 && mApp->mGameMode <= GameMode::GAMEMODE_LAST_STAND_STAGE_5)
 		return false;
-
-	return (!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4 || mLevel > 7);
+	
+	auto numSeedsAvailable = 0;
+	for (auto i = SEED_PEASHOOTER; i <= SEED_IMITATER; i = (SeedType)(i + 1))
+	{
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(i)) != 0) numSeedsAvailable++;
+	}
+	
+	return numSeedsAvailable > GetNumSeedsInBank();
 }
 
 //0x40BE00

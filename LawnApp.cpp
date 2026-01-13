@@ -4602,6 +4602,7 @@ bool LawnApp::IsLevelOpen(int level) const
 	
 	if (level == 50)
 	{
+		int adventure_levels_goal = slot_data["adventure_levels_goal"];
 		int adventure_areas_goal = slot_data["adventure_areas_goal"];
 		int minigame_levels_goal = slot_data["minigame_levels_goal"];
 		int puzzle_levels_goal = slot_data["puzzle_levels_goal"];
@@ -4616,10 +4617,12 @@ bool LawnApp::IsLevelOpen(int level) const
 			}
 		}
 		
-		if (adventure_areas_complete < adventure_areas_goal)
+		if (adventure_areas_complete < adventure_levels_goal)
 		{
 			return false;
 		}
+		
+		// TODO: Adventure Areas goal
 		
 		int minigame_levels_complete = 0;
 		for (auto i = PVZRAPData::Locations::MINIGAME_ZOMBOTANY_CLEAR; i <= PVZRAPData::Locations::MINIGAME_ZOMBOSS_REVENGE_CLEAR; i++)
