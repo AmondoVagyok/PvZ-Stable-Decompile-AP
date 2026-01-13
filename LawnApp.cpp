@@ -4671,7 +4671,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		// Now check the standard requirements for 5-10
 	}
 	
-	if (adventure_mode_progression == 1)
+	if (adventure_mode_progression == 0)
 	{
 		if (level == 1)
 		{
@@ -4679,7 +4679,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		}
 		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
 	}
-	if (adventure_mode_progression == 2)
+	if (adventure_mode_progression == 1)
 	{
 		if (level >= 1 && level <= 10 && mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) == 0)
 		{
@@ -4708,7 +4708,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		}
 		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
 	}
-	if (adventure_mode_progression == 3)
+	if (adventure_mode_progression == 2)
 	{
 		if (level >= 1 && level <= 10)
 		{
@@ -4731,7 +4731,7 @@ bool LawnApp::IsLevelOpen(int level) const
 			return mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) > 0;
 		}
 	}
-	if (adventure_mode_progression == 4)
+	if (adventure_mode_progression == 3)
 	{
 		return mAP->ReceivedItemCount(level) > 0;
 	}
