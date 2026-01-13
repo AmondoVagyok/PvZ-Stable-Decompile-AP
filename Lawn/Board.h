@@ -16,6 +16,7 @@
 #include "../SexyAppFramework/DDInterface.h"
 #include "../SexyAppFramework/SexyMatrix.h"
 
+class ListenerHandle;
 using namespace Sexy;
 
 #define MAX_GRID_SIZE_X 9
@@ -275,6 +276,8 @@ public:
 #endif
 	bool							mIsReplay;
 	//std::vector<std::pair<int, Rect>>	mLightSourceV; // int -> duration, Rect -> lightRect
+	
+	ListenerHandle*                 mItemReceivedListener;
 
 public:
 	Board(LawnApp* theApp);

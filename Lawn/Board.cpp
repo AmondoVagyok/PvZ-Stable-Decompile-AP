@@ -269,11 +269,41 @@ Board::Board(LawnApp* theApp)
 		mStoreButton->mBtnNoDraw = true;
 		mStoreButton->SetLabel(_S("[GET_FULL_VERSION_BUTTON]"));
 	}	
+	
+	mItemReceivedListener = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
+	{
+		for (auto item : items)
+		{
+			switch (item.item)
+			{
+			case PVZRAPData::Items::TRAP_MOWER_DEPLOY:
+				{
+					LawnMower* aLawnMower = nullptr;
+					while (IterateLawnMowers(aLawnMower))
+					{
+						aLawnMower->StartMower();
+					}
+				}
+			case PVZRAPData::Items::TRAP_PACKET_COOLDOWN:
+				{
+					for (int i = 0; i < SEEDBANK_MAX; i++)
+					{
+						auto seed_packet = mSeedBank->mSeedPackets[i];
+						seed_packet.mRefreshing = true;
+						seed_packet.mRefreshTime = Plant::GetRefreshTime(seed_packet.mPacketType, seed_packet.mImitaterType);
+					}
+				}
+			case PVZRAPData::Items::TRAP_ZOMBIE_AMBUSH:
+				this->SpawnZombiesFromGraves();
+			}
+		}
+	});
 }
 
 //0x408670、0x408690
 Board::~Board()
 {
+	delete mItemReceivedListener;
 	delete mAdvice;
 	delete mCursorObject;
 	delete mCursorPreview;

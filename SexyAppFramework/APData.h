@@ -262,7 +262,7 @@ namespace PVZRAPData
         constexpr int64_t DIAMOND = 62;
         constexpr int64_t NOTHING = 63;
         
-        constexpr int64_t TRAP_POWER_DEPLOY = 70;
+        constexpr int64_t TRAP_MOWER_DEPLOY = 70;
         constexpr int64_t TRAP_PACKET_COOLDOWN = 71;
         constexpr int64_t TRAP_ZOMBIE_AMBUSH = 72;
         
