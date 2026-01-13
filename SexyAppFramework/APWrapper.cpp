@@ -226,7 +226,24 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         std::string concatenated_message;
         for (const auto& node : print_line.data)
         {
-            concatenated_message.append(node.text);
+            if (node.type == "player_id")
+            {
+                concatenated_message.append(PlayerDisplayName(std::stoi(node.text)));
+            }
+            else if (node.type == "item_id")
+            {
+                concatenated_message.append(ItemName(std::stoi(node.text), node.player));
+            }
+            else if (node.type == "location_id")
+            {
+                auto player_game = PlayerGameName(node.player);
+                auto location_name = d->mAP->get_location_name(std::stoi(node.text), player_game);
+                concatenated_message.append(location_name);
+            }
+            else
+            {
+                concatenated_message.append(node.text);
+            }
         }
         
         d->chat_messages.push_back(concatenated_message);
