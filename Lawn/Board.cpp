@@ -683,13 +683,13 @@ void Board::AddGraveStones(int theGridX, int theCount, MTRand& theLevelRNG)
 //0x409050
 int Board::GetNumWavesPerFlag()
 {
-	return (mApp->IsFirstTimeAdventureMode() && mNumWaves < 10) ? mNumWaves : 10;
+	return (!mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) && mNumWaves < 10) ? mNumWaves : 10;
 }
 
 //0x409080
 bool Board::IsFlagWave(int theWaveNumber)
 {
-	if (mApp->IsFirstTimeAdventureMode() && mLevel == 1 /*&& mApp->mPlayerLevelRef <= 4*/)
+	if (!mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) && mLevel == 1 /*&& mApp->mPlayerLevelRef <= 4*/)
 		return false;
 
 #ifdef _DS_MINIGAMES
@@ -1286,7 +1286,7 @@ void Board::PickBackground()
 		mPlantRow[4] = PlantRowType::PLANTROW_NORMAL;
 		mPlantRow[5] = PlantRowType::PLANTROW_DIRT;
 
-		if (mApp->IsAdventureMode() && mApp->IsFirstTimeAdventureMode() /*&& mApp->mPlayerLevelRef <= 4*/)
+		if (mApp->IsAdventureMode() && !mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) /*&& mApp->mPlayerLevelRef <= 4*/)
 		{
 			if (mLevel == 1)
 			{
@@ -1776,7 +1776,7 @@ void Board::InitLevel()
 	{
 		mSunMoney = 150;
 	}
-	else if (mApp->IsFirstTimeAdventureMode() && mLevel == 1 && mApp->mPlayerInfo->GetLevel() <= 4)
+	else if (!mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) && mLevel == 1 && mApp->mPlayerInfo->GetLevel() <= 4)
 	{
 		mSunMoney = 150;
 	}
@@ -7176,14 +7176,14 @@ void Board::DrawBackdrop(Graphics* g)
 	default:											TOD_ASSERT();											break;
 	}
 
-	if (mLevel == 1 && mApp->IsFirstTimeAdventureMode() /*&& mApp->mPlayerLevelRef <= 4*/)
+	if (mLevel == 1 && !mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) /*&& mApp->mPlayerLevelRef <= 4*/)
 	{
 		g->DrawImageF(Sexy::IMAGE_BACKGROUND1UNSODDED, -BOARD_OFFSET + WIDESCREEN_OFFSETX, WIDESCREEN_OFFSETY);
 		int aWidth = TodAnimateCurve(0, 1000, mSodPosition, 0, Sexy::IMAGE_SOD1ROW->GetWidth(), TodCurves::CURVE_LINEAR);
 		Rect aSrcRect(0, 0, aWidth, Sexy::IMAGE_SOD1ROW->GetHeight());
 		g->DrawImageF(Sexy::IMAGE_SOD1ROW, 239 - BOARD_OFFSET, 265, aSrcRect);
 	}
-	else if ((((mLevel == 2 || mLevel == 3) && mApp->IsFirstTimeAdventureMode()) || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED) /*&& mApp->mPlayerLevelRef <= 4*/)
+	else if ((((mLevel == 2 || mLevel == 3) && !mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel))) || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RESODDED) /*&& mApp->mPlayerLevelRef <= 4*/)
 	{
 		g->DrawImageF(Sexy::IMAGE_BACKGROUND1UNSODDED, -BOARD_OFFSET + WIDESCREEN_OFFSETX, WIDESCREEN_OFFSETY);
 		g->DrawImageF(Sexy::IMAGE_SOD1ROW, 239 - BOARD_OFFSET, 265);
@@ -7192,7 +7192,7 @@ void Board::DrawBackdrop(Graphics* g)
 		// g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149, aSrcRect);
 		g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149);
 	}
-	else if (mLevel == 4 && mApp->IsFirstTimeAdventureMode() /*&& mApp->mPlayerLevelRef <= 4*/)
+	else if (mLevel == 4 && !mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel)) /*&& mApp->mPlayerLevelRef <= 4*/)
 	{
 		g->DrawImageF(Sexy::IMAGE_BACKGROUND1UNSODDED, -BOARD_OFFSET + WIDESCREEN_OFFSETX, WIDESCREEN_OFFSETY);
 		g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149);
