@@ -4733,7 +4733,7 @@ bool LawnApp::IsLevelOpen(int level) const
 	}
 	if (adventure_mode_progression == 3)
 	{
-		return mAP->ReceivedItemCount(PVZRAPData::Locations::LevelClear(level)) > 0;
+		return mAP->ReceivedItemCount(PVZRAPData::Items::Level(level)) > 0;
 	}
 
 	return false;
