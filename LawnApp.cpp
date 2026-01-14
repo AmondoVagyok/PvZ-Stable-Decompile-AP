@@ -4872,8 +4872,15 @@ void LawnApp::ProcessAPItem(const APItem& item)
 {
 	if (!mPlayerInfo) return;
 	
+	int starting_inv_count = mAP->SlotData()["starting_inv_count"];
+	
+	bool coin_sound_played = false;
+	bool diamond_sound_played = false;
+	
 	if (item.index > mPlayerInfo->mLastItemIndex)
 	{
+		auto is_start_item = item.index < starting_inv_count;
+		
 		std::string items_string;
 		if (item.player == 0 || item.player == this->mAP->MySlot())
 		{
@@ -4885,39 +4892,55 @@ void LawnApp::ProcessAPItem(const APItem& item)
 		}
 				
 		mPlayerInfo->mLastItemIndex = item.index;
-		DisplayAPUpdate(items_string);
+		
+		if (!is_start_item)
+		{
+			DisplayAPUpdate(items_string);
+		}
 		
 		switch (item.item)
 		{
 		case PVZRAPData::Items::SILVER_COIN:
 			{
-				PlayFoley(FoleyType::FOLEY_COIN);
 				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_SILVER));
-				if (mBoard)
+				
+				if (!is_start_item)
 				{
-					mBoard->ShowCoinBank();
+					PlayFoley(FoleyType::FOLEY_COIN);
+					if (mBoard)
+					{
+						mBoard->ShowCoinBank();
+					}
 				}
 			}
 			break;
 			
 		case PVZRAPData::Items::GOLD_COIN:
 			{
-				PlayFoley(FoleyType::FOLEY_COIN);
 				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_GOLD));
-				if (mBoard)
+				
+				if (!is_start_item)
 				{
-					mBoard->ShowCoinBank();
+					PlayFoley(FoleyType::FOLEY_COIN);
+					if (mBoard)
+					{
+						mBoard->ShowCoinBank();
+					}
 				}
 			}
 			break;
 		
 		case PVZRAPData::Items::DIAMOND:
 			{
-				PlaySample(SOUND_DIAMOND);
 				mPlayerInfo->AddCoins(Coin::GetCoinValue(CoinType::COIN_DIAMOND));
-				if (mBoard)
+				
+				if (!is_start_item)
 				{
-					mBoard->ShowCoinBank();
+					PlaySample(SOUND_DIAMOND);
+					if (mBoard)
+					{
+						mBoard->ShowCoinBank();
+					}
 				}
 				break;
 			}
