@@ -333,7 +333,7 @@ void AwardScreen::Draw(Graphics* g)
 		}
 		else
 		{
-			auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(aLevel));
+			auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::LevelClear(aLevel - 1));
 			auto isPvZ = mApp->mAP->IsPlayerPlayingPVZ(item.player);
 			if (item.item == PVZRAPData::Items::SHOVEL && isPvZ)
 			{
