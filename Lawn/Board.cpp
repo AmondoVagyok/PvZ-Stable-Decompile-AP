@@ -726,7 +726,7 @@ void Board::PickZombieWaves()
 		else
 		{
 			mNumWaves = gZombieWaves[ClampInt(abs(mLevel) - 1, 0, 49)];
-			if ((!mApp->IsFirstTimeAdventureMode() || mApp->mPlayerLevelRef > 4) && !mApp->IsMiniBossLevel())
+			if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(mLevel) || mApp->mPlayerLevelRef > 4) && !mApp->IsMiniBossLevel())
 			{
 				mNumWaves = mNumWaves < 10 ? 20 : mNumWaves + 10;
 			}
