@@ -7,6 +7,8 @@ SexyAppFramework/ReleaseGOTY/*
 
 /.vs/PlantsVsZombies/*
 /.vs/Stable Decompile/*
+/.vs/slnx.sqlite
+*.sqlite
 /Patch
 
 /Output/dependency/*
@@ -18,6 +20,8 @@ SexyAppFramework/ReleaseGOTY/*
 /Output/*.ilk
 /Output/*.pdb
 /Output/data
+/Output/screenshots/*
+
 portaudio/*
 !portaudio/build/msvc/Win32/Release/*.lib
 !portaudio/build/msvc/Win32/Release/*.dll
