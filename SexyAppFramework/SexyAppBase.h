@@ -339,6 +339,8 @@ public:
 	
 	APWrapper*				mAP;
 
+	bool					mEnableVsync;
+
 protected:	
 	void					RehupFocus();
 	void					ClearKeysDown();

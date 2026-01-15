@@ -5318,7 +5318,7 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
     }
 
     g->PushState();
-    g->SetLinearBlend(true);
+    //g->SetLinearBlend(true);
 
     if (Challenge::IsZombieSeedType(aSeedType))
     {

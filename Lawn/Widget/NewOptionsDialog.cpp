@@ -59,7 +59,7 @@ NewOptionsDialog::NewOptionsDialog(LawnApp* theApp, bool theFromGameSelector) :
     mSfxVolumeSlider->SetValue(theApp->GetSfxVolume() / 0.65);
 
     mFullscreenCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_Fullscreen, this, !theApp->mIsWindowed);
-    mHardwareAccelerationCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_HardwareAcceleration, this, theApp->Is3DAccelerated());
+    mHardwareAccelerationCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_HardwareAcceleration, this, theApp->mEnableVsync);
     mPauseOnLostFocusCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus, this, theApp->mMuteOnLostFocus);
 
     if (mFromGameSelector)
@@ -276,7 +276,7 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
 {
     mApp->PlaySample(SOUND_BUTTONCLICK);
 
-    switch (theId)
+    /*switch (theId)
     {
     case NewOptionsDialog::NewOptionsDialog_Fullscreen:
     {
@@ -327,12 +327,11 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
             }
         }
         break;
-    }
+    }*/
     case NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus:
         mApp->mMuteOnLostFocus = checked;
         mApp->WriteToRegistry();
         break;
-    }
 }
 
 //0x45D290
