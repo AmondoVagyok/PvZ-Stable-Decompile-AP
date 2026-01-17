@@ -83,6 +83,7 @@ public:
 	static SDL_Cursor*				mSDLTextCursor;
 	static SDL_Cursor*				mSDLWaitCursor;
 	static SDL_Cursor*				mSDLNoCursor;
+	static bool						mIsPlayingVideo;
 
 public:
 	Board*							mBoard;											//+0x768
@@ -393,6 +394,8 @@ public:
 	bool							DrawDirtyStuff();
 	void							Redraw(Rect* theClipRect);
 	bool							UpdateAppStep(bool* updated);
+
+	bool							PlayVideo(std::string url, bool isSkipable = false);
 	
 	void							LoadProfile(PlayerInfo* profile);
 	

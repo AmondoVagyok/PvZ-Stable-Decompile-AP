@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugGOTY|Win32">
@@ -113,60 +113,60 @@
     <_ProjectFileVersion>16.0.29511.113</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)SDL3-3.4.0\lib\x64</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)SDL3-3.4.0\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
     <TargetName>PlantsVsZombies_x64</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)SDL3-3.4.0\lib\x64</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)SDL3-3.4.0\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
     <TargetName>PlantsVsZombies_x64</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-rel;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-rel;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)SDL3-3.4.0\lib\x64</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)SDL3-3.4.0\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
     <TargetName>PlantsVsZombies_x64</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-rel;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)lua\include;$(SolutionDIr)SDL3-3.4.0\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\Win32\Release;$(SolutionDIr)SDL3-3.4.0\lib\x86;$(SolutionDIr)lua;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-rel;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)SDL3-3.4.0\lib\x64</IncludePath>
-    <LibraryPath>$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)dx8sdk\include;$(SolutionDIr)tinyfiledialogs;$(SolutionDIr)portaudio\include;$(SolutionDIr)FFmpeg\include;$(SolutionDIr)SDL3-3.4.0\include</IncludePath>
+    <LibraryPath>$(SolutionDIr)FFmpeg\lib;$(SolutionDIr)portaudio\build\msvc\x64\Release;$(SolutionDIr)SDL3-3.4.0\lib\x64</LibraryPath>
     <TargetName>PlantsVsZombies_x64</TargetName>
     <OutDir>$(SolutionDir)Output\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
@@ -188,7 +188,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -217,7 +217,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -247,7 +247,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -277,7 +277,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -320,7 +320,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PreBuildEvent>
@@ -362,7 +362,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -405,7 +405,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x86.lib;shlwapi.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PreBuildEvent>
@@ -447,7 +447,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;swscale.lib;swresample.lib;portaudio_x64.lib;shlwapi.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
