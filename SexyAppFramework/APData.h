@@ -73,26 +73,37 @@ namespace PVZRAPData
             switch (cls)
             {
             case SurvivalClass::DAY:
+                if (flag < 1 || flag > 4) return -1;
                 return 2063 + flag;
             case SurvivalClass::NIGHT:
+                if (flag < 1 || flag > 4) return -1;
                 return 2067 + flag;
             case SurvivalClass::POOL:
+                if (flag < 1 || flag > 4) return -1;
                 return 2071 + flag;
             case SurvivalClass::FOG:
+                if (flag < 1 || flag > 4) return -1;
                 return 2075 + flag;
             case SurvivalClass::ROOF:
+                if (flag < 1 || flag > 4) return -1;
                 return 2079 + flag;
             case SurvivalClass::DAY_HARD:
+                if (flag < 1 || flag > 9) return -1;
                 return 2083 + flag;
             case SurvivalClass::NIGHT_HARD:
+                if (flag < 1 || flag > 9) return -1;
                 return 2092 + flag;
             case SurvivalClass::POOL_HARD:
+                if (flag < 1 || flag > 9) return -1;
                 return 2101 + flag;
             case SurvivalClass::FOG_HARD:
+                if (flag < 1 || flag > 9) return -1;
                 return 2110 + flag;
             case SurvivalClass::ROOF_HARD:
+                if (flag < 1 || flag > 9) return -1;
                 return 2119 + flag;
             }
+            return -1;
         }
         
         constexpr int64_t MINIGAME_ZOMBOTANY_CLEAR = 1050;

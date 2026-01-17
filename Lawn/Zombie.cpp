@@ -8851,6 +8851,47 @@ void Zombie::DropLoot()
                     location = PVZRAPData::Locations::FLAG_POGO_PARTY_2;
                 }
             }
+            else if (mApp->IsSurvivalMode())
+            {
+                if (!mApp->IsSurvivalEndless(mApp->mGameMode))
+                {
+                    PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
+                    switch (mApp->mGameMode)
+                    {
+                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1:
+                        cls = PVZRAPData::Locations::SurvivalClass::DAY;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_2:
+                        cls = PVZRAPData::Locations::SurvivalClass::NIGHT;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_3:
+                        cls = PVZRAPData::Locations::SurvivalClass::POOL;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_4:
+                        cls = PVZRAPData::Locations::SurvivalClass::FOG;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5:
+                        cls = PVZRAPData::Locations::SurvivalClass::ROOF;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1:
+                        cls = PVZRAPData::Locations::SurvivalClass::DAY_HARD;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_2:
+                        cls = PVZRAPData::Locations::SurvivalClass::NIGHT_HARD;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_3:
+                        cls = PVZRAPData::Locations::SurvivalClass::POOL_HARD;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_4:
+                        cls = PVZRAPData::Locations::SurvivalClass::FOG_HARD;
+                        break;
+                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5:
+                        cls = PVZRAPData::Locations::SurvivalClass::ROOF_HARD;
+                        break;
+                    }
+                    location = PVZRAPData::Locations::SurvivalFlag(cls, flag);
+                }
+            }
             else if (mApp->IsAdventureMode())
             {
                 switch (mBoard->mLevel)
