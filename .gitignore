@@ -1,10 +1,3 @@
-SexyAppFramework/Output/*
-SexyAppFramework/Debug/*
-SexyAppFramework/DebugGOTY/*
-SexyAppFramework/Release/*
-SexyAppFramework/ReleaseGOTY/*
-!SexyAppFramework/Output/dependency.pak
-
 /.vs/*
 /Patch
 
@@ -27,3 +20,5 @@ portaudio/*
 !portaudio/include/**
 
 enc_temp_folder/*
+build/*
+Plants Vs. Zombies/*
