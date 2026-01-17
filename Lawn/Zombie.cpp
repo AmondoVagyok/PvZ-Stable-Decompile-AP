@@ -8751,6 +8751,106 @@ void Zombie::DropLoot()
                     location = PVZRAPData::Locations::FLAG_INVISIGHOUL_1;
                 }
             }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_PORTAL_COMBAT_1;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_COLUMN_SEE_EM_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_COLUMN_SEE_EM_2;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BOBSLED_BONANZA)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_2;
+                }
+                else if (flag == 3)
+                {
+                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_3;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SPEED)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_2;
+                }
+                else if (flag == 3)
+                {
+                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_3;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
+                }
+                else if (flag == 3)
+                {
+                    location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
+                }
+                else if (flag == 3)
+                {
+                    location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_ZOMBOTANY_2_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_ZOMBOTANY_2_2;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_WALL_NUT_BOWLING_2_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_WALL_NUT_BOWLING_2_2;
+                }
+            }
+            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY)
+            {
+                if (flag == 1)
+                {
+                    location = PVZRAPData::Locations::FLAG_POGO_PARTY_1;
+                }
+                else if (flag == 2)
+                {
+                    location = PVZRAPData::Locations::FLAG_POGO_PARTY_2;
+                }
+            }
             else if (mApp->IsAdventureMode())
             {
                 switch (mBoard->mLevel)
