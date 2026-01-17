@@ -7,6 +7,10 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    strategy: 
+      fail-fast: false
+      matrix:
+        configuration: [ReleaseGOTY, DebugGOTY]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -18,10 +22,10 @@ jobs:
           arch: x86
       - name: msbuild
         run: |
-          msbuild /p:Configuration=ReleaseGOTY /p:Platform=x86 PlantsVsZombies.sln
+          msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=x86 PlantsVsZombies.sln
       - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
-          name: PlantsVsZombies-GOTY
+          name: PlantsVsZombies-GOTY-${{ matrix.configuration }}
           path: |
             Output
