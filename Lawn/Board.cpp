@@ -112,6 +112,7 @@ Board::Board(LawnApp* theApp)
 	mCameraFilter = FilterEffect::FILTER_EFFECT_NONE;
 	mDrawOnlyCamera = true;
 	mPaused = false;
+	mFlagAwardSpawned = 0;
 	mLevelAwardSpawned = false;
 	mFlagRaiseCounter = 0;
 	mIceTrapCounter = 0;
@@ -1541,6 +1542,7 @@ void Board::InitZombieWaves()
 	mLastBungeeWave = 0;
 	mProgressMeterWidth = 0;
 	mHugeWaveCountDown = 0;
+	mFlagAwardSpawned = 0;
 	mLevelAwardSpawned = false;
 	mZombieCountDownStart = mZombieCountDown;
 	mZombieHealthToNextWave = -1;

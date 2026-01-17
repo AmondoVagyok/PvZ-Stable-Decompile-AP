@@ -209,6 +209,7 @@ public:
 	int								mBoardFadeOutCounter;									//+0x5600
 	int								mNextSurvivalStageCounter;								//+0x5604
 	int								mScoreNextMowerCounter;									//+0x5608
+	int								mFlagAwardSpawned;										
 	bool							mLevelAwardSpawned;										//+0x560C
 	int								mProgressMeterWidth;									//+0x5610
 	int								mFlagRaiseCounter;										//+0x5614
