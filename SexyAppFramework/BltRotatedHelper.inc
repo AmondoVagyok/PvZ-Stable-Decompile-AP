@@ -49,7 +49,7 @@
 			if (aVInt<0)\
 				continue;\
 	\
-			int anEdgeLeft = ((theSrcRect.mHeight << 16) - 0x27FFF - aV) / aSinLong;\
+			int anEdgeLeft = (((theSrcRect.mHeight - 1) << 16) - 0x27FFF - aV) / aSinLong;\
 			if (anEdgeLeft > aLeft)\
 				aLeft = anEdgeLeft;\
 \
@@ -59,18 +59,18 @@
 		}\
 		else if (aSinLong >= 0x0001)\
 		{\
-			if (aVInt >= theSrcRect.mHeight)\
+			if (aVInt >= theSrcRect.mHeight - 1)\
 				continue;\
 	\
 			int anEdgeLeft = (0x10000 - aV) / aSinLong;\
 			if (anEdgeLeft > aLeft)\
 				aLeft = anEdgeLeft;\
 \
-			int anEdgeRight = ((theSrcRect.mHeight << 16) - 0x17FFF - aV) / aSinLong;\
+			int anEdgeRight = (((theSrcRect.mHeight - 1) << 16) - 0x17FFF - aV) / aSinLong;\
 			if (anEdgeRight < aRight)\
 				aRight = anEdgeRight;\
 		}\
-		else if ((aV < 0) || (aV >= theSrcRect.mHeight << 16))\
+		else if ((aV < 0) || (aV >= (theSrcRect.mHeight - 1) << 16))\
 			continue;\
 \
 		aU += aLeft * aCosLong;\
