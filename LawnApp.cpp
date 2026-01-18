@@ -56,7 +56,7 @@
 #include "portaudio.h"
 #include <sstream>
 
-#include "Particle/ParticleScreen.h"
+#include "Editor/ParticleScreen.h"
 #include "SexyAppFramework/D3DInterface.h"
 
 #include "Lawn/Widget/MoreSettingsDialog.h"
