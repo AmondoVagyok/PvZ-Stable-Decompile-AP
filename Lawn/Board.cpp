@@ -7024,7 +7024,7 @@ void Board::DrawBackdrop(Graphics* g)
 		// int aWidth = TodAnimateCurve(0, 1000, mSodPosition, 0, Sexy::IMAGE_SOD3ROW->GetWidth(), TodCurves::CURVE_LINEAR);
 		// Rect aSrcRect(0, 0, aWidth, Sexy::IMAGE_SOD3ROW->GetHeight());
 		// g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149, aSrcRect);
-		g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149, aSrcRect);
+		g->DrawImageF(Sexy::IMAGE_SOD3ROW, 235 - BOARD_OFFSET, 149);
 	}
 	else if (mLevel == 4 && mApp->IsFirstTimeAdventureMode() && mApp->mPlayerLevelRef <= 4)
 	{
