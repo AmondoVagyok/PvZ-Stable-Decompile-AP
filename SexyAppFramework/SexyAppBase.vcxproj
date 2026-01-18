@@ -113,7 +113,7 @@
     <_ProjectFileVersion>16.0.29511.113</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfiledialogs;$(SolutionDIr)lib/ffmpegWin32;$(SolutionDIr)lib/sdl3/x86;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -121,7 +121,7 @@
     <IntDir>$(SolutionDir)build\$(Configuration)_$(Platform)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfilesdialogs;$(SolutionDIr)lib/ffmpeg;$(SolutionDIr)lib/sdl3/x64;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -129,7 +129,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfiledialogs;$(SolutionDIr)lib/ffmpegWin32;$(SolutionDIr)lib/sdl3/x86;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -137,7 +137,7 @@
     <IntDir>$(SolutionDir)build\$(Configuration)_$(Platform)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGOTY|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfilesdialogs;$(SolutionDIr)lib/ffmpeg;$(SolutionDIr)lib/sdl3/x64;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -145,7 +145,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfiledialogs;$(SolutionDIr)lib/ffmpegWin32;$(SolutionDIr)lib/sdl3/x86;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -153,7 +153,7 @@
     <IntDir>$(SolutionDir)build\$(Configuration)_$(Platform)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfilesdialogs;$(SolutionDIr)lib/ffmpeg;$(SolutionDIr)lib/sdl3/x64;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -161,7 +161,7 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpegWin32;$(SolutionDIr)ArchipelagoLibs\asio\asio\include;$(SolutionDIr)ArchipelagoLibs\websocketpp;$(SolutionDIr)ArchipelagoLibs\wswrap\include;$(SolutionDIr)ArchipelagoLibs\nhlomann-json\include;$(SolutionDIr)ArchipelagoLibs\valijson\include;$(SolutionDIr)ArchipelagoLibs\apclientpp;$(SolutionDIr)ArchipelagoLibs\zlib\include;$(SolutionDIr)ArchipelagoLibs\openssl\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfiledialogs;$(SolutionDIr)lib/ffmpegWin32;$(SolutionDIr)lib/sdl3/x86;$(SolutionDIr)ArchipelagoLibs\openssl\x86-windows-dbg;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -169,7 +169,7 @@
     <IntDir>$(SolutionDir)build\$(Configuration)_$(Platform)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseGOTY|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/PakLib;$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDIr)include/ImageLib;$(SolutionDIr)include/dx8sdk;$(SolutionDIr)include/sdl3;$(SolutionDIr)include/portaudio;$(SolutionDIr)include/tinyfiledialogs;$(SolutionDIr)include/ffmpeg</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDIr)lib/portaudio;$(SolutionDIr)lib/tinyfilesdialogs;$(SolutionDIr)lib/ffmpeg;$(SolutionDIr)lib/sdl3/x64;$(LibraryPath)</LibraryPath>
     <TargetName>PlantsVsZombies</TargetName>
     <OutDir>$(SolutionDir)build\$(Configuration)_$(Platform)\bin\</OutDir>
@@ -1795,7 +1795,6 @@ IF %ERRORLEVEL% LEQ 1 EXIT 0</Command>
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Cursor13.cur" />
     <None Include="BltRotatedHelper.inc" />
     <None Include="DDI_Additive.inc" />
     <None Include="DDI_AlphaBlt.inc" />
