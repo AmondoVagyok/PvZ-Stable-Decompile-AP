@@ -800,8 +800,6 @@ LawnApp::~LawnApp()
 	delete mProfileMgr;
 	delete mLastLevelStats;
 
-	mDebugTexts.clear();
-
 	mResourceManager->DeleteResources("");
 #ifdef _DEBUG
 	BetaSubmit(true);

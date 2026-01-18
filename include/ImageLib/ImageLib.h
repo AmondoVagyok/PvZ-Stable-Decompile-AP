@@ -2,7 +2,7 @@
 #define __IMAGELIB_H__
 
 #include <string>
-#include "../SexyAppFramework/Common.h"
+#include "../../SexyAppFramework/Common.h"
 
 namespace ImageLib
 {
