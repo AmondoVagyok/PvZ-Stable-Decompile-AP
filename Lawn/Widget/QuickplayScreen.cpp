@@ -685,9 +685,9 @@ void QuickplayWidget::DrawButton(Graphics* g, int theLevelIndex)
 	Color theColor = aLevelButton->mIsOver ? Color(0x00FF00) : Color::White;
 	TodDrawString(g, aName, aLevelButton->mX + 52 + 22 + 12.5f, aLevelButton->mY + 96 + 55, theFont, theColor, DS_ALIGN_CENTER);
 	
-	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel - 1)))
+	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel + 1)))
 	{
-		g->DrawImage(Sexy::IMAGE_MINIGAME_TROPHY, aLevelButton->mX - 6, aLevelButton->mY - 2);
+		g->DrawImage(Sexy::IMAGE_MINIGAME_TROPHY, aLevelButton->mX - 2, aLevelButton->mY - 2);
 	}
 }
 
