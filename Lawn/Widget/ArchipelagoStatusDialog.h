@@ -19,6 +19,8 @@ public:
 	ListenerHandle*			mConnectionListener;
 	ListenerHandle*			mDisconnectionListener;
 	
+	Dialog*					mConnectingDialog;
+	
 public:
     ArchipelagoStatusDialog(LawnApp* theApp);
 	virtual ~ArchipelagoStatusDialog();
@@ -34,6 +36,7 @@ public:
 	void ButtonDepress(int theId) override;
 	
 	void UpdateArchipelagoStatus();
+	void Update() override;
 };
 
 #endif
