@@ -393,7 +393,7 @@ public:
 	void							Redraw(Rect* theClipRect);
 	bool							UpdateAppStep(bool* updated);
 
-	bool							PlayVideo(std::string url, bool isSkipable = false);
+	bool							PlayVideo(std::string url, bool isSkipable = false, Color bgColor = Color::White);
 	
 	void							LoadProfile(PlayerInfo* profile);
 	
