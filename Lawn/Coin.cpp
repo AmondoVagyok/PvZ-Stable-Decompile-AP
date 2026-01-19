@@ -118,7 +118,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
         mRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_ABOVE_UI, 0, 0);
     }
 
-    if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET)
+    if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET || mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
     {
         mWidth = IMAGE_SEEDS->GetCelWidth();
         mHeight = IMAGE_SEEDS->GetCelHeight();
@@ -343,6 +343,7 @@ void Coin::CoinInitialize(int theX, int theY, CoinType theCoinType, CoinMotion t
         }
         if (mType == CoinType::COIN_FINAL_SEED_PACKET || 
             mType == CoinType::COIN_FLAG_SEED_PACKET || 
+            mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET || 
             mType == CoinType::COIN_USABLE_SEED_PACKET || 
             mType == CoinType::COIN_TROPHY || 
             mType == CoinType::COIN_SHOVEL || 
@@ -591,7 +592,7 @@ void Coin::UpdateFall()
             }
 
             ParticleEffect aEffect;
-            if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET)
+            if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == CoinType::COIN_FLAG_SEED_PACKET || mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
             {
                 aEffect = ParticleEffect::PARTICLE_SEED_PACKET;
             }
@@ -622,7 +623,7 @@ void Coin::UpdateFall()
         if (!mApp->IsLastStand() || mBoard == nullptr || 
             mBoard->mChallenge->mChallengeState == ChallengeState::STATECHALLENGE_LAST_STAND_ONSLAUGHT)
         {
-            if (!IsLevelAward() && !IsPresentWithAdvice())
+            if (!IsLevelAward() && !IsPresentWithAdvice() && mType != CoinType::COIN_PERMA_FLAG_SEED_PACKET)
             {
                 mDisappearCounter++;
                 if (mDisappearCounter >= GetDisappearTime())
@@ -694,6 +695,10 @@ void Coin::UpdateCollected()
         }
 
         return;
+    }
+    else if (mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
+    {
+        // Do nothing
     }
     else
     {
@@ -934,7 +939,7 @@ void Coin::Draw(Graphics* g)
     {
         return;
     }
-    else if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == COIN_FLAG_SEED_PACKET)
+    else if (mType == CoinType::COIN_FINAL_SEED_PACKET || mType == COIN_FLAG_SEED_PACKET || mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
     {
         SeedType aSeedType = GetFinalSeedPacketType();
         g->SetScale(mScale, mScale, 0.0f, 0.0f);
@@ -1194,7 +1199,7 @@ void Coin::Collect()
 
         return;
     }
-    if (mType == CoinType::COIN_FLAG_SEED_PACKET)
+    if (mType == CoinType::COIN_FLAG_SEED_PACKET || mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
     {
         TOD_ASSERT(mBoard);
 
@@ -1204,7 +1209,13 @@ void Coin::Collect()
         mFadeCount = 0;
 
         AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_AWARD_PICKUP_ARROW, nullptr);
+        
+        if (mType == CoinType::COIN_PERMA_FLAG_SEED_PACKET)
+        {
+            mBoard->FadeOutLevel();
+        }
 
+        Die();
         return;
     }
 

@@ -8549,7 +8549,51 @@ bool Zombie::TrySpawnLevelAward()
     else if (mBoard->IsSurvivalStageWithRepick())
     {
         aCoinType = CoinType::COIN_NONE;
-        mBoard->FadeOutLevel();
+        
+        PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
+        switch (mApp->mGameMode)
+        {
+        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1:
+            cls = PVZRAPData::Locations::SurvivalClass::DAY;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_2:
+            cls = PVZRAPData::Locations::SurvivalClass::NIGHT;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_3:
+            cls = PVZRAPData::Locations::SurvivalClass::POOL;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_4:
+            cls = PVZRAPData::Locations::SurvivalClass::FOG;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5:
+            cls = PVZRAPData::Locations::SurvivalClass::ROOF;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1:
+            cls = PVZRAPData::Locations::SurvivalClass::DAY_HARD;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_2:
+            cls = PVZRAPData::Locations::SurvivalClass::NIGHT_HARD;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_3:
+            cls = PVZRAPData::Locations::SurvivalClass::POOL_HARD;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_4:
+            cls = PVZRAPData::Locations::SurvivalClass::FOG_HARD;
+            break;
+        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5:
+            cls = PVZRAPData::Locations::SurvivalClass::ROOF_HARD;
+            break;
+        }
+        auto location = PVZRAPData::Locations::SurvivalFlag(cls, (mBoard->mChallenge->mSurvivalStage + 1) * (mBoard->GetNumWavesPerSurvivalStage() / mBoard->GetNumWavesPerFlag()));
+        
+        if (!mApp->mAP->IsLocationChecked(location))
+        {
+            mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_PERMA_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
+        }
+        else
+        {
+            mBoard->FadeOutLevel();
+        }
     }
     else if (mBoard->IsLastStandStageWithRepick() || mApp->IsLastStandEndless(mApp->mGameMode))
     {
@@ -8889,7 +8933,7 @@ void Zombie::DropLoot()
                         cls = PVZRAPData::Locations::SurvivalClass::ROOF_HARD;
                         break;
                     }
-                    location = PVZRAPData::Locations::SurvivalFlag(cls, flag);
+                    location = PVZRAPData::Locations::SurvivalFlag(cls, flag + mBoard->mChallenge->mSurvivalStage * (mBoard->GetNumWavesPerSurvivalStage() / mBoard->GetNumWavesPerFlag()));
                 }
             }
             else if (mApp->IsAdventureMode())
