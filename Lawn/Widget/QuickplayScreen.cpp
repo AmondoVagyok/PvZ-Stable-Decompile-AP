@@ -376,12 +376,12 @@ void QuickplayWidget::Update() {
 
 void QuickplayWidget::Draw(Graphics* g) {
 	g->DrawImage(IMAGE_ZOMBATAR_MAIN_BG, 0, 0);
-	g->DrawImageF(Sexy::IMAGE_RIP_LEVER_HOLDER, 11.85f, 311.0f);
+	// g->DrawImageF(Sexy::IMAGE_RIP_LEVER_HOLDER, 11.85f, 311.0f);
 
-	if (!mApp->mRIPMode)
-		g->DrawImage(Sexy::IMAGE_RIP_LEVER_STICK, 72, 318);
-	else
-		g->DrawImage(Sexy::IMAGE_RIP_LEVER_STICK_PRESSED, 69, 374);
+	// if (!mApp->mRIPMode)
+	// 	g->DrawImage(Sexy::IMAGE_RIP_LEVER_STICK, 72, 318);
+	// else
+	// 	g->DrawImage(Sexy::IMAGE_RIP_LEVER_STICK_PRESSED, 69, 374);
 
 	Graphics leafG(*g);
 	leafG.mTransX -= BOARD_WIDTH;
@@ -684,6 +684,11 @@ void QuickplayWidget::DrawButton(Graphics* g, int theLevelIndex)
 	Sexy::Font* theFont = aLevelButton->mIsOver ? Sexy::FONT_DWARVENTODCRAFT18 : Sexy::FONT_DWARVENTODCRAFT18YELLOW;
 	Color theColor = aLevelButton->mIsOver ? Color(0x00FF00) : Color::White;
 	TodDrawString(g, aName, aLevelButton->mX + 52 + 22 + 12.5f, aLevelButton->mY + 96 + 55, theFont, theColor, DS_ALIGN_CENTER);
+	
+	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel - 1)))
+	{
+		g->DrawImage(Sexy::IMAGE_MINIGAME_TROPHY, aLevelButton->mX - 6, aLevelButton->mY - 2);
+	}
 }
 
 void QuickplayWidget::MouseWheel(int theDelta)
