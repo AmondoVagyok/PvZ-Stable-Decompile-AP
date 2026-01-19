@@ -171,7 +171,6 @@ public:
 	SexyString						mCliApPassword;
 	
 	Rect							gBoardBounds;
-	MemoryImage*					mDirtyBushes[6];
 
 	bool							mRIPMode;
 
