@@ -2502,6 +2502,7 @@ static void CalculateFPS()
 
 		Graphics aDrawG(gFPSImage);
 		aDrawG.SetFont(gFPSFont);
+		aDrawG.SetPixelArtBlend(true);
 		SexyString aFPS = StrFormat(_S("FPS: %d"), gFPSDisplay);
 		aDrawG.SetColor(0x000000);
 		aDrawG.FillRect(0,0,gFPSImage->GetWidth(),gFPSImage->GetHeight());
@@ -2534,6 +2535,7 @@ static void FPSDrawCoords(int theX, int theY)
 
 	Graphics aDrawG(gFPSImage);
 	aDrawG.SetFont(gFPSFont);
+	aDrawG.SetPixelArtBlend(true);
 	SexyString aFPS = StrFormat(_S("%d,%d"),theX,theY);
 	aDrawG.SetColor(0x000000);
 	aDrawG.FillRect(0,0,gFPSImage->GetWidth(),gFPSImage->GetHeight());
@@ -2677,6 +2679,9 @@ bool SexyAppBase::DrawDirtyStuff()
 		mLastDrawWasEmpty = true;		
 		return false;
 	}	
+
+	if (gFPSFont) 
+		gFPSFont->SetActive(mShowFPS);
 
 	if (mShowFPS)
 	{

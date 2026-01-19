@@ -10195,6 +10195,7 @@ void Board::KeyChar(SexyChar theChar)
 		{
 			mDebugTextMode = DebugTextMode::DEBUG_TEXT_NONE;
 		}
+		mDebugFont->SetActive(mDebugTextMode != DebugTextMode::DEBUG_TEXT_NONE);
 	}
 
 	if (mApp->mGameScene != GameScenes::SCENE_PLAYING)
