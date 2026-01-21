@@ -5805,18 +5805,18 @@ void Board::SpawnZombieWave()
 
 				if (StageHasFog() && mGridCelFog[8][aZombie->mRow] > 0) isAllowedToAnimate = false;
 
-				if (isAllowedToAnimate && 
-					aZombie->mZombieType != ZombieType::ZOMBIE_BUNGEE && aZombie->mZombieType != ZombieType::ZOMBIE_DIGGER)
-				{
-					Reanimation* aBushReanim = mApp->ReanimationTryToGet(mBushesID[aZombie->mRow]);
-					if (aBushReanim && aBushReanim->mLoopCount > 0)
-					{
-						aBushReanim->StartBlend(20);
-						aBushReanim->mLastFrameTime = 0.0f;
-						aBushReanim->mAnimTime = 0.0f;
-						aBushReanim->mLoopCount = 0;
-					}
-				}
+				// if (isAllowedToAnimate && 
+				// 	aZombie->mZombieType != ZombieType::ZOMBIE_BUNGEE && aZombie->mZombieType != ZombieType::ZOMBIE_DIGGER)
+				// {
+				// 	Reanimation* aBushReanim = mApp->ReanimationTryToGet(mBushesID[aZombie->mRow]);
+				// 	if (aBushReanim && aBushReanim->mLoopCount > 0)
+				// 	{
+				// 		aBushReanim->StartBlend(20);
+				// 		aBushReanim->mLastFrameTime = 0.0f;
+				// 		aBushReanim->mAnimTime = 0.0f;
+				// 		aBushReanim->mLoopCount = 0;
+				// 	}p
+				// }
 			}
 		}
 	}
@@ -7643,7 +7643,6 @@ void Board::DrawGameObjects(Graphics* g)
 			break;
 
 		case RenderObjectType::RENDER_ITEM_COVER:
-			DrawCover(g);
 			break;
 
 		case RenderObjectType::RENDER_ITEM_FOREGROUND:
@@ -8973,17 +8972,6 @@ void Board::DrawForeGround(Graphics* g)
 	g->ClearClipRect();
 	g->mClipRect.mWidth = BOARD_WIDTH + mApp->mDDInterface->mWideScreenExtraWidth;
 	g->mClipRect.mHeight = BOARD_HEIGHT + mApp->mDDInterface->mWideScreenExtraHeight;
-	switch (mBackground)
-	{
-		case BackgroundType::BACKGROUND_5_ROOF:
-			g->DrawImageF(Sexy::IMAGE_TREES, mTreeX, WIDESCREEN_OFFSETY);
-			g->DrawImageF(Sexy::IMAGE_POLE, mPoleX, WIDESCREEN_OFFSETY);
-			break;
-		case BackgroundType::BACKGROUND_6_BOSS:
-			g->DrawImageF(Sexy::IMAGE_NIGHT_TREES, mTreeX, WIDESCREEN_OFFSETY);
-			g->DrawImageF(Sexy::IMAGE_NIGHT_POLE, mPoleX, WIDESCREEN_OFFSETY);
-			break;
-	}
 	g->PopState();
 }
 
