@@ -3,9 +3,13 @@
 #include "../SeedPacket.h"
 #include "../../LawnApp.h"
 #include "ImitaterDialog.h"
+
+#include <nlohmann/json.hpp>
+
 #include "SeedChooserScreen.h"
 #include "../ToolTipWidget.h"
 #include "../../GameConstants.h"
+#include "../../SexyAppFramework/APWrapper.h"
 #include "../../SexyAppFramework/WidgetManager.h"
 
 //0x482B00
@@ -31,9 +35,10 @@ ImitaterDialog::~ImitaterDialog()
 //0x482D30
 SeedType ImitaterDialog::SeedHitTest(int x, int y)
 {
+	auto imitater_open = mApp->mAP->SlotData()["imitater_open"].get<bool>();
 	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if (mApp->SeedTypeAvailable(aSeedType))
+		if (imitater_open || mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);
@@ -82,9 +87,10 @@ void ImitaterDialog::Draw(Graphics* g)
 {
 	LawnDialog::Draw(g);
 	g->SetLinearBlend(true);
+	auto imitater_open = mApp->mAP->SlotData()["imitater_open"].get<bool>();
 	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
 	{
-		if (mApp->SeedTypeAvailable(aSeedType))
+		if (imitater_open || mApp->SeedTypeAvailable(aSeedType))
 		{
 			int aSeedX, aSeedY;
 			GetSeedPosition(aSeedType, aSeedX, aSeedY);
