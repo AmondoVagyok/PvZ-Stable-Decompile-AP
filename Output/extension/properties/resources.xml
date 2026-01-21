@@ -7,6 +7,13 @@
         
         <Image id="SCROLLBG" path="scrollBG"/>
         <Image id="SCROLLOVERLAY" path="scrollOverlay"/>
+        
+        <Image id="PAUSE_BUTTON" path="pause_button" />
+        <Image id="PAUSE_BUTTON_PRESSED" path="pause_button_pressed" />
+        <Image id="SPEEDUP_BUTTON" path="speedup_button" />
+        <Image id="SPEEDUP_BUTTON_PRESSED" path="speedup_button_pressed" />
+        <Image id="SLOWDOWN_BUTTON" path="slowdown_button" />
+        <Image id="SLOWDOWN_BUTTON_PRESSED" path="slowdown_button_pressed" />
     </Resources>
 
     <Resources id="DelayLoad_LevelSelector">

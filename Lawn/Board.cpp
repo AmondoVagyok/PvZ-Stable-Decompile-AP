@@ -9764,7 +9764,7 @@ void Board::KeyChar(SexyChar theChar)
 
 			if (mPrevSpeedMod != mSpeedMod)
 			{
-				mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+				// mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
 				mQECounter = 35;
 			}
 		}
@@ -12100,7 +12100,7 @@ void Board::ButtonDepress(int theId)
 
 		if (mPrevSpeedMod != mSpeedMod)
 		{
-			mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+			// mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
 			mQECounter = 35;
 		}
 	}
