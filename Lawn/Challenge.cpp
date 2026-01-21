@@ -31,10 +31,12 @@
 #include "../SexyAppFramework/WidgetManager.h"
 #include "Widget/AchievementsScreen.h"
 #include <random>
+#include <nlohmann/json.hpp>
 
 #include "../Sexy.TodLib/Attachment.h"
 #include "../Sexy.TodLib/EffectSystem.h"
 #include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 
 int gZombieWaves[NUM_LEVELS] = {  //0x6A34E8
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
@@ -2038,7 +2040,14 @@ void Challenge::UpdateStormyNight()
 	if ((mChallengeStateCounter == 300 && (mChallengeState == STATECHALLENGE_STORM_FLASH_1 || mChallengeState == STATECHALLENGE_STORM_FLASH_2)) ||
 		(mChallengeStateCounter == 150 && (mChallengeState == STATECHALLENGE_STORM_FLASH_1 || mChallengeState == STATECHALLENGE_STORM_FLASH_3)))
 	{
-		mApp->PlayFoley(FoleyType::FOLEY_THUNDER);
+		
+		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+		{
+			if (mApp->mAP->SlotData()["disable_storm_flashes"].get<int>() != 1)
+			{
+				mApp->PlayFoley(FoleyType::FOLEY_THUNDER);
+			}
+		}
 	}
 	if (mChallengeStateCounter > 0)
 		return;
@@ -3256,6 +3265,14 @@ void Challenge::SpawnZombieWave()
 //0x426A20
 void Challenge::DrawStormFlash(Graphics* g, int theTime, int theMaxAmount)
 {
+	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+	{
+		if (mApp->mAP->SlotData()["disable_storm_flashes"].get<int>() == 1)
+		{
+			// Storm flashes are disabled
+			return;
+		}
+	}
 	MTRand aDrawRand = MTRand(mBoard->mMainCounter / 6);
 	int aDarkness = TodAnimateCurve(150, 0, theTime, 255 - theMaxAmount, 255, CURVE_LINEAR) + aDrawRand.NextNoAssert((unsigned long)64) - 32;
 	// 设置暴风雨阴暗的颜色
