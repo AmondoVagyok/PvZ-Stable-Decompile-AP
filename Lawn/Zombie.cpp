@@ -8459,7 +8459,7 @@ bool Zombie::TrySpawnLevelAward()
     }
 
     CoinType aCoinType;
-    int64_t locationId = mApp->ChallengeCompletionLocation(mApp->mGameMode);
+    int64_t locationId = PVZRAPData::Locations::GamemodeClear(mApp->mGameMode);
     if (mApp->IsScaryPotterLevel() && !mBoard->IsFinalScaryPotterStage())
     {
         aCoinType = CoinType::COIN_NONE;

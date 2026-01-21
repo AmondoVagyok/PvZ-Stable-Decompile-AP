@@ -294,7 +294,6 @@ public:
 	/*inline*/ bool					CanShowAlmanac();
 	/*inline*/ bool					IsNight();
 	/*inline*/ bool					CanShowStore();
-	int64_t                         ChallengeCompletionLocation(GameMode theGameMode);
 	/*inline*/ bool					HasBeatenChallenge(GameMode theGameMode);
 	PottedPlant*					GetPottedPlantByIndex(int thePottedPlantIndex);
 	static /*inline*/ bool			IsSurvivalNormal(GameMode theGameMode);

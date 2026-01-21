@@ -106,56 +106,30 @@ namespace PVZRAPData
             return -1;
         }
         
-        constexpr int64_t MINIGAME_ZOMBOTANY_CLEAR = 1050;
-        constexpr int64_t MINIGAME_WALL_NUT_BOWLING_CLEAR = 1051;
-        constexpr int64_t MINIGAME_SLOT_MACHINE_CLEAR = 1052;
-        constexpr int64_t MINIGAME_RAINING_SEEDS_CLEAR = 1053;
-        constexpr int64_t MINIGAME_BEGHOULED_CLEAR = 1054;
-        constexpr int64_t MINIGAME_INVISIGHOUL_CLEAR = 1055;
-        constexpr int64_t MINIGAME_SEEING_STARS_CLEAR = 1056;
-        constexpr int64_t MINIGAME_ZOMBIQUARIUM_CLEAR = 1057;
-        constexpr int64_t MINIGAME_BEGHOULED_TWIST_CLEAR = 1058;
-        constexpr int64_t MINIGAME_BIG_TROUBLE_LITTLE_ZOMBIE_CLEAR = 1059;
-        constexpr int64_t MINIGAME_PORTAL_COMBAT_CLEAR = 1060;
-        constexpr int64_t MINIGAME_COLUMN_SEE_EM_CLEAR = 1061;
-        constexpr int64_t MINIGAME_BOBSLED_BONANZA_CLEAR = 1062;
-        constexpr int64_t MINIGAME_ZOMBIE_NIMBLE_ZOMBIE_QUICK_CLEAR = 1063;
-        constexpr int64_t MINIGAME_WHACK_A_ZOMBIE_CLEAR = 1064;
-        constexpr int64_t MINIGAME_LAST_STAND_CLEAR = 1065;
-        constexpr int64_t MINIGAME_ZOMBOTANY_2_CLEAR = 1066;
-        constexpr int64_t MINIGAME_WALL_NUT_BOWLING_2_CLEAR = 1067;
-        constexpr int64_t MINIGAME_POGO_PARTY_CLEAR = 1068;
-        constexpr int64_t MINIGAME_ZOMBOSS_REVENGE_CLEAR = 1069;
-        
-        constexpr int64_t PUZZLE_VASEBREAKER_CLEAR = 1070;
-        constexpr int64_t PUZZLE_TO_THE_LEFT_CLEAR = 1071;
-        constexpr int64_t PUZZLE_THIRD_VASE_CLEAR = 1072;
-        constexpr int64_t PUZZLE_CHAIN_REACTION_CLEAR = 1073;
-        constexpr int64_t PUZZLE_M_FOR_METAL_CLEAR = 1074;
-        constexpr int64_t PUZZLE_SCARY_POTTER_CLEAR = 1075;
-        constexpr int64_t PUZZLE_HOKEY_POKEY_CLEAR = 1076;
-        constexpr int64_t PUZZLE_ANOTHER_CHAIN_REACTION_CLEAR = 1077;
-        constexpr int64_t PUZZLE_ACE_OF_VASE_CLEAR = 1078;
-        constexpr int64_t PUZZLE_I_ZOMBIE_CLEAR = 1079;
-        constexpr int64_t PUZZLE_I_ZOMBIE_TOO_CLEAR = 1080;
-        constexpr int64_t PUZZLE_DIG_IT_CLEAR = 1081;
-        constexpr int64_t PUZZLE_TOTALLY_NUTS_CLEAR = 1082;
-        constexpr int64_t PUZZLE_DEAD_ZEPPELIN_CLEAR = 1083;
-        constexpr int64_t PUZZLE_ME_SMASH_CLEAR = 1084;
-        constexpr int64_t PUZZLE_ZOMBOOGIE_CLEAR = 1085;
-        constexpr int64_t PUZZLE_THREE_HIT_WONDER_CLEAR = 1086;
-        constexpr int64_t PUZZLE_BRAINZ_BELONG_TO_US_CLEAR = 1087;
-        
-        constexpr int64_t SURVIVAL_DAY_CLEAR = 1088;
-        constexpr int64_t SURVIVAL_NIGHT_CLEAR = 1089;
-        constexpr int64_t SURVIVAL_POOL_CLEAR = 1090;
-        constexpr int64_t SURVIVAL_FOG_CLEAR = 1091;
-        constexpr int64_t SURVIVAL_ROOF_CLEAR = 1092;
-        constexpr int64_t SURVIVAL_DAY_HARD_CLEAR = 1093;
-        constexpr int64_t SURVIVAL_NIGHT_HARD_CLEAR = 1094;
-        constexpr int64_t SURVIVAL_POOL_HARD_CLEAR = 1095;
-        constexpr int64_t SURVIVAL_FOG_HARD_CLEAR = 1096;
-        constexpr int64_t SURVIVAL_ROOF_HARD_CLEAR = 1097;
+        inline int64_t GamemodeClear(GameMode game_mode)
+        {
+            if (game_mode >= GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && game_mode <= GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS)
+            {
+                return 1050 + game_mode - GAMEMODE_CHALLENGE_WAR_AND_PEAS;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SCARY_POTTER_1 && game_mode <= GAMEMODE_SCARY_POTTER_9)
+            {
+                return 1070 + game_mode - GAMEMODE_SCARY_POTTER_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1 && game_mode <= GAMEMODE_PUZZLE_I_ZOMBIE_9)
+            {
+                return 1079 + game_mode - GAMEMODE_PUZZLE_I_ZOMBIE_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1 && game_mode <= GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5)
+            {
+                return 1088 + game_mode - GAMEMODE_SURVIVAL_NORMAL_STAGE_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1 && game_mode <= GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5)
+            {
+                return 1093 + game_mode - GAMEMODE_SURVIVAL_HARD_STAGE_1;
+            }
+            return -1;
+        }
         
         constexpr int64_t FLAG_1_7_1 = 2000;
         constexpr int64_t FLAG_1_9_1 = 2001;
@@ -293,6 +267,31 @@ namespace PVZRAPData
                 return -1;
             }
             return 200 + level;
+        }
+        
+        inline int Gamemode(const GameMode game_mode)
+        {
+            if (game_mode >= GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && game_mode <= GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS)
+            {
+                return 251 + game_mode - GAMEMODE_CHALLENGE_WAR_AND_PEAS;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SCARY_POTTER_1 && game_mode <= GAMEMODE_SCARY_POTTER_9)
+            {
+                return 271 + game_mode - GAMEMODE_SCARY_POTTER_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1 && game_mode <= GAMEMODE_PUZZLE_I_ZOMBIE_9)
+            {
+                return 280 + game_mode - GAMEMODE_PUZZLE_I_ZOMBIE_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1 && game_mode <= GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5)
+            {
+                return 289 + game_mode - GAMEMODE_SURVIVAL_NORMAL_STAGE_1;
+            }
+            if (game_mode >= GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1 && game_mode <= GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5)
+            {
+                return 294 + game_mode - GAMEMODE_SURVIVAL_HARD_STAGE_1;
+            }
+            return -1;
         }
     }
 }

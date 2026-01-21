@@ -70,6 +70,7 @@ public:
     ChallengePage               mPage;
     int                         mRow;
     int                         mCol;
+    int                         mAPId;
     const SexyChar*             mChallengeName;
 };
 extern ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES];
