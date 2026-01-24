@@ -110,7 +110,16 @@ void ArchipelagoStatusDialog::Draw(Graphics* g)
 
 void ArchipelagoStatusDialog::EditWidgetText(int theId, const SexyString& theString)
 {
-	mApp->ButtonDepress(mId + 2000);
+	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Disconnected)
+	{
+		// Connect to AP
+		this->ButtonDepress(20);
+	}
+	else
+	{
+		// Close the dialog box
+		mApp->ButtonDepress(mId + 2000);
+	}
 }
 
 bool ArchipelagoStatusDialog::AllowChar(int, SexyChar theChar)
@@ -175,5 +184,29 @@ void ArchipelagoStatusDialog::Update()
 			mApp->mAP->DisconnectNow();
 			mConnectingDialog = nullptr;
 		}
+	}
+}
+
+void ArchipelagoStatusDialog::Tab()
+{
+	if (mWidgetManager->mFocusWidget == mHostEditWidget)
+	{
+		mWidgetManager->SetFocus(mSlotEditWidget);
+	}
+	else if (mWidgetManager->mFocusWidget == mSlotEditWidget)
+	{
+		mWidgetManager->SetFocus(mPasswordEditWidget);
+	}
+}
+
+void ArchipelagoStatusDialog::BackTab()
+{
+	if (mWidgetManager->mFocusWidget == mSlotEditWidget)
+	{
+		mWidgetManager->SetFocus(mHostEditWidget);
+	}
+	else if (mWidgetManager->mFocusWidget == mPasswordEditWidget)
+	{
+		mWidgetManager->SetFocus(mSlotEditWidget);
 	}
 }

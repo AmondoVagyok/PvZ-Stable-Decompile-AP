@@ -1,6 +1,8 @@
 #ifndef __EDITWIDGET_H__
 #define __EDITWIDGET_H__
 
+#include <functional>
+
 #include "Widget.h"
 
 namespace Sexy

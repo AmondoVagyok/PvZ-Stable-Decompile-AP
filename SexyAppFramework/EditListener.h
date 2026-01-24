@@ -15,6 +15,9 @@ public:
 	virtual bool			AllowKey(int theId, KeyCode theKey) { return true; }
 	virtual bool			AllowChar(int theId, SexyChar theChar) { return true; }
 	virtual bool			AllowText(int theId, const SexyString& theText) { return true; }
+	
+	virtual void            Tab() {};
+	virtual void            BackTab() {};
 };
 
 }

@@ -382,11 +382,11 @@ void EditWidget::ProcessKey(KeyCode theKey, SexyChar theChar)
 		{
 			// Get to a word
 			while ((mCursorPos > 0) && (!IsPartOfWord(mString[mCursorPos-1])))
-				   mCursorPos--;
+				mCursorPos--;
 			
 			// Go beyond the word
 			while ((mCursorPos > 0) && (IsPartOfWord(mString[mCursorPos-1])))
-				   mCursorPos--;
+				mCursorPos--;
 		}
 		else if (shiftDown || (mHilitePos == -1))
 			mCursorPos--;
@@ -399,11 +399,11 @@ void EditWidget::ProcessKey(KeyCode theKey, SexyChar theChar)
 		{
 			// Get to whitespace
 			while ((mCursorPos < (int) mString.length()-1) && (IsPartOfWord(mString[mCursorPos+1])))
-				   mCursorPos++;
+				mCursorPos++;
 			
 			// Go beyond the whitespace
 			while ((mCursorPos < (int) mString.length()-1) && (!IsPartOfWord(mString[mCursorPos+1])))
-				   mCursorPos++;
+				mCursorPos++;
 		}
 		if (shiftDown || (mHilitePos == -1))
 			mCursorPos++;
@@ -475,6 +475,16 @@ void EditWidget::ProcessKey(KeyCode theKey, SexyChar theChar)
 	else if (theKey == KEYCODE_RETURN)
 	{
 		mEditListener->EditWidgetText(mId, mString);		
+	}
+	else if (theKey == KEYCODE_TAB)
+	{
+		if (shiftDown)
+		{
+			mEditListener->BackTab();
+		} else
+		{
+			mEditListener->Tab();
+		}
 	}
 	else
 	{

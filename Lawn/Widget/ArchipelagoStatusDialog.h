@@ -10,6 +10,8 @@ class LawnApp;
 class ArchipelagoStatusDialog : public LawnDialog, public EditListener
 {
 public:
+	
+
 	LawnApp*			mApp;
 	LawnEditWidget*			mHostEditWidget;
 	LawnEditWidget*			mSlotEditWidget;
@@ -37,6 +39,8 @@ public:
 	
 	void UpdateArchipelagoStatus();
 	void Update() override;
+	void Tab() override;
+	void BackTab() override;
 };
 
 #endif
