@@ -1,5 +1,8 @@
 #include "ArchipelagoStatusDialog.h"
 
+#include <fstream>
+#include <nlohmann/json.hpp>
+
 #include "GameButton.h"
 #include "../../LawnApp.h"
 #include "../../SexyAppFramework/WidgetManager.h"
@@ -38,6 +41,15 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
 	
 	mConnectionListener = mApp->mAP->AddConnectionCompleteListener([this] { UpdateArchipelagoStatus(); });
 	mDisconnectionListener = mApp->mAP->AddDisconnectionListener([this] { UpdateArchipelagoStatus(); });
+	
+	std::ifstream ap_connection_file("ap-connection.json");
+    auto connection = nlohmann::json::parse(ap_connection_file, nullptr, false);
+	if (!connection.is_discarded())
+	{
+		mHostEditWidget->mString = connection["host"];
+		mSlotEditWidget->mString = connection["slot"];
+		mPasswordEditWidget->mString = connection["password"];
+	}
 	
 	UpdateArchipelagoStatus();
 }
@@ -138,6 +150,15 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 		{
 			// Clear the current profile
 			mApp->mPlayerInfo = nullptr;
+			
+			// Save the connection information
+			nlohmann::json connection = {
+				{"host", mHostEditWidget->mString},
+				{"slot", mSlotEditWidget->mString},
+				{"password", mPasswordEditWidget->mString}
+			};
+			std::ofstream ap_connection_file("ap-connection.json");
+			ap_connection_file << connection;
 			
 			mApp->mAP->Connect(mHostEditWidget->mString, mSlotEditWidget->mString, mPasswordEditWidget->mString);
 			mConnectingDialog = mApp->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "Cancel", Dialog::BUTTONS_FOOTER);
