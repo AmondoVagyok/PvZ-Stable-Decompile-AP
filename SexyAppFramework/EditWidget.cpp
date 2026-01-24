@@ -263,7 +263,7 @@ bool EditWidget::IsPartOfWord(SexyChar theChar)
 	return (((theChar >= _S('A')) && (theChar <= _S('Z'))) ||
 			((theChar >= _S('a')) && (theChar <= _S('z'))) ||
 			((theChar >= _S('0')) && (theChar <= _S('9'))) ||
-			(((unsigned int)theChar >= (unsigned int)(L'À')) && ((unsigned int)theChar <= (unsigned int)(L'ÿ'))) ||
+			(((unsigned int)theChar >= (unsigned int)(L'ï¿½')) && ((unsigned int)theChar <= (unsigned int)(L'ï¿½'))) ||
 			(theChar == _S('_')));
 }
 
@@ -284,7 +284,18 @@ void EditWidget::ProcessKey(KeyCode theKey, SexyChar theChar)
 	SexyString anOldString = mString;
 	int anOldCursorPos = mCursorPos;
 	int anOldHilitePos = mHilitePos;
-	if ((theChar == 3) || (theChar == 24))
+	if (theChar == 1)
+	{
+		if (controlDown)
+		{
+			// Select All
+			
+			mHilitePos = 0;
+			mCursorPos = mString.length();
+			removeHilite = false;
+		}
+	}
+	else if ((theChar == 3) || (theChar == 24))
 	{
 		// Copy	selection
 		
