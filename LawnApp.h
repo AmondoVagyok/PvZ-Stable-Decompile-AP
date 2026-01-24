@@ -153,6 +153,11 @@ public:
 	MessageWidget*					mAPUpdateMessage;
 	MessageWidget*					mAPCountdown;
 	std::queue<std::string>			mAPPendingUpdates;
+	Dialog*							mConnectingDialog;
+	SexyString						mCliApHost;
+	SexyString						mCliApSlot;
+	SexyString						mCliApPassword;
+
 	//lua_State*						L;
 
 	Rect							gBoardBounds;
@@ -383,6 +388,7 @@ public:
 	void							ShowAPTextClient();
 	bool							APTextClientVisible();
 	void							KillAPTextClient();
+	void							ShowAPConnectingDialog();
 	
 	bool							EnsureArchipelagoConnected();
 	void							DrawArchipelagoOverlayElements(Graphics* g);

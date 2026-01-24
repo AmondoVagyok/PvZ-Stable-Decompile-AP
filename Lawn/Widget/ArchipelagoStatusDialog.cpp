@@ -33,9 +33,8 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
 	mPasswordEditWidget->mMaxChars = 30;
 	mPasswordEditWidget->DisableAutocap();
 	mPasswordEditWidget->SetFont(FONT_PICO129);
-	mConnectingDialog = nullptr;
-	
-	mConnectButton = MakeButton(20, this, "Connect to Archipelago");
+
+    mConnectButton = MakeButton(20, this, "Connect to Archipelago");
 	
     CalcSize(110, 300);
 	
@@ -161,7 +160,7 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 			ap_connection_file << connection;
 			
 			mApp->mAP->Connect(mHostEditWidget->mString, mSlotEditWidget->mString, mPasswordEditWidget->mString);
-			mConnectingDialog = mApp->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "Cancel", Dialog::BUTTONS_FOOTER);
+			mApp->ShowAPConnectingDialog();
 		}
 		else
 		{
@@ -191,20 +190,6 @@ void ArchipelagoStatusDialog::UpdateArchipelagoStatus()
 		mPasswordEditWidget->SetVisible(false);
 		
 		mDialogLines = "Connected to Archipelago";
-	}
-}
-
-void ArchipelagoStatusDialog::Update()
-{
-	LawnDialog::Update();
-	
-	if (mConnectingDialog)
-	{
-		if (mConnectingDialog->mResult != 0x7FFFFFFF)
-		{
-			mApp->mAP->DisconnectNow();
-			mConnectingDialog = nullptr;
-		}
 	}
 }
 

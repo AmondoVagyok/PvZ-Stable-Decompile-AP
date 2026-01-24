@@ -180,6 +180,7 @@ LawnApp::LawnApp()
 	mAPTextClient = nullptr;
 	mAPUpdateMessage = nullptr;
 	mAPCountdown = nullptr;
+	mConnectingDialog = nullptr;
 	
 	SetupArchipelago();
 }
@@ -1551,9 +1552,51 @@ void LawnApp::HandleCmdLineParam(const std::string& theParamName, const std::str
 		mDebugKeysEnabled = true;
 #endif
 	}
+	else if (theParamName == "--host")
+	{
+		mCliApHost = theParamValue;
+	}
+	else if (theParamName == "--slot")
+	{
+		mCliApSlot = theParamValue;
+	}
+	else if (theParamName == "--password")
+	{
+		mCliApPassword = theParamValue;
+	}
 	else
 	{
-		SexyApp::HandleCmdLineParam(theParamName, theParamValue);
+		if (theParamName.find('@') != std::string::npos)
+		{
+			auto connection = theParamName;
+			std::string scheme = "";
+			if (connection.find("://") != std::string::npos)
+			{
+				scheme = connection.substr(0, connection.find("://") + 3);
+				connection = connection.substr(scheme.size());
+			}
+			std::string identity = connection.substr(0, connection.find('@'));
+			std::string host = connection.substr(connection.find('@') + 1);
+			
+			std::string slot;
+			std::string password;
+			if (identity.find(':') != std::string::npos)
+			{
+				slot = identity.substr(identity.find(':') + 1);
+				password = identity.substr(0, identity.find(':'));
+			} else
+			{
+				slot = identity;
+			}
+			
+			mCliApHost = scheme + host;
+			mCliApSlot = slot;
+			mCliApPassword = password;
+		}
+		else
+		{
+			SexyApp::HandleCmdLineParam(theParamName, theParamValue);
+		}
 	}
 }
 
@@ -2135,6 +2178,19 @@ void LawnApp::LoadingCompleted()
 	else
 	{
 		ShowGameSelector();
+		
+		if (!mCliApHost.empty() || !mCliApSlot.empty())
+		{
+			if (!mCliApHost.empty() && !mCliApSlot.empty())
+			{
+				mAP->Connect(mCliApHost, mCliApSlot, mCliApPassword);
+				ShowAPConnectingDialog();
+			}
+			else
+			{
+				DoDialog(DIALOG_INFO, true, "Connect to Archipelago", "Archipelago connection information was passed as a command line parameter, but not all parameters were provided. An attempt will not be made to connect to Archipelago.", "OK", Dialog::BUTTONS_FOOTER);
+			}
+		}
 	}
 }
 
@@ -2674,6 +2730,15 @@ bool LawnApp::UpdateApp()
 	//{
 	//	CheckForUpdates();
 	//}
+	
+	if (mConnectingDialog)
+	{
+		if (mConnectingDialog->mResult != 0x7FFFFFFF)
+		{
+			mAP->DisconnectNow();
+			mConnectingDialog = nullptr;
+		}
+	}
 
 	return updated;
 }
@@ -4350,6 +4415,11 @@ void LawnApp::KillAPTextClient()
 		SafeDeleteWidget(mAPTextClient);
 		mAPTextClient = nullptr;
 	}
+}
+
+void LawnApp::ShowAPConnectingDialog()
+{
+	mConnectingDialog = DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Connecting to Archipelago...", "Please wait for the connection to be established", "Cancel", Dialog::BUTTONS_FOOTER);
 }
 
 bool LawnApp::EnsureArchipelagoConnected()
