@@ -2312,7 +2312,7 @@ void Challenge::Update()
 	}
 #endif
 
-	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
+	/*if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN)
 	{
 		if (mApp->IsScreenSaver() && mApp->mZenGarden->IsStinkySleeping())
 		{
@@ -2320,7 +2320,7 @@ void Challenge::Update()
 			if (rms >= 0.4f)
 				mApp->mZenGarden->WakeStinky();
 		}
-	}
+	}*/
 	
 	Reanimation* aReanim = mApp->ReanimationTryToGet(mReanimChallenge);
 	if (aReanim && aReanim->mIsAttachment)
