@@ -3106,7 +3106,7 @@ void Challenge::WhackAZombieSpawning()
 				Plant* aPlant = mBoard->GetTopPlantAt(aGridItem->mGridX, aGridItem->mGridY, TOPPLANT_ONLY_NORMAL_POSITION);
 				if (aPlant == nullptr || aPlant->mSeedType != SEED_GRAVEBUSTER)
 				{
-					aGridPicks[aGridPicksCount].mItem = (int)aGridItem;
+					aGridPicks[aGridPicksCount].mItem = reinterpret_cast<intptr_t>(aGridItem);
 					aGridPicks[aGridPicksCount].mWeight = 1;
 					aGridPicksCount++;
 				}
@@ -3545,7 +3545,7 @@ void Challenge::MoveAPortal()
 		{
 			TOD_ASSERT(aNumpicks < MAX_PORTALS);
 			aPickArray[aNumpicks].mWeight = 1;
-			aPickArray[aNumpicks].mItem = (int)aGridItem;
+			aPickArray[aNumpicks].mItem = reinterpret_cast<intptr_t>(aGridItem);
 			aNumpicks++;
 		}
 	}
@@ -4120,7 +4120,7 @@ void Challenge::ScaryPotterChangePotType(GridItemState thePotType, int theCount)
 			if ((thePotType == GRIDITEM_STATE_SCARY_POT_LEAF && aGridItem->mScaryPotType == SCARYPOT_SEED) ||
 				(thePotType == GRIDITEM_STATE_SCARY_POT_ZOMBIE && aGridItem->mZombieType == ZOMBIE_GARGANTUAR))
 			{
-				aPotArray[aPotCount].mItem = (int)aGridItem;
+				aPotArray[aPotCount].mItem = reinterpret_cast<intptr_t>(aGridItem);
 				aPotArray[aPotCount].mWeight = 1;
 				aPotCount++;
 			}
