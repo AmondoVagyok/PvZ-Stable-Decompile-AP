@@ -1937,7 +1937,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[6].SetPacketType(SeedType::SEED_TALLNUT);
 		mSeedBank->mSeedPackets[7].SetPacketType(SeedType::SEED_JALAPENO);
 	}
-	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank() && mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE)
+	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank())
 	{
 		mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
 		SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
