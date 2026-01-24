@@ -191,7 +191,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
                 aBodyReanim->mAnimRate = RandRangeFloat(6.0f, 10.0f);
 
             {
-                char* aTrackToPlay = "anim_blink";
+                const char* aTrackToPlay = "anim_blink";
                 int aHit = Rand(10);
                 if (aHit < 1 && aBodyReanim->TrackExists("anim_blink_twitch"))
                 {
@@ -1063,7 +1063,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
     }
     else if (aHeadReanim && aHeadReanim->TrackExists("anim_shooting"))
     {
-        char* aTrackToPlay = "anim_shooting";
+        const char* aTrackToPlay = "anim_shooting";
 
 #ifdef _MOBILE_MINIGAMES
         if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
@@ -4177,7 +4177,7 @@ void Plant::UpdateShooting()
     {
         if (aHeadReanim->mLoopCount > 0)
         {
-            char* animTrack = "anim_head_idle";
+            const char* animTrack = "anim_head_idle";
 
 #ifdef _MOBILE_MINIGAMES
             if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
@@ -6954,7 +6954,7 @@ void Plant::PlayIdleAnim(float theRate)
     Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
     if (aBodyReanim)
     {
-        char* aTrackAnim = "anim_idle";
+        const char* aTrackAnim = "anim_idle";
 
 #ifdef _MOBILE_MINIGAMES
         if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE) {

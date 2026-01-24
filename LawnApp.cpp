@@ -2210,7 +2210,7 @@ void LawnApp::Init()
 #endif
 	mTimer.Start();
 
-	if (!IsScreenSaver())
+	if (!IsScreenSaver() && !IsParticleEditor())
 		PlayVideo(StrFormat("%svideos/intro.mp4", SDL_GetBasePath()).c_str(), true);
 }
 

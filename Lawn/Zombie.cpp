@@ -11191,7 +11191,7 @@ void Zombie::PlayDeathAnim(unsigned int theDamageFlags)
     }
 
     float aDeathAnimRate;
-    char* aDeathTrackName = "anim_death";
+    const char* aDeathTrackName = "anim_death";
 
     if (mZombieType == ZombieType::ZOMBIE_FOOTBALL 
 #ifdef _HAS_NEW_GIGA_ZOMBIES
@@ -12040,7 +12040,7 @@ void Zombie::WalkIntoHouse()
             mPosX -= 28.0f;
         }
 
-        char* aTrackToPlay = "anim_idle";
+        const char* aTrackToPlay = "anim_idle";
         float aChimneyScale = 1.0f;
 
         if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER)
