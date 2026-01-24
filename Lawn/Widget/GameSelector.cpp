@@ -679,7 +679,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 			{
 				if (mApp->mAP->ReceivedItemCount(i) > 0)
 				{
-					mPuzzleLocked = false;
+					mSurvivalLocked = false;
 				}
 			}
 		}
