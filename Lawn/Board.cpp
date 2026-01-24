@@ -7085,8 +7085,7 @@ void Board::DrawIce(Graphics* g, int theGridY)
 void Board::DrawBackdrop(Graphics* g)
 {
 	g->PushState();
-	g->SetLinearBlend(true);
-	g->SetPixelArtBlend(true);
+	g->SetLinearBlend(false);
 	Image* aBgImage = nullptr;
 	switch (mBackground)
 	{

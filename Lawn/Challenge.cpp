@@ -2508,6 +2508,8 @@ void Challenge::DrawBackdrop(Graphics* g)
 		DrawBeghouled(g);
 	}
 
+	g->PushState();
+	g->SetLinearBlend(false);
 	if (mApp->IsWallnutBowlingLevel() && mShowBowlingLine)
 	{
 		g->DrawImageF(Sexy::IMAGE_WALLNUT_BOWLINGSTRIPE, 268, 77);
@@ -2526,6 +2528,7 @@ void Challenge::DrawBackdrop(Graphics* g)
 	{
 		g->DrawImageF(Sexy::IMAGE_WALLNUT_BOWLINGSTRIPE, 512, 73);
 	}
+	g->PopState();
 
 	if (aGameMode == GAMEMODE_CHALLENGE_SLOT_MACHINE)
 	{
