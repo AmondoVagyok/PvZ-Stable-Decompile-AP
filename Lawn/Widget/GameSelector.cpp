@@ -653,12 +653,13 @@ void GameSelector::SyncProfile(bool theShowLoading)
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
 		auto slot_data = mApp->mAP->SlotData();
-		if (slot_data["minigame_puzzle_survival_order"].get<int>() == 3)
-		{
-			mMinigamesLocked = true;
-			mPuzzleLocked = true;
-			mSurvivalLocked = true;
+		mMinigamesLocked = true;
+		mPuzzleLocked = true;
+		mSurvivalLocked = true;
 		
+		if (slot_data["minigame_levels"].get<int>() == 4)
+		{
+			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS); i++)
 			{
 				if (mApp->mAP->ReceivedItemCount(i) > 0)
@@ -666,7 +667,15 @@ void GameSelector::SyncProfile(bool theShowLoading)
 					mMinigamesLocked = false;
 				}
 			}
+		}
+		else
+		{
+			mMinigamesLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::MINIGAMES);
+		}
 
+		if (slot_data["puzzle_levels"].get<int>() == 4)
+		{
+			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SCARY_POTTER_1); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9); i++)
 			{
 				if (mApp->mAP->ReceivedItemCount(i) > 0)
@@ -674,7 +683,15 @@ void GameSelector::SyncProfile(bool theShowLoading)
 					mPuzzleLocked = false;
 				}
 			}
-		
+		}
+		else
+		{
+			mPuzzleLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PUZZLE_MODE);
+		}
+	
+		if (slot_data["survival_levels"].get<int>() == 4)
+		{
+			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5); i++)
 			{
 				if (mApp->mAP->ReceivedItemCount(i) > 0)
@@ -685,8 +702,6 @@ void GameSelector::SyncProfile(bool theShowLoading)
 		}
 		else
 		{
-			mMinigamesLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::MINIGAMES);
-			mPuzzleLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PUZZLE_MODE);
 			mSurvivalLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::SURVIVAL_MODE);
 		}
 	}
@@ -1817,24 +1832,34 @@ void GameSelector::ButtonDepress(int theId)
 	}
 	
 	bool have_level_items = false;
-	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
-	{
-		auto slot_data = mApp->mAP->SlotData();
-		have_level_items = slot_data["minigame_puzzle_survival_order"].get<int>() == 3;
-	}
 
 	if (theId == GameSelector::GameSelector_Minigame && mMinigamesLocked)
 	{
+		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+		{
+			auto slot_data = mApp->mAP->SlotData();
+			have_level_items = slot_data["minigame_levels"].get<int>() == 4;
+		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a mini-game from Archipelago to play mini-games") : _S("Obtain the Mini-games item from Archipelago to play mini-games"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 	if (theId == GameSelector::GameSelector_Puzzle && mPuzzleLocked)
 	{
+		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+		{
+			auto slot_data = mApp->mAP->SlotData();
+			have_level_items = slot_data["puzzle_levels"].get<int>() == 4;
+		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a puzzle level from Archipelago to play puzzle mode") : _S("Obtain the Puzzle Mode item from Archipelago to play puzzle mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}
 	if (theId == GameSelector::GameSelector_Survival && mSurvivalLocked)
 	{
+		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+		{
+			auto slot_data = mApp->mAP->SlotData();
+			have_level_items = slot_data["survival_levels"].get<int>() == 4;
+		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a survival level from Archipelago to play survival mode") : _S("Obtain the Survival Mode item from Archipelago to play survival mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
 	}

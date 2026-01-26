@@ -6,7 +6,7 @@
 #include <apclient.hpp>
 #include <apuuid.hpp>
 
-const std::string EXPECTED_SLOT_DATA_VERSION = "1.2";
+const std::string EXPECTED_SLOT_DATA_VERSION = "1.3";
 
 class APWrapper_Private {
 public:

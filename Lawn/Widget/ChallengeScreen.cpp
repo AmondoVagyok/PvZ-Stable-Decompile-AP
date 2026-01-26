@@ -331,31 +331,49 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
 	auto slot_data = mApp->mAP->SlotData();
 	
-	if (slot_data["minigame_puzzle_survival_order"].get<int>() == 3)
-	{
-		// Items mode
-		return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
-	}
-	
 	auto start = 0;
 	auto end = 0;
 	if (aDef.mAPId >= 51 && aDef.mAPId <= 70)
 	{
+		if (slot_data["minigame_levels"].get<int>() == 4)
+		{
+			// Items mode
+			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
+		}
+		
 		start = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS);
 		end = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS);
 	}
 	else if (aDef.mAPId >= 71 && aDef.mAPId <= 79)
 	{
+		if (slot_data["puzzle_levels"].get<int>() == 4)
+		{
+			// Items mode
+			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
+		}
+		
 		start = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SCARY_POTTER_1);
 		end = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SCARY_POTTER_9);
 	}
 	else if (aDef.mAPId >= 80 && aDef.mAPId <= 88)
 	{
+		if (slot_data["puzzle_levels"].get<int>() == 4)
+		{
+			// Items mode
+			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
+		}
+		
 		start = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_1);
 		end = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9);
 	}
 	else if (aDef.mAPId >= 89 && aDef.mAPId <= 98)
 	{
+		if (slot_data["survival_levels"].get<int>() == 4)
+		{
+			// Items mode
+			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
+		}
+		
 		start = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1);
 		end = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5);
 	}
