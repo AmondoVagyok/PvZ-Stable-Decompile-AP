@@ -406,7 +406,7 @@ public:
 	void							KillAllPlantsInRadius(int theX, int theY, int theRadius);
 	Plant*							GetPumpkinAt(int theGridX, int theGridY);
 	Plant*							GetFlowerPotAt(int theGridX, int theGridY);
-	static bool						CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel);
+	bool							CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel);
 	bool							IsZombieWaveDistributionOk();
 	void							PickBackground();
 	void							InitZombieWaves();

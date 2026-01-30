@@ -37,6 +37,8 @@
 #include "ZenGarden.h"
 
 #define SEXY_PERF_ENABLED
+#include <nlohmann/json.hpp>
+
 #include "../SexyAppFramework/APData.h"
 #include "../SexyAppFramework/APWrapper.h"
 #include "../SexyAppFramework/PerfTimer.h"
@@ -2895,12 +2897,35 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 	{
 		return gLawnApp->CanSpawnYetis();
 	}
+	
+	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+	{
+		auto zombie_map = mApp->mAP->SlotData()["zombie_map"];
+		auto available_zombies_for_level = zombie_map[std::to_string(theLevel)];
+		if (!available_zombies_for_level.is_discarded())
+		{
+			if (theZombieType < ZOMBIE_NORMAL || theZombieType > ZOMBIE_REDEYE_GARGANTUAR)
+			{
+				return false;
+			}
+			
+			for (auto zombie : available_zombies_for_level)
+			{
+				if (theZombieType == zombie.get<int>())
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
+	}
 
 	if (theLevel < aZombieDef.mStartingLevel || aZombieDef.mPickWeight == 0)
 	{
 		return false;
 	}
-
+	
 	TOD_ASSERT(gZombieAllowedLevels[theZombieType].mZombieType == theZombieType);
 	return gZombieAllowedLevels[theZombieType].mAllowedOnLevel[ClampInt(theLevel - 1, 0, 49)];
 }
