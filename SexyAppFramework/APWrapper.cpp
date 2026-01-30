@@ -369,11 +369,11 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     });
     d->mAP->set_socket_disconnected_handler([this]
     {
+        this->Disconnect();
         for (const auto& disconnection_listener : this->d->disconnection_listener)
         {
             disconnection_listener.second();
         }
-        this->Disconnect();
     });
     d->mAP->set_bounced_handler([this](const nlohmann::json& bounce_data)
     {
@@ -466,7 +466,7 @@ std::string APWrapper::Password() const
 
 enum APWrapper::ConnectionStatus APWrapper::ConnectionStatus() const
 {
-    if (!d->mAP) return ConnectionStatus::Disconnected;
+    if (!d->mAP || d->delete_on_next_poll) return ConnectionStatus::Disconnected;
 
     switch (d->mAP->get_state())
     {

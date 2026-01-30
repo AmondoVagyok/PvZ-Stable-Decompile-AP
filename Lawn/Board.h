@@ -123,6 +123,7 @@ class Board : public Widget, public ButtonListener
 public:
 	LawnApp*						mApp;													//+0x8C
 	ListenerHandle*                 mItemReceivedListener;
+	ListenerHandle*                 mAPDisconnectListener;
 	DataArray<Zombie>				mZombies;												//+0x90
 	DataArray<Plant>				mPlants;												//+0xAC
 	DataArray<Projectile>			mProjectiles;											//+0xC8

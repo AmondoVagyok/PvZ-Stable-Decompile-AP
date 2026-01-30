@@ -304,12 +304,22 @@ Board::Board(LawnApp* theApp)
 			}
 		}
 	});
+	mAPDisconnectListener = mApp->mAP->AddDisconnectionListener([this]
+	{
+		if (mApp->mGameMode != GAMEMODE_CHALLENGE_ZEN_GARDEN && mApp->mGameMode != GAMEMODE_TREE_OF_WISDOM && mApp->mGameMode != GAMEMODE_UPSELL)
+		{
+			mApp->PlaySample(Sexy::SOUND_PAUSE);
+			// mApp->DoNewOptions(false);
+			mApp->DoArchipelagoStatusDialog();
+		}
+	});
 }
 
 //0x408670、0x408690
 Board::~Board()
 {
 	delete mItemReceivedListener;
+	delete mAPDisconnectListener;
 	delete mAdvice;
 	delete mCursorObject;
 	delete mCursorPreview;

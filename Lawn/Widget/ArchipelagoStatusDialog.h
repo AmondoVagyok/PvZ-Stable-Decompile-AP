@@ -17,6 +17,7 @@ public:
 	LawnEditWidget*			mSlotEditWidget;
 	LawnEditWidget*			mPasswordEditWidget;
 	LawnStoneButton*		mConnectButton;
+	LawnStoneButton*		mCloseButton;
 	
 	ListenerHandle*			mConnectionListener;
 	ListenerHandle*			mDisconnectionListener;

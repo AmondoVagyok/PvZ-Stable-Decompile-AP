@@ -8,6 +8,7 @@
 #include "../../SexyAppFramework/WidgetManager.h"
 #include "../../Resources.h"
 #include "../../SexyAppFramework/APWrapper.h"
+#include "../Board.h"
 
 ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
     	theApp,
@@ -15,8 +16,8 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
     	true,
     	"Archipelago",
     	"Connect to Archipelago by entering\nthe connection details below",
-    	"Close",
-    	Dialog::BUTTONS_FOOTER
+    	theApp->mBoard ? "Main Menu" : "Close",
+    	Dialog::BUTTONS_NONE
 )
 {
     mApp = theApp;
@@ -35,6 +36,7 @@ ArchipelagoStatusDialog::ArchipelagoStatusDialog(LawnApp* theApp) : LawnDialog(
 	mPasswordEditWidget->SetFont(FONT_PICO129);
 
     mConnectButton = MakeButton(20, this, "Connect to Archipelago");
+    mCloseButton = MakeButton(21, this, theApp->mBoard ? "Main Menu" : "Close");
 	
     CalcSize(110, 300);
 	
@@ -63,6 +65,7 @@ ArchipelagoStatusDialog::~ArchipelagoStatusDialog()
 	delete mHostEditWidget;
 	
 	delete mConnectButton;
+	delete mCloseButton;
 }
 
 void ArchipelagoStatusDialog::AddedToManager(WidgetManager* theWidgetManager)
@@ -72,6 +75,7 @@ void ArchipelagoStatusDialog::AddedToManager(WidgetManager* theWidgetManager)
 	AddWidget(mSlotEditWidget);
 	AddWidget(mPasswordEditWidget);
 	AddWidget(mConnectButton);
+	AddWidget(mCloseButton);
 	theWidgetManager->SetFocus(mHostEditWidget);
 }
 
@@ -82,6 +86,7 @@ void ArchipelagoStatusDialog::RemovedFromManager(WidgetManager* theWidgetManager
 	RemoveWidget(mSlotEditWidget);
 	RemoveWidget(mPasswordEditWidget);
 	RemoveWidget(mConnectButton);
+	RemoveWidget(mCloseButton);
 }
 
 int ArchipelagoStatusDialog::GetPreferredHeight(int theWidth)
@@ -96,6 +101,7 @@ void ArchipelagoStatusDialog::Resize(int theX, int theY, int theWidth, int theHe
 	mSlotEditWidget->Resize(mContentInsets.mLeft + 12, mHostEditWidget->Bottom() + 35, mWidth - mContentInsets.mLeft - mContentInsets.mRight - 24, 28);
 	mPasswordEditWidget->Resize(mContentInsets.mLeft + 12, mSlotEditWidget->Bottom() + 35, mWidth - mContentInsets.mLeft - mContentInsets.mRight - 24, 28);
 	mConnectButton->Resize(this->Width() / 2 - 200, mPasswordEditWidget->Bottom() + 30, 400, 46);
+	mCloseButton->Resize(this->Width() / 2 - 200, this->Height() - 46 - 40, 400, 46);
 }
 
 void ArchipelagoStatusDialog::Draw(Graphics* g)
@@ -143,12 +149,31 @@ void ArchipelagoStatusDialog::ButtonDepress(int theId)
 	LawnDialog::ButtonDepress(theId);
 	switch (theId)
 	{
+	case 21:
+		if (mApp->mBoard)
+		{
+			if (mApp->mBoard->NeedSaveGame())
+			{
+				mApp->DoConfirmBackToMain();
+			} else
+			{
+				mApp->DoBackToMain();
+			}
+		}
+		else
+		{
+			mApp->KillDialog(DIALOG_ARCHIPELAGO_STATUS);
+		}
+		break;
 	case 20:
 		// Connect button
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Disconnected)
 		{
 			// Clear the current profile
-			mApp->mPlayerInfo = nullptr;
+			if (!mApp->mBoard)
+			{
+				mApp->mPlayerInfo = nullptr;
+			}
 			
 			// Save the connection information
 			nlohmann::json connection = {
@@ -180,7 +205,14 @@ void ArchipelagoStatusDialog::UpdateArchipelagoStatus()
 		mSlotEditWidget->SetVisible(true);
 		mPasswordEditWidget->SetVisible(true);
 		
-		mDialogLines = "Connect to Archipelago by entering\nthe connection details below";
+		if (mApp->mBoard)
+		{
+			mDialogLines = "The connection to Archipelago was severed.\nReconnect to continue.";
+		}
+		else
+		{
+			mDialogLines = "Connect to Archipelago by entering\nthe connection details below";
+		}
 	}
 	else
 	{

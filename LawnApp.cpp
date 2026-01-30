@@ -769,6 +769,7 @@ void LawnApp::DoBackToMain()
 	WriteCurrentUserConfig();
 	KillNewOptionsDialog();
 	KillBoard();
+	KillDialog(DIALOG_ARCHIPELAGO_STATUS);
 	ShowGameSelector();
 }
 
@@ -4734,9 +4735,35 @@ void LawnApp::SetupArchipelago()
 				if (std::find(strings.begin(), strings.end(), name) != strings.end())
 				{
 					PlayerInfo* aProfile = mProfileMgr->GetProfile(name);
+			
+					if (mPlayerInfo != nullptr && mPlayerInfo != aProfile)
+					{
+						// The current profile is locked and shouldn't be changed
+						// Throw an error and disconnect
+						mAP->Disconnect();
+						this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", "The slot that was connected to is not the current game.", "OK", Dialog::BUTTONS_FOOTER);
+						return;
+					}
+					
 					LoadProfile(aProfile);
+					
+					if (mBoard)
+					{
+						KillDialog(Dialogs::DIALOG_ARCHIPELAGO_STATUS);
+						DoPauseDialog();
+					}
+					
 					return;
 				}
+			}
+			
+			if (mPlayerInfo != nullptr)
+			{
+				// The current profile is locked and shouldn't be changed
+				// Throw an error and disconnect
+				mAP->Disconnect();
+				this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", "The slot that was connected to is not the current game.", "OK", Dialog::BUTTONS_FOOTER);
+				return;
 			}
 			
 			// The profile doesn't exist. Create one now
