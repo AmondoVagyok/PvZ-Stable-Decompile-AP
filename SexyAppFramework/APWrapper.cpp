@@ -370,10 +370,6 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->mAP->set_socket_disconnected_handler([this]
     {
         this->Disconnect();
-        for (const auto& disconnection_listener : this->d->disconnection_listener)
-        {
-            disconnection_listener.second();
-        }
     });
     d->mAP->set_bounced_handler([this](const nlohmann::json& bounce_data)
     {
@@ -441,6 +437,10 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
 void APWrapper::Disconnect() const
 {
     d->delete_on_next_poll = true;
+    for (const auto& disconnection_listener : this->d->disconnection_listener)
+    {
+        disconnection_listener.second();
+    }
 }
 
 void APWrapper::DisconnectNow() const

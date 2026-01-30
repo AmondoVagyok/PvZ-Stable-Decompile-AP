@@ -306,7 +306,7 @@ Board::Board(LawnApp* theApp)
 	});
 	mAPDisconnectListener = mApp->mAP->AddDisconnectionListener([this]
 	{
-		if (mApp->mGameMode != GAMEMODE_CHALLENGE_ZEN_GARDEN && mApp->mGameMode != GAMEMODE_TREE_OF_WISDOM && mApp->mGameMode != GAMEMODE_UPSELL)
+		if (mApp->mGameMode != GAMEMODE_CHALLENGE_ZEN_GARDEN && mApp->mGameMode != GAMEMODE_TREE_OF_WISDOM && mApp->mGameMode != GAMEMODE_UPSELL && !mApp->GetDialog(DIALOG_ARCHIPELAGO_STATUS))
 		{
 			mApp->PlaySample(Sexy::SOUND_PAUSE);
 			// mApp->DoNewOptions(false);
