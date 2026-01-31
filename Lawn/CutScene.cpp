@@ -652,7 +652,7 @@ void CutScene::PlaceLawnItems()
 		mBoard->PlaceRake();
 	}
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
 	{
 		if (mBoard->CanPlantAt(0, 0, SeedType::SEED_PEASHOOTER) == PlantingReason::PLANTING_OK)
@@ -696,7 +696,8 @@ void CutScene::PlaceLawnItems()
 			mBoard->NewPlant(1, 3, SeedType::SEED_LILYPAD, SeedType::SEED_NONE);
 		}
 	}
-
+#endif
+#ifdef _MOBILE_MINIGAMES
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BUTTERED_POPCORN)
 	{
 		mBoard->NewPlant(0, 0, SeedType::SEED_COBCANNON, SeedType::SEED_NONE);
@@ -722,8 +723,8 @@ bool CutScene::IsNonScrollingCutscene()
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN ||
 		mApp->mGameMode == GameMode::GAMEMODE_TREE_OF_WISDOM || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM ||
-#ifdef _MOBILE_MINIGAMES
-		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE ||
+#ifdef _DS_MINIGAMES
+		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIE_TRAP ||
 #endif
 		mApp->IsScaryPotterLevel() || 
 		mApp->IsIZombieLevel() || 
@@ -814,8 +815,10 @@ void CutScene::StartLevelIntro()
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM ||
 		mApp->IsLastStand() ||
 		mApp->mGameMode == GameMode::GAMEMODE_TREE_OF_WISDOM ||
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE ||
+#endif
+#ifdef _MOBILE_MINIGAMES
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BUTTERED_POPCORN ||
 #endif
 		mApp->IsIZombieLevel() ||
@@ -1511,8 +1514,11 @@ void CutScene::ShowShovel()
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN || 
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIQUARIUM || 
 #ifdef _MOBILE_MINIGAMES
-		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE ||
 		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BUTTERED_POPCORN ||
+#endif
+#ifdef _DS_MINIGAMES
+		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE ||
+		mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZOMBIE_TRAP ||
 #endif
 		mApp->IsIZombieLevel())
 		return;

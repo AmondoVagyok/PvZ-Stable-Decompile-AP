@@ -169,7 +169,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     {
         float aOffsetY = PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow);
         ReanimationType aReanimType = aPlantDef.mReanimationType;
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
         if (aReanimType == ReanimationType::REANIM_PEASHOOTER && mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
         {
             aReanimType = ReanimationType::REANIM_HEATWAVE_SHOOTER;
@@ -326,7 +326,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         {
             aBodyReanim->mAnimRate = RandRangeFloat(15.0f, 20.0f);
             ReanimationType aReanimType = aPlantDef.mReanimationType;
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
             if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
                 aReanimType = ReanimationType::REANIM_HEATWAVE_SHOOTER;
 #endif
@@ -1065,7 +1065,7 @@ bool Plant::FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon)
     {
         const char* aTrackToPlay = "anim_shooting";
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
         if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
         {
             if (mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED)
@@ -3190,7 +3190,7 @@ void Plant::UpdateAbilities()
 
     if (mSubclass == PlantSubClass::SUBCLASS_SHOOTER)
     {
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
         if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
         {
             if (mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED_2)
@@ -3296,7 +3296,7 @@ void Plant::UpdateReanimColor()
         if (aPlant)
         {
             if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN && aPlant->mPlantCol == mPlantCol && aPlant->mRow == mRow
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
                 || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE && aPlant == this
 #endif
                 )
@@ -3691,7 +3691,7 @@ Reanimation* Plant::AttachBlinkAnim(Reanimation* theReanimBody)
     
     ReanimationType aReanimationType = aPlantDef.mReanimationType;
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
     bool isHeatWave = mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE;
 
     if (isHeatWave)
@@ -4179,7 +4179,7 @@ void Plant::UpdateShooting()
         {
             const char* animTrack = "anim_head_idle";
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
             if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
             {
                 bool isExhausted = mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED || mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED_2;
@@ -6904,7 +6904,7 @@ bool Plant::PreloadPlantResources(SeedType theSeedType)
         ReanimatorEnsureDefinitionLoaded(aPlantDef.mReanimationType, true);
     }
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
     if (theSeedType == SeedType::SEED_PEASHOOTER && gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE)
     {
         ReanimatorEnsureDefinitionLoaded(ReanimationType::REANIM_HEATWAVE_SHOOTER, true);
@@ -6956,7 +6956,7 @@ void Plant::PlayIdleAnim(float theRate)
     {
         const char* aTrackAnim = "anim_idle";
 
-#ifdef _MOBILE_MINIGAMES
+#ifdef _DS_MINIGAMES
         if (mSeedType == SeedType::SEED_PEASHOOTER && mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE) {
             if (mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED || mState == PlantState::STATE_HEAT_WAVE_EXHAUSTED_2)
                 aTrackAnim = "anim_exhausted";
