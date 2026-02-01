@@ -4501,6 +4501,9 @@ bool LawnApp::IsLevelOpen(int level) const
 		int minigame_levels_goal = slot_data["minigame_levels_goal"];
 		int puzzle_levels_goal = slot_data["puzzle_levels_goal"];
 		int survival_levels_goal = slot_data["survival_levels_goal"];
+		int overall_levels_goal = slot_data["overall_levels_goal"];
+		
+		int overall_levels_complete = 0;
 		
 		int adventure_levels_complete = 0;
 		for (auto i = 1; i <= 50; i++)
@@ -4508,6 +4511,7 @@ bool LawnApp::IsLevelOpen(int level) const
 			if (mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)))
 			{
 				adventure_levels_complete++;
+				overall_levels_complete++;
 			}
 		}
 		
@@ -4547,6 +4551,7 @@ bool LawnApp::IsLevelOpen(int level) const
 			if (mAP->IsLocationChecked(i))
 			{
 				minigame_levels_complete++;
+				overall_levels_complete++;
 			}			
 		}
 		if (minigame_levels_complete < minigame_levels_goal)
@@ -4560,6 +4565,7 @@ bool LawnApp::IsLevelOpen(int level) const
 			if (mAP->IsLocationChecked(i))
 			{
 				puzzle_levels_complete++;
+				overall_levels_complete++;
 			}
 		}
 		if (puzzle_levels_complete < puzzle_levels_goal)
@@ -4573,9 +4579,15 @@ bool LawnApp::IsLevelOpen(int level) const
 			if (mAP->IsLocationChecked(i))
 			{
 				survival_levels_complete++;
+				overall_levels_complete++;
 			}
 		}
 		if (survival_levels_complete < survival_levels_goal)
+		{
+			return false;
+		}
+		
+		if (overall_levels_complete < overall_levels_goal)
 		{
 			return false;
 		}
