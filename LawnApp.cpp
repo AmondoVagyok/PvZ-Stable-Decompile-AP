@@ -4502,21 +4502,44 @@ bool LawnApp::IsLevelOpen(int level) const
 		int puzzle_levels_goal = slot_data["puzzle_levels_goal"];
 		int survival_levels_goal = slot_data["survival_levels_goal"];
 		
-		int adventure_areas_complete = 0;
+		int adventure_levels_complete = 0;
 		for (auto i = 1; i <= 50; i++)
 		{
 			if (mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)))
+			{
+				adventure_levels_complete++;
+			}
+		}
+		
+		if (adventure_levels_complete < adventure_levels_goal)
+		{
+			return false;
+		}
+		
+		int adventure_areas_complete = 0;
+		for (auto i = 1; i <= 5; i++)
+		{
+			auto this_area_complete = true;
+			for (auto j = 1; j <= 10; j++)
+			{
+				if (i == 5 && j == 10) continue;
+				if (!mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i, j)))
+				{
+					this_area_complete = false;
+					break;
+				}
+			}
+			
+			if (this_area_complete)
 			{
 				adventure_areas_complete++;
 			}
 		}
 		
-		if (adventure_areas_complete < adventure_levels_goal)
+		if (adventure_areas_complete < adventure_areas_goal)
 		{
 			return false;
 		}
-		
-		// TODO: Adventure Areas goal
 		
 		int minigame_levels_complete = 0;
 		for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS); i++)
