@@ -269,7 +269,7 @@ void SeedChooserScreen::CrazyDavePickSeeds()
 		aSeedArray[aSeedType].mItem = aSeedType;
 		uint aRecFlags = SeedNotRecommendedToPick(aSeedType);
 		if ((aSeedType == SEED_GATLINGPEA && !mApp->mPlayerInfo->mPurchases[STORE_ITEM_PLANT_GATLINGPEA]) || !mApp->SeedTypeAvailable(aSeedType) ||
-			SeedNotAllowedToPick(aSeedType) || Plant::IsUpgrade(aSeedType) || aSeedType == SEED_IMITATER || aSeedType == SEED_UMBRELLA || aSeedType == SEED_BLOVER ||
+			SeedNotAllowedToPick(aSeedType) || Plant::IsUpgrade(mApp, aSeedType) || aSeedType == SEED_IMITATER || aSeedType == SEED_UMBRELLA || aSeedType == SEED_BLOVER ||
 			TestBit(aRecFlags, NOT_RECOMMENDED_NEEDS_POOL) || Plant::IsNocturnal(aSeedType) && TestBit(aRecFlags, NOT_RECOMMENDED_NOCTURNAL))
 		{
 			aSeedArray[aSeedType].mWeight = 0;
@@ -442,7 +442,7 @@ void SeedChooserScreen::Draw(Graphics* g)
 				int startY = 123 + offsetY;
 				aSeedGraphics.SetClipRect(Rect(22, startY, 443, seedHeight * 5 - 68 + startY));
 				
-				DrawSeedPacket(&aSeedGraphics, x, y, aSeedShadow, SEED_NONE, 0, 55, true, false);
+				DrawSeedPacket(&aSeedGraphics, x, y, aSeedShadow, SEED_NONE, 0, 55, true, false, mApp);
 			}
 		}
 		else
@@ -505,7 +505,7 @@ void SeedChooserScreen::Draw(Graphics* g)
 				int startY = 123 + offsetY;
 				aSeedGraphics.SetClipRect(Rect(22, startY, 443, seedHeight * 5 - 68 + startY));
 			}
-			DrawSeedPacket(&aSeedGraphics, aPosX, aPosY, aChosenSeed.mSeedType, aChosenSeed.mImitaterType, 0, aGrayed ? 115 : 255, true, false);
+			DrawSeedPacket(&aSeedGraphics, aPosX, aPosY, aChosenSeed.mSeedType, aChosenSeed.mImitaterType, 0, aGrayed ? 115 : 255, true, false, mApp);
 		}
 	}
 
@@ -529,7 +529,7 @@ void SeedChooserScreen::Draw(Graphics* g)
 					aChosenSeed.mEndY -= mScrollbar->mScrollValue;
 			}
 
-			DrawSeedPacket(g, aChosenSeed.mX, aChosenSeed.mY, aChosenSeed.mSeedType, aChosenSeed.mImitaterType, 0, 255, true, false);
+			DrawSeedPacket(g, aChosenSeed.mX, aChosenSeed.mY, aChosenSeed.mSeedType, aChosenSeed.mImitaterType, 0, 255, true, false, mApp);
 		}
 	}
 

@@ -1,6 +1,9 @@
 
 #include "Coin.h"
 #include "Plant.h"
+
+#include <nlohmann/json.hpp>
+
 #include "Board.h"
 #include "Zombie.h"
 #include "Cutscene.h"
@@ -3214,6 +3217,12 @@ void Plant::UpdateAbilities()
 //0x463420
 bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 {
+    auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+    if (easy_upgrade_plants)
+    {
+        return false;
+    }
+    
     if (theUpgradedType == SeedType::SEED_COBCANNON && mSeedType == SeedType::SEED_KERNELPULT)
     {
         return mBoard->IsValidCobCannonSpot(mPlantCol, mRow) || mBoard->IsValidCobCannonSpot(mPlantCol - 1, mRow);
@@ -3225,6 +3234,12 @@ bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 //0x463470
 bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 {
+	auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+    if (easy_upgrade_plants)
+    {
+        return false;
+    }
+    
     if (theUpgradedType == SeedType::SEED_GATLINGPEA && mSeedType == SeedType::SEED_REPEATER)
     {
         return true;
@@ -5177,7 +5192,7 @@ void Plant::Draw(Graphics* g)
                         aGrayness = 128;
                     }
 
-                    DrawSeedPacket(g, 15.0f, PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow), mDuplicatorSeedType, mDuplicatorImitaterType, aPercentDark, aGrayness, true, true);
+                    DrawSeedPacket(g, 15.0f, PlantDrawHeightOffset(mBoard, this, mSeedType, mPlantCol, mRow), mDuplicatorSeedType, mDuplicatorImitaterType, aPercentDark, aGrayness, true, true, mApp);
                 }
 #endif
             }
@@ -6507,7 +6522,7 @@ int Plant::DistanceToClosestZombie()
 void Plant::Die()
 {
     if (IsOnBoard() && !mApp->GetDialog(DIALOG_ALMANAC) && mApp->ChallengeHasScores(mApp->mGameMode) && mApp->IsIZombieLevel()) {
-        mBoard->mChallenge->mChallengePoints += GetCost(mSeedType, mImitaterType);
+        mBoard->mChallenge->mChallengePoints += GetCost(mApp, mSeedType, mImitaterType);
     }
 
     if (IsOnBoard() && mSeedType == SeedType::SEED_TANGLEKELP)
@@ -6569,8 +6584,9 @@ PlantDefinition& GetPlantDefinition(SeedType theSeedType)
 }
 
 //0x467B00
-int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
+int Plant::GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType)
 {
+	auto easy_upgrade_plants = app->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
     if (!gLawnApp->GetDialog(Dialogs::DIALOG_ALMANAC) && (gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED || gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST))
     {
         if (theSeedType == SeedType::SEED_REPEATER)
@@ -6618,15 +6634,47 @@ int Plant::GetCost(SeedType theSeedType, SeedType theImitaterType)
     case SeedType::SEED_ZOMBIE_IMP:                 return 50;
     default:
     {
+        auto easy_upgrade_tax = 0;
+        if (easy_upgrade_plants)
+        {
+            auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
+            switch (seed_type)
+            {
+            case SeedType::SEED_GATLINGPEA:
+                easy_upgrade_tax = 200;
+                break;
+            case SeedType::SEED_TWINSUNFLOWER:
+                easy_upgrade_tax = 50;
+                break;
+            case SeedType::SEED_GLOOMSHROOM:
+                easy_upgrade_tax = 75;
+                break;
+            case SeedType::SEED_CATTAIL:
+                easy_upgrade_tax = 25;
+                break;
+            case SeedType::SEED_WINTERMELON:
+                easy_upgrade_tax = 300;
+                break;
+            case SeedType::SEED_GOLD_MAGNET:
+                easy_upgrade_tax = 100;
+                break;
+            case SeedType::SEED_SPIKEROCK:
+                easy_upgrade_tax = 100;
+                break;
+            case SeedType::SEED_COBCANNON:
+                easy_upgrade_tax = 200;
+                break;
+            }
+        }
         if (theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE)
         {
             const PlantDefinition& aPlantDef = GetPlantDefinition(theImitaterType);
-            return aPlantDef.mSeedCost;
+            return aPlantDef.mSeedCost + easy_upgrade_tax;
         }
         else
         {
             const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
-            return aPlantDef.mSeedCost;
+            return aPlantDef.mSeedCost + easy_upgrade_tax;
         }
     }
     }
@@ -6753,8 +6801,14 @@ bool Plant::IsFlying(SeedType theSeedtype)
 }
 
 //0x467EC0
-bool Plant::IsUpgrade(SeedType theSeedtype)
+bool Plant::IsUpgrade(LawnApp* app, SeedType theSeedtype)
 {
+    auto easy_upgrade_plants = app->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+    if (easy_upgrade_plants)
+    {
+        return false;
+    }
+    
     return
         theSeedtype == SeedType::SEED_GATLINGPEA ||
         theSeedtype == SeedType::SEED_WINTERMELON ||

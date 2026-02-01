@@ -223,7 +223,7 @@ public:
     bool                    FindTargetAndFire(int theRow, PlantWeapon thePlantWeapon = PlantWeapon::WEAPON_PRIMARY);
     void                    LaunchThreepeater();
     static Image*           GetImage(SeedType theSeedType);
-    static int              GetCost(SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
+    static int              GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
     static SexyString       GetNameString(LawnApp* app, SeedType theSeedType, int level, SeedType theImitaterType = SeedType::SEED_NONE);
     static SexyString       GetToolTip(LawnApp* app, SeedType theSeedTyp, int level);
     static int              GetRefreshTime(SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
@@ -231,7 +231,7 @@ public:
     static /*inline*/ bool  IsFungus(SeedType theSeedType);
     static /*inline*/ bool  IsAquatic(SeedType theSeedType);
     static /*inline*/ bool  IsFlying(SeedType theSeedtype);
-    static /*inline*/ bool  IsUpgrade(SeedType theSeedtype);
+    static /*inline*/ bool  IsUpgrade(LawnApp* app, SeedType theSeedtype);
     void                    UpdateAbilities();
     void                    Squish();
     void                    DoRowAreaDamage(int theDamage, unsigned int theDamageFlags);

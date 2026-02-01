@@ -329,7 +329,7 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
     int aPosX, aPosY;
     GetStorePosition(theItemPosition, aPosX, aPosY);
     
-    DrawSeedPacket(g, aPosX, aPosY, SEED_AP_OFFWORLD_ITEM, SEED_NONE, 0, 255, false, false);
+    DrawSeedPacket(g, aPosX, aPosY, SEED_AP_OFFWORLD_ITEM, SEED_NONE, 0, 255, false, false, mApp);
     
     // if (theItemType == STORE_ITEM_PACKET_UPGRADE)
     // {

@@ -273,7 +273,8 @@ void SeedPacketDrawSeed(Graphics* g, float x, float y, SeedType theSeedType, See
 }
 
 //0x4876F0
-void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedType theImitaterType, float thePercentDark, int theGrayness, bool theDrawCost, bool theUseCurrentCost)
+void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedType theImitaterType, float thePercentDark, int theGrayness, bool theDrawCost, bool theUseCurrentCost, LawnApp
+                    * app)
 {
 	g->PushState();
 	g->SetLinearBlend(true);
@@ -298,7 +299,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 
 	int aPacketBackground =
 		theSeedType == SeedType::SEED_IMITATER ? 0 :
-		Plant::IsUpgrade(aSeedType) ? 1 :
+		Plant::IsUpgrade(app, aSeedType) ? 1 :
 		theSeedType == SeedType::SEED_BEGHOULED_BUTTON_CRATER ? 3 :
 		theSeedType == SeedType::SEED_BEGHOULED_BUTTON_SHUFFLE ? 4 :
 		theSeedType == SeedType::SEED_SLOT_MACHINE_SUN ? 5 :
@@ -578,12 +579,12 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 			}
 			else
 			{
-				aCostStr = StrFormat(_S("%d+"), Plant::GetCost(theSeedType, theImitaterType));
+				aCostStr = StrFormat(_S("%d+"), Plant::GetCost(app, theSeedType, theImitaterType));
 			}
 		}
 		else
 		{
-			aCostStr = StrFormat(_S("%d"), Plant::GetCost(theSeedType, theImitaterType));
+			aCostStr = StrFormat(_S("%d"), Plant::GetCost(app, theSeedType, theImitaterType));
 		}
 
 		g->SetLinearBlend(false);
@@ -631,8 +632,8 @@ void SeedPacket::Draw(Graphics* g)
 
 		g->PushState();
 		g->ClipRect(0, 0, mWidth * g->mScaleX, mHeight * g->mScaleY);
-		DrawSeedPacket(g, 0.0f, aOffsetY, mPacketType, SeedType::SEED_NONE, 0.0f, 128, false, false);
-		DrawSeedPacket(g, 0.0f, mHeight + aOffsetY, mSlotMachiningNextSeed, SeedType::SEED_NONE, 0.0f, 128, false, false);
+		DrawSeedPacket(g, 0.0f, aOffsetY, mPacketType, SeedType::SEED_NONE, 0.0f, 128, false, false, mApp);
+		DrawSeedPacket(g, 0.0f, mHeight + aOffsetY, mSlotMachiningNextSeed, SeedType::SEED_NONE, 0.0f, 128, false, false, mApp);
 		g->PopState();
 	}
 	else
@@ -688,7 +689,7 @@ void SeedPacket::Draw(Graphics* g)
 
 		g->PushState();
 
-		DrawSeedPacket(g, mOffsetX, 0.0f, mPacketType, mImitaterType, aPercentDark, aGrayness, false, true);
+		DrawSeedPacket(g, mOffsetX, 0.0f, mPacketType, mImitaterType, aPercentDark, aGrayness, false, true, mApp);
 		
 		if (aDrawCost)
 		{
@@ -715,7 +716,7 @@ void SeedPacket::Draw(Graphics* g)
 			}
 			else
 			{
-				aCostStr = StrFormat(_S("%d"), Plant::GetCost(mPacketType, mImitaterType));
+				aCostStr = StrFormat(_S("%d"), Plant::GetCost(mApp, mPacketType, mImitaterType));
 			}
 
 			Font* aTextFont = Sexy::FONT_PICO129;
@@ -1201,13 +1202,13 @@ void SeedPacket::SetPacketType(SeedType theSeedType, SeedType theImitaterType)
 		mApp->IsIZombieLevel() || mApp->IsScaryPotterLevel() || mApp->IsWhackAZombieLevel() || (mApp->IsSurvivalMode() && mBoard->mChallenge->mSurvivalStage > 0))
 		return;
 
-	if ((Plant::IsUpgrade(aUseSeedType) && !gLawnApp->IsSurvivalMode()) || Plant::GetRefreshTime(mPacketType, mImitaterType) == 5000)
+	if ((Plant::IsUpgrade(mApp, aUseSeedType) && !gLawnApp->IsSurvivalMode()) || Plant::GetRefreshTime(mPacketType, mImitaterType) == 5000)
 	{
 		mRefreshTime = 3500;
 		mRefreshing = true;
 		mActive = false;
 	}
-	else if (Plant::IsUpgrade(aUseSeedType) && gLawnApp->IsSurvivalMode())
+	else if (Plant::IsUpgrade(mApp, aUseSeedType) && gLawnApp->IsSurvivalMode())
 	{
 		mRefreshTime = 8000;
 		mRefreshing = true;
