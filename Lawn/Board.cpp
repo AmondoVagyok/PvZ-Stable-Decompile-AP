@@ -2912,7 +2912,7 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 	{
 		auto zombie_map = mApp->mAP->SlotData()["zombie_map"];
 		auto available_zombies_for_level = zombie_map[std::to_string(theLevel)];
-		if (!available_zombies_for_level.is_discarded())
+		if (!available_zombies_for_level.is_null())
 		{
 			if (theZombieType < ZOMBIE_NORMAL || theZombieType > ZOMBIE_REDEYE_GARGANTUAR)
 			{
