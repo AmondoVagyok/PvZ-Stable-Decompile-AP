@@ -1,12 +1,17 @@
 #include "Music.h"
+
+#include <nlohmann/json.hpp>
+
 #include "../Board.h"
 #include "PlayerInfo.h"
 #include "../../LawnApp.h"
 #include "../../PakLib/PakInterface.h"
 #include "../../Sexy.TodLib/TodDebug.h"
 #include "../../Sexy.TodLib/TodCommon.h"
+#include "../../SexyAppFramework/APWrapper.h"
 #include "../../SexyAppFramework/BassLoader.h"
 #include "../../SexyAppFramework/BassMusicInterface.h"
+#include "../Widget/ChallengeScreen.h"
 
 using namespace Sexy;
 
@@ -828,6 +833,43 @@ void Music::StartGameMusic()
 	else if (mApp->mBoard->StageHasRoof())
 	{
 		mTune = MusicTune::MUSIC_TUNE_ROOF_GRAZETHEROOF;
+	}
+	
+	const MusicTune audio_list[] = {
+		MusicTune::MUSIC_TUNE_DAY_GRASSWALK,
+		MusicTune::MUSIC_TUNE_MINIGAME_LOONBOON,
+		MusicTune::MUSIC_TUNE_CONVEYER,
+		MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS,
+		MusicTune::MUSIC_TUNE_POOL_WATERYGRAVES,
+		MusicTune::MUSIC_TUNE_FOG_RIGORMORMIST,
+		MusicTune::MUSIC_TUNE_ROOF_GRAZETHEROOF,
+		MusicTune::MUSIC_TUNE_FINAL_BOSS_BRAINIAC_MANIAC,
+		MusicTune::MUSIC_TUNE_PUZZLE_CEREBRAWL
+	};
+	
+	auto music_map = mApp->mAP->SlotData()["music_map"];
+	if (music_map.size() > 0)
+	{
+		if (music_map.size() == 9)
+		{
+			// Shuffle by type
+			auto current_track_index = std::distance(audio_list, std::find(std::begin(audio_list), std::end(audio_list), mTune));
+			mTune = audio_list[music_map[current_track_index].get<int>()];
+		}
+		else
+		{
+			int levelIndex;
+			if (mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE)
+			{
+				levelIndex = mApp->mBoard->mLevel - 1;
+			}
+			else
+			{
+				auto challenge = GetChallengeDefinition(mApp->mGameMode - GAMEMODE_SURVIVAL_NORMAL_STAGE_1);
+				levelIndex = challenge.mAPId;
+			}
+			mTune = audio_list[music_map[levelIndex].get<int>()];
+		}
 	}
 
 	MakeSureMusicIsPlaying(mTune);
