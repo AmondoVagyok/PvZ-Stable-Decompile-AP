@@ -10821,7 +10821,7 @@ int Board::GetNumSeedsInBank()
 		extra_seeds++;
 	}
 
-	int aNumSeeds = min(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT), 10);
+	int aNumSeeds = min(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT) + 1, 10);
 	int aSeedsAvailable = mApp->GetSeedsAvailable() + extra_seeds;
 	return min(aNumSeeds, aSeedsAvailable);
 }
