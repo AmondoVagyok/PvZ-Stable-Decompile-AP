@@ -1956,8 +1956,15 @@ void Board::InitLevel()
 	{
 		mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
 		SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
+		
+		int start_random_seeds_at = 0;
+		if (aGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS)
+		{
+			mSeedBank->mSeedPackets[start_random_seeds_at++].SetPacketType(SEED_STARFRUIT);
+		}
+		
 		// 卡槽错误的关卡，依次填充所有卡牌
-		for (int i = 0; i < mSeedBank->mNumPackets; i++)
+		for (int i = start_random_seeds_at; i < mSeedBank->mNumPackets; i++)
 		{
 			while (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(nextSeedType)) == 0)
 			{
@@ -10806,9 +10813,16 @@ int Board::GetNumSeedsInBank()
 	{
 		return 8;
 	}
+	
+	int extra_seeds = 0;
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_STARFRUIT)) == 0)
+	{
+		// Force the starfruit to be available
+		extra_seeds++;
+	}
 
 	int aNumSeeds = min(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT), 10);
-	int aSeedsAvailable = mApp->GetSeedsAvailable();
+	int aSeedsAvailable = mApp->GetSeedsAvailable() + extra_seeds;
 	return min(aNumSeeds, aSeedsAvailable);
 }
 

@@ -2806,6 +2806,11 @@ int LawnApp::GetSeedsAvailable()
 //0x453B20
 bool LawnApp::HasSeedType(SeedType theSeedType)
 {
+	if (mGameMode == GAMEMODE_CHALLENGE_SEEING_STARS && theSeedType == SeedType::SEED_STARFRUIT)
+	{
+		return true;
+	}
+	
 	auto apItem = PVZRAPData::Items::Seed(theSeedType);
 	if (apItem != -1)
 	{
