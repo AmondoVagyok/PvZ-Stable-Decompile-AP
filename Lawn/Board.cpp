@@ -2125,7 +2125,7 @@ bool Board::ChooseSeedsOnCurrentLevel()
 		numSeedsAvailable++;
 	}
 	
-	return numSeedsAvailable > GetNumSeedsInBank() && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_IMITATER)) == 0;
+	return numSeedsAvailable > GetNumSeedsInBank() || mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_IMITATER)) > 0;
 }
 
 //0x40BE00
