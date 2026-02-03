@@ -2120,6 +2120,11 @@ bool Board::ChooseSeedsOnCurrentLevel()
 		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(i)) != 0) numSeedsAvailable++;
 	}
 	
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_STARFRUIT)) == 0)
+	{
+		numSeedsAvailable++;
+	}
+	
 	return numSeedsAvailable > GetNumSeedsInBank() && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_IMITATER)) == 0;
 }
 
