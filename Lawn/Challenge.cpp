@@ -1991,6 +1991,8 @@ void Challenge::UpdateConveyorBelt()
 //0x4234A0
 void Challenge::UpdateRainingSeeds()
 {
+	auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+
 	if (mBoard->HasLevelAwardDropped() || --mChallengeStateCounter != 0)
 		return;
 
@@ -2000,11 +2002,11 @@ void Challenge::UpdateRainingSeeds()
 
 	SeedType aSeedType;
 	do
-		aSeedType = (SeedType)Rand(mApp->GetSeedsAvailable());
+		aSeedType = (SeedType)Rand(SEED_IMITATER);
 	while (
 		mBoard->SeedNotRecommendedForLevel(aSeedType) || 
 		!mApp->SeedTypeAvailable(aSeedType) || 
-		Plant::IsUpgrade(mApp, aSeedType) || 
+		(!easy_upgrade_plants && Plant::IsUpgrade(mApp, aSeedType)) || 
 		aSeedType == SEED_SUNFLOWER || 
 		aSeedType == SEED_TWINSUNFLOWER || 
 		aSeedType == SEED_INSTANT_COFFEE || 
