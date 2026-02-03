@@ -286,21 +286,24 @@ Board::Board(LawnApp* theApp)
 					{
 						aLawnMower->StartMower();
 					}
+					break;
 				}
 			case PVZRAPData::Items::TRAP_PACKET_COOLDOWN:
 				{
 					for (int i = 0; i < SEEDBANK_MAX; i++)
 					{
-						auto seed_packet = mSeedBank->mSeedPackets[i];
-						if (seed_packet.mPacketType != SeedType::SEED_NONE)
+						auto seed_packet = &mSeedBank->mSeedPackets[i];
+						if (seed_packet->mPacketType != SeedType::SEED_NONE)
 						{
-							seed_packet.mRefreshing = true;
-							seed_packet.mRefreshTime = Plant::GetRefreshTime(seed_packet.mPacketType, seed_packet.mImitaterType);
+							seed_packet->mRefreshing = true;
+							seed_packet->mRefreshTime = Plant::GetRefreshTime(seed_packet->mPacketType, seed_packet->mImitaterType);
 						}
 					}
+					break;
 				}
 			case PVZRAPData::Items::TRAP_ZOMBIE_AMBUSH:
 				this->SpawnZombiesFromGraves();
+				break;
 			}
 		}
 	});
