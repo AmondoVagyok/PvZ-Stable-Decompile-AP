@@ -12942,7 +12942,8 @@ void Zombie::BossDie()
     }
 
     if (noMoreBoss) {
-        mApp->mMusic->FadeOut(200);
+        if (mApp->mMusic->mFadeOutCounter == 0)
+            mApp->mMusic->FadeOut(200);
 
         Zombie* aZombie = nullptr;
         while (mBoard->IterateZombies(aZombie))
