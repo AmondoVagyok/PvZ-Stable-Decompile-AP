@@ -6897,6 +6897,7 @@ Rect Plant::GetPlantAttackRect(PlantWeapon thePlantWeapon)
 //0x4681E0
 bool Plant::PreloadPlantResources(SeedType theSeedType)
 {
+    if (theSeedType == SEED_AP_OFFWORLD_ITEM) return false;
     bool needPreload = false;
     const PlantDefinition& aPlantDef = GetPlantDefinition(theSeedType);
     if (&gReanimatorDefArray[(int)aPlantDef.mReanimationType].mTracks.tracks == nullptr)
