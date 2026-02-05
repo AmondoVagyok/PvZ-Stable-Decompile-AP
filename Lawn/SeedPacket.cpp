@@ -570,8 +570,7 @@ void DrawSeedPacket(Graphics* g, float x, float y, SeedType theSeedType, SeedTyp
 	if (theDrawCost)
 	{
 		SexyString aCostStr;
-		if (gLawnApp->mBoard && gLawnApp->mBoard->PlantUsesAcceleratedPricing(aSeedType) && !gLawnApp->GetDialog(Dialogs::DIALOG_ALMANAC)
-			)
+		if (gLawnApp->mBoard && gLawnApp->mBoard->PlantUsesAcceleratedPricing(aSeedType) && !gLawnApp->GetDialog(Dialogs::DIALOG_ALMANAC))
 		{
 			if (theUseCurrentCost)
 			{

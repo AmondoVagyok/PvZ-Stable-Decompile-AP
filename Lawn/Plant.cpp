@@ -5342,21 +5342,19 @@ void Plant::DrawSeedType(Graphics* g, SeedType theSeedType, SeedType theImitater
             {
                 aCelCol = aPlantImage->mNumCols - 1;
             }
-            aOffsetX -= 130.0f * g->mScaleX;
-            aOffsetY -= 135.0f * g->mScaleY;
             
             // auto aspect = aPlantImage->mWidth / aPlantImage->mHeight;
-            auto scaleX = 115.0f / aPlantImage->mWidth;
-            auto scaleY = 115.0f / aPlantImage->mHeight;
+            auto scaleX = 80.0f / aPlantImage->mWidth;
+            auto scaleY = 80.0f / aPlantImage->mHeight;
             float scale;
             if (scaleX > scaleY)
             {
-                aOffsetX += (scaleX - scaleY) * 115.0f / 4.0f;
+                aOffsetX += (scaleX - scaleY) * 80.0f / 4.0f;
                 scale = scaleY;
             }
             else
             {
-                aOffsetY += (scaleY - scaleX) * 115.0f / 4.0f;
+                aOffsetY += (scaleY - scaleX) * 80.0f / 4.0f;
                 scale = scaleX;
             }
             
@@ -6609,6 +6607,18 @@ int Plant::GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType)
         {
             return 200;
         }
+    }
+    
+    if (theSeedType == SeedType::SEED_AP_OFFWORLD_ITEM)
+    {
+        static int offworld_item_price = 0;
+        static int offworld_item_delta = 3724;
+        static int offworld_item_delta_delta = 6643;
+        
+        offworld_item_delta_delta = (offworld_item_delta_delta + 1) % 6643;
+        offworld_item_delta = (offworld_item_delta + offworld_item_delta_delta) % 3724;
+        offworld_item_price = (offworld_item_price + offworld_item_delta) % 899;
+        return offworld_item_price + 100;
     }
 
     switch (theSeedType)
