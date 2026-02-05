@@ -8586,7 +8586,7 @@ bool Zombie::TrySpawnLevelAward()
         }
         auto location = PVZRAPData::Locations::SurvivalFlag(cls, (mBoard->mChallenge->mSurvivalStage + 1) * (mBoard->GetNumWavesPerSurvivalStage() / mBoard->GetNumWavesPerFlag()));
         
-        if (!mApp->mAP->IsLocationChecked(location))
+        if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
         {
             mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_PERMA_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
         }
@@ -8597,12 +8597,46 @@ bool Zombie::TrySpawnLevelAward()
     }
     else if (mBoard->IsLastStandStageWithRepick() || mApp->IsLastStandEndless(mApp->mGameMode))
     {
-        aCoinType = CoinType::COIN_NONE;
-        mBoard->FadeOutLevel();
+        // mBoard->FadeOutLevel();
         mApp->PlayFoley(FoleyType::FOLEY_SPAWN_SUN);
         for (int i = 0; i < 10; i++)
         {
             mBoard->AddCoin(aCenterX + i * 5, aCenterY, CoinType::COIN_SUN, CoinMotion::COIN_MOTION_COIN);
+        }
+        aCoinType = CoinType::COIN_NONE;
+        
+        if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
+        {
+            PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
+            auto location = -1;
+            switch (mBoard->GetSurvivalFlagsCompleted())
+            {
+            case 0:
+                location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
+                break;
+            case 1:
+                location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
+                break;
+            case 2:
+                location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
+                break;
+            case 3:
+                location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
+                break;
+            }
+        
+            if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
+            {
+                mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_PERMA_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
+            }
+            else
+            {
+                mBoard->FadeOutLevel();
+            }
+        }
+        else
+        {
+            mBoard->FadeOutLevel();
         }
     }
     else if (!mApp->IsAdventureMode())
@@ -8843,25 +8877,25 @@ void Zombie::DropLoot()
                     location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_3;
                 }
             }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
-                }
-                else if (flag == 3)
-                {
-                    location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
-                }
-                else if (flag == 3)
-                {
-                    location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
-                }
-            }
+            // else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
+            // {
+            //     if (flag == 1)
+            //     {
+            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
+            //     }
+            //     else if (flag == 2)
+            //     {
+            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
+            //     }
+            //     else if (flag == 3)
+            //     {
+            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
+            //     }
+            //     else if (flag == 3)
+            //     {
+            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
+            //     }
+            // }
             else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
             {
                 if (flag == 1)

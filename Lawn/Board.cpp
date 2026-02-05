@@ -1967,6 +1967,12 @@ void Board::InitLevel()
 		// 卡槽错误的关卡，依次填充所有卡牌
 		for (int i = start_random_seeds_at; i < mSeedBank->mNumPackets; i++)
 		{
+			if (aGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND && (i == SEED_SUNFLOWER || i == SEED_TWINSUNFLOWER || i == SEED_SUNSHROOM))
+			{
+				// Not allowed on this level
+				nextSeedType = (SeedType)(nextSeedType + 1);
+				continue;
+			}
 			while (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(nextSeedType)) == 0)
 			{
 				nextSeedType = (SeedType)(nextSeedType + 1);
@@ -10761,6 +10767,7 @@ bool Board::HasConveyorBeltSeedBank()
 //0x41BEE0
 int Board::GetNumSeedsInBank()
 {
+	int aNumSeeds = min(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT) + 1, 10);
 	if (mApp->IsScaryPotterLevel())
 	{
 		return 1;
@@ -10815,19 +10822,33 @@ int Board::GetNumSeedsInBank()
 	{
 		return 9;
 	}
-	if (mApp->mGameMode >= GameMode::GAMEMODE_LAST_STAND_STAGE_1 && mApp->mGameMode <= GameMode::GAMEMODE_LAST_STAND_STAGE_5)
-	{
-		return 8;
-	}
 	
 	int extra_seeds = 0;
+	if (mApp->mGameMode >= GameMode::GAMEMODE_LAST_STAND_STAGE_1 && mApp->mGameMode <= GameMode::GAMEMODE_LAST_STAND_STAGE_5)
+	{
+		aNumSeeds = 8;
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_SUNFLOWER)) > 0)
+		{
+			// Sunflower is not allowed on this level
+			extra_seeds--;
+		}
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_TWINSUNFLOWER)) > 0)
+		{
+			// Twin Sunflower is not allowed on this level
+			extra_seeds--;
+		}
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_SUNSHROOM)) > 0)
+		{
+			// Sunshroom is not allowed on this level
+			extra_seeds--;
+		}
+	}
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(SEED_STARFRUIT)) == 0)
 	{
 		// Force the starfruit to be available
 		extra_seeds++;
 	}
 
-	int aNumSeeds = min(mApp->mAP->ReceivedItemCount(PVZRAPData::Items::EXTRA_SEED_SLOT) + 1, 10);
 	int aSeedsAvailable = mApp->GetSeedsAvailable() + extra_seeds;
 	return min(aNumSeeds, aSeedsAvailable);
 }

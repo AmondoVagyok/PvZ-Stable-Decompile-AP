@@ -607,6 +607,7 @@ bool APWrapper::IsLocationChecked(const int64_t& location) const
 bool APWrapper::IsLocationPresent(const int64_t& location) const
 {
     if (!d->mAP) return false;
+    if (location == -1) return false;
     auto locations = this->d->mAP->get_missing_locations();
     locations.merge(this->d->mAP->get_checked_locations());
     return locations.find(location) != locations.end();
