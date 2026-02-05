@@ -745,6 +745,9 @@ void LawnApp::KillSeedChooserScreen()
 
 void LawnApp::EndLevel()
 {
+	auto old_level = mPlayerInfo->mLevel;
+	auto level = mBoard->mLevel;
+	mPlayerInfo->mLevel = level;
 	KillBoard();
 	if (IsAdventureMode())
 	{
@@ -755,6 +758,7 @@ void LawnApp::EndLevel()
 
 	MakeNewBoard();
 	mBoard->InitLevel();
+	mPlayerInfo->mLevel = old_level;
 	mBoardResult = BoardResult::BOARDRESULT_NONE;
 	mGameScene = GameScenes::SCENE_LEVEL_INTRO;
 	ShowSeedChooserScreen();
