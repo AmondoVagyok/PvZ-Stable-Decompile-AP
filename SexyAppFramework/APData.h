@@ -196,8 +196,168 @@ namespace PVZRAPData
         constexpr int64_t FLAG_WALL_NUT_BOWLING_2_2 = 2061;
         constexpr int64_t FLAG_POGO_PARTY_1 = 2062;
         constexpr int64_t FLAG_POGO_PARTY_2 = 2063;
-
         
+        inline const int64_t* LevelFlagList(const int level)
+        {
+            static constexpr int64_t null_set[] = {-1};
+            
+            if (level < 1 || level > 50)
+            {
+                return null_set;
+            }
+            if (level == 7)
+            {
+                static constexpr int64_t flags[] = {FLAG_1_7_1, -1};
+                return flags;
+            }
+            if (level == 9)
+            {
+                static constexpr int64_t flags[] = {FLAG_1_9_1, -1};
+                return flags;
+            }
+            if (level == 10)
+            {
+                static constexpr int64_t flags[] = {FLAG_1_10_1, -1};
+                return flags;
+            }
+            if (level == 12)
+            {
+                static constexpr int64_t flags[] = {FLAG_2_2_1, -1};
+                return flags;
+            }
+            if (level == 14)
+            {
+                static constexpr int64_t flags[] = {FLAG_2_4_1, -1};
+                return flags;
+            }
+            if (level == 17)
+            {
+                static constexpr int64_t flags[] = {FLAG_2_7_1, -1};
+                return flags;
+            }
+            if (level == 19)
+            {
+                static constexpr int64_t flags[] = {FLAG_2_9_1, -1};
+                return flags;
+            }
+            if (level == 20)
+            {
+                static constexpr int64_t flags[] = {FLAG_2_10_1, -1};
+                return flags;
+            }
+            if (level == 22)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_2_1, -1};
+                return flags;
+            }
+            if (level == 23)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_3_1, -1};
+                return flags;
+            }
+            if (level == 24)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_4_1, FLAG_3_4_2, -1};
+                return flags;
+            }
+            if (level == 25)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_5_1, -1};
+                return flags;
+            }
+            if (level == 26)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_6_1, -1};
+                return flags;
+            }
+            if (level == 27)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_7_1, FLAG_3_7_2, -1};
+                return flags;
+            }
+            if (level == 28)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_8_1, -1};
+                return flags;
+            }
+            if (level == 29)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_9_1, FLAG_3_9_2, -1};
+                return flags;
+            }
+            if (level == 30)
+            {
+                static constexpr int64_t flags[] = {FLAG_3_10_1, FLAG_3_10_2, -1};
+                return flags;
+            }
+            if (level == 32)
+            {
+                static constexpr int64_t flags[] = {FLAG_4_2_1, -1};
+                return flags;
+            }
+            if (level == 34)
+            {
+                static constexpr int64_t flags[] = {FLAG_4_4_1, -1};
+                return flags;
+            }
+            if (level == 37)
+            {
+                static constexpr int64_t flags[] = {FLAG_4_7_1, -1};
+                return flags;
+            }
+            if (level == 39)
+            {
+                static constexpr int64_t flags[] = {FLAG_4_9_1, -1};
+                return flags;
+            }
+            if (level == 40)
+            {
+                static constexpr int64_t flags[] = {FLAG_4_10_1, -1};
+                return flags;
+            }
+            if (level == 42)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_2_1, -1};
+                return flags;
+            }
+            if (level == 43)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_3_1, -1};
+                return flags;
+            }
+            if (level == 44)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_4_1, FLAG_5_4_2, -1};
+                return flags;
+            }
+            if (level == 45)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_5_1, -1};
+                return flags;
+            }
+            if (level == 46)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_6_1, -1};
+                return flags;
+            }
+            if (level == 47)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_7_1, FLAG_5_7_2, -1};
+                return flags;
+            }
+            if (level == 48)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_8_1, -1};
+                return flags;
+            }
+            if (level == 49)
+            {
+                static constexpr int64_t flags[] = {FLAG_5_9_1, FLAG_5_9_2, -1};
+                return flags;
+            }
+            
+            return null_set;
+        }
     }
     
     namespace Items

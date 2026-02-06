@@ -113,6 +113,11 @@ void FilterEffectDoLumSat(MemoryImage* theImage, float theLum, float theSat)
 	}
 }
 
+void FilterEffectDoGreyscale(MemoryImage* theImage)
+{
+	FilterEffectDoLumSat(theImage, 1.0f, 0.f);
+}
+
 void FilterEffectDoWashedOut(MemoryImage* theImage)
 {
 	FilterEffectDoLumSat(theImage, 1.8f, 0.2f);
@@ -154,6 +159,7 @@ MemoryImage* FilterEffectCreateImage(Image* theImage, FilterEffect theFilterEffe
 	case FilterEffect::FILTER_EFFECT_WASHED_OUT:		FilterEffectDoWashedOut(aImage);		break;
 	case FilterEffect::FILTER_EFFECT_LESS_WASHED_OUT:	FilterEffectDoLessWashedOut(aImage);	break;
 	case FilterEffect::FILTER_EFFECT_WHITE:				FilterEffectDoWhite(aImage);			break;
+	case FilterEffect::FILTER_EFFECT_GREYSCALE:			FilterEffectDoGreyscale(aImage);		break;
 	}
 
 	aImage->mBitsChangedCount++;

@@ -687,7 +687,23 @@ void QuickplayWidget::DrawButton(Graphics* g, int theLevelIndex)
 	
 	if (mApp->mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(aLevel + 1)))
 	{
-		g->DrawImage(Sexy::IMAGE_MINIGAME_TROPHY, aLevelButton->mX - 2, aLevelButton->mY - 2);
+		auto trophy = Sexy::IMAGE_MINIGAME_TROPHY;
+		
+		auto all_flags_clear = true;
+		for (auto flag = PVZRAPData::Locations::LevelFlagList(aLevel + 1); *flag != -1; flag++)
+		{
+			if (!mApp->mAP->IsLocationChecked(*flag) && mApp->mAP->IsLocationPresent(*flag))
+			{
+				all_flags_clear = false;
+				break;
+			}
+		}
+		
+		if (!all_flags_clear)
+		{
+			trophy = FilterEffectGetImage(Sexy::IMAGE_MINIGAME_TROPHY, FilterEffect::FILTER_EFFECT_GREYSCALE);
+		}
+		g->DrawImage(trophy, aLevelButton->mX - 2, aLevelButton->mY - 2);
 	}
 }
 
