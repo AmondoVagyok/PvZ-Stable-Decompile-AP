@@ -3868,7 +3868,7 @@ int LawnApp::TrophiesNeedForGoldSunflower()
 //0x455C50
 bool LawnApp::EarnedGoldTrophy()
 {
-	return HasFinishedAdventure() && TrophiesNeedForGoldSunflower() <= 0;
+	return mAP->AllLocationsChecked();
 }
 
 void LawnApp::FinishZenGardenToturial()

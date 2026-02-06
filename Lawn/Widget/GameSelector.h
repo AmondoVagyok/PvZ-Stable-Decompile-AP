@@ -48,7 +48,8 @@ private:
 #endif
         GameSelector_AchievementsBack = 112,
         GameSelector_Achievements = 113,
-        GameSelector_QuickPlay = 114
+        GameSelector_QuickPlay = 114,
+        GameSelector_Trophy = 115
     };
 
 public:
@@ -134,6 +135,7 @@ public:
     void                        SyncButtons();
     void                        AddTrophySparkle();
     void                        ClickedAdventure();
+    void                        ClickedTrophy();
     void                        UpdateTooltip();
     /*inline*/ bool             ShouldDoZenTuturialBeforeAdventure();
     void                        AddPreviewProfiles();

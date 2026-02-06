@@ -741,7 +741,7 @@ void CreditScreen::DrawFinalCredits(Graphics* g)
     Rect aRectRoles2(30, 280, 300, 250);
     TodDrawStringWrapped(g, _S("[CREDITS_ROLES2]"), aRectRoles2, FONT_HOUSEOFTERROR16, Color::White, DrawStringJustification::DS_ALIGN_RIGHT);
 
-    TodDrawString(g, _S("[CREDITS_THANKS]"), BOARD_WIDTH / 2, 530, FONT_HOUSEOFTERROR16, Color::White, DrawStringJustification::DS_ALIGN_CENTER);
+    TodDrawString(g, _S("Thank you for playing!"), BOARD_WIDTH / 2, 530, FONT_HOUSEOFTERROR16, Color::White, DrawStringJustification::DS_ALIGN_CENTER);
 }
 
 //0x435A90

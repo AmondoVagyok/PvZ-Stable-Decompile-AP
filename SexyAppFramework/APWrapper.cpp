@@ -322,12 +322,15 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         d->mAP->LocationScouts(std::list(scouted_locations.begin(), scouted_locations.end()), 0);
         
         auto data_storage_requested_keys = {
-            DataStorageSlotPrefixed("profileGuids")
+            DataStorageSlotPrefixed("profileGuids"),
+            std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number())
         };
         d->mAP->SetNotify(data_storage_requested_keys);
         
         // Default profile GUIDs
         this->WriteDataStorage(DataStorageSlotPrefixed("profileGuids"), nlohmann::json::array()).de_fault(nlohmann::json::array());
+        
+        d->mAP->Get({std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number())});
         
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
@@ -514,6 +517,41 @@ int64_t APWrapper::MySlot() const
     return d->mAP->get_player_number();
 }
 
+bool APWrapper::IsGoalReached() const
+{
+    if (!d->mAP) return false;
+    auto status = ReadDataStorage(std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number()));
+    if (status.is_null())
+    {
+        return false;
+    }
+    return static_cast<APClient::ClientStatus>(status.get<int>()) == APClient::ClientStatus::GOAL;
+}
+
+bool APWrapper::CanReleaseItems() const
+{
+    if (!d->mAP) return false;
+    auto release_permission = d->mAP->get_permissions().find("release");
+    switch (release_permission->second)
+    {
+    case APClient::Permission::DISABLED:
+        return false;
+    case APClient::Permission::ENABLED:
+    case APClient::Permission::AUTO_ENABLED:
+        return true;
+    case APClient::Permission::GOAL:
+    case APClient::Permission::AUTO:
+        return this->IsGoalReached();
+    }
+    
+    return false;
+}
+
+void APWrapper::ReleaseItems() const
+{
+    this->SendAPMessage("!release");
+}
+
 std::string APWrapper::PlayerDisplayName(int slot) const
 {
     if (!d->mAP) return "";
@@ -611,6 +649,15 @@ bool APWrapper::IsLocationPresent(const int64_t& location) const
     auto locations = this->d->mAP->get_missing_locations();
     locations.merge(this->d->mAP->get_checked_locations());
     return locations.find(location) != locations.end();
+}
+
+bool APWrapper::AllLocationsChecked() const
+{
+    if (!d->mAP)
+    {
+        return false;
+    }
+    return this->d->mAP->get_missing_locations().size() == 0;
 }
 
 APItem APWrapper::ItemAtLocation(int64_t location) const

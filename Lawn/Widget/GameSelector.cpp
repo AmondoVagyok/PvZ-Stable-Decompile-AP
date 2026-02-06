@@ -164,7 +164,7 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mAchievementsButton->mTranslateY = 0;
 
 	mTrophyButton = MakeNewButton(
-		-1,
+		GameSelector::GameSelector_Trophy,
 		this,
 		_S(""),
 		nullptr,
@@ -176,7 +176,7 @@ GameSelector::GameSelector(LawnApp* theApp)
 	mTrophyButton->mClip = false;
 	mTrophyButton->mBtnNoDraw = false;
 	mTrophyButton->mMouseVisible = true;
-	mTrophyButton->mDoFinger = false;
+	// mTrophyButton->mDoFinger = false;
 	mTrophyButton->mTranslateX = 0;
 	mTrophyButton->mTranslateY = 0;
 #endif
@@ -734,7 +734,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 	// 	}
 	// }
 
-	if (mApp->HasFinishedAdventure() && !mApp->IsTrialStageLocked())
+	if (mApp->mAP->IsGoalReached())
 		mHasTrophy = true;
 	else
 		mHasTrophy = false;
@@ -1081,7 +1081,7 @@ void GameSelector::UpdateTooltip()
 		{
 			if (mApp->EarnedGoldTrophy())
 			{
-				mToolTip->SetLabel(LawnApp::Pluralize(mApp->mPlayerInfo->mFinishedAdventure, _S("[GOLD_SUNFLOWER_TOOLTIP]"), _S("[GOLD_SUNFLOWER_TOOLTIP_PLURAL]")));
+				mToolTip->SetLabel(_S("Congratulations! You have reached the goal and sent all items from this world!"));
 				mToolTip->mX = mX + 32;
 #ifdef _HAS_ACHIEVEMENTS 
 				mToolTip->mY = mY + 465;
@@ -1092,7 +1092,14 @@ void GameSelector::UpdateTooltip()
 			}
 			else
 			{
-				mToolTip->SetLabel(_S("[SILVER_SUNFLOWER_TOOLTIP]"));
+				if (mApp->mAP->CanReleaseItems())
+				{
+					mToolTip->SetLabel(_S("Congratulations! You have reached your goal. You can release your remaining items by clicking here."));
+				}
+				else
+				{
+					mToolTip->SetLabel(_S("Congratulations! You have reached your goal."));
+				}
 				mToolTip->mX = mX + 20;
 #ifdef _HAS_ACHIEVEMENTS 
 				mToolTip->mY = mY + 450;
@@ -1811,6 +1818,32 @@ void GameSelector::ClickedAdventure()
 #endif
 }
 
+void GameSelector::ClickedTrophy()
+{
+	if (mApp->mAP->IsGoalReached())
+	{
+		if (mApp->mAP->AllLocationsChecked())
+		{
+			mApp->DoDialog(Dialogs::DIALOG_MESSAGE, true, _S("Congratulations!"), _S("You have reached the goal and sent all items!"), _S("Woohoo!"), Dialog::BUTTONS_FOOTER);
+		}
+		else
+		{
+			if (mApp->mAP->CanReleaseItems())
+			{
+				auto dialog = mApp->DoDialog(Dialogs::DIALOG_MESSAGE, true, _S("Release your items"), _S("Do you want to release your remaining items from this world?"), _S(""), Dialog::BUTTONS_YES_NO);
+				if (dialog->WaitForResult(true) == Dialog::ID_YES)
+				{
+					mApp->mAP->ReleaseItems();
+				}
+			}
+			else
+			{
+				mApp->DoDialog(Dialogs::DIALOG_MESSAGE, true, _S("Release your items"), _S("Sorry, release is not possible in this world."), _S("OK"), Dialog::BUTTONS_FOOTER);
+			}
+		}
+	}
+}
+
 //0x44C890
 bool GameSelector::ShouldDoZenTuturialBeforeAdventure()
 {
@@ -1942,6 +1975,8 @@ void GameSelector::ButtonDepress(int theId)
 		ShowMoreScreen();
 		// GameSelector::ShowQuickPlayScreen();
 		break;
+	case GameSelector::GameSelector_Trophy:
+		ClickedTrophy();
 	}
 }
 

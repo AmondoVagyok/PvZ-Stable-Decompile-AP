@@ -93,6 +93,9 @@ public:
     
     nlohmann::json SlotData();
     int64_t MySlot() const;
+    bool IsGoalReached() const;
+    bool CanReleaseItems() const;
+    void ReleaseItems() const;
     
     std::string PlayerDisplayName(int slot) const;
     std::string PlayerGameName(int slot) const;
@@ -108,6 +111,7 @@ public:
     void CheckLocations(const std::list<int64_t>& location_ids) const;
     bool IsLocationChecked(const int64_t& location) const;
     bool IsLocationPresent(const int64_t& location) const;
+    bool AllLocationsChecked() const;
     APItem ItemAtLocation(int64_t location) const;
     void SetGoal() const;
     
