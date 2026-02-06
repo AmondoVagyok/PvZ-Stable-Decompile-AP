@@ -1767,6 +1767,7 @@ void SexyAppBase::WriteToRegistry()
 	RegistryWriteInteger(_S("CustomCursors"), mCustomCursorsEnabled ? 1 : 0);		
 	RegistryWriteInteger(_S("InProgress"), 0);
 	RegistryWriteBoolean(_S("WaitForVSync"), mWaitForVSync);	
+	RegistryWriteBoolean(_S("PauseOnLostFocus"), mMuteOnLostFocus);	
 }
 
 bool SexyAppBase::RegistryEraseKey(const SexyString& _theKeyName)
@@ -2139,6 +2140,7 @@ void SexyAppBase::ReadFromRegistry()
 		EnableCustomCursors(anInt != 0);	
 			
 	RegistryReadBoolean(_S("WaitForVSync"), &mWaitForVSync);
+	RegistryReadBoolean(_S("PauseOnLostFocus"), &mMuteOnLostFocus);
 
 	if (RegistryReadInteger(_S("InProgress"), &anInt))
 		mLastShutdownWasGraceful = anInt == 0;

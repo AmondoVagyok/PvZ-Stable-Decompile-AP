@@ -60,6 +60,7 @@ NewOptionsDialog::NewOptionsDialog(LawnApp* theApp, bool theFromGameSelector) :
 
     mFullscreenCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_Fullscreen, this, !theApp->mIsWindowed);
     mHardwareAccelerationCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_HardwareAcceleration, this, theApp->Is3DAccelerated());
+    mPauseOnLostFocusCheckbox = MakeNewCheckbox(NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus, this, theApp->mMuteOnLostFocus);
 
     if (mFromGameSelector)
     {
@@ -116,6 +117,7 @@ NewOptionsDialog::~NewOptionsDialog()
     delete mSfxVolumeSlider;
     delete mFullscreenCheckbox;
     delete mHardwareAccelerationCheckbox;
+    delete mPauseOnLostFocusCheckbox;
     delete mAlmanacButton;
     delete mRestartButton;
     delete mBackToMainButton;
@@ -145,6 +147,7 @@ void NewOptionsDialog::AddedToManager(Sexy::WidgetManager* theWidgetManager)
     AddWidget(mSfxVolumeSlider);
     AddWidget(mHardwareAccelerationCheckbox);
     AddWidget(mFullscreenCheckbox);
+    AddWidget(mPauseOnLostFocusCheckbox);
     AddWidget(mBackToGameButton);
 }
 
@@ -162,6 +165,7 @@ void NewOptionsDialog::RemovedFromManager(Sexy::WidgetManager* theWidgetManager)
     RemoveWidget(mSfxVolumeSlider);
     RemoveWidget(mHardwareAccelerationCheckbox);
     RemoveWidget(mFullscreenCheckbox);
+    RemoveWidget(mPauseOnLostFocusCheckbox);
     RemoveWidget(mBackToGameButton);
 }
 
@@ -173,6 +177,7 @@ void NewOptionsDialog::Resize(int theX, int theY, int theWidth, int theHeight)
     mSfxVolumeSlider->Resize(199, 143, 135, 40);
     mHardwareAccelerationCheckbox->Resize(283, 175, 46, 45);
     mFullscreenCheckbox->Resize(284, 206, 46, 45);
+    mPauseOnLostFocusCheckbox->Resize(284, 237, 46, 45);
     mAlmanacButton->Resize(107, 241, 209, 46);
     mRestartButton->Resize(mAlmanacButton->mX, mAlmanacButton->mY + 43, 209, 46);
     mBackToMainButton->Resize(mRestartButton->mX, mRestartButton->mY + 43, 209, 46);
@@ -188,6 +193,7 @@ void NewOptionsDialog::Resize(int theX, int theY, int theWidth, int theHeight)
         mSfxVolumeSlider->mY += 10;
         mHardwareAccelerationCheckbox->mY += 15;
         mFullscreenCheckbox->mY += 20;
+        mPauseOnLostFocusCheckbox->mY += 25;
 
         /*mGameplayButton->mY += 69;
         mControllerButton->mY += 69;
@@ -210,12 +216,14 @@ void NewOptionsDialog::Draw(Sexy::Graphics* g)
     int aSfxOffset = 0;
     int a3DAccelOffset = 0;
     int aFullScreenOffset = 0;
+    int aPauseWhenLostFocusOffset = 0;
     if (mFromGameSelector)
     {
         aMusicOffset = 5;
         aSfxOffset = 10;
         a3DAccelOffset = 15;
         aFullScreenOffset = 20;
+        aPauseWhenLostFocusOffset = 25;
     }
     Sexy::Color aTextColor(107, 109, 145);
 
@@ -234,6 +242,7 @@ void NewOptionsDialog::Draw(Sexy::Graphics* g)
         TodDrawString(g, TodStringTranslate(_S("[OPTIONS_SOUNDFX]")), 186, 167 + aSfxOffset, FONT_DWARVENTODCRAFT18, aTextColor, DrawStringJustification::DS_ALIGN_RIGHT);
         TodDrawString(g, TodStringTranslate(_S("[OPTIONS_3D_ACCELERATION]")), 274, 197 + a3DAccelOffset, FONT_DWARVENTODCRAFT18, aTextColor, DrawStringJustification::DS_ALIGN_RIGHT);
         TodDrawString(g, TodStringTranslate(_S("[OPTIONS_FULL_SCREEN]")), 274, 229 + aFullScreenOffset, FONT_DWARVENTODCRAFT18, aTextColor, DrawStringJustification::DS_ALIGN_RIGHT);
+        TodDrawString(g, TodStringTranslate(_S("Auto Pause")), 274, 261 + aPauseWhenLostFocusOffset, FONT_DWARVENTODCRAFT18, aTextColor, DrawStringJustification::DS_ALIGN_RIGHT);
     }
 }
 
@@ -299,9 +308,9 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
                 mApp->DoDialog(
                     Dialogs::DIALOG_INFO,
                     true,
-                    _S("[NOT_SUPPORTED_HEADER]"),
-                    _S("[NOT_SUPPORTED_LINES]"),
-                    _S("[OK_LABEL]"),
+                    _S("Not Supported"),
+                    _S("3D Acceleration cannot be enabled as your video card does not support it."),
+                    _S("OK"),
                     Dialog::BUTTONS_FOOTER
                 );
             }
@@ -310,15 +319,19 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
                 mApp->DoDialog(
                     Dialogs::DIALOG_INFO,
                     true,
-                    _S("[WARNING_HEADER]"),
-                    _S("[WARNING_LINES]"),
-                    _S("[OK_LABEL]"),
+                    _S("Warning"),
+                    _S("Your video card may not support 3D Acceleration, and performance\nmay be affected while this options is enabled."),
+                    _S("OK"),
                     Dialog::BUTTONS_FOOTER
                 );
             }
         }
         break;
     }
+    case NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus:
+        mApp->mMuteOnLostFocus = checked;
+        mApp->WriteToRegistry();
+        break;
     }
 }
 
