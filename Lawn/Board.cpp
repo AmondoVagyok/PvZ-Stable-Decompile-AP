@@ -3494,7 +3494,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 			return PlantingReason::PLANTING_NEEDS_POT;
 		}
 		// 南瓜头的种植条件
-		bool aAidPurchased = mApp->mPlayerInfo->mPurchases[StoreItem::STORE_ITEM_FIRSTAID] > 0
+		bool aAidPurchased = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::WALL_NUT_FIRST_AID) > 0
 	#ifdef _MOBILE_MINIGAMES
 			&& mApp->mGameMode != GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE
 	#endif
