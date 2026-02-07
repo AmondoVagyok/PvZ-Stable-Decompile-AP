@@ -5139,98 +5139,28 @@ bool LawnApp::IsLevelOpen(int level) const
 	
 	if (level == 50)
 	{
-		int adventure_levels_goal = slot_data["adventure_levels_goal"];
-		int adventure_areas_goal = slot_data["adventure_areas_goal"];
-		int minigame_levels_goal = slot_data["minigame_levels_goal"];
-		int puzzle_levels_goal = slot_data["puzzle_levels_goal"];
-		int survival_levels_goal = slot_data["survival_levels_goal"];
-		int overall_levels_goal = slot_data["overall_levels_goal"];
-		
-		int overall_levels_complete = 0;
-		
-		int adventure_levels_complete = 0;
-		for (auto i = 1; i <= 50; i++)
-		{
-			if (mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)))
-			{
-				adventure_levels_complete++;
-				overall_levels_complete++;
-			}
-		}
-		
-		if (adventure_levels_complete < adventure_levels_goal)
+		auto gp = GetGoalProgress();
+		if (gp.adventure_levels_complete < gp.adventure_levels_goal)
 		{
 			return false;
 		}
-		
-		int adventure_areas_complete = 0;
-		for (auto i = 1; i <= 5; i++)
-		{
-			auto this_area_complete = true;
-			for (auto j = 1; j <= 10; j++)
-			{
-				if (i == 5 && j == 10) continue;
-				if (!mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i, j)))
-				{
-					this_area_complete = false;
-					break;
-				}
-			}
-			
-			if (this_area_complete)
-			{
-				adventure_areas_complete++;
-			}
-		}
-		
-		if (adventure_areas_complete < adventure_areas_goal)
+		if (gp.adventure_areas_complete < gp.adventure_areas_goal)
 		{
 			return false;
 		}
-		
-		int minigame_levels_complete = 0;
-		for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS); i++)
-		{
-			if (mAP->IsLocationChecked(i))
-			{
-				minigame_levels_complete++;
-				overall_levels_complete++;
-			}			
-		}
-		if (minigame_levels_complete < minigame_levels_goal)
+		if (gp.minigame_levels_complete < gp.minigame_levels_goal)
 		{
 			return false;
 		}
-		
-		int puzzle_levels_complete = 0;
-		for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SCARY_POTTER_1); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9); i++)
-		{
-			if (mAP->IsLocationChecked(i))
-			{
-				puzzle_levels_complete++;
-				overall_levels_complete++;
-			}
-		}
-		if (puzzle_levels_complete < puzzle_levels_goal)
+		if (gp.puzzle_levels_complete < gp.puzzle_levels_goal)
 		{
 			return false;
 		}
-		
-		int survival_levels_complete = 0;
-		for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5); i++)
-		{
-			if (mAP->IsLocationChecked(i))
-			{
-				survival_levels_complete++;
-				overall_levels_complete++;
-			}
-		}
-		if (survival_levels_complete < survival_levels_goal)
+		if (gp.survival_levels_complete < gp.survival_levels_goal)
 		{
 			return false;
 		}
-		
-		if (overall_levels_complete < overall_levels_goal)
+		if (gp.overall_levels_complete < gp.overall_levels_goal)
 		{
 			return false;
 		}
@@ -5309,6 +5239,83 @@ bool LawnApp::IsLevelOpen(int level) const
 	}
 
 	return false;
+}
+
+GoalProgress LawnApp::GetGoalProgress() const
+{
+	auto slot_data = mAP->SlotData();
+	GoalProgress gp;
+	
+	gp.adventure_levels_goal = slot_data["adventure_levels_goal"];
+	gp.adventure_areas_goal = slot_data["adventure_areas_goal"];
+	gp.minigame_levels_goal = slot_data["minigame_levels_goal"];
+	gp.puzzle_levels_goal = slot_data["puzzle_levels_goal"];
+	gp.survival_levels_goal = slot_data["survival_levels_goal"];
+	gp.overall_levels_goal = slot_data["overall_levels_goal"];
+	
+	gp.overall_levels_complete = 0;
+	
+	gp.adventure_levels_complete = 0;
+	for (auto i = 1; i <= 50; i++)
+	{
+		if (mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i)))
+		{
+			gp.adventure_levels_complete++;
+			gp.overall_levels_complete++;
+		}
+	}
+	
+	gp.adventure_areas_complete = 0;
+	for (auto i = 1; i <= 5; i++)
+	{
+		auto this_area_complete = true;
+		for (auto j = 1; j <= 10; j++)
+		{
+			if (i == 5 && j == 10) continue;
+			if (!mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(i, j)))
+			{
+				this_area_complete = false;
+				break;
+			}
+		}
+		
+		if (this_area_complete)
+		{
+			gp.adventure_areas_complete++;
+		}
+	}
+	
+	gp.minigame_levels_complete = 0;
+	for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS); i++)
+	{
+		if (mAP->IsLocationChecked(i))
+		{
+			gp.minigame_levels_complete++;
+			gp.overall_levels_complete++;
+		}			
+	}
+	
+	gp.puzzle_levels_complete = 0;
+	for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SCARY_POTTER_1); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9); i++)
+	{
+		if (mAP->IsLocationChecked(i))
+		{
+			gp.puzzle_levels_complete++;
+			gp.overall_levels_complete++;
+		}
+	}
+	
+	gp.survival_levels_complete = 0;
+	for (auto i = PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1); i <= PVZRAPData::Locations::GamemodeClear(GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5); i++)
+	{
+		if (mAP->IsLocationChecked(i))
+		{
+			gp.survival_levels_complete++;
+			gp.overall_levels_complete++;
+		}
+	}
+
+	return gp;
 }
 
 void LawnApp::SetupArchipelago()

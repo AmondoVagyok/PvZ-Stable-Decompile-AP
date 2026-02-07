@@ -1110,11 +1110,11 @@ void GameSelector::DrawOverlay(Graphics* g)
 //0x44B0D0
 void GameSelector::UpdateTooltip()
 {
-	if (!mApp->HasFinishedAdventure() || mApp->GetDialog(Dialogs::DIALOG_MESSAGE) || mWidgetManager->mFocusWidget != this)
+	if (mApp->GetDialog(Dialogs::DIALOG_MESSAGE) || mWidgetManager->mFocusWidget != this)
 		return;
 
-	if (mHasTrophy)
-	{
+	// if (mHasTrophy)
+	// {
 		int aMouseX = mX + mApp->mWidgetManager->mLastMouseX;
 		int aMouseY = mY + mApp->mWidgetManager->mLastMouseY;
 		if (aMouseX >= mX + 50 && aMouseX < mX + 135 && aMouseY >= mY + 280 && aMouseY <= mY + 505
@@ -1134,7 +1134,7 @@ void GameSelector::UpdateTooltip()
 #endif
 				mToolTip->mVisible = true;
 			}
-			else
+			else if (mHasTrophy)
 			{
 				if (mApp->mAP->CanReleaseItems())
 				{
@@ -1152,9 +1152,20 @@ void GameSelector::UpdateTooltip()
 #endif
 				mToolTip->mVisible = true;
 			}
+			else
+			{
+				mToolTip->SetLabel(_S("Click here to see your progress towards the goal."));
+				mToolTip->mX = mX + 20;
+#ifdef _HAS_ACHIEVEMENTS 
+				mToolTip->mY = mY + 450;
+#else
+				mToolTip->mY = mY + 495;
+#endif
+				mToolTip->mVisible = true;
+			}
 			return;
 		}
-	}
+	// }
 
 	mToolTip->mVisible = false;
 	mToolTip->Update();
@@ -1932,6 +1943,24 @@ void GameSelector::ClickedTrophy()
 				mApp->DoDialog(Dialogs::DIALOG_MESSAGE, true, _S("Release your items"), _S("Sorry, release is not possible in this world."), _S("OK"), Dialog::BUTTONS_FOOTER);
 			}
 		}
+	}
+	else
+	{
+		if (!mApp->EnsureArchipelagoConnected())
+		{
+			return;
+		}
+		
+		auto gp = mApp->GetGoalProgress();
+		
+		std::stringstream goal_status;
+		goal_status << std::format("Adventure Levels: {}/{}", std::to_string(gp.adventure_levels_complete), std::to_string(gp.adventure_levels_goal)) << "\n";
+		goal_status << std::format("Adventure Areas: {}/{}", std::to_string(gp.adventure_areas_complete), std::to_string(gp.adventure_areas_goal)) << "\n";
+		goal_status << std::format("Minigame Levels: {}/{}", std::to_string(gp.minigame_levels_complete), std::to_string(gp.minigame_levels_goal)) << "\n";
+		goal_status << std::format("Puzzle Levels: {}/{}", std::to_string(gp.puzzle_levels_complete), std::to_string(gp.puzzle_levels_goal)) << "\n";
+		goal_status << std::format("Survival Levels: {}/{}", std::to_string(gp.survival_levels_complete), std::to_string(gp.survival_levels_goal));
+		
+		mApp->DoDialog(Dialogs::DIALOG_MESSAGE, true, _S("Goal"), goal_status.str(), _S("OK"), Dialog::BUTTONS_FOOTER);
 	}
 }
 

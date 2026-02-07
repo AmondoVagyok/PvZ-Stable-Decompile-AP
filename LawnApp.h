@@ -63,6 +63,23 @@ using namespace Sexy;
 typedef std::list<ButtonWidget*> ButtonList;
 typedef std::list<Image*> ImageList;
 
+struct GoalProgress
+{
+	int adventure_levels_goal;
+	int adventure_areas_goal;
+	int minigame_levels_goal;
+	int puzzle_levels_goal;
+	int survival_levels_goal;
+	int overall_levels_goal;
+	
+	int adventure_levels_complete;
+	int adventure_areas_complete;
+	int minigame_levels_complete;
+	int puzzle_levels_complete;
+	int survival_levels_complete;
+	int overall_levels_complete;
+};
+
 class LevelStats
 {
 public:
@@ -404,6 +421,7 @@ public:
 	void							DrawArchipelagoOverlayElements(Graphics* g);
 	void							UpdateArchipelagoOverlayElements();
 	bool                            IsLevelOpen(int level) const;
+	GoalProgress					GetGoalProgress() const;
 	
 private:
 	void							SetupArchipelago();
