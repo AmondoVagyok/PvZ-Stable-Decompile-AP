@@ -1,6 +1,7 @@
 #include "APWrapper.h"
 
 #define APCLIENT_DEBUG
+#define _WEBSOCKETPP_CPP11_STL_
 
 #define _WIN32_WINNT 0x0600
 #include <apclient.hpp>
@@ -121,19 +122,19 @@ DataStoragePendingOperation DataStoragePendingOperation::minimum(nlohmann::json 
     return DataStoragePendingOperation(std::move(d));
 }
 
-DataStoragePendingOperation DataStoragePendingOperation::and(nlohmann::json value)
+DataStoragePendingOperation DataStoragePendingOperation::data_and(nlohmann::json value)
 {
     d->ops.emplace_back(APClient::DataStorageOperation{"and", value});
     return DataStoragePendingOperation(std::move(d));
 }
 
-DataStoragePendingOperation DataStoragePendingOperation::or(nlohmann::json value)
+DataStoragePendingOperation DataStoragePendingOperation::data_or(nlohmann::json value)
 {
     d->ops.emplace_back(APClient::DataStorageOperation{"or", value});
     return DataStoragePendingOperation(std::move(d));
 }
 
-DataStoragePendingOperation DataStoragePendingOperation::xor(nlohmann::json value)
+DataStoragePendingOperation DataStoragePendingOperation::data_xor(nlohmann::json value)
 {
     d->ops.emplace_back(APClient::DataStorageOperation{"xor", value});
     return DataStoragePendingOperation(std::move(d));

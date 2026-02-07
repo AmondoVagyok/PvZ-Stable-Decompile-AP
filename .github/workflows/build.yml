@@ -11,21 +11,21 @@ jobs:
       fail-fast: false
       matrix:
         configuration: [ReleaseGOTY, DebugGOTY]
+        platform: [x86, Win32]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with: 
           submodules: recursive
+          lfs: true
       - name: Setup MSVC Environment
         uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: x86
       - name: msbuild
         run: |
-          msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=x86 PlantsVsZombies.sln
+          msbuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} PlantsVsZombies.sln
       - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
-          name: PlantsVsZombies-GOTY-${{ matrix.configuration }}
+          name: PlantsVsZombies-GOTY-${{ matrix.configuration }}-${{ matrix.platform }}
           path: |
-            Output
+            build/${{ matrix.configuration }}_${{ matrix.platform }}/bin

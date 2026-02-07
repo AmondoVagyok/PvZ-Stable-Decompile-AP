@@ -328,10 +328,10 @@ void NewOptionsDialog::CheckboxChecked(int theId, bool checked)
         }
         break;
     }*/
-    case NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus:
-        mApp->mMuteOnLostFocus = checked;
-        mApp->WriteToRegistry();
-        break;
+    // case NewOptionsDialog::NewOptionsDialog_PauseOnLostFocus:
+    //     mApp->mMuteOnLostFocus = checked;
+    //     mApp->WriteToRegistry();
+    //     break;
 }
 
 //0x45D290

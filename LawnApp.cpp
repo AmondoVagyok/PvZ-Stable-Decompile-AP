@@ -2293,8 +2293,8 @@ void LawnApp::Init()
 #endif
 	mTimer.Start();
 
-	if (!IsScreenSaver() && !IsParticleEditor())
-		PlayVideo(StrFormat("%svideos/intro.mp4", SDL_GetBasePath()).c_str(), true);
+	// if (!IsScreenSaver() && !IsParticleEditor())
+		// PlayVideo(StrFormat("%svideos/intro.mp4", SDL_GetBasePath()).c_str(), true);
 }
 
 //0x4522A0
@@ -4935,6 +4935,7 @@ bool LawnApp::ChallengeUsesMicrophone(GameMode theGameMode)
 		theGameMode == GameMode::GAMEMODE_CHALLENGE_HEAT_WAVE; // ||
 #endif
 		//theGameMode == GameMode::GAMEMODE_CHALLENGE_ZEN_GARDEN && gLawnApp->IsScreenSaver();
+	false;
 }
 
 bool LawnApp::ChallengeHasScores(GameMode theGameMode)

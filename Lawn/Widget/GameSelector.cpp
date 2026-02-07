@@ -2266,7 +2266,6 @@ void GameSelector::ShowQuickplayScreen() {
 #ifdef _HAS_MORESCREEN
 	mMoreWidget->DisableButtons(true);
 #endif
-#endif
 	DisableButtons(true);
 }
 #endif

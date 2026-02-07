@@ -512,7 +512,7 @@ void SeedChooserScreen::Draw(Graphics* g)
 	//mImitaterButton->Draw(g);
 	if (mApp->SeedTypeAvailable(SEED_IMITATER))
 	{
-		DrawSeedPacket(g, mImitaterButton->mX, mImitaterButton->mY, SeedType::SEED_IMITATER, SEED_NONE, 0, mImitaterButton->mDisabled ? 55 : 255, false, false);
+		DrawSeedPacket(g, mImitaterButton->mX, mImitaterButton->mY, SeedType::SEED_IMITATER, SEED_NONE, 0, mImitaterButton->mDisabled ? 55 : 255, false, false, mApp);
 	}
 
 	for (SeedType aSeedType = SEED_PEASHOOTER; aSeedType < NUM_SEEDS_IN_CHOOSER; aSeedType = (SeedType)(aSeedType + 1))

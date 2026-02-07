@@ -52,9 +52,9 @@ public:
     DataStoragePendingOperation ceil(nlohmann::json value);
     DataStoragePendingOperation maximum(nlohmann::json value);
     DataStoragePendingOperation minimum(nlohmann::json value);
-    DataStoragePendingOperation and(nlohmann::json value);
-    DataStoragePendingOperation or(nlohmann::json value);
-    DataStoragePendingOperation xor(nlohmann::json value);
+    DataStoragePendingOperation data_and(nlohmann::json value);
+    DataStoragePendingOperation data_or(nlohmann::json value);
+    DataStoragePendingOperation data_xor(nlohmann::json value);
     DataStoragePendingOperation left_shift(nlohmann::json value);
     DataStoragePendingOperation right_shift(nlohmann::json value);
     DataStoragePendingOperation remove(nlohmann::json value);
