@@ -238,6 +238,7 @@ EXIT /B 0</Command>
       </EntryPointSymbol>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -323,6 +324,7 @@ EXIT /B 0</Command>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <AdditionalOptions>/INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -411,6 +413,7 @@ EXIT /B 0</Command>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;shlwapi.lib;SDL3.lib;SDL3_ttf.lib;zlib.lib;bass.lib;portaudio_x64.lib;tinyfiledialogs64.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -500,6 +503,7 @@ EXIT /B 0</Command>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Winmm.lib;Ws2_32.lib;avcodec.lib;avdevice.lib;avformat.lib;avfilter.lib;avutil.lib;swresample.lib;swscale.lib;shlwapi.lib;SDL3.lib;SDL3_ttf.lib;zlib.lib;bass.lib;portaudio_x64.lib;tinyfiledialogs64.lib;libcrypto_static.lib;libssl_static.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WindowsSDK_LibraryPath_x64);$(VC_LibraryPath_x64);$(UniversalCRT_LibraryPath_x64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
       <Command>
