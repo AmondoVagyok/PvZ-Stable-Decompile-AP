@@ -1947,6 +1947,10 @@ bool LawnApp::KillNewOptionsDialog()
 	NewOptionsDialog* aNewOptionsDialog = (NewOptionsDialog*)GetDialog(Dialogs::DIALOG_NEWOPTIONS);
 	if (aNewOptionsDialog == nullptr)
 		return false;
+	
+	bool wantAutoPause = aNewOptionsDialog->mPauseOnLostFocusCheckbox->IsChecked();
+    mMuteOnLostFocus = wantAutoPause;
+    WriteToRegistry();
 
 	bool wantWindowed = !aNewOptionsDialog->mFullscreenCheckbox->IsChecked();
 	//bool want3D = aNewOptionsDialog->mHardwareAccelerationCheckbox->IsChecked();
