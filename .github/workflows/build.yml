@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         configuration: [ReleaseGOTY, DebugGOTY]
-        platform: [x86, Win32]
+        platform: [x64, Win32]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
