@@ -830,7 +830,7 @@ void CutScene::StartLevelIntro()
 	}
 
 	mLawnMowerTime = 0;
-	if (!IsSurvivalRepick())
+	if (!IsSurvivalRepick() || !mBoard->ChooseSeedsOnCurrentLevel())
 	{
 		mLawnMowerTime = 550;
 	}

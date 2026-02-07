@@ -1953,7 +1953,7 @@ void Board::InitLevel()
 		mSeedBank->mSeedPackets[7].SetPacketType(SeedType::SEED_JALAPENO);
 	}
 	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank() && 
-		(mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS || mApp->mGameMode == GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 || mApp->mGameMode == GAMEMODE_CHALLENGE_BOBSLED_BONANZA || mApp->mGameMode == GAMEMODE_CHALLENGE_SPEED || mApp->mGameMode == GAMEMODE_CHALLENGE_LAST_STAND || mApp->mGameMode == GAMEMODE_CHALLENGE_POGO_PARTY))
+		(mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS || mApp->mGameMode == GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 || mApp->mGameMode == GAMEMODE_CHALLENGE_BOBSLED_BONANZA || mApp->mGameMode == GAMEMODE_CHALLENGE_SPEED || mApp->mGameMode == GAMEMODE_CHALLENGE_LAST_STAND || mApp->mGameMode == GAMEMODE_CHALLENGE_POGO_PARTY || mApp->IsSurvivalMode()))
 	{
 		mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
 		SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
