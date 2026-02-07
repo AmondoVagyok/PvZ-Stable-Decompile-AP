@@ -1604,6 +1604,11 @@ void Board::InitSurvivalStage()
 		SeedPacket* aPacket = &mSeedBank->mSeedPackets[i];
 		aPacket->mX = GetSeedPacketPositionX(i);
 		aPacket->mPacketType = SeedType::SEED_NONE;
+		
+		if (!ChooseSeedsOnCurrentLevel())
+		{
+			PopulateSeedBank();
+		}
 	}
 
 	if (StageHasFog())
@@ -1955,32 +1960,7 @@ void Board::InitLevel()
 	else if (!ChooseSeedsOnCurrentLevel() && !HasConveyorBeltSeedBank() && 
 		(mApp->mGameMode == GameMode::GAMEMODE_ADVENTURE || mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS || mApp->mGameMode == GAMEMODE_CHALLENGE_WAR_AND_PEAS_2 || mApp->mGameMode == GAMEMODE_CHALLENGE_BOBSLED_BONANZA || mApp->mGameMode == GAMEMODE_CHALLENGE_SPEED || mApp->mGameMode == GAMEMODE_CHALLENGE_LAST_STAND || mApp->mGameMode == GAMEMODE_CHALLENGE_POGO_PARTY || mApp->IsSurvivalMode()))
 	{
-		mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
-		SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
-		
-		int start_random_seeds_at = 0;
-		if (aGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS)
-		{
-			mSeedBank->mSeedPackets[start_random_seeds_at++].SetPacketType(SEED_STARFRUIT);
-		}
-		
-		// 卡槽错误的关卡，依次填充所有卡牌
-		for (int i = start_random_seeds_at; i < mSeedBank->mNumPackets; i++)
-		{
-			if (aGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND && (i == SEED_SUNFLOWER || i == SEED_TWINSUNFLOWER || i == SEED_SUNSHROOM))
-			{
-				// Not allowed on this level
-				nextSeedType = (SeedType)(nextSeedType + 1);
-				continue;
-			}
-			while (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(nextSeedType)) == 0)
-			{
-				nextSeedType = (SeedType)(nextSeedType + 1);
-			}
-			mSeedBank->mSeedPackets[i].SetPacketType(nextSeedType);
-			
-			nextSeedType = (SeedType)(nextSeedType + 1);
-		}
+		PopulateSeedBank();
 	}
 	// 将所有子控件标记为已变动
 	MarkAllDirty();
@@ -1994,6 +1974,36 @@ void Board::InitLevel()
 	}
 	// 关卡玩法相关的初始化
 	mChallenge->InitLevel();
+}
+
+void Board::PopulateSeedBank()
+{
+	mSeedBank->mNumPackets = max(GetNumSeedsInBank(), 1);
+	SeedType nextSeedType = SeedType::SEED_PEASHOOTER;
+		
+	int start_random_seeds_at = 0;
+	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS)
+	{
+		mSeedBank->mSeedPackets[start_random_seeds_at++].SetPacketType(SEED_STARFRUIT);
+	}
+		
+	// 卡槽错误的关卡，依次填充所有卡牌
+	for (int i = start_random_seeds_at; i < mSeedBank->mNumPackets; i++)
+	{
+		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND && (i == SEED_SUNFLOWER || i == SEED_TWINSUNFLOWER || i == SEED_SUNSHROOM))
+		{
+			// Not allowed on this level
+			nextSeedType = (SeedType)(nextSeedType + 1);
+			continue;
+		}
+		while (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Seed(nextSeedType)) == 0)
+		{
+			nextSeedType = (SeedType)(nextSeedType + 1);
+		}
+		mSeedBank->mSeedPackets[i].SetPacketType(nextSeedType);
+			
+		nextSeedType = (SeedType)(nextSeedType + 1);
+	}
 }
 
 Reanimation* Board::CreateRakeReanim(float theRakeX, float theRakeY, int theRenderOrder)

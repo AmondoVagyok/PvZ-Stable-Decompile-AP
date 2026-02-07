@@ -295,6 +295,7 @@ public:
 	/*inline*/ void					SaveGame(const SexyString& theFileName);
 	bool							LoadGame(const SexyString& theFileName);
 	void							InitLevel();
+	void							PopulateSeedBank();
 	void							DisplayAdvice(const SexyString& theAdvice, MessageStyle theMessageStyle, AdviceType theHelpIndex);
 	void							StartLevel();
 	Plant*							AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
