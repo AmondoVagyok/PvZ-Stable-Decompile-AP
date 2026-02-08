@@ -1313,7 +1313,9 @@ void GameSelector::Update()
 #endif
 #ifdef _HAS_LEVELSELECTOR
 		mLevelSelectorWidget->mY = aTransform.mTransY;
+#ifdef _HAS_ACHIEVEMENTS
 		mAchievementsWidget->mY = aTransform.mTransY + BOARD_HEIGHT;
+#endif
 #endif
 		
 		aTrackIndex = aSelectorReanim->FindTrackIndex("SelectorScreen_BG_Left");
@@ -2090,7 +2092,8 @@ void GameSelector::ButtonDepress(int theId)
 		//SlideTo(0, 0);
 		break;
 	case GameSelector::GameSelector_Achievements:
-		ShowAchievementsScreen();
+		mApp->DoDialog(Dialogs::DIALOG_INFO, true, "Achievements Not Available", "Achievements are not enabled when playing on Archipelago", "OK", Dialog::BUTTONS_FOOTER);
+		// ShowAchievementsScreen();
 		break;
 #endif
 #ifdef _HAS_MORESCREEN

@@ -287,6 +287,7 @@ void AchievementsWidget::MouseWheel(int theDelta) {
 
 // GOTY @Patoke: 0x459670
 void ReportAchievement::GiveAchievement(LawnApp* theApp, int theAchievement, bool theForceGive) {
+	return;
 #ifndef _HAS_ACHIEVEMENTS
 	return;
 #endif
