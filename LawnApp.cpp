@@ -95,8 +95,8 @@ SDL_Cursor* LawnApp::mSDLNoCursor = nullptr;
 #include <backends/imgui_impl_sdlrenderer3.h>
 
 extern "C" {
-#include <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
+// #include <libavformat/avformat.h>
+// #include <libavcodec/avcodec.h>
 }
 
 #include <SDL3_ttf/SDL_ttf.h>
@@ -109,237 +109,238 @@ bool LawnApp::mIsPlayingVideo = false;
 bool LawnApp::PlayVideo(std::string url, bool isSkipable, Color bgColor)
 {
 	mIsPlayingVideo = true;
-
-	AVFormatContext* format_context = NULL;
-	const int ret = avformat_open_input(&format_context, url.c_str(), NULL, NULL);
-	if (ret < 0) 
-	{
-		TodTrace("Video: %s is missing or corrupted!\n", url.c_str());
-		return false;
-	}
-
-	SDL_HideCursor();
-
-	const AVCodec* video_codec = NULL;
-	const int video_stream_index = av_find_best_stream(format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
-	const AVStream* video_stream = format_context->streams[video_stream_index];
-
-	const AVCodec* audio_codec = NULL;
-	const int  audio_stream_index = av_find_best_stream(format_context, AVMEDIA_TYPE_AUDIO, -1, video_stream_index, &audio_codec, 0);
-	const AVStream* audio_stream = format_context->streams[audio_stream_index];
-
-	AVCodecContext* video_decoder = avcodec_alloc_context3(video_codec);
-	video_decoder->thread_count = 0;
-	avcodec_parameters_to_context(video_decoder, video_stream->codecpar);
-	avcodec_open2(video_decoder, video_codec, NULL);
-
-	AVCodecContext* audio_decoder = avcodec_alloc_context3(audio_codec);
-	audio_decoder->thread_count = 0;
-	avcodec_parameters_to_context(audio_decoder, audio_stream->codecpar);
-	avcodec_open2(audio_decoder, audio_codec, NULL);
-
-	AVPacket* packet = av_packet_alloc();
-	AVFrame* frame = av_frame_alloc();
-
-	SDL_AudioSpec audio_spec = { SDL_AUDIO_F32, audio_decoder->ch_layout.nb_channels, audio_decoder->sample_rate };
-	SDL_AudioStream* audio_playback_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audio_spec, NULL, NULL);
-	SDL_ResumeAudioStreamDevice(audio_playback_stream);
-
-	SDL_Texture* texture = SDL_CreateTexture(mSDLRenderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_STREAMING, video_decoder->width, video_decoder->height);
-	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-
-	SDL_SetRenderDrawColor(mSDLRenderer, bgColor.mRed, bgColor.mGreen, bgColor.mBlue, bgColor.mAlpha);
-	SDL_RenderClear(mSDLRenderer);
-
-	bool willShutdown = false;
-
-	Uint64 start_ns = 0;
-	Uint64 curElapsed = 0;
-
-	while (av_read_frame(format_context, packet) >= 0) {
-		mLastUserInputTick = mLastTimerTime;
-
-		SDL_Event event;
-		while (SDL_PollEvent(&event))
-		{
-			switch (event.type)
-			{
-			case SDL_EVENT_QUIT:
-				willShutdown = true;
-				break;
-			case SDL_EVENT_WINDOW_FOCUS_GAINED:
-				mActive = true;
-				RehupFocus();
-				EnforceCursor();
-				break;
-			case SDL_EVENT_WINDOW_FOCUS_LOST:
-				mActive = false;
-				RehupFocus();
-				break;
-			case SDL_EVENT_KEY_DOWN:
-			{
-				mLastUserInputTick = mLastTimerTime;
-				if (mDebugKeysEnabled)
-				{
-					if (DebugKeyDown(GetKeyCodeFromCodeSDL(event.key.key)))
-						break;
-				}
-				else
-				{
-					KeyCode theKey = GetKeyCodeFromCodeSDL(event.key.key);
-					if (theKey == KEYCODE_F10)
-					{
-						TakeScreenshot();
-						break;
-					}
-					else if (theKey == KeyCode::KEYCODE_F11)
-					{
-						gLawnApp->SwitchScreenMode(!gLawnApp->mIsWindowed, true);
-						break;
-					}
-				}
-
-				if (isSkipable && event.key.key == SDLK_ESCAPE)
-				{
-					mIsPlayingVideo = false;
-					break;
-				}
-
-				int theChar = GetKeyCodeFromCodeSDL(event.key.key);
-
-				if ((theChar < KEYCODE_ASCIIBEGIN || theChar > KEYCODE_ASCIIEND) && (theChar < KEYCODE_ASCIIBEGIN2 || theChar > KEYCODE_ASCIIEND2))
-				{
-					theChar = -1;
-				}
-
-				switch (event.key.key)
-				{
-				case SDLK_KP_PLUS:   theChar = '+'; break;
-				case SDLK_KP_MINUS:  theChar = '-'; break;
-				case SDLK_KP_MULTIPLY: theChar = '*'; break;
-				case SDLK_SLASH:
-				case SDLK_KP_DIVIDE: theChar = '/'; break;
-				case SDLK_KP_PERIOD: theChar = '.'; break;
-
-				case SDLK_KP_0: theChar = '0'; break;
-				case SDLK_KP_1: theChar = '1'; break;
-				case SDLK_KP_2: theChar = '2'; break;
-				case SDLK_KP_3: theChar = '3'; break;
-				case SDLK_KP_4: theChar = '4'; break;
-				case SDLK_KP_5: theChar = '5'; break;
-				case SDLK_KP_6: theChar = '6'; break;
-				case SDLK_KP_7: theChar = '7'; break;
-				case SDLK_KP_8: theChar = '8'; break;
-				case SDLK_KP_9: theChar = '9'; break;
-				}
-
-				if (theChar == 'D' && (mWidgetManager != NULL) && (mWidgetManager->mKeyDown[KEYCODE_CONTROL]) && (mWidgetManager->mKeyDown[KEYCODE_MENU]))
-				{
-					PlaySoundA("c:\\windows\\media\\Windows XP Menu Command.wav", NULL, SND_ASYNC);
-					mDebugKeysEnabled = !mDebugKeysEnabled;
-				}
-
-				mWidgetManager->KeyDown(GetKeyCodeFromCodeSDL(event.key.key));
-
-				if (!SDL_TextInputActive(mSDLWindow)) {
-
-					bool shift = (event.key.mod & SDL_KMOD_SHIFT) != 0;
-					bool caps = (event.key.mod & SDL_KMOD_CAPS) != 0;
-
-					SexyChar c = theChar;
-
-					if (isalpha(c))
-					{
-						if (shift ^ caps)
-							c = toupper(c);
-						else
-							c = tolower(c);
-					}
-					mWidgetManager->KeyChar(c);
-				}
-
-				break;
-			}
-			case SDL_EVENT_KEY_UP:
-				mLastUserInputTick = mLastTimerTime;
-				mWidgetManager->KeyUp(GetKeyCodeFromCodeSDL(event.key.key));
-				break;
-			}
-		}
-
-		if (!mIsPlayingVideo || willShutdown)
-		{
-			SDL_RenderClear(mSDLRenderer);
-			av_packet_unref(packet);
-			break;
-		}
-
-		std::vector<std::thread> _jobs;
-
-		curElapsed = SDL_GetTicksNS();
-
-		if (packet->stream_index == video_stream_index && start_ns != 0) {
-			const int width = mWidth;
-			const int height = mHeight;
-
-			_jobs.emplace_back(std::thread([video_decoder, packet, frame, &start_ns, video_stream, texture, width, height, curElapsed]() {
-				avcodec_send_packet(video_decoder, packet);					
-				while (avcodec_receive_frame(video_decoder, frame) == 0) {
-					const double frame_time_s = (double)frame->pts * av_q2d(video_stream->time_base);
-					const Uint64 elapsed_time_ns = curElapsed - start_ns;
-					const double elapsed_time_s = (double)elapsed_time_ns / SDL_NS_PER_SECOND;
-					const double delay_s = frame_time_s - elapsed_time_s;
-					if (delay_s > 0) SDL_Delay((Uint32)(delay_s * SDL_MS_PER_SECOND));
-					else if (delay_s < -0.5) continue;
-
-					SDL_UpdateYUVTexture(texture, NULL,
-						frame->data[0], frame->linesize[0],
-						frame->data[1], frame->linesize[1],
-						frame->data[2], frame->linesize[2]);
-
-					const float frame_width = (float)video_decoder->width;
-					const float frame_height = (float)video_decoder->height;
-					const float scale_w = (float)width / frame_width;
-					const float scale_h = (float)height / frame_height;
-					const float scale = SDL_max(scale_w, scale_h);
-					SDL_FRect dstrect;
-					dstrect.w = frame_width * scale;
-					dstrect.h = frame_height * scale;
-					dstrect.x = ((float)width - dstrect.w) / 2;
-					dstrect.y = ((float)height - dstrect.h) / 2;
-
-					SDL_RenderTexture(mSDLRenderer, texture, NULL, &dstrect);
-					SDL_RenderPresent(mSDLRenderer);
-				}
-				av_packet_unref(packet);
-			}));
-		}
-		else if (packet->stream_index == audio_stream_index) {
-			_jobs.emplace_back(std::thread([audio_decoder, packet, frame, audio_playback_stream, &start_ns, curElapsed]() {
-				avcodec_send_packet(audio_decoder, packet);
-				while (avcodec_receive_frame(audio_decoder, frame) == 0) {
-					if (start_ns == 0) start_ns = curElapsed;
-
-					SDL_PutAudioStreamPlanarData(audio_playback_stream, (const void* const*)frame->data, audio_decoder->ch_layout.nb_channels, frame->nb_samples);
-				}
-				av_packet_unref(packet);
-			}));
-		}
-
-		for (auto& job : _jobs) {
-			job.join();
-		}
-	}
-	
-	SDL_DestroyTexture(texture);
-
-	mIsPlayingVideo = false;
-
-	SDL_ShowCursor();
-
-	if (willShutdown) Shutdown();
-
-	return true;
+	//
+	// AVFormatContext* format_context = NULL;
+	// const int ret = avformat_open_input(&format_context, url.c_str(), NULL, NULL);
+	// if (ret < 0) 
+	// {
+	// 	TodTrace("Video: %s is missing or corrupted!\n", url.c_str());
+	// 	return false;
+	// }
+	//
+	// SDL_HideCursor();
+	//
+	// const AVCodec* video_codec = NULL;
+	// const int video_stream_index = av_find_best_stream(format_context, AVMEDIA_TYPE_VIDEO, -1, -1, &video_codec, 0);
+	// const AVStream* video_stream = format_context->streams[video_stream_index];
+	//
+	// const AVCodec* audio_codec = NULL;
+	// const int  audio_stream_index = av_find_best_stream(format_context, AVMEDIA_TYPE_AUDIO, -1, video_stream_index, &audio_codec, 0);
+	// const AVStream* audio_stream = format_context->streams[audio_stream_index];
+	//
+	// AVCodecContext* video_decoder = avcodec_alloc_context3(video_codec);
+	// video_decoder->thread_count = 0;
+	// avcodec_parameters_to_context(video_decoder, video_stream->codecpar);
+	// avcodec_open2(video_decoder, video_codec, NULL);
+	//
+	// AVCodecContext* audio_decoder = avcodec_alloc_context3(audio_codec);
+	// audio_decoder->thread_count = 0;
+	// avcodec_parameters_to_context(audio_decoder, audio_stream->codecpar);
+	// avcodec_open2(audio_decoder, audio_codec, NULL);
+	//
+	// AVPacket* packet = av_packet_alloc();
+	// AVFrame* frame = av_frame_alloc();
+	//
+	// SDL_AudioSpec audio_spec = { SDL_AUDIO_F32, audio_decoder->ch_layout.nb_channels, audio_decoder->sample_rate };
+	// SDL_AudioStream* audio_playback_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audio_spec, NULL, NULL);
+	// SDL_ResumeAudioStreamDevice(audio_playback_stream);
+	//
+	// SDL_Texture* texture = SDL_CreateTexture(mSDLRenderer, SDL_PIXELFORMAT_YV12, SDL_TEXTUREACCESS_STREAMING, video_decoder->width, video_decoder->height);
+	// SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+	//
+	// SDL_SetRenderDrawColor(mSDLRenderer, bgColor.mRed, bgColor.mGreen, bgColor.mBlue, bgColor.mAlpha);
+	// SDL_RenderClear(mSDLRenderer);
+	//
+	// bool willShutdown = false;
+	//
+	// Uint64 start_ns = 0;
+	// Uint64 curElapsed = 0;
+	//
+	// while (av_read_frame(format_context, packet) >= 0) {
+	// 	mLastUserInputTick = mLastTimerTime;
+	//
+	// 	SDL_Event event;
+	// 	while (SDL_PollEvent(&event))
+	// 	{
+	// 		switch (event.type)
+	// 		{
+	// 		case SDL_EVENT_QUIT:
+	// 			willShutdown = true;
+	// 			break;
+	// 		case SDL_EVENT_WINDOW_FOCUS_GAINED:
+	// 			mActive = true;
+	// 			RehupFocus();
+	// 			EnforceCursor();
+	// 			break;
+	// 		case SDL_EVENT_WINDOW_FOCUS_LOST:
+	// 			mActive = false;
+	// 			RehupFocus();
+	// 			break;
+	// 		case SDL_EVENT_KEY_DOWN:
+	// 		{
+	// 			mLastUserInputTick = mLastTimerTime;
+	// 			if (mDebugKeysEnabled)
+	// 			{
+	// 				if (DebugKeyDown(GetKeyCodeFromCodeSDL(event.key.key)))
+	// 					break;
+	// 			}
+	// 			else
+	// 			{
+	// 				KeyCode theKey = GetKeyCodeFromCodeSDL(event.key.key);
+	// 				if (theKey == KEYCODE_F10)
+	// 				{
+	// 					TakeScreenshot();
+	// 					break;
+	// 				}
+	// 				else if (theKey == KeyCode::KEYCODE_F11)
+	// 				{
+	// 					gLawnApp->SwitchScreenMode(!gLawnApp->mIsWindowed, true);
+	// 					break;
+	// 				}
+	// 			}
+	//
+	// 			if (isSkipable && event.key.key == SDLK_ESCAPE)
+	// 			{
+	// 				mIsPlayingVideo = false;
+	// 				break;
+	// 			}
+	//
+	// 			int theChar = GetKeyCodeFromCodeSDL(event.key.key);
+	//
+	// 			if ((theChar < KEYCODE_ASCIIBEGIN || theChar > KEYCODE_ASCIIEND) && (theChar < KEYCODE_ASCIIBEGIN2 || theChar > KEYCODE_ASCIIEND2))
+	// 			{
+	// 				theChar = -1;
+	// 			}
+	//
+	// 			switch (event.key.key)
+	// 			{
+	// 			case SDLK_KP_PLUS:   theChar = '+'; break;
+	// 			case SDLK_KP_MINUS:  theChar = '-'; break;
+	// 			case SDLK_KP_MULTIPLY: theChar = '*'; break;
+	// 			case SDLK_SLASH:
+	// 			case SDLK_KP_DIVIDE: theChar = '/'; break;
+	// 			case SDLK_KP_PERIOD: theChar = '.'; break;
+	//
+	// 			case SDLK_KP_0: theChar = '0'; break;
+	// 			case SDLK_KP_1: theChar = '1'; break;
+	// 			case SDLK_KP_2: theChar = '2'; break;
+	// 			case SDLK_KP_3: theChar = '3'; break;
+	// 			case SDLK_KP_4: theChar = '4'; break;
+	// 			case SDLK_KP_5: theChar = '5'; break;
+	// 			case SDLK_KP_6: theChar = '6'; break;
+	// 			case SDLK_KP_7: theChar = '7'; break;
+	// 			case SDLK_KP_8: theChar = '8'; break;
+	// 			case SDLK_KP_9: theChar = '9'; break;
+	// 			}
+	//
+	// 			if (theChar == 'D' && (mWidgetManager != NULL) && (mWidgetManager->mKeyDown[KEYCODE_CONTROL]) && (mWidgetManager->mKeyDown[KEYCODE_MENU]))
+	// 			{
+	// 				PlaySoundA("c:\\windows\\media\\Windows XP Menu Command.wav", NULL, SND_ASYNC);
+	// 				mDebugKeysEnabled = !mDebugKeysEnabled;
+	// 			}
+	//
+	// 			mWidgetManager->KeyDown(GetKeyCodeFromCodeSDL(event.key.key));
+	//
+	// 			if (!SDL_TextInputActive(mSDLWindow)) {
+	//
+	// 				bool shift = (event.key.mod & SDL_KMOD_SHIFT) != 0;
+	// 				bool caps = (event.key.mod & SDL_KMOD_CAPS) != 0;
+	//
+	// 				SexyChar c = theChar;
+	//
+	// 				if (isalpha(c))
+	// 				{
+	// 					if (shift ^ caps)
+	// 						c = toupper(c);
+	// 					else
+	// 						c = tolower(c);
+	// 				}
+	// 				mWidgetManager->KeyChar(c);
+	// 			}
+	//
+	// 			break;
+	// 		}
+	// 		case SDL_EVENT_KEY_UP:
+	// 			mLastUserInputTick = mLastTimerTime;
+	// 			mWidgetManager->KeyUp(GetKeyCodeFromCodeSDL(event.key.key));
+	// 			break;
+	// 		}
+	// 	}
+	//
+	// 	if (!mIsPlayingVideo || willShutdown)
+	// 	{
+	// 		SDL_RenderClear(mSDLRenderer);
+	// 		av_packet_unref(packet);
+	// 		break;
+	// 	}
+	//
+	// 	std::vector<std::thread> _jobs;
+	//
+	// 	curElapsed = SDL_GetTicksNS();
+	//
+	// 	if (packet->stream_index == video_stream_index && start_ns != 0) {
+	// 		const int width = mWidth;
+	// 		const int height = mHeight;
+	//
+	// 		_jobs.emplace_back(std::thread([video_decoder, packet, frame, &start_ns, video_stream, texture, width, height, curElapsed]() {
+	// 			avcodec_send_packet(video_decoder, packet);					
+	// 			while (avcodec_receive_frame(video_decoder, frame) == 0) {
+	// 				const double frame_time_s = (double)frame->pts * av_q2d(video_stream->time_base);
+	// 				const Uint64 elapsed_time_ns = curElapsed - start_ns;
+	// 				const double elapsed_time_s = (double)elapsed_time_ns / SDL_NS_PER_SECOND;
+	// 				const double delay_s = frame_time_s - elapsed_time_s;
+	// 				if (delay_s > 0) SDL_Delay((Uint32)(delay_s * SDL_MS_PER_SECOND));
+	// 				else if (delay_s < -0.5) continue;
+	//
+	// 				SDL_UpdateYUVTexture(texture, NULL,
+	// 					frame->data[0], frame->linesize[0],
+	// 					frame->data[1], frame->linesize[1],
+	// 					frame->data[2], frame->linesize[2]);
+	//
+	// 				const float frame_width = (float)video_decoder->width;
+	// 				const float frame_height = (float)video_decoder->height;
+	// 				const float scale_w = (float)width / frame_width;
+	// 				const float scale_h = (float)height / frame_height;
+	// 				const float scale = SDL_max(scale_w, scale_h);
+	// 				SDL_FRect dstrect;
+	// 				dstrect.w = frame_width * scale;
+	// 				dstrect.h = frame_height * scale;
+	// 				dstrect.x = ((float)width - dstrect.w) / 2;
+	// 				dstrect.y = ((float)height - dstrect.h) / 2;
+	//
+	// 				SDL_RenderTexture(mSDLRenderer, texture, NULL, &dstrect);
+	// 				SDL_RenderPresent(mSDLRenderer);
+	// 			}
+	// 			av_packet_unref(packet);
+	// 		}));
+	// 	}
+	// 	else if (packet->stream_index == audio_stream_index) {
+	// 		_jobs.emplace_back(std::thread([audio_decoder, packet, frame, audio_playback_stream, &start_ns, curElapsed]() {
+	// 			avcodec_send_packet(audio_decoder, packet);
+	// 			while (avcodec_receive_frame(audio_decoder, frame) == 0) {
+	// 				if (start_ns == 0) start_ns = curElapsed;
+	//
+	// 				SDL_PutAudioStreamPlanarData(audio_playback_stream, (const void* const*)frame->data, audio_decoder->ch_layout.nb_channels, frame->nb_samples);
+	// 			}
+	// 			av_packet_unref(packet);
+	// 		}));
+	// 	}
+	//
+	// 	for (auto& job : _jobs) {
+	// 		job.join();
+	// 	}
+	// }
+	//
+	// SDL_DestroyTexture(texture);
+	//
+	// mIsPlayingVideo = false;
+	//
+	// SDL_ShowCursor();
+	//
+	// if (willShutdown) Shutdown();
+	//
+	// return true;
+	return false;
 }
 
 void LawnApp::MakeWindow()
