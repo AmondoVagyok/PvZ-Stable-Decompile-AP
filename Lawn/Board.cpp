@@ -6408,10 +6408,10 @@ void Board::UpdateZombieSpawning()
 	mZombieCountDown--;
 	if (mCurrentWave == mNumWaves && mApp->IsSurvivalMode())
 	{
-		if (mZombieCountDown == 0)
-		{
-			FadeOutLevel();
-		}
+		// if (mZombieCountDown == 0)
+		// {
+		// 	FadeOutLevel();
+		// }
 		return;
 	}
 
