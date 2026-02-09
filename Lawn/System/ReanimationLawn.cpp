@@ -727,16 +727,16 @@ void ReanimatorCache::DrawCachedPlant(Graphics* g, float thePosX, float thePosY,
 	SDL3Image* aImage = nullptr;
 	if (theDrawVariation != DrawVariation::VARIATION_NORMAL)
 	{
-		// for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
-		// {
-		// 	ReanimCacheImageVariation& aImageVariation = aNode->mValue;
-		// 	if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == theDrawVariation && aImageVariation.mFilterVariation == theFilterVariation &&
-		// 		aImageVariation.mDrawBitVariation == theDrawBitVariation)
-		// 	{
-		// 		aImage = aImageVariation.mImage;
-		// 		break;
-		// 	}
-		// }
+		for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
+		{
+			ReanimCacheImageVariation& aImageVariation = aNode->mValue;
+			if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == theDrawVariation && aImageVariation.mFilterVariation == theFilterVariation &&
+				aImageVariation.mDrawBitVariation == theDrawBitVariation)
+			{
+				aImage = aImageVariation.mImage;
+				break;
+			}
+		}
 
 		if (aImage == nullptr)
 		{
@@ -752,16 +752,16 @@ void ReanimatorCache::DrawCachedPlant(Graphics* g, float thePosX, float thePosY,
 	}
 	else if (theFilterVariation != DrawFilterVariation::FILTERVARIATION_NONE)
 	{
-		// for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
-		// {
-		// 	ReanimCacheImageVariation& aImageVariation = aNode->mValue;
-		// 	if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == DrawVariation::VARIATION_NORMAL && aImageVariation.mFilterVariation == theFilterVariation &&
-		// 		aImageVariation.mDrawBitVariation == theDrawBitVariation)
-		// 	{
-		// 		aImage = aImageVariation.mImage;
-		// 		break;
-		// 	}
-		// }
+		for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
+		{
+			ReanimCacheImageVariation& aImageVariation = aNode->mValue;
+			if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == DrawVariation::VARIATION_NORMAL && aImageVariation.mFilterVariation == theFilterVariation &&
+				aImageVariation.mDrawBitVariation == theDrawBitVariation)
+			{
+				aImage = aImageVariation.mImage;
+				break;
+			}
+		}
 
 		if (aImage == nullptr)
 		{
@@ -777,16 +777,16 @@ void ReanimatorCache::DrawCachedPlant(Graphics* g, float thePosX, float thePosY,
 	}
 	else if (theDrawBitVariation != DrawBitVariation::BITVARIATION_NONE)
 	{
-		// for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
-		// {
-		// 	ReanimCacheImageVariation& aImageVariation = aNode->mValue;
-		// 	if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == DrawVariation::VARIATION_NORMAL && 
-		// 		aImageVariation.mFilterVariation == DrawFilterVariation::FILTERVARIATION_NONE && aImageVariation.mDrawBitVariation == theDrawBitVariation)
-		// 	{
-		// 		aImage = aImageVariation.mImage;
-		// 		break;
-		// 	}
-		// }
+		for (TodListNode<ReanimCacheImageVariation>* aNode = mImageVariationList.mHead; aNode != nullptr; aNode = aNode->mNext)
+		{
+			ReanimCacheImageVariation& aImageVariation = aNode->mValue;
+			if (aImageVariation.mSeedType == theSeedType && aImageVariation.mDrawVariation == DrawVariation::VARIATION_NORMAL && 
+				aImageVariation.mFilterVariation == DrawFilterVariation::FILTERVARIATION_NONE && aImageVariation.mDrawBitVariation == theDrawBitVariation)
+			{
+				aImage = aImageVariation.mImage;
+				break;
+			}
+		}
 
 		if (aImage == nullptr)
 		{
@@ -802,7 +802,7 @@ void ReanimatorCache::DrawCachedPlant(Graphics* g, float thePosX, float thePosY,
 	}
 	else
 	{
-		// aImage = mPlantImages[(int)theSeedType];
+		aImage = mPlantImages[(int)theSeedType];
 		if (aImage == nullptr)
 		{
 			aImage = MakeCachedPlantFrame(theSeedType, DrawVariation::VARIATION_NORMAL, DrawFilterVariation::FILTERVARIATION_NONE);
