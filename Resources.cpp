@@ -1234,6 +1234,10 @@ Image* Sexy::IMAGE_UNLOCK_BUTTON_HIGHLIGHT;
 Image* Sexy::IMAGE_UNLOCK_BUTTON_PRESSED;
 
 Image* Sexy::IMAGE_ARCHIPELAGO_ITEM;
+Image* Sexy::IMAGE_NRG_DRINK;
+Image* Sexy::IMAGE_E_ATM;
+Image* Sexy::IMAGE_E_ATM_ZAP;
+Image* Sexy::IMAGE_NRG_BANK;
 
 bool Sexy::ExtractLoadingImagesResources(ResourceManager* theManager)
 {
@@ -1714,6 +1718,10 @@ bool Sexy::ExtractLoadingImagesResources(ResourceManager* theManager)
 		IMAGE_UNLOCK_BUTTON_PRESSED = aMgr.GetImageThrow("IMAGE_UNLOCK_BUTTON_PRESSED");
 		
 		IMAGE_ARCHIPELAGO_ITEM = aMgr.GetImageThrow("IMAGE_ARCHIPELAGO_ITEM");
+		IMAGE_NRG_DRINK = aMgr.GetImageThrow("IMAGE_NRG_DRINK");
+		IMAGE_E_ATM = aMgr.GetImageThrow("IMAGE_E_ATM");
+		IMAGE_E_ATM_ZAP = aMgr.GetImageThrow("IMAGE_E_ATM_ZAP");
+		IMAGE_NRG_BANK = aMgr.GetImageThrow("IMAGE_NRG_BANK");
 	}
 	catch (ResourceManagerException&)
 	{

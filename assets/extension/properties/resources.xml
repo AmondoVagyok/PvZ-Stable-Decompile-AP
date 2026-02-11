@@ -4,6 +4,10 @@
         <SetDefaults path="extension/images" idprefix="IMAGE_" />
         <Image id="ARCHIPELAGO_ITEM" path="ArchipelagoItem"/>
         <Image id="NOT_FOUND" path="NotFound"/>
+        <Image id="NRG_DRINK" path="nrg_drink"/>
+        <Image id="E_ATM" path="eatm"/>
+        <Image id="E_ATM_ZAP" path="eatm_zap"/>
+        <Image id="NRG_BANK" path="nrgbank"/>
         
         <Image id="SCROLLBG" path="scrollBG"/>
         <Image id="SCROLLOVERLAY" path="scrollOverlay"/>

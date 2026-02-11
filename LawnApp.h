@@ -359,6 +359,7 @@ public:
 	/*inline*/ bool					IsIZombieLevel();
 	/*inline*/ bool					CanShowZenGarden();
 	static SexyString				GetMoneyString(int theAmount);
+	SexyString GetEnergyString(uint64_t theAmount);
 	bool							AdvanceCrazyDaveText();
 	/*inline*/ bool					IsWhackAZombieLevel();
 	void							BetaSubmit(bool theAskForComments);

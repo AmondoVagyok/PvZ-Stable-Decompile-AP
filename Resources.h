@@ -2035,6 +2035,10 @@ namespace Sexy
     
     // AP resources
     extern Image* IMAGE_ARCHIPELAGO_ITEM;
+    extern Image* IMAGE_NRG_DRINK;
+    extern Image* IMAGE_E_ATM;
+    extern Image* IMAGE_E_ATM_ZAP;
+    extern Image* IMAGE_NRG_BANK;
 
     extern Image* IMAGE_UNLOCK_BUTTON;
     extern Image* IMAGE_UNLOCK_BUTTON_HIGHLIGHT;

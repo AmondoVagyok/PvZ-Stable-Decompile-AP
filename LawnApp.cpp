@@ -4239,6 +4239,26 @@ void LawnApp::CrazyDaveTalkMessage(const SexyString& theMessage)
 
 			mCrazyDaveState = CrazyDaveState::CRAZY_DAVE_HANDING_TALKING;
 		}
+		else if (theMessage.find(_S("{SHOW_AP_OFFWORLD}")) != SexyString::npos)
+		{
+			aCrazyDaveReanim->PlayReanim("anim_talk_handing", ReanimLoopType::REANIM_LOOP, 50, 12.0f);
+
+			Reanimation* aMoneyBagReanim = AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_ZENGARDEN_FERTILIZER);
+			aMoneyBagReanim->PlayReanim("bag", ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD, 0, 24.0f);
+			aMoneyBagReanim->mAnimRate = 0.0f;
+			aMoneyBagReanim->SetImageOverride("bag", IMAGE_NRG_DRINK);
+
+			ReanimatorTrackInstance* aHandTrackInstance = aCrazyDaveReanim->GetTrackInstanceByName("Dave_handinghand");
+			AttachReanim(aHandTrackInstance->mAttachmentID, aMoneyBagReanim, 90.0f, 405.0f);
+			aCrazyDaveReanim->Update();
+
+			if (doSound)
+			{
+				PlayFoley(FoleyType::FOLEY_CRAZY_DAVE_LONG);
+			}
+
+			mCrazyDaveState = CrazyDaveState::CRAZY_DAVE_HANDING_TALKING;
+		}
 		else
 		{
 			if (aWordsCount < 23)
@@ -4741,6 +4761,22 @@ SexyString LawnApp::GetMoneyString(int theAmount)
 	{
 		return StrFormat(_S("$%d"), aValue);
 	}
+}
+
+//0x455E10
+SexyString LawnApp::GetEnergyString(uint64_t theAmount)
+{
+	if (theAmount < 1000)
+	{
+		return StrFormat("%d J", theAmount);
+	}
+	if (theAmount < 1000000) {
+		return std::format("{:.2f} kJ", theAmount / 1000.0);
+	}
+	if (theAmount < 1000000000) {
+		return std::format("{:.2f} MJ", theAmount / 1000000.0);
+	}
+	return std::format("{:.2f} GJ", theAmount / 1000000000.0);
 }
 
 //0x455EE0

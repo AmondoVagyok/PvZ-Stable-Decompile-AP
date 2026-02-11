@@ -27,6 +27,9 @@
 #include "../../SexyAppFramework/APData.h"
 #include "../../SexyAppFramework/APWrapper.h"
 
+constexpr uint64_t EnergyLinkExchangeWithdraw = 100000000;
+constexpr uint64_t EnergyLinkExchangeDeposit = EnergyLinkExchangeWithdraw * 3 / 4;
+
 static StoreItem gStoreItemSpots[NUM_STORE_PAGES][MAX_PAGE_SPOTS] =
 {
     { STORE_ITEM_PACKET_UPGRADE,    STORE_ITEM_POOL_CLEANER,        STORE_ITEM_RAKE,                STORE_ITEM_ROOF_CLEANER,
@@ -76,6 +79,12 @@ void StoreScreenOverlay::Draw(Graphics* g)
     mParent->DrawOverlay(g);
 }
 
+const int BackButtonOffset = 366;
+const int PrevButtonOffset = 252;
+const int NextButtonOffset = 596;
+const int EnergyButtonOffset = 669;
+const int EnergyBackButtonOffset = 260;
+
 //0x489DA0
 StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STORE, true, _S("Store"), _S(""), _S(""), BUTTONS_NONE)
 {
@@ -97,7 +106,7 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mWaitForDialog = false;
     mCoins.DataArrayInitialize(1024U, "coins");
     TodLoadResources("DelayLoad_Store");
-    Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+    Resize(0, 0, BOARD_WIDTH * 2, BOARD_HEIGHT);
     mPottedPlantSpecs.InitializePottedPlant(SEED_MARIGOLD);
     mPottedPlantSpecs.mDrawVariation = (DrawVariation)RandRangeInt(VARIATION_MARIGOLD_WHITE, VARIATION_MARIGOLD_LIGHT_GREEN);
     mCrazyDaveLastTalkIndex = -1;
@@ -112,7 +121,7 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mBackButton->SetFont(Sexy::FONT_HOUSEOFTERROR20);
     mBackButton->mColors[ButtonWidget::COLOR_LABEL] = Color(98, 153, 235);
     mBackButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(167, 192, 235);
-    mBackButton->Resize(366, 512, aMenuImage->mWidth, aMenuImage->mHeight);
+    mBackButton->Resize(BackButtonOffset, 512, aMenuImage->mWidth, aMenuImage->mHeight);
     mBackButton->mTextOffsetX = -7;
     mBackButton->mTextOffsetY = 1;
     mBackButton->mTextDownOffsetX = 2;
@@ -128,7 +137,7 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mPrevButton->mDownImage = Sexy::IMAGE_STORE_PREVBUTTONHIGHLIGHT;
     mPrevButton->mColors[ButtonWidget::COLOR_LABEL] = Color(255, 240, 0);
     mPrevButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(200, 200, 255);
-    mPrevButton->Resize(252, 402, aPrevImage->mWidth, aPrevImage->mHeight);
+    mPrevButton->Resize(PrevButtonOffset, 402, aPrevImage->mWidth, aPrevImage->mHeight);
     mPrevButton->mBtnNoDraw = true;
 
     mNextButton = new NewLawnButton(nullptr, StoreScreen::StoreScreen_Next, this);
@@ -140,11 +149,93 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mNextButton->mDownImage = Sexy::IMAGE_STORE_NEXTBUTTONHIGHLIGHT;
     mNextButton->mColors[ButtonWidget::COLOR_LABEL] = Color(255, 240, 0);
     mNextButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(200, 200, 255);
-    mNextButton->Resize(596, 402, aNextImage->mWidth, aNextImage->mHeight);
+    mNextButton->Resize(NextButtonOffset, 402, aNextImage->mWidth, aNextImage->mHeight);
     mNextButton->mBtnNoDraw = true;
+    
+    mEnergyButton = MakeNewButton(StoreScreen::StoreScreen_Energy, this, _S("EnergyLink"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mEnergyButton->mTextDownOffsetX = 1;
+    mEnergyButton->mTextDownOffsetY = 1;
+    mEnergyButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyButton->Resize(EnergyButtonOffset, 518, 111, 26);
+    mEnergyButton->mBtnNoDraw = true;
+
+    mEnergyBackButton = MakeNewButton(StoreScreen::StoreScreen_EnergyBack, this, _S("Back to Shop"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mEnergyBackButton->mTextDownOffsetX = 1;
+    mEnergyBackButton->mTextDownOffsetY = 1;
+    mEnergyBackButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyBackButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyBackButton->Resize(mApp->mWidth + EnergyBackButtonOffset, 518, 111, 26);
+    mEnergyBackButton->mBtnNoDraw = true;
+    
+    mDepositButton = MakeNewButton(StoreScreen::StoreScreen_EnergyDeposit, this, _S("Deposit"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mDepositButton->mTextDownOffsetX = 1;
+    mDepositButton->mTextDownOffsetY = 1;
+    mDepositButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mDepositButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mDepositButton->Resize(mApp->mWidth + 440, 300, 111, 26);
+    mDepositButton->mBtnNoDraw = true;
+    
+    mWithdrawButton = MakeNewButton(StoreScreen::StoreScreen_EnergyWithdraw, this, _S("Withdraw"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mWithdrawButton->mTextDownOffsetX = 1;
+    mWithdrawButton->mTextDownOffsetY = 1;
+    mWithdrawButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mWithdrawButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mWithdrawButton->Resize(mApp->mWidth + 440, 350, 111, 26);
+    mWithdrawButton->mBtnNoDraw = true;
+    
+    mEnergyAtmBackButton = MakeNewButton(StoreScreen::StoreScreen_EnergyAtmBack, this, _S("Back to Menu"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mEnergyAtmBackButton->mTextDownOffsetX = 1;
+    mEnergyAtmBackButton->mTextDownOffsetY = 1;
+    mEnergyAtmBackButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyAtmBackButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyAtmBackButton->Resize(mApp->mWidth + 420, 270, 111, 26);
+    mEnergyAtmBackButton->mBtnNoDraw = true;
+    
+    mEnergyLessButton = MakeNewButton(StoreScreen::StoreScreen_EnergyLess, this, _S(""), nullptr, Sexy::IMAGE_ZOMBATAR_PREV_BUTTON, 
+        Sexy::IMAGE_ZOMBATAR_PREV_BUTTON_HIGHLIGHT, Sexy::IMAGE_ZOMBATAR_PREV_BUTTON_HIGHLIGHT);
+    mEnergyLessButton->mTextDownOffsetX = 1;
+    mEnergyLessButton->mTextDownOffsetY = 1;
+    mEnergyLessButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyLessButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyLessButton->Resize(mApp->mWidth + 390, 300, 33, 38);
+    mEnergyLessButton->mBtnNoDraw = true;
+    
+    mEnergyMoreButton = MakeNewButton(StoreScreen::StoreScreen_EnergyMore, this, _S(""), nullptr, Sexy::IMAGE_ZOMBATAR_NEXT_BUTTON, 
+        Sexy::IMAGE_ZOMBATAR_NEXT_BUTTON_HIGHLIGHT, Sexy::IMAGE_ZOMBATAR_NEXT_BUTTON_HIGHLIGHT);
+    mEnergyMoreButton->mTextDownOffsetX = 1;
+    mEnergyMoreButton->mTextDownOffsetY = 1;
+    mEnergyMoreButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyMoreButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyMoreButton->Resize(mApp->mWidth + 570, 300, 33, 38);
+    mEnergyMoreButton->mBtnNoDraw = true;
+    
+    mEnergyGoButton = MakeNewButton(StoreScreen::StoreScreen_EnergyGo, this, _S("Exchange"), nullptr, Sexy::IMAGE_SEEDCHOOSER_BUTTON2, 
+        Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW, Sexy::IMAGE_SEEDCHOOSER_BUTTON2_GLOW);
+    mEnergyGoButton->mTextDownOffsetX = 1;
+    mEnergyGoButton->mTextDownOffsetY = 1;
+    mEnergyGoButton->mColors[ButtonWidget::COLOR_LABEL] = Color(42, 42, 90);
+    mEnergyGoButton->mColors[ButtonWidget::COLOR_LABEL_HILITE] = Color(42, 42, 90);
+    mEnergyGoButton->Resize(mApp->mWidth + 440, 380, 111, 26);
+    mEnergyGoButton->mBtnNoDraw = true;
 
     mOverlayWidget = new StoreScreenOverlay(this);
-    mOverlayWidget->Resize(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
+    mOverlayWidget->Resize(0, 0, BOARD_WIDTH * 2, BOARD_HEIGHT);
+    
+    mSlideCounter = 0;
+    mStartX = 0;
+    mStartY = 0;
+    mDestX = 0;
+    mDestY = 0;
+    mCrazyDaveOffset = 0;
+    mCurrentScreen = CarScreen;
+    mEnergyMode = Idle;
+    mZapTickCounter = 0;
 
     if (!IsPageShown(1))
     {
@@ -172,6 +263,14 @@ StoreScreen::~StoreScreen()
     if (mBackButton) delete mBackButton;
     if (mPrevButton) delete mPrevButton;
     if (mNextButton) delete mNextButton;
+    if (mEnergyButton) delete mEnergyButton;
+    if (mEnergyBackButton) delete mEnergyBackButton;
+    if (mDepositButton) delete mDepositButton;
+    if (mWithdrawButton) delete mWithdrawButton;
+    if (mEnergyAtmBackButton) delete mEnergyAtmBackButton;
+    if (mEnergyLessButton) delete mEnergyLessButton;
+    if (mEnergyMoreButton) delete mEnergyMoreButton;
+    if (mEnergyGoButton) delete mEnergyGoButton;
     if (mOverlayWidget) delete mOverlayWidget;
 }
 
@@ -481,10 +580,12 @@ void StoreScreen::Draw(Graphics* g)
     if (mApp->IsNight())
     {
         g->DrawImage(Sexy::IMAGE_STORE_BACKGROUNDNIGHT, 0, 0);
+        g->DrawImage(Sexy::IMAGE_STORE_BACKGROUNDNIGHT, BOARD_WIDTH, 0);
     }
     else
     {
         g->DrawImage(Sexy::IMAGE_STORE_BACKGROUND, 0, 0);
+        g->DrawImage(Sexy::IMAGE_STORE_BACKGROUND, BOARD_WIDTH, 0);
     }
 
     if (!mHatchTimer && mHatchOpen)
@@ -506,6 +607,32 @@ void StoreScreen::Draw(Graphics* g)
         }
     }
     g->DrawImage(Sexy::IMAGE_STORE_SIGN, 285, aStoreSignPosY);
+    
+    auto energy_shake_x = 0;
+    auto energy_shake_y = 0;
+    if (mZapTickCounter > 490)
+    {
+        energy_shake_x = -10;
+        energy_shake_y = -10;
+    }
+    else if (mZapTickCounter > 480)
+    {
+        energy_shake_x = -5;
+        energy_shake_y = 5;
+    }
+    else if (mZapTickCounter > 470)
+    {
+        energy_shake_x = 10;
+        energy_shake_y = -5;
+    }
+    else if (mZapTickCounter > 460)
+    {
+        energy_shake_x = 5;
+        energy_shake_y = 10;
+    }
+    
+    // Draw the e-ATM
+    g->DrawImage(mZapTickCounter > 0 ? Sexy::IMAGE_E_ATM_ZAP : Sexy::IMAGE_E_ATM, BOARD_WIDTH + 330 + energy_shake_x, -170 + energy_shake_y);
 
     Graphics gBackButton(*g);
     gBackButton.mTransX = mBackButton->mX + mApp->mDDInterface->mWideScreenOffsetX;
@@ -521,6 +648,84 @@ void StoreScreen::Draw(Graphics* g)
     gNextButton.mTransX = mNextButton->mX + mApp->mDDInterface->mWideScreenOffsetX;
     gNextButton.mTransY = mNextButton->mY + mApp->mDDInterface->mWideScreenOffsetY;
     mNextButton->Render(&gNextButton);
+    
+    Graphics gEnergyButton(*g);
+    gEnergyButton.mTransX = mEnergyButton->mX + mApp->mDDInterface->mWideScreenOffsetX;
+    gEnergyButton.mTransY = mEnergyButton->mY + mApp->mDDInterface->mWideScreenOffsetY;
+    mEnergyButton->Render(&gEnergyButton);
+    
+    Graphics gEnergyBackButton(*g);
+    gEnergyBackButton.mTransX = mEnergyBackButton->mX + mApp->mDDInterface->mWideScreenOffsetX;
+    gEnergyBackButton.mTransY = mEnergyBackButton->mY + mApp->mDDInterface->mWideScreenOffsetY;
+    mEnergyBackButton->Render(&gEnergyBackButton);
+    
+    switch (mEnergyMode)
+    {
+    case Idle:
+        {
+            Graphics gDepositButton(*g);
+            gDepositButton.mTransX = mDepositButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gDepositButton.mTransY = mDepositButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mDepositButton->Render(&gDepositButton);
+    
+            Graphics gWithdrawButton(*g);
+            gWithdrawButton.mTransX = mWithdrawButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gWithdrawButton.mTransY = mWithdrawButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mWithdrawButton->Render(&gWithdrawButton);
+            break;
+        }
+    case Deposit:
+    case Withdraw:
+        {
+            Graphics gBackButton(*g);
+            gBackButton.mTransX = mEnergyAtmBackButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gBackButton.mTransY = mEnergyAtmBackButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mEnergyAtmBackButton->Render(&gBackButton);
+            
+            Graphics gLessButton(*g);
+            gLessButton.mTransX = mEnergyLessButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gLessButton.mTransY = mEnergyLessButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mEnergyLessButton->Render(&gLessButton);
+            
+            Graphics gMoreButton(*g);
+            gMoreButton.mTransX = mEnergyMoreButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gMoreButton.mTransY = mEnergyMoreButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mEnergyMoreButton->Render(&gMoreButton);
+            
+            Graphics gGoButton(*g);
+            gGoButton.mTransX = mEnergyGoButton->mX + mApp->mDDInterface->mWideScreenOffsetX + energy_shake_x;
+            gGoButton.mTransY = mEnergyGoButton->mY + mApp->mDDInterface->mWideScreenOffsetY + energy_shake_y;
+            mEnergyGoButton->Render(&gGoButton);
+            
+            auto coinY = 300;
+            auto nrgY = 345;
+            SexyString aCoinLabel = "$$$";
+            SexyString aEnergyLabel = "EEE";
+            
+            aCoinLabel = mApp->GetMoneyString(mPendingEnergyTransaction);
+            
+            if (mEnergyMode == Deposit)
+            {
+                aEnergyLabel = mApp->GetEnergyString(mPendingEnergyTransaction * EnergyLinkExchangeDeposit);
+            }
+            else
+            {
+                aEnergyLabel = "-" + mApp->GetEnergyString(mPendingEnergyTransaction * EnergyLinkExchangeWithdraw);
+            }
+            
+            g->DrawImage(Sexy::IMAGE_COINBANK, BOARD_WIDTH + 430 + energy_shake_x, coinY + energy_shake_y);
+            g->SetColor(Color(180, 255, 90));
+            g->SetFont(Sexy::FONT_CONTINUUMBOLD14);
+            g->DrawString(aCoinLabel, BOARD_WIDTH + 430 + 7 + 111 - Sexy::FONT_CONTINUUMBOLD14->StringWidth(aCoinLabel) + energy_shake_x, coinY + 24 + energy_shake_y);
+            
+            g->DrawImage(Sexy::IMAGE_NRG_BANK, BOARD_WIDTH + 430 + energy_shake_x, nrgY + energy_shake_y);
+            g->SetColor(Color(180, 255, 90));
+            g->SetFont(Sexy::FONT_CONTINUUMBOLD14);
+            g->DrawString(aEnergyLabel, BOARD_WIDTH + 430 + 7 + 111 - Sexy::FONT_CONTINUUMBOLD14->StringWidth(aEnergyLabel) + energy_shake_x, nrgY + 24 + energy_shake_y);
+            
+            break;
+        }
+    }
 
     if (!mHatchTimer && mHatchOpen)
     {
@@ -534,11 +739,22 @@ void StoreScreen::Draw(Graphics* g)
         }
     }
 
-    g->DrawImage(Sexy::IMAGE_COINBANK, STORESCREEN_COINBANK_X, STORESCREEN_COINBANK_Y);
+    g->DrawImage(Sexy::IMAGE_COINBANK, STORESCREEN_COINBANK_X - mX, STORESCREEN_COINBANK_Y);
     g->SetColor(Color(180, 255, 90));
     g->SetFont(Sexy::FONT_CONTINUUMBOLD14);
     SexyString aCoinLabel = mApp->GetMoneyString(mApp->mPlayerInfo->mCoins);
-    g->DrawString(aCoinLabel, STORESCREEN_COINBANK_X + 7 + 111 - Sexy::FONT_CONTINUUMBOLD14->StringWidth(aCoinLabel), STORESCREEN_COINBANK_Y + 24);
+    g->DrawString(aCoinLabel, STORESCREEN_COINBANK_X - mX + 7 + 111 - Sexy::FONT_CONTINUUMBOLD14->StringWidth(aCoinLabel), STORESCREEN_COINBANK_Y + 24);
+    
+    if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+    {
+        auto elBalance = mApp->mAP->ReadDataStorage(mApp->mAP->DataStorageSlot(APWrapper::KnownDataStorageKey::EnergyLink)).get<uint64_t>();
+        // Draw EnergyLink label
+        g->DrawImage(Sexy::IMAGE_NRG_BANK, STORESCREEN_COINBANK_X + BOARD_WIDTH, STORESCREEN_COINBANK_Y - 30);
+        g->SetColor(Color(180, 255, 90));
+        g->SetFont(Sexy::FONT_CONTINUUMBOLD14);
+        SexyString aEnergyLinkBalance = mApp->GetEnergyString(elBalance);
+        g->DrawString(aEnergyLinkBalance, STORESCREEN_COINBANK_X + BOARD_WIDTH+ 7 + 111 - Sexy::FONT_CONTINUUMBOLD14->StringWidth(aEnergyLinkBalance), STORESCREEN_COINBANK_Y + 24 - 30);
+    }
 
     if (!mPrevButton->mDisabled)
     {
@@ -556,7 +772,7 @@ void StoreScreen::Draw(Graphics* g)
     }
 
     Graphics gCrazyDave = Graphics(*g);
-    gCrazyDave.mTransX -= 42.0f;
+    gCrazyDave.mTransX -= 42.0f - mCrazyDaveOffset;
     gCrazyDave.mTransY += 68.0f;
     mApp->DrawCrazyDave(&gCrazyDave);
 }
@@ -647,7 +863,9 @@ void StoreScreen::UpdateMouse()
     }
 
     if (mApp->mWidgetManager->mOverWidget)
-        mApp->SetCursor(mBackButton->mIsOver || mPrevButton->mIsOver || mNextButton->mIsOver || aShowFinger ? CURSOR_HAND : CURSOR_POINTER);
+        mApp->SetCursor(mBackButton->mIsOver || mPrevButton->mIsOver || mNextButton->mIsOver || mEnergyButton->mIsOver || mEnergyBackButton->mIsOver ||
+            (mEnergyMode == Idle && (mWithdrawButton->mIsOver || mDepositButton->mIsOver)) || 
+            (mEnergyMode != Idle && (mEnergyAtmBackButton->mIsOver || mEnergyLessButton->mIsOver || mEnergyMoreButton->mIsOver || mEnergyGoButton->mIsOver)) || aShowFinger ? CURSOR_HAND : CURSOR_POINTER);
 }
 
 //0x48BE30
@@ -680,6 +898,41 @@ bool StoreScreen::CanInteractWithButtons()
 //0x48BF60
 void StoreScreen::Update()
 {
+	// @Patoke: implemented this
+	if (mSlideCounter > 0) {
+		int aNewX = TodAnimateCurve(75, 0, mSlideCounter, mStartX, mDestX, TodCurves::CURVE_EASE_IN_OUT);
+		int aNewY = TodAnimateCurve(75, 0, mSlideCounter, mStartY, mDestY, TodCurves::CURVE_EASE_IN_OUT);
+		Move(aNewX, aNewY);
+
+		// @Patoke: not from the original binaries but fixes bugs
+		mOverlayWidget->Move(aNewX, aNewY);
+	    mBackButton->Move(aNewX + BackButtonOffset, mBackButton->mY);
+	    mPrevButton->Move(aNewX + PrevButtonOffset, mPrevButton->mY);
+	    mNextButton->Move(aNewX + NextButtonOffset, mNextButton->mY);
+	    mEnergyButton->Move(aNewX + EnergyButtonOffset, mEnergyButton->mY);
+	    mEnergyBackButton->SetOffset(aNewX, aNewY);
+	    mDepositButton->SetOffset(aNewX, aNewY);
+	    mWithdrawButton->SetOffset(aNewX, aNewY);
+	    mEnergyAtmBackButton->SetOffset(aNewX, aNewY);
+	    mEnergyLessButton->SetOffset(aNewX, aNewY);
+	    mEnergyMoreButton->SetOffset(aNewX, aNewY);
+	    mEnergyGoButton->SetOffset(aNewX, aNewY);
+	    mCrazyDaveOffset = -aNewX;
+	    // TODO: mark stuff dirty
+
+	    mSlideCounter--;
+    
+	    if (mSlideCounter == 0 && mCurrentScreen == EnergyScreen)
+	    {
+	        SetBubbleText("{SHOW_AP_OFFWORLD}I can sell you energy drinks to put in the energy machine!", 100, false);
+	    }
+	}
+    
+    if (mZapTickCounter > 0)
+    {
+        mZapTickCounter--;
+    }
+    
     // For some reason we stop polling in the shop so poll here
     mApp->mAP->Poll();
     mApp->mMusic->MakeSureMusicIsPlaying(MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME);
@@ -719,6 +972,22 @@ void StoreScreen::Update()
             mPrevButton->mY -= mShakeY;
             mNextButton->mX -= mShakeX;
             mNextButton->mY -= mShakeY;
+            mEnergyButton->mX -= mShakeX;
+            mEnergyButton->mY -= mShakeY;
+            mEnergyBackButton->mX -= mShakeX;
+            mEnergyBackButton->mY -= mShakeY;
+            mDepositButton->mX -= mShakeX;
+            mDepositButton->mY -= mShakeY;
+            mWithdrawButton->mX -= mShakeX;
+            mWithdrawButton->mY -= mShakeY;
+            mEnergyAtmBackButton->mX -= mShakeX;
+            mEnergyAtmBackButton->mY -= mShakeY;
+            mEnergyLessButton->mX -= mShakeX;
+            mEnergyLessButton->mY -= mShakeY;
+            mEnergyMoreButton->mX -= mShakeX;
+            mEnergyMoreButton->mY -= mShakeY;
+            mEnergyGoButton->mX -= mShakeX;
+            mEnergyGoButton->mY -= mShakeY;
 
             /*
             if (mHatchTimer <= 35)
@@ -761,6 +1030,22 @@ void StoreScreen::Update()
             mPrevButton->mY += mShakeY;
             mNextButton->mX += mShakeX;
             mNextButton->mY += mShakeY;
+            mEnergyButton->mX += mShakeX;
+            mEnergyButton->mY += mShakeY;
+            mEnergyBackButton->mX += mShakeX;
+            mEnergyBackButton->mY += mShakeY;
+            mWithdrawButton->mX += mShakeX;
+            mWithdrawButton->mY += mShakeY;
+            mDepositButton->mX += mShakeX;
+            mDepositButton->mY += mShakeY;
+            mEnergyAtmBackButton->mX += mShakeX;
+            mEnergyAtmBackButton->mY += mShakeY;
+            mEnergyLessButton->mX += mShakeX;
+            mEnergyLessButton->mY += mShakeY;
+            mEnergyMoreButton->mX += mShakeX;
+            mEnergyMoreButton->mY += mShakeY;
+            mEnergyGoButton->mX += mShakeX;
+            mEnergyGoButton->mY += mShakeY;
         }
         else if (mStartDialog != -1)
         {
@@ -795,32 +1080,35 @@ void StoreScreen::Update()
             }
             else
             {
-                mAmbientSpeechCountDown--;
-                if (mAmbientSpeechCountDown <= 0)
+                if (mCurrentScreen == CarScreen)
                 {
-                    TodWeightedArray aPickArray[4];
-                    for (int i = 0; i < 4; i++)
+                    mAmbientSpeechCountDown--;
+                    if (mAmbientSpeechCountDown <= 0)
                     {
-                        int aMessage = 2015 + i;
-                        aPickArray[i].mItem = aMessage;
-                        if (mPreviousAmbientSpeechIndex == aMessage)
+                        TodWeightedArray aPickArray[4];
+                        for (int i = 0; i < 4; i++)
                         {
-                            aPickArray[i].mWeight = 0;
+                            int aMessage = 2015 + i;
+                            aPickArray[i].mItem = aMessage;
+                            if (mPreviousAmbientSpeechIndex == aMessage)
+                            {
+                                aPickArray[i].mWeight = 0;
+                            }
+                            else if (i == 3)
+                            {
+                                aPickArray[i].mWeight = mApp->HasFinishedAdventure() ? 20 : 0;
+                            }
+                            else
+                            {
+                                aPickArray[i].mWeight = 100;
+                            }
                         }
-                        else if (i == 3)
-                        {
-                            aPickArray[i].mWeight = mApp->HasFinishedAdventure() ? 20 : 0;
-                        }
-                        else
-                        {
-                            aPickArray[i].mWeight = 100;
-                        }
-                    }
 
-                    int aDaveMessage = TodPickFromWeightedArray(aPickArray, 4);
-                    mPreviousAmbientSpeechIndex = aDaveMessage;
-                    SetBubbleText(aDaveMessage, 800, false);
-                    mAmbientSpeechCountDown = RandRangeInt(500, 1000);
+                        int aDaveMessage = TodPickFromWeightedArray(aPickArray, 4);
+                        mPreviousAmbientSpeechIndex = aDaveMessage;
+                        SetBubbleText(aDaveMessage, 800, false);
+                        mAmbientSpeechCountDown = RandRangeInt(500, 1000);
+                    }
                 }
             }
         }
@@ -847,6 +1135,14 @@ void StoreScreen::AddedToManager(WidgetManager* theWidgetManager)
     AddWidget(mBackButton);
     AddWidget(mPrevButton);
     AddWidget(mNextButton);
+    AddWidget(mEnergyButton);
+    AddWidget(mEnergyBackButton);
+    AddWidget(mDepositButton);
+    AddWidget(mWithdrawButton);
+    AddWidget(mEnergyAtmBackButton);
+    AddWidget(mEnergyMoreButton);
+    AddWidget(mEnergyLessButton);
+    AddWidget(mEnergyGoButton);
     AddWidget(mOverlayWidget);
 }
 
@@ -855,6 +1151,14 @@ void StoreScreen::OrderInManagerChanged()
     mWidgetManager->PutInfront(mBackButton, this);
     mWidgetManager->PutInfront(mPrevButton, this);
     mWidgetManager->PutInfront(mNextButton, this);
+    mWidgetManager->PutInfront(mEnergyButton, this);
+    mWidgetManager->PutInfront(mEnergyBackButton, this);
+    mWidgetManager->PutInfront(mDepositButton, this);
+    mWidgetManager->PutInfront(mWithdrawButton, this);
+    mWidgetManager->PutInfront(mEnergyAtmBackButton, this);
+    mWidgetManager->PutInfront(mEnergyLessButton, this);
+    mWidgetManager->PutInfront(mEnergyMoreButton, this);
+    mWidgetManager->PutInfront(mEnergyGoButton, this);
     mWidgetManager->PutInfront(mOverlayWidget, this);
 }
 
@@ -865,6 +1169,14 @@ void StoreScreen::RemovedFromManager(WidgetManager* theWidgetManager)
     RemoveWidget(mBackButton);
     RemoveWidget(mPrevButton);
     RemoveWidget(mNextButton);
+    RemoveWidget(mEnergyButton);
+    RemoveWidget(mEnergyBackButton);
+    RemoveWidget(mDepositButton);
+    RemoveWidget(mWithdrawButton);
+    RemoveWidget(mEnergyAtmBackButton);
+    RemoveWidget(mEnergyLessButton);
+    RemoveWidget(mEnergyMoreButton);
+    RemoveWidget(mEnergyGoButton);
     RemoveWidget(mOverlayWidget);
     mApp->CrazyDaveDie();
 }
@@ -873,7 +1185,29 @@ void StoreScreen::RemovedFromManager(WidgetManager* theWidgetManager)
 void StoreScreen::ButtonPress(int theId)
 {
     if (theId != StoreScreen::StoreScreen_Prev && theId != StoreScreen::StoreScreen_Next)
+    {
         mApp->PlaySample(Sexy::SOUND_BUTTONCLICK);
+    }
+    
+    if (theId == StoreScreen_EnergyLess)
+    {
+        if (mEnergyMode != Idle)
+        {
+            if (mPendingEnergyTransaction != 1)
+            {
+                mPendingEnergyTransaction--;
+                mButtonDownTickCounter = 60;
+            }
+        }
+    }
+    else if (theId == StoreScreen_EnergyMore)
+    {
+        if (mEnergyMode != Idle)
+        {
+            mPendingEnergyTransaction++;
+            mButtonDownTickCounter = 60;
+        }
+    }
 }
 
 //0x48C440
@@ -923,6 +1257,131 @@ void StoreScreen::ButtonDepress(int theId)
                 }
             }
         } while (!IsPageShown(mPage));
+    }
+    else if (theId == StoreScreen::StoreScreen_Energy)
+    {
+        mCurrentScreen = EnergyScreen;
+        
+        // Change to EnergyLink page
+        SlideTo(-mApp->mWidth, 0);
+        
+        mApp->CrazyDaveStopTalking();
+    }
+    else if (theId == StoreScreen::StoreScreen_EnergyBack)
+    {
+        mCurrentScreen = CarScreen;
+        SlideTo(0, 0);
+        mAmbientSpeechCountDown = RandRangeInt(500, 1000);
+        
+        mApp->CrazyDaveStopTalking();
+    } else if (theId == StoreScreen_EnergyDeposit)
+    {
+        if (mEnergyMode == Idle)
+        {
+            mPendingEnergyTransaction = 1;
+            mEnergyMode = Deposit;
+        }
+    }
+    else if (theId == StoreScreen_EnergyWithdraw)
+    {
+        if (mEnergyMode == Idle)
+        {
+            mPendingEnergyTransaction = 1;
+            mEnergyMode = Withdraw;
+        }
+    }
+    else if (theId == StoreScreen_EnergyAtmBack)
+    {
+        if (mEnergyMode != Idle)
+        {
+            mEnergyMode = Idle;
+        }
+    }
+    else if (theId == StoreScreen_EnergyGo)
+    {
+        if (mEnergyMode != Idle)
+        {
+            // Perform EnergyLink operation
+            
+            uint64_t energy_change;
+            int coin_change;
+            if (mEnergyMode == Deposit)
+            {
+                coin_change = -static_cast<int>(mPendingEnergyTransaction);
+                energy_change = mPendingEnergyTransaction * EnergyLinkExchangeDeposit;
+                
+                if (mApp->mPlayerInfo->mCoins < mPendingEnergyTransaction)
+                {
+                    // Not enough coins!
+                    Dialog* aDialog = mApp->DoDialog(DIALOG_NOT_ENOUGH_MONEY, true, _S("Not enough money"), _S("You can't afford to deposit this many coins."), _S("[DIALOG_BUTTON_OK]"), BUTTONS_FOOTER);
+                    mWaitForDialog = true;
+                    aDialog->WaitForResult(true);
+                    mWaitForDialog = false;
+                    return;
+                }
+                
+                mApp->mAP->WriteDataStorage(mApp->mAP->DataStorageSlot(APWrapper::KnownDataStorageKey::EnergyLink), 0).add(static_cast<int64_t>(energy_change));
+                mApp->mPlayerInfo->AddCoins(coin_change);
+                SetBubbleText("Thanks for buying!", 800, false);
+                mApp->PlaySample(Sexy::SOUND_THUNDER);
+            }
+            else
+            {
+                coin_change = mPendingEnergyTransaction;
+                energy_change = mPendingEnergyTransaction * EnergyLinkExchangeWithdraw;
+                
+                auto elBalance = mApp->mAP->ReadDataStorage(mApp->mAP->DataStorageSlot(APWrapper::KnownDataStorageKey::EnergyLink)).get<uint64_t>();
+                if (elBalance < energy_change)
+                {
+                    Dialog* aDialog = mApp->DoDialog(DIALOG_NOT_ENOUGH_MONEY, true, _S("Not enough energy"), _S("There is not enough energy in the EnergyLink system to withdraw that many coins."), _S("[DIALOG_BUTTON_OK]"), BUTTONS_FOOTER);
+                    mWaitForDialog = true;
+                    aDialog->WaitForResult(true);
+                    mWaitForDialog = false;
+                    return;
+                }
+                
+                mApp->mAP->WriteDataStorage(mApp->mAP->DataStorageSlot(APWrapper::KnownDataStorageKey::EnergyLink), 0).add(-static_cast<int64_t>(energy_change));
+                mApp->mPlayerInfo->AddCoins(coin_change);
+                
+                SetBubbleText("{SHAKE}I'M CRAAAAAAAAZY FOR ENERGY DRINKS!!!{MOUTH_BIG_SMILE}", 800, false);
+                mApp->PlaySample(Sexy::SOUND_DIAMOND);
+            }
+            
+            mZapTickCounter = 500;
+            mApp->WriteCurrentUserConfig();
+        }
+    }
+}
+
+void StoreScreen::ButtonDownTick(int theId)
+{
+    Dialog::ButtonDownTick(theId);
+    if (theId == StoreScreen_EnergyLess)
+    {
+        if (mEnergyMode != Idle)
+        {
+            if (--mButtonDownTickCounter == 0)
+            {
+                if (mPendingEnergyTransaction != 1)
+                {
+                    mPendingEnergyTransaction--;
+                }
+                mButtonDownTickCounter = 5;
+                mApp->PlaySample(Sexy::SOUND_BUTTONCLICK);
+            }
+        }
+    }
+    else if (theId == StoreScreen_EnergyMore)
+    {
+        if (mEnergyMode != Idle)
+        {
+            if (--mButtonDownTickCounter == 0)
+            {
+                mPendingEnergyTransaction++;
+                mButtonDownTickCounter = 5;
+                mApp->PlaySample(Sexy::SOUND_BUTTONCLICK);
+            }
+        }
     }
 }
 
@@ -1144,6 +1603,22 @@ void StoreScreen::EnableButtons(bool theEnable)
     }
     mBackButton->mMouseVisible = theEnable;
     mBackButton->SetDisabled(!theEnable);
+    mEnergyButton->mMouseVisible = theEnable;
+    mEnergyButton->SetDisabled(!theEnable);
+    mEnergyBackButton->mMouseVisible = theEnable;
+    mEnergyBackButton->SetDisabled(!theEnable);
+    mDepositButton->mMouseVisible = theEnable;
+    mDepositButton->SetDisabled(!theEnable);
+    mWithdrawButton->mMouseVisible = theEnable;
+    mWithdrawButton->SetDisabled(!theEnable);
+    mEnergyAtmBackButton->mMouseVisible = theEnable;
+    mEnergyAtmBackButton->SetDisabled(!theEnable);
+    mEnergyLessButton->mMouseVisible = theEnable;
+    mEnergyLessButton->SetDisabled(!theEnable);
+    mEnergyMoreButton->mMouseVisible = theEnable;
+    mEnergyMoreButton->SetDisabled(!theEnable);
+    mEnergyGoButton->mMouseVisible = theEnable;
+    mEnergyGoButton->SetDisabled(!theEnable);
 }
 
 // GOTY @Patoke: 0x498110
@@ -1153,4 +1628,13 @@ void StoreScreen::SetupForIntro(int theDialogIndex)
     mHatchOpen = false;
     mBackButton->mLabel = TodStringTranslate(_S("[STORE_NEXT_LEVEL_BUTTON]"));
     EnableButtons(false);
+}
+
+
+void StoreScreen::SlideTo(int theX, int theY) {
+    mSlideCounter = 75;
+    mDestX = theX;
+    mDestY = theY;
+    mStartX = mX;
+    mStartY = mY;
 }

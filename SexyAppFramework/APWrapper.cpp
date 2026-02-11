@@ -324,14 +324,16 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         
         auto data_storage_requested_keys = {
             DataStorageSlotPrefixed("profileGuids"),
-            std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number())
+            DataStorageSlot(KnownDataStorageKey::ClientStatus),
+            DataStorageSlot(KnownDataStorageKey::EnergyLink)
         };
         d->mAP->SetNotify(data_storage_requested_keys);
         
         // Default profile GUIDs
         this->WriteDataStorage(DataStorageSlotPrefixed("profileGuids"), nlohmann::json::array()).de_fault(nlohmann::json::array());
+        this->WriteDataStorage(DataStorageSlot(KnownDataStorageKey::EnergyLink), 0).de_fault(0);
         
-        d->mAP->Get({std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number())});
+        d->mAP->Get({DataStorageSlot(KnownDataStorageKey::ClientStatus)});
         
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
@@ -502,6 +504,19 @@ std::string APWrapper::DataStorageSlotPrefixed(std::string key) const
     return "Slot:" + std::to_string(d->mAP->get_player_number()) + ":" + key;
 }
 
+std::string APWrapper::DataStorageSlot(KnownDataStorageKey key) const
+{
+    switch (key)
+    {
+    case KnownDataStorageKey::EnergyLink:
+        return std::format("EnergyLink{}", d->mAP->get_team_number());
+    case KnownDataStorageKey::ClientStatus:
+        return std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number());
+    }
+    
+    return "";
+}
+
 nlohmann::json APWrapper::ReadDataStorage(std::string key) const
 {
     return d->data_storage[key];
@@ -521,7 +536,7 @@ int64_t APWrapper::MySlot() const
 bool APWrapper::IsGoalReached() const
 {
     if (!d->mAP) return false;
-    auto status = ReadDataStorage(std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number()));
+    auto status = ReadDataStorage(DataStorageSlot(KnownDataStorageKey::ClientStatus));
     if (status.is_null())
     {
         return false;

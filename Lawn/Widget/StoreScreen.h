@@ -23,14 +23,43 @@ private:
     {
         StoreScreen_Back = 100,
         StoreScreen_Prev = 101,
-        StoreScreen_Next = 102
+        StoreScreen_Next = 102,
+        StoreScreen_Energy = 103,
+        StoreScreen_EnergyBack = 104,
+    	StoreScreen_EnergyDeposit,
+    	StoreScreen_EnergyWithdraw,
+    	StoreScreen_EnergyGo,
+    	StoreScreen_EnergyLess,
+    	StoreScreen_EnergyMore,
+    	StoreScreen_EnergyAtmBack
     };
+    
+    enum CurrentScreen
+    {
+        CarScreen,
+        EnergyScreen
+    };
+	
+	enum EnergyMode
+	{
+		Idle,
+		Deposit,
+		Withdraw,
+	};
 
 public:
 	LawnApp*					mApp;                           //+0x150
 	NewLawnButton*				mBackButton;                    //+0x154
 	NewLawnButton*				mPrevButton;                    //+0x158
 	NewLawnButton*				mNextButton;                    //+0x15C
+	NewLawnButton*				mEnergyButton;                  //+0x15C
+	NewLawnButton*				mEnergyBackButton;              //+0x15C
+	NewLawnButton*				mDepositButton;                 //+0x15C
+	NewLawnButton*				mWithdrawButton;                //+0x15C
+	NewLawnButton*				mEnergyGoButton;                //+0x15C
+	NewLawnButton*				mEnergyLessButton;              //+0x15C
+	NewLawnButton*				mEnergyMoreButton;              //+0x15C
+	NewLawnButton*				mEnergyAtmBackButton;           //+0x15C
     Widget*                     mOverlayWidget;                 //+0x160
 	int                         mStoreTime;                     //+0x164
 	string                      mBubbleText;                    //+0x168
@@ -56,6 +85,17 @@ public:
     int                         mCrazyDaveLastTalkIndex;
     
     ListenerHandle*             mItemHandler;
+    int mSlideCounter = 0;
+    int mDestX;
+    int mDestY;
+    int mStartX;
+    int mStartY;
+    int mCrazyDaveOffset;
+    CurrentScreen mCurrentScreen;
+	EnergyMode mEnergyMode;
+	uint64_t mPendingEnergyTransaction;
+	int mButtonDownTickCounter;
+	int mZapTickCounter;
 
 public:
     StoreScreen(LawnApp* theApp);
@@ -83,6 +123,7 @@ public:
     virtual void                ButtonPress(int theId);
     /*inline*/ bool             IsPageShown(int thePage);
     virtual void                ButtonDepress(int theId);
+    void ButtonDownTick(int theId) override;
     virtual void                KeyChar(char theChar);
     /*inline*/ int		GetItemCost(int theIndex);
     /*inline*/ bool             CanAffordItem(int theIndex);
@@ -91,6 +132,7 @@ public:
     virtual void                MouseDown(int x, int y, int theClickCount);
     /*inline*/ void             EnableButtons(bool theEnable);
     void                        SetupForIntro(int theDialogIndex);
+    void SlideTo(int theX, int theY);
     virtual void                OrderInManagerChanged();
 };
 

@@ -83,6 +83,12 @@ public:
         Connected
     };
     
+    enum class KnownDataStorageKey
+    {
+        EnergyLink,
+        ClientStatus
+    };
+    
     void Connect(const std::string& server_name, const std::string& slot_name, const std::string& password = "");
     void Disconnect() const;
     void DisconnectNow() const;
@@ -125,6 +131,7 @@ public:
     void SendAPMessage(const std::string& message) const;
     
     std::string DataStorageSlotPrefixed(std::string key) const;
+    std::string DataStorageSlot(KnownDataStorageKey key) const;
     nlohmann::json ReadDataStorage(std::string key) const;
     DataStoragePendingOperation WriteDataStorage(std::string key, nlohmann::json default_value);
     

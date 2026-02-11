@@ -335,8 +335,8 @@ void NewLawnButton::Draw(Graphics* g)
 void NewLawnButton::Render(Graphics* g)
 {
 	bool isDown = (mIsDown && mIsOver && !mDisabled) ^ mInverted;
-	int aFontX = mTextOffsetX + mTranslateX;
-	int aFontY = mTextOffsetY + mTranslateY;
+	int aFontX = mTextOffsetX + mTranslateX + mButtonOffsetX;
+	int aFontY = mTextOffsetY + mTranslateY + mButtonOffsetY;
 	if (mFont)
 	{
 		if (mLabelJustify == ButtonWidget::BUTTON_LABEL_CENTER)
