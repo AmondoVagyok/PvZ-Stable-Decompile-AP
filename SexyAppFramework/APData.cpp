@@ -82,6 +82,16 @@ bool PVZRAPData::SlotData::easy_upgrade_plants() const
     return inner->easy_upgrade_plants();
 }
 
+bool PVZRAPData::SlotData::disable_storm_flashes() const
+{
+    return inner->disable_storm_flashes();
+}
+
+bool PVZRAPData::SlotData::imitater_open() const
+{
+    return inner->imitater_open();
+}
+
 std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(const SeedType seed) const
 {
     return inner->seed_stats(seed);

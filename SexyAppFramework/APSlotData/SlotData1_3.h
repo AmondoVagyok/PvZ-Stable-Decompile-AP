@@ -56,6 +56,16 @@ public:
         return slot_data["easy_upgrade_plants"].get<int>() > 0;
     }
     
+    bool disable_storm_flashes() override
+    {
+        return slot_data["disable_storm_flashes"].get<int>() > 0;
+    }
+    
+    bool imitater_open() override
+    {
+        return slot_data["imitater_open"].get<bool>();
+    }
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         // Apply easy upgrade tax

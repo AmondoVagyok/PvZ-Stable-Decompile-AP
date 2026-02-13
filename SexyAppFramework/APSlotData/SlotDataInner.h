@@ -18,6 +18,8 @@ public:
     virtual std::map<int, int> vasebreaker_unlocks() = 0;
     
     virtual bool easy_upgrade_plants() = 0;
+    virtual bool disable_storm_flashes() = 0;
+    virtual bool imitater_open() = 0;
     
     virtual std::optional<SeedStats> seed_stats(SeedType seed) = 0;
     virtual std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) = 0;

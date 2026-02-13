@@ -2114,7 +2114,7 @@ void Challenge::UpdateStormyNight()
 		
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 		{
-			if (mApp->mAP->SlotData()["disable_storm_flashes"].get<int>() != 1)
+			if (!PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).disable_storm_flashes())
 			{
 				mApp->PlayFoley(FoleyType::FOLEY_THUNDER);
 			}
@@ -3366,7 +3366,7 @@ void Challenge::DrawStormFlash(Graphics* g, int theTime, int theMaxAmount)
 {
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		if (mApp->mAP->SlotData()["disable_storm_flashes"].get<int>() == 1)
+		if (PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).disable_storm_flashes())
 		{
 			// Storm flashes are disabled
 			return;

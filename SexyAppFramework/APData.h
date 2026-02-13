@@ -499,6 +499,8 @@ namespace PVZRAPData
         std::map<int, int> vasebreaker_unlocks() const;
         
         bool easy_upgrade_plants() const;
+        bool disable_storm_flashes() const;
+        bool imitater_open() const;
         
         std::optional<SeedStats> seed_stats(SeedType seed) const;
         std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;
