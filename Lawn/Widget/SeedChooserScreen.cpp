@@ -1048,7 +1048,7 @@ void SeedChooserScreen::ShowToolTip()
 	{
 		if (mImitaterButton->IsMouseOver() && mMouseVisible)
 		{
-			mToolTip->SetLabel(Plant::GetToolTip(mApp, SEED_IMITATER, mBoard->mLevel));
+			mToolTip->SetLabel(Plant::GetToolTip(mApp, SEED_IMITATER, mBoard->mLevel, true));
 			mToolTip->SetTitle(Plant::GetNameString(mApp, SEED_IMITATER, mBoard->mLevel));
 			mToolTip->SetWarningText(_S(""));
 			mToolTip->mX = (SEED_PACKET_WIDTH - mToolTip->mWidth) / 2 + mImitaterButton->mX;
@@ -1098,12 +1098,12 @@ void SeedChooserScreen::ShowToolTip()
 				if (aSeedType == SEED_IMITATER)
 				{
 					mToolTip->SetTitle(Plant::GetNameString(mApp, aSeedType, mBoard->mLevel, aChosenSeed.mImitaterType));
-					mToolTip->SetLabel(Plant::GetToolTip(mApp, aChosenSeed.mImitaterType, mBoard->mLevel));
+					mToolTip->SetLabel(Plant::GetToolTip(mApp, aChosenSeed.mImitaterType, mBoard->mLevel, true));
 				}
 				else
 				{
 					mToolTip->SetTitle(Plant::GetNameString(mApp, aSeedType, mBoard->mLevel, SEED_NONE));
-					mToolTip->SetLabel(Plant::GetToolTip(mApp, aSeedType, mBoard->mLevel));
+					mToolTip->SetLabel(Plant::GetToolTip(mApp, aSeedType, mBoard->mLevel, true));
 				}
 
 				int aSeedX, aSeedY;
@@ -1322,7 +1322,7 @@ void SeedChooserScreen::CloseSeedChooser()
 		if (aChosenSeed.mRefreshing)
 		{
 			aSeedPacket.mRefreshCounter = aChosenSeed.mRefreshCounter;
-			aSeedPacket.mRefreshTime = Plant::GetRefreshTime(aSeedPacket.mPacketType, aSeedPacket.mImitaterType);
+			aSeedPacket.mRefreshTime = Plant::GetRefreshTime(mApp, aSeedPacket.mPacketType, aSeedPacket.mImitaterType);
 			aSeedPacket.mRefreshing = true;
 			aSeedPacket.mActive = false;
 		}

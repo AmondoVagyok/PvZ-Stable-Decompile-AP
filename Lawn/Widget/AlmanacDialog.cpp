@@ -5,6 +5,9 @@
 #include "../SeedPacket.h"
 #include "../../LawnApp.h"
 #include "AlmanacDialog.h"
+
+#include <nlohmann/json.hpp>
+
 #include "../../Resources.h"
 #include "../System/Music.h"
 #include "../../GameConstants.h"
@@ -14,6 +17,8 @@
 #include "../../Sexy.TodLib/TodStringFile.h"
 #include "../../SexyAppFramework/WidgetManager.h"
 #include "../../Sexy.TodLib/Reanimator.h"
+#include "../../SexyAppFramework/APData.h"
+#include "../../SexyAppFramework/APWrapper.h"
 #include "../../SexyAppFramework/Font.h"
 
 bool gZombieDefeated[NUM_ZOMBIE_TYPES] = { false };
@@ -403,10 +408,22 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	SexyString aDescriptionName = StrFormat(_S("[%s_DESCRIPTION]"), aPlantDef.mPlantName);
 	TodDrawString(g, aName, 617, 288, Sexy::FONT_DWARVENTODCRAFT18YELLOW, Color::White, DS_ALIGN_CENTER);
 	TodDrawStringWrapped(g, aDescriptionName, Rect(485, 309, 258, 230), Sexy::FONT_BRIANNETOD12, Color(40, 50, 90), DS_ALIGN_LEFT);
+	
+	auto sun_price = aPlantDef.mSeedCost;
+	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+	auto seed_stats = slot_data.seed_stats(mSelectedSeed);
+	if (seed_stats.has_value())
+	{
+		if (seed_stats->sun_price.has_value())
+		{
+			sun_price = seed_stats->sun_price.value();
+		}
+	}
+
 
 	if (mSelectedSeed != SeedType::SEED_IMITATER)
 	{
-		SexyString aCostStr = TodReplaceString(StrFormat(_S("{KEYWORD}{COST}:{STAT} %d"), aPlantDef.mSeedCost), _S("{COST}"), _S("[COST]"));
+		SexyString aCostStr = TodReplaceString(StrFormat(_S("{KEYWORD}{COST}:{STAT} %d"), sun_price), _S("{COST}"), _S("[COST]"));
 		TodDrawStringWrapped(g, aCostStr, Rect(485, 520, 134, 50), Sexy::FONT_BRIANNETOD12, Color::White, DS_ALIGN_LEFT);
 
 		SexyString aRechargeStr = TodReplaceString(

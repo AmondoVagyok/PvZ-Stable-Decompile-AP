@@ -312,7 +312,7 @@ Board::Board(LawnApp* theApp)
 						if (seed_packet->mPacketType != SeedType::SEED_NONE)
 						{
 							seed_packet->mRefreshing = true;
-							seed_packet->mRefreshTime = Plant::GetRefreshTime(seed_packet->mPacketType, seed_packet->mImitaterType);
+							seed_packet->mRefreshTime = Plant::GetRefreshTime(mApp, seed_packet->mPacketType, seed_packet->mImitaterType);
 						}
 					}
 					break;
@@ -3676,7 +3676,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return PlantingReason::PLANTING_OK;
 	};
 		
-	auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
 	auto result = CanPlantAtInternal(theGridX, theGridY, theSeedType);
 	
 	if (easy_upgrade_plants)
@@ -4345,7 +4345,7 @@ void Board::UpdateToolTip()
 		//mToolTip->SetLabel(StrFormat(_S("[%s]"),GetPlantDefinition(aUseSeedType).mPlantName));
 
 		// @Patoke: wrong function call
-		mToolTip->SetLabel(Plant::GetNameString(mApp, aUseSeedType, mLevel));
+		mToolTip->SetLabel(Plant::GetNameString(mApp, aUseSeedType, mLevel) + Plant::GetStatDeltasTooltip(mApp, aUseSeedType));
 	}
 
 	int aPlantCost = GetCurrentPlantCost(aSeedPacket->mPacketType, aSeedPacket->mImitaterType);
@@ -11949,7 +11949,7 @@ void Board::UpdateGridItems()
 //0x41D7D0
 bool Board::PlantingRequirementsMet(SeedType theSeedType)
 {
-	auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
 	if (easy_upgrade_plants)
 	{
 		return true;

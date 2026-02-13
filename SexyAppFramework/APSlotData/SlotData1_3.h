@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include "../APData.h"
 #include "SlotDataInner.h"
+#include "../../Lawn/Plant.h"
 
 class SlotData1_3 : public PVZRAPData::SlotData::SlotDataInner
 {
@@ -48,6 +49,57 @@ public:
     std::map<int, int> vasebreaker_unlocks() override
     {
        return parse_unlocks(slot_data["vasebreaker_unlocks"]);
+    }
+    
+    bool easy_upgrade_plants() override
+    {
+        return slot_data["easy_upgrade_plants"].get<int>() > 0;
+    }
+    
+    std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
+    {
+        // Apply easy upgrade tax
+        if (easy_upgrade_plants())
+        {
+            int easy_upgrade_tax;
+            switch (seed)
+            {
+            case SeedType::SEED_GATLINGPEA:
+                easy_upgrade_tax = 200;
+                break;
+            case SeedType::SEED_TWINSUNFLOWER:
+                easy_upgrade_tax = 50;
+                break;
+            case SeedType::SEED_GLOOMSHROOM:
+                easy_upgrade_tax = 75;
+                break;
+            case SeedType::SEED_CATTAIL:
+                easy_upgrade_tax = 25;
+                break;
+            case SeedType::SEED_WINTERMELON:
+                easy_upgrade_tax = 300;
+                break;
+            case SeedType::SEED_GOLD_MAGNET:
+                easy_upgrade_tax = 100;
+                break;
+            case SeedType::SEED_SPIKEROCK:
+                easy_upgrade_tax = 100;
+                break;
+            case SeedType::SEED_COBCANNON:
+                easy_upgrade_tax = 200;
+                break;
+            default:
+                // No easy upgrade tax applies
+                return {};
+            }
+
+            const auto plant_def = GetPlantDefinition(seed);
+            
+            PVZRAPData::SlotData::SeedStats stats;
+            stats.sun_price = plant_def.mSeedCost + easy_upgrade_tax;
+            return stats;
+        }
+        return {};
     }
 
 private:

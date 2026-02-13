@@ -2060,7 +2060,7 @@ void Challenge::UpdateConveyorBelt()
 //0x4234A0
 void Challenge::UpdateRainingSeeds()
 {
-	auto easy_upgrade_plants = mApp->mAP->SlotData()["easy_upgrade_plants"].get<int>() > 0;
+	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
 
 	if (mBoard->HasLevelAwardDropped() || --mChallengeStateCounter != 0)
 		return;

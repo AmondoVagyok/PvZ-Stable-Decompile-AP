@@ -188,7 +188,18 @@ void ToolTipWidget::Draw(Graphics* g)
 	for (int i = 0; i < aLines.size(); i++)
 	{
 		SexyString aLine = aLines[i];
+		if (aLine.starts_with("{GREEN}"))
+		{
+			aLine = aLine.substr(7);
+			g->SetColor(Color(0, 150, 0));
+		}
+		else if (aLine.starts_with("{RED}"))
+		{
+			aLine = aLine.substr(5);
+			g->SetColor(Color(255, 0, 0));
+		}
 		g->DrawString(aLine, aPosX + (mWidth - FONT_PICO129->StringWidth(aLine)) / 2, aPosY + FONT_PICO129->GetAscent());
+		g->SetColor(Color::Black);
 		aPosY += FONT_PICO129->GetAscent() + 2;
 	}
 	g->PopState();

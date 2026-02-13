@@ -2,6 +2,7 @@
 #define APDATA_H
 
 #include <cstdint>
+#include <optional>
 #include <stdexcept>
 #include <nlohmann/json_fwd.hpp>
 
@@ -470,6 +471,14 @@ namespace PVZRAPData
             LevelItems = 4
         };
         
+        struct SeedStats
+        {
+            std::optional<int> sun_price;
+            std::optional<int> recharge_time;
+            std::optional<int> firing_rate;
+            std::optional<int> health;
+        };
+        
         static SlotData get_slot_data(const nlohmann::json& json);
         
         bool is_valid() const;
@@ -479,10 +488,14 @@ namespace PVZRAPData
         LevelRandomisation puzzle_levels() const;
         LevelRandomisation survival_levels() const;
         
-        std::map<int, int> minigame_unlocks();
-        std::map<int, int> survival_unlocks();
-        std::map<int, int> izombie_unlocks();
-        std::map<int, int> vasebreaker_unlocks();
+        std::map<int, int> minigame_unlocks() const;
+        std::map<int, int> survival_unlocks() const;
+        std::map<int, int> izombie_unlocks() const;
+        std::map<int, int> vasebreaker_unlocks() const;
+        
+        bool easy_upgrade_plants() const;
+        
+        std::optional<SeedStats> seed_stats(SeedType seed) const;
         
     private:
         

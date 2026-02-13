@@ -225,8 +225,9 @@ public:
     static Image*           GetImage(SeedType theSeedType);
     static int              GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
     static SexyString       GetNameString(LawnApp* app, SeedType theSeedType, int level, SeedType theImitaterType = SeedType::SEED_NONE);
-    static SexyString       GetToolTip(LawnApp* app, SeedType theSeedTyp, int level);
-    static int              GetRefreshTime(SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
+    static SexyString       GetToolTip(LawnApp* app, SeedType theSeedTyp, int level, bool includeStatDeltas = false);
+    static SexyString       GetStatDeltasTooltip(LawnApp* app, SeedType theSeedType);
+    static int              GetRefreshTime(LawnApp* app, SeedType theSeedType, SeedType theImitaterType = SeedType::SEED_NONE);
     static /*inline*/ bool  IsNocturnal(SeedType theSeedtype);
     static /*inline*/ bool  IsFungus(SeedType theSeedType);
     static /*inline*/ bool  IsAquatic(SeedType theSeedType);

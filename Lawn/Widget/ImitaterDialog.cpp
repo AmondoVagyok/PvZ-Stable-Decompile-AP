@@ -139,7 +139,7 @@ void ImitaterDialog::ShowToolTip()
 			mToolTip->SetWarningText(_S(""));
 		}
 		mToolTip->SetTitle(Plant::GetNameString(mApp, SeedType::SEED_IMITATER, 0, aSeedType));
-		mToolTip->SetLabel(Plant::GetToolTip(mApp, aSeedType, 0));
+		mToolTip->SetLabel(Plant::GetToolTip(mApp, aSeedType, 0, true));
 
 		int aSeedX, aSeedY;
 		GetSeedPosition(aSeedType, aSeedX, aSeedY);

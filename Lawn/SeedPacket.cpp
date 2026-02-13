@@ -963,7 +963,7 @@ void SeedPacket::WasPlanted()
 	{
 		mTimesUsed++;
 		mRefreshing = true;
-		mRefreshTime = Plant::GetRefreshTime(mPacketType, mImitaterType);
+		mRefreshTime = Plant::GetRefreshTime(mApp, mPacketType, mImitaterType);
 	}
 }
 
@@ -1205,7 +1205,7 @@ void SeedPacket::SetPacketType(SeedType theSeedType, SeedType theImitaterType)
 		mApp->IsIZombieLevel() || mApp->IsScaryPotterLevel() || mApp->IsWhackAZombieLevel() || (mApp->IsSurvivalMode() && mBoard->mChallenge->mSurvivalStage > 0))
 		return;
 
-	if ((Plant::IsUpgrade(mApp, aUseSeedType) && !gLawnApp->IsSurvivalMode()) || Plant::GetRefreshTime(mPacketType, mImitaterType) == 5000)
+	if ((Plant::IsUpgrade(mApp, aUseSeedType) && !gLawnApp->IsSurvivalMode()) || Plant::GetRefreshTime(mApp, mPacketType, mImitaterType) == 5000)
 	{
 		mRefreshTime = 3500;
 		mRefreshing = true;
@@ -1217,7 +1217,7 @@ void SeedPacket::SetPacketType(SeedType theSeedType, SeedType theImitaterType)
 		mRefreshing = true;
 		mActive = false;
 	}
-	else if (Plant::GetRefreshTime(mPacketType, mImitaterType) == 3000)
+	else if (Plant::GetRefreshTime(mApp, mPacketType, mImitaterType) == 3000)
 	{
 		mRefreshTime = 2000;
 		mRefreshing = true;

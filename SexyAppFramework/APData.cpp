@@ -57,24 +57,34 @@ PVZRAPData::SlotData::LevelRandomisation PVZRAPData::SlotData::survival_levels()
     return inner->survival_levels();
 }
 
-std::map<int, int> PVZRAPData::SlotData::minigame_unlocks()
+std::map<int, int> PVZRAPData::SlotData::minigame_unlocks() const
 {
     return inner->minigame_unlocks();
 }
 
-std::map<int, int> PVZRAPData::SlotData::survival_unlocks()
+std::map<int, int> PVZRAPData::SlotData::survival_unlocks() const
 {
     return inner->survival_unlocks();
 }
 
-std::map<int, int> PVZRAPData::SlotData::izombie_unlocks()
+std::map<int, int> PVZRAPData::SlotData::izombie_unlocks() const
 {
     return inner->izombie_unlocks();
 }
 
-std::map<int, int> PVZRAPData::SlotData::vasebreaker_unlocks()
+std::map<int, int> PVZRAPData::SlotData::vasebreaker_unlocks() const
 {
     return inner->vasebreaker_unlocks();
+}
+
+bool PVZRAPData::SlotData::easy_upgrade_plants() const
+{
+    return inner->easy_upgrade_plants();
+}
+
+std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(const SeedType seed) const
+{
+    return inner->seed_stats(seed);
 }
 
 PVZRAPData::SlotData::SlotData(const std::shared_ptr<SlotDataInner>& inner) : inner(inner)
