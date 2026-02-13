@@ -684,6 +684,7 @@ EXIT /B 0</Command>
     <ClCompile Include="..\Sexy.TodLib\TodParticle.cpp" />
     <ClCompile Include="..\Sexy.TodLib\TodStringFile.cpp" />
     <ClCompile Include="..\Sexy.TodLib\Trail.cpp" />
+    <ClCompile Include="APData.cpp" />
     <ClCompile Include="APWrapper.cpp" />
     <ClCompile Include="BassLoader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -1336,6 +1337,9 @@ EXIT /B 0</Command>
     <ClInclude Include="..\Sexy.TodLib\TodStringFile.h" />
     <ClInclude Include="..\Sexy.TodLib\Trail.h" />
     <ClInclude Include="APData.h" />
+    <ClInclude Include="APSlotData\SlotData1_3.h" />
+    <ClInclude Include="APSlotData\SlotData1_4.h" />
+    <ClInclude Include="APSlotData\SlotDataInner.h" />
     <ClInclude Include="APWrapper.h" />
     <ClInclude Include="AutoCrit.h" />
     <ClInclude Include="BassLoader.h" />

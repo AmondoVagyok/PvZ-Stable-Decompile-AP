@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <stdexcept>
+#include <nlohmann/json_fwd.hpp>
 
 #include "../ConstEnums.h"
 
@@ -454,6 +455,40 @@ namespace PVZRAPData
             return -1;
         }
     }
+    
+    class SlotData
+    {
+    public:
+        class SlotDataInner;
+        
+        enum class LevelRandomisation
+        {
+            Off = 0,
+            Vanilla = 1,
+            RandomisedOrder = 2,
+            Open = 3,
+            LevelItems = 4
+        };
+        
+        static SlotData get_slot_data(const nlohmann::json& json);
+        
+        bool is_valid() const;
+        std::string version() const;
+        
+        LevelRandomisation minigame_levels() const;
+        LevelRandomisation puzzle_levels() const;
+        LevelRandomisation survival_levels() const;
+        
+        std::map<int, int> minigame_unlocks();
+        std::map<int, int> survival_unlocks();
+        std::map<int, int> izombie_unlocks();
+        std::map<int, int> vasebreaker_unlocks();
+        
+    private:
+        
+        explicit SlotData(const std::shared_ptr<SlotDataInner>& inner);
+        std::shared_ptr<SlotDataInner> inner;
+    };
 }
 
 #endif

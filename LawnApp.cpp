@@ -5418,14 +5418,13 @@ void LawnApp::SetupArchipelago()
 		else if (args[0] == "IncompatibleSlotData")
 		{
 			auto gen_version = args[1];
-			auto expected_version = args[2];
 #ifdef GOTY
 			message = "This version of Plants vs. Zombies: Game of the Year edition is not compatible with the server.";
 #else
 			message = "This version of Plants vs. Zombies is not compatible with the server.";
 #endif
 			message.append("\nThe server game was generated on version " + gen_version);
-			message.append("\nThe game client is compatible with version " + expected_version);
+			message.append("\nIf you require further assistance, please check the Plants vs. Zombies channel on the Archipelago server.");
 		}
 		
 		this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", message, "OK", Dialog::BUTTONS_FOOTER);

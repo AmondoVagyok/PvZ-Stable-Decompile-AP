@@ -337,13 +337,13 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
-	auto slot_data = mApp->mAP->SlotData();
+	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
 	
 	auto start = 0;
 	auto end = 0;
 	if (aDef.mAPId >= 51 && aDef.mAPId <= 70)
 	{
-		if (slot_data["minigame_levels"].get<int>() == 4)
+		if (slot_data.minigame_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -354,7 +354,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 71 && aDef.mAPId <= 79)
 	{
-		if (slot_data["puzzle_levels"].get<int>() == 4)
+		if (slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -365,7 +365,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 80 && aDef.mAPId <= 88)
 	{
-		if (slot_data["puzzle_levels"].get<int>() == 4)
+		if (slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -376,7 +376,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 89 && aDef.mAPId <= 98)
 	{
-		if (slot_data["survival_levels"].get<int>() == 4)
+		if (slot_data.survival_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -395,20 +395,14 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 		}
 	}
 	
-	auto minigame_unlocks = slot_data["minigame_unlocks"];
-	auto survival_unlocks = slot_data["survival_unlocks"];
-	auto izombie_unlocks = slot_data["izombie_unlocks"];
-	auto vasebreaker_unlocks = slot_data["vasebreaker_unlocks"];
+	auto unlocks = slot_data.minigame_unlocks();
+	unlocks.merge(slot_data.survival_unlocks());
+	unlocks.merge(slot_data.izombie_unlocks());
+	unlocks.merge(slot_data.vasebreaker_unlocks());
 	
-	const char* slot_data_unlock_keys[4] = {"minigame_unlocks", "survival_unlocks", "izombie_unlocks", "vasebreaker_unlocks"}; 
-	
-	for (auto slot_data_unlock : slot_data_unlock_keys)
+	if (unlocks.contains(aDef.mAPId))
 	{
-		auto unlock_requirement = slot_data[slot_data_unlock][std::to_string(aDef.mAPId)];
-		if (!unlock_requirement.is_null())
-		{
-			return max(0, unlock_requirement.get<int>() - trophies_earned);
-		}
+		return max(0, unlocks[aDef.mAPId] - trophies_earned);
 	}
 	
 	return 0;

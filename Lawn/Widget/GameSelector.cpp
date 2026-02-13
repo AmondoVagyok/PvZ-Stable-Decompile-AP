@@ -673,12 +673,12 @@ void GameSelector::SyncProfile(bool theShowLoading)
 	mSurvivalLocked = true;
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		auto slot_data = mApp->mAP->SlotData();
+		auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
 		mMinigamesLocked = true;
 		mPuzzleLocked = true;
 		mSurvivalLocked = true;
 		
-		if (slot_data["minigame_levels"].get<int>() == 4)
+		if (slot_data.minigame_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS); i++)
@@ -694,7 +694,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 			mMinigamesLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::MINIGAMES);
 		}
 
-		if (slot_data["puzzle_levels"].get<int>() == 4)
+		if (slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SCARY_POTTER_1); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_PUZZLE_I_ZOMBIE_9); i++)
@@ -710,7 +710,7 @@ void GameSelector::SyncProfile(bool theShowLoading)
 			mPuzzleLocked = !mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PUZZLE_MODE);
 		}
 	
-		if (slot_data["survival_levels"].get<int>() == 4)
+		if (slot_data.survival_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			for (auto i = PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1); i <= PVZRAPData::Items::Gamemode(GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5); i++)
@@ -1992,8 +1992,8 @@ void GameSelector::ButtonDepress(int theId)
 	{
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 		{
-			auto slot_data = mApp->mAP->SlotData();
-			have_level_items = slot_data["minigame_levels"].get<int>() == 4;
+			auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+			have_level_items = slot_data.minigame_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems;
 		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a mini-game from Archipelago to play mini-games") : _S("Obtain the Mini-games item from Archipelago to play mini-games"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
@@ -2002,8 +2002,8 @@ void GameSelector::ButtonDepress(int theId)
 	{
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 		{
-			auto slot_data = mApp->mAP->SlotData();
-			have_level_items = slot_data["puzzle_levels"].get<int>() == 4;
+			auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+			have_level_items = slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems;
 		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a puzzle level from Archipelago to play puzzle mode") : _S("Obtain the Puzzle Mode item from Archipelago to play puzzle mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
@@ -2012,8 +2012,8 @@ void GameSelector::ButtonDepress(int theId)
 	{
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 		{
-			auto slot_data = mApp->mAP->SlotData();
-			have_level_items = slot_data["survival_levels"].get<int>() == 4;
+			auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+			have_level_items = slot_data.survival_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems;
 		}
 		mApp->LawnMessageBox(Dialogs::DIALOG_MESSAGE, _S("[MODE_LOCKED]"), have_level_items ? _S("Obtain a survival level from Archipelago to play survival mode") : _S("Obtain the Survival Mode item from Archipelago to play survival mode"), _S("[DIALOG_BUTTON_OK]"), _S(""), Dialog::BUTTONS_FOOTER);
 		return;
