@@ -479,6 +479,11 @@ namespace PVZRAPData
             std::optional<int> health;
         };
         
+        struct ProjectileStats
+        {
+            std::optional<int> damage;
+        };
+        
         static SlotData get_slot_data(const nlohmann::json& json);
         
         bool is_valid() const;
@@ -496,6 +501,7 @@ namespace PVZRAPData
         bool easy_upgrade_plants() const;
         
         std::optional<SeedStats> seed_stats(SeedType seed) const;
+        std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;
         
     private:
         

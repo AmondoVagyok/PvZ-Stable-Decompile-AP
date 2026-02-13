@@ -3,6 +3,9 @@
 #include "Zombie.h"
 #include "Cutscene.h"
 #include "Projectile.h"
+
+#include <nlohmann/json.hpp>
+
 #include "../LawnApp.h"
 #include "../Resources.h"
 #include "../GameConstants.h"
@@ -14,6 +17,8 @@
 #include "../Sexy.TodLib/Trail.h"
 #include "../Sexy.TodLib/EffectSystem.h"
 #include "../Sexy.TodLib/FilterEffect.h"
+#include "../SexyAppFramework/APData.h"
+#include "../SexyAppFramework/APWrapper.h"
 
 ProjectileDefinition gProjectileDefinition[] = {  //0x69F1C0
 	{ ProjectileType::PROJECTILE_PEA,           0,  20  },
@@ -1130,7 +1135,21 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 //0x46E000
 void Projectile::DoImpact(Zombie* theZombie)
 {
+	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+
 	ProjectileDefinition aProjDef = GetProjectileDef();
+	
+	auto damage = aProjDef.mDamage;
+	auto projectile_stats = slot_data.projectile_stats(mProjectileType);
+	if (projectile_stats.has_value())
+	{
+		if (projectile_stats->damage.has_value())
+		{
+			damage = projectile_stats->damage.value();
+		}
+	}
+
+	
 #ifdef _PIERCING_CACTUS
 	if (theZombie && mProjectileType == ProjectileType::PROJECTILE_PIERCE_SPIKE)
 	{
@@ -1195,7 +1214,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 	else if (theZombie)
 	{
 		unsigned int aDamageFlags = GetDamageFlags(theZombie);
-		theZombie->TakeDamage(aProjDef.mDamage, aDamageFlags);
+		theZombie->TakeDamage(damage, aDamageFlags);
 	}
 
 	float aLastPosX = mPosX - mVelX;

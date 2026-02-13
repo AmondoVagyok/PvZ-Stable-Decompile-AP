@@ -39,4 +39,52 @@ public:
         
         return seed_stats;
     }
+    
+    std::optional<PVZRAPData::SlotData::ProjectileStats> projectile_stats(const ProjectileType projectile) override
+    {
+        std::string projectile_id;
+        switch (projectile)
+        {
+        case ProjectileType::PROJECTILE_PEA:
+            projectile_id = "0";
+            break;
+        case ProjectileType::PROJECTILE_SNOWPEA:
+            projectile_id = "1";
+            break;
+        case ProjectileType::PROJECTILE_CABBAGE:
+            projectile_id = "2";
+            break;
+        case ProjectileType::PROJECTILE_MELON:
+            projectile_id = "3";
+            break;
+        case ProjectileType::PROJECTILE_PUFF:
+            projectile_id = "4";
+            break;
+        case ProjectileType::PROJECTILE_WINTERMELON:
+            projectile_id = "5";
+            break;
+        case ProjectileType::PROJECTILE_STAR:
+            projectile_id = "6";
+            break;
+        case ProjectileType::PROJECTILE_SPIKE:
+            projectile_id = "7";
+            break;
+        case ProjectileType::PROJECTILE_KERNEL:
+            projectile_id = "8";
+            break;
+        case ProjectileType::PROJECTILE_BUTTER:
+            projectile_id = "9";
+            break;
+        default:
+            return {};
+        }
+        
+        PVZRAPData::SlotData::ProjectileStats projectile_stats;
+        if (const auto projectile_damage = slot_data["projectile_damages"][projectile_id]; !projectile_damage.is_discarded() && !projectile_damage.is_null())
+        {
+            projectile_stats.damage = projectile_damage.get<int>();
+        }
+        
+        return projectile_stats;
+    }
 };

@@ -20,4 +20,5 @@ public:
     virtual bool easy_upgrade_plants() = 0;
     
     virtual std::optional<SeedStats> seed_stats(SeedType seed) = 0;
+    virtual std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) = 0;
 };

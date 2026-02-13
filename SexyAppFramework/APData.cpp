@@ -87,6 +87,11 @@ std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(
     return inner->seed_stats(seed);
 }
 
+std::optional<PVZRAPData::SlotData::ProjectileStats> PVZRAPData::SlotData::projectile_stats(const ProjectileType projectile) const
+{
+    return inner->projectile_stats(projectile);
+}
+
 PVZRAPData::SlotData::SlotData(const std::shared_ptr<SlotDataInner>& inner) : inner(inner)
 {
 }
