@@ -11,7 +11,7 @@ const int			BOARD_HEIGHT = 600;
 const int			WIDE_BOARD_WIDTH = 800;
 const int			BOARD_OFFSET = 220;
 const int			BOARD_EDGE = -100;
-const int			BOARD_IMAGE_WIDTH_OFFSET = 900;
+const int			BOARD_IMAGE_WIDTH_OFFSET = 1130;
 const int           BOARD_ICE_START = 800;
 const int           LAWN_XMIN = 40;
 const int           LAWN_YMIN = 80;
@@ -30,7 +30,7 @@ const int			WIDESCREEN_OFFSETX = 0;
 const int			WIDESCREEN_OFFSETY = 0;
 
 const int			STREET_ZOMBIE_START_X = 830; // PC: 830 - Console : 1000
-const int			STREET_ZOMBIE_ROOF_START_X = 900;
+const int			STREET_ZOMBIE_ROOF_START_X = 800;
 const int			STREET_ZOMBIE_START_Y = 70;
 const int			STREET_ZOMBIE_GRID_SIZE_X = 56; // PC : 56 - Console : 30
 const int			STREET_ZOMBIE_GRID_SIZE_Y = 90;
