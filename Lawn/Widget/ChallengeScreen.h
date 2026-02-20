@@ -76,5 +76,6 @@ public:
 extern ChallengeDefinition gChallengeDefs[NUM_CHALLENGE_MODES];
 
 ChallengeDefinition& GetChallengeDefinition(int theChallengeMode);
+int GetChallengeApId(GameMode gameMode);
 
 #endif

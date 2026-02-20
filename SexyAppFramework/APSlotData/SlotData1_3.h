@@ -77,6 +77,12 @@ public:
         return result;
     }
     
+    std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) override
+    {
+        // Not supported in 1.3
+        return {};
+    }
+    
     bool easy_upgrade_plants() override
     {
         return slot_data["easy_upgrade_plants"].get<int>() > 0;

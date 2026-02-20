@@ -294,6 +294,15 @@ ChallengeDefinition& GetChallengeDefinition(int theChallengeMode)
 	return gChallengeDefs[theChallengeMode];
 }
 
+int GetChallengeApId(GameMode gameMode)
+{
+	const auto challenge_def = ranges::find_if(gChallengeDefs, [gameMode](const ChallengeDefinition& challenge)
+	{
+		return challenge.mChallengeMode == gameMode;
+	});
+	return challenge_def->mAPId;
+}
+
 bool ChallengeScreen::IsScaryPotterLevel(GameMode theGameMode)
 {
 	return theGameMode >= GAMEMODE_SCARY_POTTER_1 && theGameMode <= GAMEMODE_SCARY_POTTER_ENDLESS;

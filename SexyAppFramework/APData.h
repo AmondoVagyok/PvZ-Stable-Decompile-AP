@@ -501,6 +501,7 @@ namespace PVZRAPData
         std::map<int, int> vasebreaker_unlocks() const;
         
         std::optional<std::set<ZombieType>> zombies_on_level(int level) const;
+        std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) const;
         
         bool easy_upgrade_plants() const;
         bool disable_storm_flashes() const;

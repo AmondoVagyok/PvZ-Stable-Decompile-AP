@@ -1954,6 +1954,25 @@ void Challenge::UpdateConveyorBelt()
 	}
 #endif
 	else TOD_ASSERT();
+	
+	// Override with AP data
+	auto level = mBoard->mLevel;
+	if (!mApp->IsAdventureMode())
+	{
+		level = GetChallengeApId(mApp->mGameMode);
+	}
+	
+	auto conveyor_seeds_for_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).conveyor_seeds_for_level(level);
+	if (conveyor_seeds_for_level.has_value())
+	{
+		aSeedPickCount = 0;
+		for (auto [seed_type, weight] : conveyor_seeds_for_level.value())
+		{
+			aSeedPickArray[aSeedPickCount].mItem = seed_type;
+			aSeedPickArray[aSeedPickCount].mWeight = weight;
+			aSeedPickCount++;
+		}
+	}
 
 	for (int i = 0; i < aSeedPickCount; i++)
 	{
@@ -2748,12 +2767,9 @@ void Challenge::InitZombieWaves()
 	
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		const auto challenge_def = ranges::find_if(gChallengeDefs, [aGameMode](const ChallengeDefinition& challenge)
-		{
-			return challenge.mChallengeMode == aGameMode;
-		});
+		const auto challenge_id = GetChallengeApId(aGameMode);
 		
-		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(challenge_def->mAPId);
+		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(challenge_id);
 		if (zombies_on_level.has_value())
 		{
 			for (auto zombie : zombies_on_level.value())

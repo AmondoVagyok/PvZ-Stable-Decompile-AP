@@ -63,6 +63,11 @@ public:
         return {};
     }
     
+    std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) override
+    {
+        return {};
+    }
+    
     bool easy_upgrade_plants() override
     {
         return {};
@@ -174,6 +179,11 @@ std::map<int, int> PVZRAPData::SlotData::vasebreaker_unlocks() const
 std::optional<std::set<ZombieType>> PVZRAPData::SlotData::zombies_on_level(int level) const
 {
     return inner->zombies_on_level(level);
+}
+
+std::optional<std::map<SeedType, int>> PVZRAPData::SlotData::conveyor_seeds_for_level(int level) const
+{
+    return inner->conveyor_seeds_for_level(level);
 }
 
 bool PVZRAPData::SlotData::easy_upgrade_plants() const
