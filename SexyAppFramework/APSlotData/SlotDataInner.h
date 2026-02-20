@@ -22,6 +22,8 @@ public:
     virtual bool disable_storm_flashes() = 0;
     virtual bool imitater_open() = 0;
     
+    virtual int sun_per_upgrade() = 0;
+    
     virtual std::optional<SeedStats> seed_stats(SeedType seed) = 0;
     virtual std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) = 0;
 };

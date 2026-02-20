@@ -11,4 +11,9 @@ public:
     {
         return "1.5";
     }
+    
+    int sun_per_upgrade() override
+    {
+        return slot_data["sun_per_upgrade"].get<int>();
+    }
 };

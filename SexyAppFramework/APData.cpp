@@ -82,6 +82,11 @@ public:
     {
         return {};
     }
+    
+    int sun_per_upgrade() override
+    {
+        return {};
+    }
 };
 
 
@@ -108,10 +113,10 @@ PVZRAPData::SlotData PVZRAPData::SlotData::get_slot_data(const nlohmann::json& s
     {
         return SlotData(std::make_shared<SlotData1_4>(slot_data));
     }
-    // if (gen_version_string == "1.5")
-    // {
-    //     return SlotData(std::make_shared<SlotData1_5>(slot_data));
-    // }
+    if (gen_version_string == "1.5")
+    {
+        return SlotData(std::make_shared<SlotData1_5>(slot_data));
+    }
 
     return SlotData(std::make_shared<SlotDataInvalid>(gen_version_string));
 }
@@ -174,6 +179,11 @@ bool PVZRAPData::SlotData::disable_storm_flashes() const
 bool PVZRAPData::SlotData::imitater_open() const
 {
     return inner->imitater_open();
+}
+
+int PVZRAPData::SlotData::sun_per_upgrade() const
+{
+    return inner->sun_per_upgrade();
 }
 
 std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(const SeedType seed) const

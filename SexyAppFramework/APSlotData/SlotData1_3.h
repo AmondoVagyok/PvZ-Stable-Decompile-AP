@@ -122,6 +122,12 @@ public:
         // Not supported in 1.3
         return {};
     }
+    
+    int sun_per_upgrade() override
+    {
+        // Not supported in 1.3
+        return {};
+    }
 
 private:
     static PVZRAPData::SlotData::LevelRandomisation parse_level_randomisation(int level_randomisation)

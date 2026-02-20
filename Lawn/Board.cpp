@@ -1784,6 +1784,8 @@ void Board::InitLevel()
 	{
 		mSunMoney = 50;
 	}
+	
+	mSunMoney += mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ADDITIONAL_STARTING_SUN) * PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).sun_per_upgrade();
 
 	// 初始化行选择数组
 	memset(mRowPickingArray, 0, sizeof(mRowPickingArray));

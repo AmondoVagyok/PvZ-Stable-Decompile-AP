@@ -390,6 +390,7 @@ namespace PVZRAPData
         constexpr int64_t TWIDDYDINKIES_RESTOCK = 15;
         constexpr int64_t WALL_NUT_FIRST_AID = 16;
         constexpr int64_t RAKE = 17;
+        constexpr int64_t ADDITIONAL_STARTING_SUN = 18;
         constexpr int64_t DAY_ACCESS = 20;
         constexpr int64_t NIGHT_ACCESS = 21;
         constexpr int64_t POOL_ACCESS = 22;
@@ -501,6 +502,8 @@ namespace PVZRAPData
         bool easy_upgrade_plants() const;
         bool disable_storm_flashes() const;
         bool imitater_open() const;
+        
+        int sun_per_upgrade() const;
         
         std::optional<SeedStats> seed_stats(SeedType seed) const;
         std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;
