@@ -37,6 +37,7 @@
 #include "../Sexy.TodLib/EffectSystem.h"
 #include "../SexyAppFramework/APData.h"
 #include "../SexyAppFramework/APWrapper.h"
+#include "Widget/ChallengeScreen.h"
 
 int gZombieWaves[NUM_LEVELS] = {  //0x6A34E8
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
@@ -2744,6 +2745,25 @@ void Challenge::InitZombieWaves()
 {
 	GameMode aGameMode = mApp->mGameMode;
 	bool* aList = mBoard->mZombieAllowed;
+	
+	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
+	{
+		const auto challenge_def = ranges::find_if(gChallengeDefs, [aGameMode](const ChallengeDefinition& challenge)
+		{
+			return challenge.mChallengeMode == aGameMode;
+		});
+		
+		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(challenge_def->mAPId);
+		if (zombies_on_level.has_value())
+		{
+			for (auto zombie : zombies_on_level.value())
+			{
+				aList[zombie] = true;
+			}
+			return;
+		}
+	}
+	
 	if (mApp->IsSurvivalMode())
 	{
 		if (mSurvivalStage == 0)
