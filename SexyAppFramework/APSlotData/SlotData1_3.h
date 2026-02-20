@@ -11,6 +11,11 @@ public:
     explicit SlotData1_3(nlohmann::json slot_data) : slot_data(std::move(slot_data)) {}
     nlohmann::json slot_data;
     
+    bool is_valid() override
+    {
+        return true;
+    }
+    
     std::string version() override
     {
         return "1.3";

@@ -6,6 +6,7 @@ class PVZRAPData::SlotData::SlotDataInner
 public:
     virtual ~SlotDataInner() = default;
     
+    virtual bool is_valid() = 0;
     virtual std::string version() = 0;
     
     virtual LevelRandomisation minigame_levels() = 0;

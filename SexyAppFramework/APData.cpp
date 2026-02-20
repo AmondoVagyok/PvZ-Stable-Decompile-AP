@@ -4,6 +4,86 @@
 
 #include "APSlotData/SlotData1_3.h"
 #include "APSlotData/SlotData1_4.h"
+#include "APSlotData/SlotData1_5.h"
+
+
+class SlotDataInvalid : public PVZRAPData::SlotData::SlotDataInner
+{
+public:
+    explicit SlotDataInvalid(std::string version) : _version(version) {}
+    std::string _version;
+    
+    bool is_valid() override
+    {
+        return false;
+    }
+    
+    std::string version() override
+    {
+        return _version;
+    }
+
+    PVZRAPData::SlotData::LevelRandomisation minigame_levels() override
+    {
+        return {};
+    }
+    
+    PVZRAPData::SlotData::LevelRandomisation puzzle_levels() override
+    {
+        return {};
+    }
+    
+    PVZRAPData::SlotData::LevelRandomisation survival_levels() override
+    {
+        return {};
+    }
+
+    std::map<int, int> minigame_unlocks() override
+    {
+        return {};
+    }
+    
+    std::map<int, int> survival_unlocks() override
+    {
+        return {};
+    }
+    
+    std::map<int, int> izombie_unlocks() override
+    {
+        return {};
+    }
+    
+    std::map<int, int> vasebreaker_unlocks() override
+    {
+        return {};
+    }
+    
+    bool easy_upgrade_plants() override
+    {
+        return {};
+    }
+    
+    bool disable_storm_flashes() override
+    {
+        return {};
+    }
+    
+    bool imitater_open() override
+    {
+        return {};
+    }
+    
+    std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
+    {
+        return {};
+    }
+    
+    std::optional<PVZRAPData::SlotData::ProjectileStats> projectile_stats(const ProjectileType projectile) override
+    {
+        return {};
+    }
+};
+
 
 PVZRAPData::SlotData PVZRAPData::SlotData::get_slot_data(const nlohmann::json& slot_data)
 {
@@ -28,13 +108,17 @@ PVZRAPData::SlotData PVZRAPData::SlotData::get_slot_data(const nlohmann::json& s
     {
         return SlotData(std::make_shared<SlotData1_4>(slot_data));
     }
+    // if (gen_version_string == "1.5")
+    // {
+    //     return SlotData(std::make_shared<SlotData1_5>(slot_data));
+    // }
 
-    return SlotData(nullptr);
+    return SlotData(std::make_shared<SlotDataInvalid>(gen_version_string));
 }
 
 bool PVZRAPData::SlotData::is_valid() const
 {
-    return inner != nullptr;
+    return inner->is_valid();
 }
 
 std::string PVZRAPData::SlotData::version() const

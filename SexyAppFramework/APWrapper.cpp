@@ -300,7 +300,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
             // Call the slot refused listener
             for (const auto& slot_refused_listener : this->d->slot_refused_listeners)
             {
-                slot_refused_listener.second("IncompatibleSlotData:" + slot_data["version"]);
+                slot_refused_listener.second("IncompatibleSlotData:" + checked_data.version());
             }
             this->Disconnect();
             return;
