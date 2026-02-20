@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <optional>
+#include <set>
 #include <stdexcept>
 #include <nlohmann/json_fwd.hpp>
 
@@ -498,6 +499,8 @@ namespace PVZRAPData
         std::map<int, int> survival_unlocks() const;
         std::map<int, int> izombie_unlocks() const;
         std::map<int, int> vasebreaker_unlocks() const;
+        
+        std::optional<std::set<ZombieType>> zombies_on_level(int level) const;
         
         bool easy_upgrade_plants() const;
         bool disable_storm_flashes() const;

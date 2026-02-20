@@ -58,6 +58,11 @@ public:
         return {};
     }
     
+    std::optional<std::set<ZombieType>> zombies_on_level(int level) override
+    {
+        return {};
+    }
+    
     bool easy_upgrade_plants() override
     {
         return {};
@@ -164,6 +169,11 @@ std::map<int, int> PVZRAPData::SlotData::izombie_unlocks() const
 std::map<int, int> PVZRAPData::SlotData::vasebreaker_unlocks() const
 {
     return inner->vasebreaker_unlocks();
+}
+
+std::optional<std::set<ZombieType>> PVZRAPData::SlotData::zombies_on_level(int level) const
+{
+    return inner->zombies_on_level(level);
 }
 
 bool PVZRAPData::SlotData::easy_upgrade_plants() const

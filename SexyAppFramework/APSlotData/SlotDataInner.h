@@ -18,6 +18,8 @@ public:
     virtual std::map<int, int> izombie_unlocks() = 0;
     virtual std::map<int, int> vasebreaker_unlocks() = 0;
     
+    virtual std::optional<std::set<ZombieType>> zombies_on_level(int level) = 0;
+    
     virtual bool easy_upgrade_plants() = 0;
     virtual bool disable_storm_flashes() = 0;
     virtual bool imitater_open() = 0;

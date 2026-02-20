@@ -2996,24 +2996,10 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 	
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		auto zombie_map = mApp->mAP->SlotData()["zombie_map"];
-		auto available_zombies_for_level = zombie_map[std::to_string(theLevel)];
-		if (!available_zombies_for_level.is_null())
+		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(theLevel);
+		if (zombies_on_level.has_value())
 		{
-			if (theZombieType < ZOMBIE_NORMAL || theZombieType > ZOMBIE_REDEYE_GARGANTUAR)
-			{
-				return false;
-			}
-			
-			for (auto zombie : available_zombies_for_level)
-			{
-				if (theZombieType == zombie.get<int>())
-				{
-					return true;
-				}
-			}
-			
-			return false;
+			return zombies_on_level.value().contains(theZombieType);
 		}
 	}
 

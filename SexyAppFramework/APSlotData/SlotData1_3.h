@@ -56,6 +56,27 @@ public:
        return parse_unlocks(slot_data["vasebreaker_unlocks"]);
     }
     
+    std::optional<std::set<ZombieType>> zombies_on_level(int level) override
+    {
+        auto zombie_map = slot_data["zombie_map"];
+        auto available_zombies_for_level = zombie_map[std::to_string(level)];
+        if (available_zombies_for_level.is_null())
+        {
+            return {};
+        }
+        
+        std::set<ZombieType> result;
+        for (auto zombie : available_zombies_for_level)
+        {
+            if (zombie < ZOMBIE_NORMAL || zombie > ZOMBIE_REDEYE_GARGANTUAR)
+            {
+                continue;
+            }
+            result.insert(static_cast<ZombieType>(zombie.get<int>()));
+        }
+        return result;
+    }
+    
     bool easy_upgrade_plants() override
     {
         return slot_data["easy_upgrade_plants"].get<int>() > 0;
