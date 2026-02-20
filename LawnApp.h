@@ -1,6 +1,8 @@
 #ifndef __LAWNAPP_H__
 #define __LAWNAPP_H__
 
+#include <memory>
+
 #include "ConstEnums.h"
 #include "SexyAppFramework/SexyApp.h"
 
@@ -14,6 +16,7 @@
 #include "SexyAppFramework/Common.h"
 
 #include <SDL3/SDL.h>
+
 #include "SexyAppFramework/SDL3Image.h"
 
 #define SAMPLE_RATE  44100
@@ -89,6 +92,12 @@ public:
 	LevelStats() { Reset(); }
 	inline void						Reset() { mUnusedLawnMowers = 0; }
 };
+
+
+namespace PVZRAPData
+{
+	class SlotData;
+}
 
 class LawnApp : public SexyApp
 {
@@ -186,6 +195,7 @@ public:
 	SexyString						mCliApHost;
 	SexyString						mCliApSlot;
 	SexyString						mCliApPassword;
+	std::shared_ptr<PVZRAPData::SlotData> mSlotData;
 	
 	Rect							gBoardBounds;
 

@@ -1785,7 +1785,7 @@ void Board::InitLevel()
 		mSunMoney = 50;
 	}
 	
-	mSunMoney += mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ADDITIONAL_STARTING_SUN) * PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).sun_per_upgrade();
+	mSunMoney += mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ADDITIONAL_STARTING_SUN) * mApp->mSlotData->sun_per_upgrade();
 
 	// 初始化行选择数组
 	memset(mRowPickingArray, 0, sizeof(mRowPickingArray));
@@ -2996,7 +2996,7 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 	
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(theLevel);
+		auto zombies_on_level = mApp->mSlotData->zombies_on_level(theLevel);
 		if (zombies_on_level.has_value())
 		{
 			return zombies_on_level.value().contains(theZombieType);
@@ -3664,7 +3664,7 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		return PlantingReason::PLANTING_OK;
 	};
 		
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
 	auto result = CanPlantAtInternal(theGridX, theGridY, theSeedType);
 	
 	if (easy_upgrade_plants)
@@ -11937,7 +11937,7 @@ void Board::UpdateGridItems()
 //0x41D7D0
 bool Board::PlantingRequirementsMet(SeedType theSeedType)
 {
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
 	if (easy_upgrade_plants)
 	{
 		return true;

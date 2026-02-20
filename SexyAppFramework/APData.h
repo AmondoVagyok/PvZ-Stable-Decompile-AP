@@ -463,6 +463,7 @@ namespace PVZRAPData
     {
     public:
         class SlotDataInner;
+        SlotData(const SlotData& other);
         
         enum class LevelRandomisation
         {
@@ -513,7 +514,6 @@ namespace PVZRAPData
         std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;
         
     private:
-        
         explicit SlotData(const std::shared_ptr<SlotDataInner>& inner);
         std::shared_ptr<SlotDataInner> inner;
     };

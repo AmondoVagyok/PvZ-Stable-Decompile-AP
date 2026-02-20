@@ -410,8 +410,7 @@ void AlmanacDialog::DrawPlants(Graphics* g)
 	TodDrawStringWrapped(g, aDescriptionName, Rect(485, 309, 258, 230), Sexy::FONT_BRIANNETOD12, Color(40, 50, 90), DS_ALIGN_LEFT);
 	
 	auto sun_price = aPlantDef.mSeedCost;
-	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
-	auto seed_stats = slot_data.seed_stats(mSelectedSeed);
+	auto seed_stats = mApp->mSlotData->seed_stats(mSelectedSeed);
 	if (seed_stats.has_value())
 	{
 		if (seed_stats->sun_price.has_value())

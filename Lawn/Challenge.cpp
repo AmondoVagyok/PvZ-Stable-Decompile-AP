@@ -1962,7 +1962,7 @@ void Challenge::UpdateConveyorBelt()
 		level = GetChallengeApId(mApp->mGameMode);
 	}
 	
-	auto conveyor_seeds_for_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).conveyor_seeds_for_level(level);
+	auto conveyor_seeds_for_level = mApp->mSlotData->conveyor_seeds_for_level(level);
 	if (conveyor_seeds_for_level.has_value())
 	{
 		aSeedPickCount = 0;
@@ -2080,7 +2080,7 @@ void Challenge::UpdateConveyorBelt()
 //0x4234A0
 void Challenge::UpdateRainingSeeds()
 {
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
 
 	if (mBoard->HasLevelAwardDropped() || --mChallengeStateCounter != 0)
 		return;
@@ -2134,7 +2134,7 @@ void Challenge::UpdateStormyNight()
 		
 		if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 		{
-			if (!PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).disable_storm_flashes())
+			if (!mApp->mSlotData->disable_storm_flashes())
 			{
 				mApp->PlayFoley(FoleyType::FOLEY_THUNDER);
 			}
@@ -2769,7 +2769,7 @@ void Challenge::InitZombieWaves()
 	{
 		const auto challenge_id = GetChallengeApId(aGameMode);
 		
-		auto zombies_on_level = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).zombies_on_level(challenge_id);
+		auto zombies_on_level = mApp->mSlotData->zombies_on_level(challenge_id);
 		if (zombies_on_level.has_value())
 		{
 			for (auto zombie : zombies_on_level.value())
@@ -3402,7 +3402,7 @@ void Challenge::DrawStormFlash(Graphics* g, int theTime, int theMaxAmount)
 {
 	if (mApp->mAP->ConnectionStatus() == APWrapper::ConnectionStatus::Connected)
 	{
-		if (PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).disable_storm_flashes())
+		if (mApp->mSlotData->disable_storm_flashes())
 		{
 			// Storm flashes are disabled
 			return;

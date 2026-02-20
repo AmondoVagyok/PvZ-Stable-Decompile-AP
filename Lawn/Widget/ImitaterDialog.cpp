@@ -36,7 +36,7 @@ ImitaterDialog::~ImitaterDialog()
 //0x482D30
 SeedType ImitaterDialog::SeedHitTest(int x, int y)
 {
-	auto imitater_open = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).imitater_open();
+	auto imitater_open = mApp->mSlotData->imitater_open();
 	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
 	{
 		if (imitater_open || mApp->SeedTypeAvailable(aSeedType))
@@ -88,7 +88,7 @@ void ImitaterDialog::Draw(Graphics* g)
 {
 	LawnDialog::Draw(g);
 	g->SetLinearBlend(true);
-	auto imitater_open = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).imitater_open();
+	auto imitater_open = mApp->mSlotData->imitater_open();
 	for (SeedType aSeedType = (SeedType)0; aSeedType < SeedType::SEED_GATLINGPEA; aSeedType = (SeedType)(aSeedType + 1))
 	{
 		if (imitater_open || mApp->SeedTypeAvailable(aSeedType))

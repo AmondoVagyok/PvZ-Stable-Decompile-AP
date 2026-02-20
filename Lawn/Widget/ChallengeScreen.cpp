@@ -346,13 +346,13 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 
 	ChallengeDefinition& aDef = GetChallengeDefinition(theChallengeIndex);
-	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
+	auto slot_data = mApp->mSlotData;
 	
 	auto start = 0;
 	auto end = 0;
 	if (aDef.mAPId >= 51 && aDef.mAPId <= 70)
 	{
-		if (slot_data.minigame_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
+		if (slot_data->minigame_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -363,7 +363,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 71 && aDef.mAPId <= 79)
 	{
-		if (slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
+		if (slot_data->puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -374,7 +374,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 80 && aDef.mAPId <= 88)
 	{
-		if (slot_data.puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
+		if (slot_data->puzzle_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -385,7 +385,7 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 	}
 	else if (aDef.mAPId >= 89 && aDef.mAPId <= 98)
 	{
-		if (slot_data.survival_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
+		if (slot_data->survival_levels() == PVZRAPData::SlotData::LevelRandomisation::LevelItems)
 		{
 			// Items mode
 			return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::Gamemode(aDef.mChallengeMode)) > 0 ? 0 : 1;
@@ -404,10 +404,10 @@ int ChallengeScreen::MoreTrophiesNeeded(int theChallengeIndex)
 		}
 	}
 	
-	auto unlocks = slot_data.minigame_unlocks();
-	unlocks.merge(slot_data.survival_unlocks());
-	unlocks.merge(slot_data.izombie_unlocks());
-	unlocks.merge(slot_data.vasebreaker_unlocks());
+	auto unlocks = slot_data->minigame_unlocks();
+	unlocks.merge(slot_data->survival_unlocks());
+	unlocks.merge(slot_data->izombie_unlocks());
+	unlocks.merge(slot_data->vasebreaker_unlocks());
 	
 	if (unlocks.contains(aDef.mAPId))
 	{

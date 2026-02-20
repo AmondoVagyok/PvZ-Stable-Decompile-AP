@@ -100,6 +100,11 @@ public:
 };
 
 
+PVZRAPData::SlotData::SlotData(const SlotData& other)
+{
+    this->inner = other.inner;
+}
+
 PVZRAPData::SlotData PVZRAPData::SlotData::get_slot_data(const nlohmann::json& slot_data)
 {
     auto gen_version = slot_data["gen_version"];

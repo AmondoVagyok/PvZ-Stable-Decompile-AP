@@ -701,9 +701,8 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
     }
     
     // Override plant health from seed data
-    auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
     auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
-    auto seed_stats = slot_data.seed_stats(seed_type);
+    auto seed_stats = mApp->mSlotData->seed_stats(seed_type);
     if (seed_stats.has_value())
     {
         if (seed_stats->health.has_value())
@@ -3235,7 +3234,7 @@ void Plant::UpdateAbilities()
 //0x463420
 bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 {
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
     if (easy_upgrade_plants)
     {
         return false;
@@ -3252,7 +3251,7 @@ bool Plant::IsPartOfUpgradableTo(SeedType theUpgradedType)
 //0x463470
 bool Plant::IsUpgradableTo(SeedType theUpgradedType)
 {
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
     if (easy_upgrade_plants)
     {
         return false;
@@ -6599,7 +6598,6 @@ PlantDefinition& GetPlantDefinition(SeedType theSeedType)
 //0x467B00
 int Plant::GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType)
 {
-	auto slot_data = PVZRAPData::SlotData::get_slot_data(app->mAP->SlotData());
     if (!gLawnApp->GetDialog(Dialogs::DIALOG_ALMANAC) && (gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED || gLawnApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BEGHOULED_TWIST))
     {
         if (theSeedType == SeedType::SEED_REPEATER)
@@ -6660,7 +6658,7 @@ int Plant::GetCost(LawnApp* app, SeedType theSeedType, SeedType theImitaterType)
     default:
     {
         auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
-        auto seed_stats = slot_data.seed_stats(seed_type);
+        auto seed_stats = app->mSlotData->seed_stats(seed_type);
         if (seed_stats.has_value())
         {
             if (seed_stats->sun_price.has_value())
@@ -6765,8 +6763,7 @@ SexyString Plant::GetStatDeltasTooltip(LawnApp* app, SeedType theSeedType)
         aToolTip += "\n" + std::format("{} {} x{}", color, stat, multiplier_string);
     };
         
-    auto slot_data = PVZRAPData::SlotData::get_slot_data(app->mAP->SlotData());
-    auto seed_stats = slot_data.seed_stats(theSeedType);
+    auto seed_stats = app->mSlotData->seed_stats(theSeedType);
     if (seed_stats.has_value())
     {
         if (seed_stats->sun_price.has_value())
@@ -6794,9 +6791,8 @@ int Plant::GetRefreshTime(LawnApp* app, SeedType theSeedType, SeedType theImitat
         return 0;
     }
     
-    auto slot_data = PVZRAPData::SlotData::get_slot_data(app->mAP->SlotData());
     auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
-    auto seed_stats = slot_data.seed_stats(seed_type);
+    auto seed_stats = app->mSlotData->seed_stats(seed_type);
     if (seed_stats.has_value())
     {
         if (seed_stats->recharge_time.has_value())
@@ -6872,7 +6868,7 @@ bool Plant::IsFlying(SeedType theSeedtype)
 //0x467EC0
 bool Plant::IsUpgrade(LawnApp* app, SeedType theSeedtype)
 {
-	auto easy_upgrade_plants = PVZRAPData::SlotData::get_slot_data(app->mAP->SlotData()).easy_upgrade_plants();
+	auto easy_upgrade_plants = app->mSlotData->easy_upgrade_plants();
     if (easy_upgrade_plants)
     {
         return false;

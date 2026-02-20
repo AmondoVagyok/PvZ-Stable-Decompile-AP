@@ -1135,12 +1135,10 @@ void Projectile::PlayImpactSound(Zombie* theZombie)
 //0x46E000
 void Projectile::DoImpact(Zombie* theZombie)
 {
-	auto slot_data = PVZRAPData::SlotData::get_slot_data(mApp->mAP->SlotData());
-
 	ProjectileDefinition aProjDef = GetProjectileDef();
 	
 	auto damage = aProjDef.mDamage;
-	auto projectile_stats = slot_data.projectile_stats(mProjectileType);
+	auto projectile_stats = mApp->mSlotData->projectile_stats(mProjectileType);
 	if (projectile_stats.has_value())
 	{
 		if (projectile_stats->damage.has_value())
