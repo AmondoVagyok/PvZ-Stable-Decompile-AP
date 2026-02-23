@@ -11690,27 +11690,27 @@ int Board::GetGraveStoneCount()
 //0x41CDB0
 void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 {
-	if (mApp->IsFirstTimeAdventureMode() && mLevel == mApp->mPlayerInfo->GetLevel())
-	{
-		if (mLevel == 22 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMinigames && CountCoinByType(CoinType::COIN_PRESENT_MINIGAMES) == 0)
-		{
-			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
-			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MINIGAMES, CoinMotion::COIN_MOTION_COIN);
-			return;
-		}
-		if (mLevel == 36 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedPuzzleMode && CountCoinByType(CoinType::COIN_PRESENT_PUZZLE_MODE) == 0)
-		{
-			mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
-			AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_PUZZLE_MODE, CoinMotion::COIN_MOTION_COIN);
-			return;
-		}
-	}
+	// if (mApp->IsFirstTimeAdventureMode() && mLevel == mApp->mPlayerInfo->GetLevel())
+	// {
+	// 	if (mLevel == 22 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedMinigames && CountCoinByType(CoinType::COIN_PRESENT_MINIGAMES) == 0)
+	// 	{
+	// 		mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
+	// 		AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_MINIGAMES, CoinMotion::COIN_MOTION_COIN);
+	// 		return;
+	// 	}
+	// 	if (mLevel == 36 && mCurrentWave > 5 && !mApp->mPlayerInfo->mHasUnlockedPuzzleMode && CountCoinByType(CoinType::COIN_PRESENT_PUZZLE_MODE) == 0)
+	// 	{
+	// 		mApp->PlayFoley(FoleyType::FOLEY_ART_CHALLENGE);
+	// 		AddCoin(thePosX, thePosY, CoinType::COIN_PRESENT_PUZZLE_MODE, CoinMotion::COIN_MOTION_COIN);
+	// 		return;
+	// 	}
+	// }
 
 	int aDropHit = Rand(30000);
-	if (mApp->IsFirstTimeAdventureMode() && mLevel == 11 && !mDroppedFirstCoin && mCurrentWave > 5 && mLevel == mApp->mPlayerInfo->GetLevel())
-	{
-		aDropHit = 1000;
-	}
+	// if (mApp->IsFirstTimeAdventureMode() && mLevel == 11 && !mDroppedFirstCoin && mCurrentWave > 5 && mLevel == mApp->mPlayerInfo->GetLevel())
+	// {
+	// 	aDropHit = 1000;
+	// }
 	if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
 	{
 		aDropHit *= 5;
@@ -11790,16 +11790,16 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 	if (mApp->IsWallnutBowlingLevel() && Coin::IsMoney(aCoinType))
 		return;
 
-	if (mApp->IsFirstTimeAdventureMode() && mLevel == 11)
-	{
-		int aMoney = Coin::GetCoinValue(CoinType::COIN_GOLD) * mLawnMowers.mSize;
-		int aCost = 0;
-		aMoney += mApp->mPlayerInfo->mCoins + CountCoinsBeingCollected();
-		if (Coin::GetCoinValue(aCoinType) + aMoney >= aCost)
-		{
-			return;
-		}
-	}
+	// if (mApp->IsFirstTimeAdventureMode() && mLevel == 11)
+	// {
+	// 	int aMoney = Coin::GetCoinValue(CoinType::COIN_GOLD) * mLawnMowers.mSize;
+	// 	int aCost = 0;
+	// 	aMoney += mApp->mPlayerInfo->mCoins + CountCoinsBeingCollected();
+	// 	if (Coin::GetCoinValue(aCoinType) + aMoney >= aCost)
+	// 	{
+	// 		return;
+	// 	}
+	// }
 
 	mApp->PlayFoley(FoleyType::FOLEY_SPAWN_SUN);
 	AddCoin(thePosX - 40, thePosY, aCoinType, CoinMotion::COIN_MOTION_COIN);
