@@ -18,7 +18,6 @@ public:
 
         if (const auto sun_price = slot_data["sun_prices"][std::to_string(seed)]; !sun_price.is_discarded() && !sun_price.is_null())
         {
-            // TODO: Add the easy upgrade tax if required
             seed_stats.sun_price = sun_price.get<int>();
         }
 
