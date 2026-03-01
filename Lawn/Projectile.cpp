@@ -694,6 +694,15 @@ void Projectile::DoSplashDamage(Zombie* theZombie)
 	}
 
 	int aOriginalDamage = aProjectileDef.mDamage;
+	auto projectile_stats = mApp->mSlotData->projectile_stats(mProjectileType);
+	if (projectile_stats.has_value())
+	{
+		if (projectile_stats->damage.has_value())
+		{
+			aOriginalDamage = projectile_stats->damage.value();
+		}
+	}
+	
 	int aSplashDamage = aProjectileDef.mDamage / 3;
 	int aMaxSplashDamageAmount = aSplashDamage * 7;
 	if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
