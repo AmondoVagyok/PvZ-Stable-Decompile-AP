@@ -42,8 +42,12 @@ public:
     std::optional<PVZRAPData::SlotData::ProjectileStats> projectile_stats(const ProjectileType projectile) override
     {
         std::string projectile_id;
+        auto factor = 1;
         switch (projectile)
         {
+        case ProjectileType::PROJECTILE_FIREBALL:
+            factor = 2;
+            // fallthrough
         case ProjectileType::PROJECTILE_PEA:
             projectile_id = "0";
             break;
@@ -81,7 +85,7 @@ public:
         PVZRAPData::SlotData::ProjectileStats projectile_stats;
         if (const auto projectile_damage = slot_data["projectile_damages"][projectile_id]; !projectile_damage.is_discarded() && !projectile_damage.is_null())
         {
-            projectile_stats.damage = projectile_damage.get<int>();
+            projectile_stats.damage = projectile_damage.get<int>() * factor;
         }
         
         return projectile_stats;
