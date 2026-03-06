@@ -375,10 +375,23 @@ void Challenge::InitLevel()
 	}
 	if (mApp->IsFinalBossLevel())
 	{
-		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
-		mBoard->mSeedBank->AddSeed(SEED_JALAPENO);
-		mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
-		mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
+		auto conveyor_order = mApp->mSlotData->conveyor_order_for_level(50);
+		if (conveyor_order.has_value())
+		{
+			auto conveyor_order_truncated = conveyor_order.value();
+			conveyor_order_truncated.resize(4);
+			for (const auto plant : conveyor_order_truncated)
+			{
+				mBoard->mSeedBank->AddSeed(plant);
+			}
+		}
+		else
+		{
+			mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
+			mBoard->mSeedBank->AddSeed(SEED_JALAPENO);
+			mBoard->mSeedBank->AddSeed(SEED_CABBAGEPULT);
+			mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
+		}
 		mConveyorBeltCounter = 1000;
 	}
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_ZEN_GARDEN)
@@ -388,18 +401,44 @@ void Challenge::InitLevel()
 	}
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_COLUMN)
 	{
-		mBoard->mSeedBank->AddSeed(SEED_POTATOMINE);
-		mBoard->mSeedBank->AddSeed(SEED_TALLNUT);
-		mBoard->mSeedBank->AddSeed(SEED_MELONPULT);
-		mBoard->mSeedBank->AddSeed(SEED_MAGNETSHROOM);
-		mBoard->mSeedBank->AddSeed(SEED_INSTANT_COFFEE);
-		mBoard->mSeedBank->AddSeed(SEED_MELONPULT);
+		auto conveyor_order = mApp->mSlotData->conveyor_order_for_level(62);
+		if (conveyor_order.has_value())
+		{
+			auto conveyor_order_truncated = conveyor_order.value();
+			conveyor_order_truncated.resize(6);
+			for (const auto plant : conveyor_order_truncated)
+			{
+				mBoard->mSeedBank->AddSeed(plant);
+			}
+		}
+		else
+		{
+			mBoard->mSeedBank->AddSeed(SEED_POTATOMINE);
+			mBoard->mSeedBank->AddSeed(SEED_TALLNUT);
+			mBoard->mSeedBank->AddSeed(SEED_MELONPULT);
+			mBoard->mSeedBank->AddSeed(SEED_MAGNETSHROOM);
+			mBoard->mSeedBank->AddSeed(SEED_INSTANT_COFFEE);
+			mBoard->mSeedBank->AddSeed(SEED_MELONPULT);
+		}
 		mConveyorBeltCounter = 1000;
 	}
 	if (mApp->mGameMode == GAMEMODE_CHALLENGE_INVISIGHOUL)
 	{
-		mBoard->mSeedBank->AddSeed(SEED_PEASHOOTER);
-		mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
+		auto conveyor_order = mApp->mSlotData->conveyor_order_for_level(56);
+		if (conveyor_order.has_value())
+		{
+			auto conveyor_order_truncated = conveyor_order.value();
+			conveyor_order_truncated.resize(2);
+			for (const auto plant : conveyor_order_truncated)
+			{
+				mBoard->mSeedBank->AddSeed(plant);
+			}
+		}
+		else
+		{
+			mBoard->mSeedBank->AddSeed(SEED_PEASHOOTER);
+			mBoard->mSeedBank->AddSeed(SEED_ICESHROOM);
+		}
 		mConveyorBeltCounter = 1000;
 	}
 	if (mApp->IsIZombieLevel())

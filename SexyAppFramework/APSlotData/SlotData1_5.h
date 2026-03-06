@@ -34,4 +34,22 @@ public:
         }
         return result;
     }
+    
+    std::optional<std::vector<SeedType>> conveyor_order_for_level(int level) override
+    {
+        auto conveyor_map = slot_data["conveyor_map"];
+        auto available_plants_for_level = conveyor_map[std::to_string(level)];
+        if (available_plants_for_level.is_null())
+        {
+            return {};
+        }
+        
+        std::vector<SeedType> result;
+        for (const auto& [plant_json, weight_json] : available_plants_for_level.items())
+        {
+            auto seed = static_cast<SeedType>(std::stoi(plant_json));
+            result.push_back(seed);
+        }
+        return result;
+    }
 };
