@@ -51,4 +51,9 @@ public:
         }
         return result;
     }
+    
+    bool energylink_enabled() override
+    {
+        return slot_data["energylink_enabled"].get<int>() == 1;
+    }
 };

@@ -28,6 +28,8 @@ public:
     
     virtual int sun_per_upgrade() = 0;
     
+    virtual bool energylink_enabled() = 0;
+    
     virtual std::optional<SeedStats> seed_stats(SeedType seed) = 0;
     virtual std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) = 0;
 };

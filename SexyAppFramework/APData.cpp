@@ -89,6 +89,11 @@ public:
         return {};
     }
     
+    bool energylink_enabled() override
+    {
+        return {};
+    }
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         return {};
@@ -224,6 +229,11 @@ bool PVZRAPData::SlotData::imitater_open() const
 int PVZRAPData::SlotData::sun_per_upgrade() const
 {
     return inner->sun_per_upgrade();
+}
+
+bool PVZRAPData::SlotData::energylink_enabled() const
+{
+    return inner->energylink_enabled();
 }
 
 std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(const SeedType seed) const

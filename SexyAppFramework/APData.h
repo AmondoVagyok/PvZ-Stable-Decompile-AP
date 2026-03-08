@@ -511,6 +511,8 @@ namespace PVZRAPData
         
         int sun_per_upgrade() const;
         
+        bool energylink_enabled() const;
+        
         std::optional<SeedStats> seed_stats(SeedType seed) const;
         std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;
         

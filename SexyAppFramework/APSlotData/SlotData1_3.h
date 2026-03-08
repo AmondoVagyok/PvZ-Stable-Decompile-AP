@@ -104,6 +104,12 @@ public:
         return slot_data["imitater_open"].get<bool>();
     }
     
+    bool energylink_enabled() override
+    {
+        // Not supported in 1.3
+        return true;
+    }   
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         // Apply easy upgrade tax
