@@ -245,12 +245,22 @@ Board::Board(LawnApp* theApp)
 			mMenuButton->Resize(-1000, -1000, 163, 46);
 		}
 
-		mStoreButton = new GameButton(1);
-		mStoreButton->mButtonImage = IMAGE_ZENSHOPBUTTON;
-		mStoreButton->mOverImage = IMAGE_ZENSHOPBUTTON_HIGHLIGHT;
-		mStoreButton->mDownImage = IMAGE_ZENSHOPBUTTON_HIGHLIGHT;
-		mStoreButton->mParentWidget = this;
-		mStoreButton->Resize(678, 33, IMAGE_ZENSHOPBUTTON->mWidth, 40);
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0)
+		{
+			mStoreButton = new GameButton(1);
+			mStoreButton->mButtonImage = IMAGE_ZENSHOPBUTTON;
+			mStoreButton->mOverImage = IMAGE_ZENSHOPBUTTON_HIGHLIGHT;
+			mStoreButton->mDownImage = IMAGE_ZENSHOPBUTTON_HIGHLIGHT;
+			mStoreButton->mParentWidget = this;
+			mStoreButton->Resize(678, 33, IMAGE_ZENSHOPBUTTON->mWidth, 40);
+		}
+		else
+		{
+			mStoreButton = new GameButton(1);
+			mStoreButton->mDrawStoneButton = true;
+			mStoreButton->mBtnNoDraw = true;
+			mStoreButton->mDisabled = true;
+		}
 	}
 	else
 	{
@@ -12076,10 +12086,11 @@ bool Board::CanUseGameObject(GameObjectType theGameObject)
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_NEXT_GARDEN)
 	{
-		return 
-			mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_MUSHROOM_GARDEN] || 
-			mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_AQUARIUM_GARDEN] ||
-			mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_OF_WISDOM];
+		return true;
+		// return 
+		// 	mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_MUSHROOM_GARDEN] || 
+		// 	mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_AQUARIUM_GARDEN] ||
+		// 	mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_OF_WISDOM];
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_FERTILIZER)
 	{
@@ -12091,7 +12102,7 @@ bool Board::CanUseGameObject(GameObjectType theGameObject)
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_PHONOGRAPH)
 	{
-		return  mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_PHONOGRAPH] > 0;
+		return  mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PHONOGRAPH) > 0;
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_CHOCOLATE)
 	{
@@ -12099,11 +12110,11 @@ bool Board::CanUseGameObject(GameObjectType theGameObject)
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_WHEELBARROW)
 	{
-		return mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_WHEEL_BARROW] > 0;
+		return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::WHEELBARROW) > 0;
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_GLOVE)
 	{
-		return mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_GARDENING_GLOVE] > 0;
+		return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::GARDENING_GLOVE) > 0;
 	}
 	if (theGameObject == GameObjectType::OBJECT_TYPE_MONEY_SIGN)
 	{

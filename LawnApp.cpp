@@ -5574,6 +5574,46 @@ void LawnApp::ProcessAPItem(const APItem& item)
 				}
 				break;
 			}
+			
+		case PVZRAPData::Items::FERTILIZER:
+			{
+				if (mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_FERTILIZER] == 0)
+				{
+					mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_FERTILIZER] = PURCHASE_COUNT_OFFSET;
+				}
+				mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_FERTILIZER]++;
+				break;
+			}
+			
+		case PVZRAPData::Items::BUG_SPRAY:
+			{
+				if (mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_BUG_SPRAY] == 0)
+				{
+					mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_BUG_SPRAY] = PURCHASE_COUNT_OFFSET;
+				}
+				mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_BUG_SPRAY]++;
+				break;
+			}
+			
+		case PVZRAPData::Items::CHOCOLATE:
+			{
+				if (mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_CHOCOLATE] == 0)
+				{
+					mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_CHOCOLATE] = PURCHASE_COUNT_OFFSET;
+				}
+				mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_CHOCOLATE]++;
+				break;
+			}
+			
+		case PVZRAPData::Items::TREE_FOOD:
+			{
+				if (mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_FOOD] == 0)
+				{
+					mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_FOOD] = PURCHASE_COUNT_OFFSET;
+				}
+				mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_FOOD]++;
+				break;
+			}
 		}
 		
 		WriteCurrentUserConfig();

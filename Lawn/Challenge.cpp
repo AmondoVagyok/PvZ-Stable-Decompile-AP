@@ -5910,6 +5910,10 @@ void Challenge::TreeOfWisdomDraw(Graphics* g)
 
 		g->DrawImage(Sexy::IMAGE_STORE_SPEECHBUBBLE2, aPosX, aPosY);
 		SexyString aText = StrFormat(_S("[TREE_OF_WISDOM_%d]"), mTreeOfWisdomTalkIndex);
+		if (mChallengeState == STATECHALLENGE_TREE_GIVE_WISDOM && !mNextHint.empty())
+		{
+			aText = mNextHint;
+		}
 		TodDrawStringWrapped(g, aText, Rect(aPosX + 25, aPosY + 6, 233, 144), Sexy::FONT_BRIANNETOD16, Color::Black, DS_ALIGN_CENTER_VERTICAL_MIDDLE);
 	}
 
@@ -6091,6 +6095,82 @@ void Challenge::TreeOfWisdomGiveWisdom()
 	{
 		mTreeOfWisdomTalkIndex = ClampInt(aTreeSize - 1, 1, 49);
 	}
+	
+	if (aTreeSize > 5)
+	{
+		// Chance to get a hint!
+		if (Rand(1.0f) <= 0.1)
+		{
+			mNextHint = "I will give you a hint now";
+			
+			auto existing_hints = mApp->mAP->Hints();
+			std::vector<int> existing_hint_locations(existing_hints.size());
+			ranges::transform(existing_hints, existing_hint_locations.begin(), [](Hint hint)
+			{
+				return hint.location;
+			});
+			auto unchecked_locations = mApp->mAP->UncheckedLocations();
+			std::vector<int64_t> available_locations;
+			for (auto location : unchecked_locations)
+			{
+				if (ranges::find(existing_hint_locations, location) == existing_hint_locations.end())
+				{
+					available_locations.push_back(location);
+				}
+			}
+			
+			if (!available_locations.empty())
+			{
+				auto selected_location = available_locations[Rand(static_cast<int>(available_locations.size()))];
+				mApp->mAP->HintLocation(selected_location);
+				
+				auto item = mApp->mAP->ItemAtLocation(selected_location);
+				
+				auto location_name = mApp->mAP->LocationName(item.location, mApp->mAP->PlayerGameName(item.player));
+				auto item_name = mApp->mAP->ItemName(item);
+				auto player_name_You = std::string("You");
+				auto player_name_your = std::string("your");
+				auto player_name_their = std::string("your");
+				auto player_name_Your = std::string("Your");
+				auto player_name_you = std::string("you");
+				
+				if (item.player != mApp->mAP->MySlot())
+				{
+					auto player_name = mApp->mAP->PlayerDisplayName(item.player);
+					player_name_You = player_name;
+					player_name_your = player_name + "'s";
+					player_name_their = "their";
+					player_name_Your = player_name + "'s";
+					player_name_you = player_name;
+				}
+				
+				const char* hints[] = {
+					"Looking for {playerName_your} {itemName}? Then you probably want to check out {locationName}.",
+					"I heard a rumour about {locationName}. {playerName_You} may have lost {playerName_their} {itemName} there.",
+					"A little birdie told me {playerName_your} {itemName} is at {locationName}.",
+					"I wouldn't waste my time with {locationName}. That is, unless you want to find {playerName_your} {itemName}.",
+					"Searching for {playerName_your} {itemName}? {locationName} is what you're after.",
+					"Planning on checking out {locationName}? I hope you're ready for {playerName_your} {itemName}.",
+					"Curious about {locationName}? Well, legend has it, you might stumble across {playerName_your} {itemName} there.",
+					"If you're in the market for {playerName_your} {itemName}, {locationName} should be your primary target.",
+					"You're asking about {itemName}? {playerName_Your} {itemName}? The very same {itemName} that can be found at {locationName}?",
+					"{playerName_Your} {itemName} has no business being at {locationName}, but I guess it doesn't play by the rules.",
+					"I think I saw a Zombie drop {playerName_your} {itemName} around {locationName}. It was either that, or one of its own discarded limbs.",
+					"Clearing {locationName} would probably make {playerName_you} very happy. That is, if {playerName_your} {itemName} is any good.",
+					"I've always hated {locationName}. Which is unfortunate, because if {playerName_your} {itemName} is any good, then you'll probably need to head over there."
+				};
+				auto hint_string_char = reinterpret_cast<const char*>(TodPickFromArray(reinterpret_cast<intptr_t*>(hints), 13));
+				
+				auto hint_string = TodReplaceString(hint_string_char, "{playerName_You}", player_name_You);
+				hint_string = TodReplaceString(hint_string, "{playerName_your}", player_name_your);
+				hint_string = TodReplaceString(hint_string, "{playerName_their}", player_name_their);
+				hint_string = TodReplaceString(hint_string, "{playerName_Your}", player_name_Your);
+				hint_string = TodReplaceString(hint_string, "{playerName_you}", player_name_you);
+				hint_string = TodReplaceString(hint_string, "{itemName}", item_name);
+				mNextHint = TodReplaceString(hint_string, "{locationName}", location_name);
+			}
+		}
+	}
 }
 
 //0x42D5C0
@@ -6160,6 +6240,7 @@ void Challenge::TreeOfWisdomUpdate()
 			{
 				mChallengeState = STATECHALLENGE_TREE_WAITING_TO_BABBLE;
 				mChallengeStateCounter = RandRangeInt(700, 1000);
+				mNextHint = "";
 			}
 		}
 	}

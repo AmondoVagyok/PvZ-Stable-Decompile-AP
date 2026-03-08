@@ -18,6 +18,7 @@
 #include "../Sexy.TodLib/EffectSystem.h"
 #include "../SexyAppFramework/Graphics.h"
 #include "../Sexy.TodLib/TodStringFile.h"
+#include "../SexyAppFramework/APWrapper.h"
 
 SpecialGridPlacement gGreenhouseGridPlacement[] =  //0x69DE50
 {
@@ -943,14 +944,14 @@ void ZenGarden::MouseDownWithFeedingTool(int x, int y, CursorType theCursorType)
         aZenTool->mPosX = aPlantToFeed->mX + 40;
         aZenTool->mPosY = aPlantToFeed->mY + 40;
 
-        if (theCursorType == CursorType::CURSOR_TYPE_WATERING_CAN && mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_GOLD_WATERINGCAN])
+        if (theCursorType == CursorType::CURSOR_TYPE_WATERING_CAN && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::GOLD_WATERING_CAN) > 0)
             aZenTool->mRenderOrder = Board::MakeRenderOrder(RenderLayer::RENDER_LAYER_ABOVE_UI, 0, 0);
         else
             aZenTool->mRenderOrder = aPlantToFeed->mRenderOrder + 2;
 
         if (theCursorType == CursorType::CURSOR_TYPE_WATERING_CAN)
         {
-            if (mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_GOLD_WATERINGCAN])
+            if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::GOLD_WATERING_CAN) > 0)
             {
                 aZenTool->mPosX = x;
                 aZenTool->mPosY = y;
@@ -1300,7 +1301,8 @@ float ZenGarden::ZenPlantOffsetX(PottedPlant* thePottedPlant)
 
 bool ZenGarden::HasPurchasedStinky()
 {
-    return mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_STINKY_THE_SNAIL] != 0;
+    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::STINKY) > 0;
+    // return mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_STINKY_THE_SNAIL] != 0;
 }
 
 //0x51FB40
@@ -1873,6 +1875,7 @@ void ZenGarden::GotoNextGarden()
     mApp->mEffectSystem->EffectSystemFreeAll();
 
     bool aGoToTree = false;
+    bool haveTreeOfWisdom = true;
     if (mGardenType == GardenType::GARDEN_MAIN)
     {
         if (mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_MUSHROOM_GARDEN])
@@ -1885,7 +1888,7 @@ void ZenGarden::GotoNextGarden()
             mGardenType = GardenType::GARDEN_AQUARIUM;
             mBoard->mBackground = BackgroundType::BACKGROUND_ZOMBIQUARIUM;
         }
-        else if (mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_OF_WISDOM])
+        else if (haveTreeOfWisdom)
         {
             aGoToTree = true;
         }
@@ -1897,7 +1900,7 @@ void ZenGarden::GotoNextGarden()
             mGardenType = GardenType::GARDEN_AQUARIUM;
             mBoard->mBackground = BackgroundType::BACKGROUND_ZOMBIQUARIUM;
         }
-        else if (mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_OF_WISDOM])
+        else if (haveTreeOfWisdom)
         {
             aGoToTree = true;
         }
@@ -1909,7 +1912,7 @@ void ZenGarden::GotoNextGarden()
     }
     else if (mGardenType == GardenType::GARDEN_AQUARIUM)
     {
-        if (mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_OF_WISDOM])
+        if (haveTreeOfWisdom)
         {
             aGoToTree = true;
         }
@@ -1947,7 +1950,7 @@ void ZenGarden::GotoNextGarden()
 
     if ((mBoard->mBackground == BackgroundType::BACKGROUND_MUSHROOM_GARDEN || mBoard->mBackground == BackgroundType::BACKGROUND_ZOMBIQUARIUM))
     {
-        if (!mApp->mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_WHEEL_BARROW])
+        if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::WHEELBARROW) == 0)
         {
             mBoard->DisplayAdvice(_S("[ADVICE_NEED_WHEELBARROW]"), MessageStyle::MESSAGE_STYLE_HINT_TALL_FAST, AdviceType::ADVICE_NEED_WHEELBARROW);
         }

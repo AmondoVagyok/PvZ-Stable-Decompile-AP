@@ -317,7 +317,8 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         auto data_storage_requested_keys = {
             DataStorageSlotPrefixed("profileGuids"),
             DataStorageSlot(KnownDataStorageKey::ClientStatus),
-            DataStorageSlot(KnownDataStorageKey::EnergyLink)
+            DataStorageSlot(KnownDataStorageKey::EnergyLink),
+            DataStorageSlot(KnownDataStorageKey::Hints)
         };
         d->mAP->SetNotify(data_storage_requested_keys);
         
@@ -325,7 +326,7 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         this->WriteDataStorage(DataStorageSlotPrefixed("profileGuids"), nlohmann::json::array()).de_fault(nlohmann::json::array());
         this->WriteDataStorage(DataStorageSlot(KnownDataStorageKey::EnergyLink), 0).de_fault(0);
         
-        d->mAP->Get({DataStorageSlot(KnownDataStorageKey::ClientStatus)});
+        d->mAP->Get({DataStorageSlot(KnownDataStorageKey::ClientStatus), DataStorageSlot(KnownDataStorageKey::Hints)});
         
         for (const auto& connection_complete_listener : this->d->connection_complete_listener)
         {
@@ -504,6 +505,8 @@ std::string APWrapper::DataStorageSlot(KnownDataStorageKey key) const
         return std::format("EnergyLink{}", d->mAP->get_team_number());
     case KnownDataStorageKey::ClientStatus:
         return std::string("_read_client_status_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number());
+    case KnownDataStorageKey::Hints:
+        return std::string("_read_hints_") + std::to_string(d->mAP->get_team_number()) + "_" + std::to_string(d->mAP->get_player_number());
     }
     
     return "";
@@ -659,6 +662,11 @@ bool APWrapper::IsLocationPresent(const int64_t& location) const
     return locations.find(location) != locations.end();
 }
 
+std::set<int64_t> APWrapper::UncheckedLocations() const
+{
+    return this->d->mAP->get_missing_locations();
+}
+
 bool APWrapper::AllLocationsChecked() const
 {
     if (!d->mAP)
@@ -677,6 +685,37 @@ void APWrapper::SetGoal() const
 {
     if (!d->mAP) return;
     this->d->mAP->StatusUpdate(APClient::ClientStatus::GOAL);
+}
+
+std::string APWrapper::LocationName(const int64_t location, std::string game_name)
+{
+    return d->mAP->get_location_name(location, game_name);
+}
+
+std::list<Hint> APWrapper::Hints()
+{
+    auto hint_data_storage = ReadDataStorage(DataStorageSlot(KnownDataStorageKey::Hints));
+    std::list<Hint> hints;
+    for (auto hint_json : hint_data_storage)
+    {
+        Hint hint;
+        hint.receiving_player = hint_json["receiving_player"];
+        hint.finding_player = hint_json["finding_player"];
+        hint.location = hint_json["location"];
+        hint.item = hint_json["item"];
+        hint.found = hint_json["found"];
+        hint.entrance = hint_json["entrance"];
+        hint.item_flags = hint_json["item_flags"];
+        hint.status = hint_json["status"];
+        hints.push_back(hint);
+    }
+    
+    return hints;
+}
+
+void APWrapper::HintLocation(int64_t location) const
+{
+    d->mAP->CreateHints({location}, -1, APClient::HintStatus::HINT_UNSPECIFIED);
 }
 
 void APWrapper::EnableDeathLink(bool enable) const

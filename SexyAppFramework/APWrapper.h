@@ -2,6 +2,7 @@
 #define AP_WRAPPER_H
 
 #include <functional>
+#include <set>
 #include <string>
 #include <nlohmann/json_fwd.hpp>
 
@@ -33,6 +34,18 @@ struct APItem
     static constexpr unsigned ITEM_FLAG_PROGRESSION = 0b001;
     static constexpr unsigned ITEM_FLAG_USEFUL = 0b010;
     static constexpr unsigned ITEM_FLAG_TRAP = 0b100;
+};
+    
+struct Hint
+{
+    int receiving_player;
+    int finding_player;
+    int location;
+    int item;
+    bool found;
+    std::string entrance;
+    int item_flags;
+    int status;
 };
 
 struct DataStoragePendingOperationPrivate;
@@ -86,7 +99,8 @@ public:
     enum class KnownDataStorageKey
     {
         EnergyLink,
-        ClientStatus
+        ClientStatus,
+        Hints
     };
     
     void Connect(const std::string& server_name, const std::string& slot_name, const std::string& password = "");
@@ -117,9 +131,14 @@ public:
     void CheckLocations(const std::list<int64_t>& location_ids) const;
     bool IsLocationChecked(const int64_t& location) const;
     bool IsLocationPresent(const int64_t& location) const;
+    std::set<int64_t> UncheckedLocations() const;
     bool AllLocationsChecked() const;
     APItem ItemAtLocation(int64_t location) const;
     void SetGoal() const;
+    std::string LocationName(const int64_t location, std::string game_name);
+    
+    std::list<Hint> Hints();
+    void HintLocation(int64_t location) const;
     
     void EnableDeathLink(bool enable) const;
     void SendDeathLink(const std::string& reason) const;
