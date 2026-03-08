@@ -20,6 +20,11 @@ public:
     {
         return "1.3";
     }
+    
+    PVZRAPData::SlotData::AdventureModeProgression adventure_mode_progression() override
+    {
+        return parse_adventure_mode_progression(slot_data["adventure_mode_progression"].get<int>());
+    }
 
     PVZRAPData::SlotData::LevelRandomisation minigame_levels() override
     {
@@ -54,6 +59,26 @@ public:
     std::map<int, int> vasebreaker_unlocks() override
     {
        return parse_unlocks(slot_data["vasebreaker_unlocks"]);
+    }
+    
+    PVZRAPData::SlotData::GoalProgress goal_requirements() override
+    {
+        PVZRAPData::SlotData::GoalProgress gp;
+	
+        gp.adventure_levels_goal = slot_data["adventure_levels_goal"];
+        gp.adventure_areas_goal = slot_data["adventure_areas_goal"];
+        gp.minigame_levels_goal = slot_data["minigame_levels_goal"];
+        gp.puzzle_levels_goal = slot_data["puzzle_levels_goal"];
+        gp.survival_levels_goal = slot_data["survival_levels_goal"];
+        gp.overall_levels_goal = slot_data["overall_levels_goal"];
+        gp.taco_goal = 0;
+        
+        return gp;
+    }
+    
+    bool fast_goal() override
+    {
+        return slot_data["fast_goal"].get<int>() == 1;
     }
     
     std::optional<std::set<ZombieType>> zombies_on_level(int level) override
@@ -169,6 +194,24 @@ public:
     }
 
 private:
+    static PVZRAPData::SlotData::AdventureModeProgression parse_adventure_mode_progression(int adventure_mode_progression)
+    {
+        switch (adventure_mode_progression)
+        {
+        case 0:
+            return PVZRAPData::SlotData::AdventureModeProgression::Linear;
+        case 1:
+            return PVZRAPData::SlotData::AdventureModeProgression::AreaUnlockItems;
+        case 2:
+            return PVZRAPData::SlotData::AdventureModeProgression::OpenAreaUnlockItems;
+        case 3:
+            return PVZRAPData::SlotData::AdventureModeProgression::LevelItems;
+        default:
+            // ???
+            return PVZRAPData::SlotData::AdventureModeProgression::Linear;
+        }
+    }
+    
     static PVZRAPData::SlotData::LevelRandomisation parse_level_randomisation(int level_randomisation)
     {
         switch (level_randomisation)

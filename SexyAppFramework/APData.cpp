@@ -24,6 +24,11 @@ public:
         return _version;
     }
 
+    PVZRAPData::SlotData::AdventureModeProgression adventure_mode_progression() override
+    {
+        return {};
+    }
+
     PVZRAPData::SlotData::LevelRandomisation minigame_levels() override
     {
         return {};
@@ -55,6 +60,16 @@ public:
     }
     
     std::map<int, int> vasebreaker_unlocks() override
+    {
+        return {};
+    }
+    
+    PVZRAPData::SlotData::GoalProgress goal_requirements() override
+    {
+        return {};
+    }
+    
+    bool fast_goal() override
     {
         return {};
     }
@@ -161,6 +176,11 @@ std::string PVZRAPData::SlotData::version() const
     return inner->version();
 }
 
+PVZRAPData::SlotData::AdventureModeProgression PVZRAPData::SlotData::adventure_mode_progression() const
+{
+    return inner->adventure_mode_progression();
+}
+
 PVZRAPData::SlotData::LevelRandomisation PVZRAPData::SlotData::minigame_levels() const
 {
     return inner->minigame_levels();
@@ -194,6 +214,16 @@ std::map<int, int> PVZRAPData::SlotData::izombie_unlocks() const
 std::map<int, int> PVZRAPData::SlotData::vasebreaker_unlocks() const
 {
     return inner->vasebreaker_unlocks();
+}
+
+PVZRAPData::SlotData::GoalProgress PVZRAPData::SlotData::goal_requirements() const
+{
+    return inner->goal_requirements();
+}
+
+bool PVZRAPData::SlotData::fast_goal() const
+{
+    return inner->fast_goal();
 }
 
 std::optional<std::set<ZombieType>> PVZRAPData::SlotData::zombies_on_level(int level) const

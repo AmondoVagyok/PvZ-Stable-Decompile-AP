@@ -4,7 +4,6 @@
 #include <cstdint>
 #include <optional>
 #include <set>
-#include <stdexcept>
 #include <nlohmann/json_fwd.hpp>
 
 #include "../ConstEnums.h"
@@ -392,11 +391,22 @@ namespace PVZRAPData
         constexpr int64_t WALL_NUT_FIRST_AID = 16;
         constexpr int64_t RAKE = 17;
         constexpr int64_t ADDITIONAL_STARTING_SUN = 18;
+        constexpr int64_t MOWER_REWARD_UPGRADE = 19;
         constexpr int64_t DAY_ACCESS = 20;
         constexpr int64_t NIGHT_ACCESS = 21;
         constexpr int64_t POOL_ACCESS = 22;
         constexpr int64_t FOG_ACCESS = 23;
         constexpr int64_t ROOF_ACCESS = 24;
+        constexpr int64_t CHINA_ACCESS = 25;
+        constexpr int64_t PROGRESSIVE_SHOVEL = 26;
+        constexpr int64_t TACO = 27;
+        constexpr int64_t PROGRESSIVE_TWIDDYDINKIES = 28;
+        constexpr int64_t PROGRESSIVE_LOOT_RATE = 29;
+        constexpr int64_t GARDENING_GLOVE = 30;
+        constexpr int64_t GOLD_WATERING_CAN = 31;
+        constexpr int64_t PHONOGRAPH = 32;
+        constexpr int64_t STINKY = 33;
+        constexpr int64_t WHEELBARROW = 34;
         
         constexpr int64_t MUSTACHE_MODE = 50;
         constexpr int64_t FUTURE_ZOMBIES_MODE = 51;
@@ -409,7 +419,12 @@ namespace PVZRAPData
         constexpr int64_t SILVER_COIN = 60;
         constexpr int64_t GOLD_COIN = 61;
         constexpr int64_t DIAMOND = 62;
-        constexpr int64_t NOTHING = 63;
+        constexpr int64_t BACON = 63;
+        constexpr int64_t RANDOM_SEED_PACKET = 64;
+        constexpr int64_t TREE_FOOD = 65;
+        constexpr int64_t FERTILIZER = 66;
+        constexpr int64_t BUG_SPRAY = 67;
+        constexpr int64_t CHOCOLATE = 68;
         
         constexpr int64_t TRAP_MOWER_DEPLOY = 70;
         constexpr int64_t TRAP_PACKET_COOLDOWN = 71;
@@ -474,6 +489,14 @@ namespace PVZRAPData
             LevelItems = 4
         };
         
+        enum class AdventureModeProgression
+        {
+            Linear = 0,
+            AreaUnlockItems = 1,
+            OpenAreaUnlockItems = 2,
+            LevelItems = 3
+        };
+        
         struct SeedStats
         {
             std::optional<int> sun_price;
@@ -486,11 +509,32 @@ namespace PVZRAPData
         {
             std::optional<int> damage;
         };
+
+        struct GoalProgress
+        {
+            int adventure_levels_goal;
+            int adventure_areas_goal;
+            int minigame_levels_goal;
+            int puzzle_levels_goal;
+            int survival_levels_goal;
+            int overall_levels_goal;
+            int taco_goal;
+	
+            int adventure_levels_complete;
+            int adventure_areas_complete;
+            int minigame_levels_complete;
+            int puzzle_levels_complete;
+            int survival_levels_complete;
+            int overall_levels_complete;
+            int taco_received;
+        };
         
         static SlotData get_slot_data(const nlohmann::json& json);
         
         bool is_valid() const;
         std::string version() const;
+        
+        AdventureModeProgression adventure_mode_progression() const;
         
         LevelRandomisation minigame_levels() const;
         LevelRandomisation puzzle_levels() const;
@@ -500,6 +544,9 @@ namespace PVZRAPData
         std::map<int, int> survival_unlocks() const;
         std::map<int, int> izombie_unlocks() const;
         std::map<int, int> vasebreaker_unlocks() const;
+        
+        GoalProgress goal_requirements() const;
+        bool fast_goal() const;
         
         std::optional<std::set<ZombieType>> zombies_on_level(int level) const;
         std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) const;

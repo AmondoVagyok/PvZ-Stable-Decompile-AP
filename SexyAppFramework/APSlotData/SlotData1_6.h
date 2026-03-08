@@ -12,6 +12,21 @@ public:
         return "1.6";
     }
     
+    PVZRAPData::SlotData::GoalProgress goal_requirements() override
+    {
+        PVZRAPData::SlotData::GoalProgress gp;
+	
+        gp.adventure_levels_goal = slot_data["adventure_levels_goal"];
+        gp.adventure_areas_goal = slot_data["adventure_areas_goal"];
+        gp.minigame_levels_goal = slot_data["minigame_levels_goal"];
+        gp.puzzle_levels_goal = slot_data["puzzle_levels_goal"];
+        gp.survival_levels_goal = slot_data["survival_levels_goal"];
+        gp.overall_levels_goal = slot_data["overall_levels_goal"];
+        gp.taco_goal = slot_data["taco_goal"];
+        
+        return gp;
+    }
+    
     std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) override
     {
         auto conveyor_map = slot_data["conveyor_map"];

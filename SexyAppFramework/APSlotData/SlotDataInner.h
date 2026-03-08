@@ -9,6 +9,8 @@ public:
     virtual bool is_valid() = 0;
     virtual std::string version() = 0;
     
+    virtual AdventureModeProgression adventure_mode_progression() = 0;
+    
     virtual LevelRandomisation minigame_levels() = 0;
     virtual LevelRandomisation puzzle_levels() = 0;
     virtual LevelRandomisation survival_levels() = 0;
@@ -17,6 +19,9 @@ public:
     virtual std::map<int, int> survival_unlocks() = 0;
     virtual std::map<int, int> izombie_unlocks() = 0;
     virtual std::map<int, int> vasebreaker_unlocks() = 0;
+    
+    virtual GoalProgress goal_requirements() = 0;
+    virtual bool fast_goal() = 0;
     
     virtual std::optional<std::set<ZombieType>> zombies_on_level(int level) = 0;
     virtual std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) = 0;

@@ -5162,17 +5162,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		return false;
 	}
 	
-	auto slot_data = mAP->SlotData();
-	
-	// 0: Linear
-	// 1: Area Unlock Items
-	// 2: Open Area Unlock Items
-	// 3: Level Items
-	int adventure_mode_progression = slot_data["adventure_mode_progression"];
-	
-	// 0: Off
-	// 1: On
-	int fast_goal = slot_data["fast_goal"];
+	auto adventure_mode_progression = mSlotData->adventure_mode_progression();
 	
 	if (level == 50)
 	{
@@ -5201,8 +5191,12 @@ bool LawnApp::IsLevelOpen(int level) const
 		{
 			return false;
 		}
+		if (gp.taco_goal < gp.taco_received)
+		{
+			return false;
+		}
 		
-		if (fast_goal)
+		if (mSlotData->fast_goal())
 		{
 			return true;
 		}
@@ -5210,7 +5204,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		// Now check the standard requirements for 5-10
 	}
 	
-	if (adventure_mode_progression == 0)
+	if (adventure_mode_progression == PVZRAPData::SlotData::AdventureModeProgression::Linear)
 	{
 		if (level == 1)
 		{
@@ -5218,7 +5212,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		}
 		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
 	}
-	if (adventure_mode_progression == 1)
+	if (adventure_mode_progression == PVZRAPData::SlotData::AdventureModeProgression::AreaUnlockItems)
 	{
 		if (level >= 1 && level <= 10 && mAP->ReceivedItemCount(PVZRAPData::Items::DAY_ACCESS) == 0)
 		{
@@ -5247,7 +5241,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		}
 		return mAP->IsLocationChecked(PVZRAPData::Locations::LevelClear(level - 1));
 	}
-	if (adventure_mode_progression == 2)
+	if (adventure_mode_progression == PVZRAPData::SlotData::AdventureModeProgression::OpenAreaUnlockItems)
 	{
 		if (level >= 1 && level <= 10)
 		{
@@ -5270,7 +5264,7 @@ bool LawnApp::IsLevelOpen(int level) const
 			return mAP->ReceivedItemCount(PVZRAPData::Items::ROOF_ACCESS) > 0;
 		}
 	}
-	if (adventure_mode_progression == 3)
+	if (adventure_mode_progression == PVZRAPData::SlotData::AdventureModeProgression::LevelItems)
 	{
 		return mAP->ReceivedItemCount(PVZRAPData::Items::Level(level)) > 0;
 	}
@@ -5278,17 +5272,9 @@ bool LawnApp::IsLevelOpen(int level) const
 	return false;
 }
 
-GoalProgress LawnApp::GetGoalProgress() const
+PVZRAPData::SlotData::GoalProgress LawnApp::GetGoalProgress() const
 {
-	auto slot_data = mAP->SlotData();
-	GoalProgress gp;
-	
-	gp.adventure_levels_goal = slot_data["adventure_levels_goal"];
-	gp.adventure_areas_goal = slot_data["adventure_areas_goal"];
-	gp.minigame_levels_goal = slot_data["minigame_levels_goal"];
-	gp.puzzle_levels_goal = slot_data["puzzle_levels_goal"];
-	gp.survival_levels_goal = slot_data["survival_levels_goal"];
-	gp.overall_levels_goal = slot_data["overall_levels_goal"];
+	auto gp = mSlotData->goal_requirements();
 	
 	gp.overall_levels_complete = 0;
 	
@@ -5351,6 +5337,8 @@ GoalProgress LawnApp::GetGoalProgress() const
 			gp.overall_levels_complete++;
 		}
 	}
+	
+	gp.taco_received = mAP->ReceivedItemCount(PVZRAPData::Items::TACO);
 
 	return gp;
 }
