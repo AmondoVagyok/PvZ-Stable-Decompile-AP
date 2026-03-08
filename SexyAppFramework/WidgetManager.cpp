@@ -788,7 +788,7 @@ bool WidgetManager::KeyDown(KeyCode key)
 	if ((key >= 0) && (key < 0xFF))
 		mKeyDown[key] = true;
 	
-	if (key == 84 /* T */ && !dynamic_cast<EditWidget*>(mFocusWidget) && !dynamic_cast<LawnApp*>(mApp)->APTextClientVisible())
+	if (key == 275 /* ` */ && !dynamic_cast<EditWidget*>(mFocusWidget) && !dynamic_cast<LawnApp*>(mApp)->APTextClientVisible())
 	{
 		dynamic_cast<LawnApp*>(mApp)->ShowAPTextClient();
 	}
