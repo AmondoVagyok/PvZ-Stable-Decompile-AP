@@ -75,7 +75,6 @@ public:
     int                     mChallengePoints;
     bool                    mHadInitBombs;
     int                     mBombsLeft;
-    std::string             mNextHint;
 
 public:
     Challenge();

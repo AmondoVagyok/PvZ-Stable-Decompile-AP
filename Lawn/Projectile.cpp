@@ -1873,3 +1873,47 @@ void Projectile::OverrideAngle(float theAngle)
 
 	mRotation += theAngle;
 }
+
+std::string Projectile::ProjectileName(ProjectileType projectile)
+{
+	switch (projectile) {
+	case PROJECTILE_PEA:
+		return "Pea";
+	case PROJECTILE_SNOWPEA:
+		return "Snow Pea";
+	case PROJECTILE_CABBAGE:
+		return "Cabbage";
+	case PROJECTILE_MELON:
+		return "Melon";
+	case PROJECTILE_PUFF:
+		return "Puff";
+	case PROJECTILE_WINTERMELON:
+		return "Wintermelon";
+	case PROJECTILE_FIREBALL:
+		return "Fireball";
+	case PROJECTILE_STAR:
+		return "Star";
+	case PROJECTILE_SPIKE:
+		return "Spike";
+	case PROJECTILE_BASKETBALL:
+		return "Basketball";
+	case PROJECTILE_KERNEL:
+		return "Kernel";
+	case PROJECTILE_COBBIG:
+		return "Cob";
+	case PROJECTILE_BUTTER:
+		return "Butter";
+	case PROJECTILE_ZOMBIE_PEA:
+		return "Pea";
+	}
+	
+	return {};
+}
+
+ProjectileDefinition& GetProjectileDef(ProjectileType projectile)
+{
+	ProjectileDefinition& aProjectileDef = gProjectileDefinition[projectile];
+	TOD_ASSERT(aProjectileDef.mProjectileType == projectile);
+
+	return aProjectileDef;
+}

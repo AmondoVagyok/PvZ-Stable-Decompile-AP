@@ -92,7 +92,10 @@ public:
     bool                    IsZombieHitBySplash(Zombie* theZombie);
     bool                    PeaAboutToHitTorchwood();
     void                    OverrideAngle(float theAngle);
+    static std::string      ProjectileName(ProjectileType projectile);
 
 };
+
+ProjectileDefinition& GetProjectileDef(ProjectileType projectile);
 
 #endif

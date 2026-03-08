@@ -6778,6 +6778,17 @@ SexyString Plant::GetStatDeltasTooltip(LawnApp* app, SeedType theSeedType)
         {
             write_seed_stat("Rate", aPlantDef.mLaunchRate / static_cast<double>(seed_stats->firing_rate.value()), true);
         }
+        
+        for (auto projectile : Projectiles(theSeedType))
+        {
+            auto projectile_stats = app->mSlotData->projectile_stats(projectile);
+            
+            if (projectile_stats.has_value() && projectile_stats->damage.has_value())
+            {
+                auto projectile_def = GetProjectileDef(projectile);
+                write_seed_stat(Projectile::ProjectileName(projectile) + " Damage", static_cast<double>(projectile_stats->damage.value()) / projectile_def.mDamage, true);
+            }
+        }
     }
     
     return aToolTip;
@@ -6883,6 +6894,40 @@ bool Plant::IsUpgrade(LawnApp* app, SeedType theSeedtype)
         theSeedtype == SeedType::SEED_GOLD_MAGNET ||
         theSeedtype == SeedType::SEED_GLOOMSHROOM ||
         theSeedtype == SeedType::SEED_CATTAIL;
+}
+
+std::vector<ProjectileType> Plant::Projectiles(SeedType theSeedtype)
+{
+    switch (theSeedtype)
+    {
+    case SeedType::SEED_PEASHOOTER:
+    case SeedType::SEED_REPEATER:
+    case SeedType::SEED_SPLITPEA:
+    case SeedType::SEED_THREEPEATER:
+    case SeedType::SEED_GATLINGPEA:
+        return {ProjectileType::PROJECTILE_PEA};
+    case SeedType::SEED_SNOWPEA:
+        return {ProjectileType::PROJECTILE_SNOWPEA};
+    case SeedType::SEED_PUFFSHROOM:
+    case SeedType::SEED_SCAREDYSHROOM:
+    case SeedType::SEED_SEASHROOM:
+        return {ProjectileType::PROJECTILE_PUFF};
+    case SeedType::SEED_TORCHWOOD:
+        return {ProjectileType::PROJECTILE_FIREBALL};
+    case SeedType::SEED_STARFRUIT:
+        return {ProjectileType::PROJECTILE_STAR};
+    case SeedType::SEED_CACTUS:
+        return {ProjectileType::PROJECTILE_SPIKE};
+    case SeedType::SEED_CABBAGEPULT:
+        return {ProjectileType::PROJECTILE_CABBAGE};
+    case SeedType::SEED_KERNELPULT:
+        return {ProjectileType::PROJECTILE_KERNEL, ProjectileType::PROJECTILE_BUTTER};
+    case SeedType::SEED_MELONPULT:
+        return {ProjectileType::PROJECTILE_MELON};
+    case SeedType::SEED_WINTERMELON:
+        return {ProjectileType::PROJECTILE_WINTERMELON};
+    }
+    return {};
 }
 
 //0x467EF0

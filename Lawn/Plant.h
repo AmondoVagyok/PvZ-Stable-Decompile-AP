@@ -233,6 +233,7 @@ public:
     static /*inline*/ bool  IsAquatic(SeedType theSeedType);
     static /*inline*/ bool  IsFlying(SeedType theSeedtype);
     static /*inline*/ bool  IsUpgrade(LawnApp* app, SeedType theSeedtype);
+    static std::vector<ProjectileType> Projectiles(SeedType theSeedtype);
     void                    UpdateAbilities();
     void                    Squish();
     void                    DoRowAreaDamage(int theDamage, unsigned int theDamageFlags);

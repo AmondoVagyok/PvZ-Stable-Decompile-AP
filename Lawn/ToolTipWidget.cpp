@@ -71,7 +71,7 @@ void ToolTipWidget::CalculateSize()
 	int aWarningWidth = FONT_PICO129->StringWidth(mWarningText);
 	int aMaxWidth = max(aTitleWidth, aWarningWidth);
 
-	mGetsLinesWidth = max(aMaxWidth - 30, 100);
+	mGetsLinesWidth = max(aMaxWidth - 30, 200);
 	GetLines(aLines);
 
 	for (int i = 0; i < aLines.size(); i++)

@@ -39,6 +39,8 @@
 #include "../SexyAppFramework/APWrapper.h"
 #include "Widget/ChallengeScreen.h"
 
+std::string             mNextHint;
+
 int gZombieWaves[NUM_LEVELS] = {  //0x6A34E8
 	4,  6,  8,  10, 8,  10, 20, 10, 20, 20,
 	10, 20, 10, 20, 10, 10, 20, 10, 20, 20,
@@ -306,6 +308,7 @@ SeedType gArtChallengeStarFruit[MAX_GRID_SIZE_Y][MAX_GRID_SIZE_X] = {  //0x6A341
 //0x41F1B0
 Challenge::Challenge()
 {
+	mNextHint = {};
 	mApp = (LawnApp*)gSexyAppBase;
 	mBoard = mApp->mBoard;
 	mBeghouledMouseCapture = false;
