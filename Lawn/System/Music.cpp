@@ -871,7 +871,11 @@ void Music::StartGameMusic()
 				auto challenge = GetChallengeDefinition(mApp->mGameMode - GAMEMODE_SURVIVAL_NORMAL_STAGE_1);
 				levelIndex = challenge.mAPId;
 			}
-			mTune = audio_list[music_map[levelIndex].get<int>()];
+			
+			if (levelIndex != -1)
+			{
+				mTune = audio_list[music_map[levelIndex].get<int>()];
+			}
 		}
 	}
 
