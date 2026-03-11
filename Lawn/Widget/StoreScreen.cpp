@@ -1564,46 +1564,22 @@ int StoreScreen::GetItemCost(int theIndex)
 {
     if (mPage == 0)
     {
-        if (theIndex == STORE_ITEM_BONUS_LAWN_MOWER) return gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_BONUS_LAWN_MOWER]
-                                                            ? 500
-                                                            : 200;
-        switch (theIndex)
+        if (theIndex == 0)
         {
-        case STORE_ITEM_PLANT_GATLINGPEA: return 500;
-        case STORE_ITEM_PLANT_TWINSUNFLOWER: return 500;
-        case STORE_ITEM_PLANT_GLOOMSHROOM: return 750;
-        case STORE_ITEM_PLANT_CATTAIL: return 1000;
-        case STORE_ITEM_PLANT_WINTERMELON: return 1000;
-        case STORE_ITEM_PLANT_GOLD_MAGNET: return 300;
-        case STORE_ITEM_PLANT_SPIKEROCK: return 750;
-        case STORE_ITEM_PLANT_COBCANNON: return 2000;
-        case STORE_ITEM_PLANT_IMITATER: return 3000;
-        case STORE_ITEM_POTTED_MARIGOLD_1: return 250;
-        case STORE_ITEM_POTTED_MARIGOLD_2: return 250;
-        case STORE_ITEM_POTTED_MARIGOLD_3: return 250;
-        case STORE_ITEM_GOLD_WATERINGCAN: return 1000;
-        case STORE_ITEM_FERTILIZER: return 75;
-        case STORE_ITEM_BUG_SPRAY: return 100;
-        case STORE_ITEM_PHONOGRAPH: return 1500;
-        case STORE_ITEM_GARDENING_GLOVE: return 100;
-        case STORE_ITEM_MUSHROOM_GARDEN: return 3000;
-        case STORE_ITEM_WHEEL_BARROW: return 20;
-        case STORE_ITEM_STINKY_THE_SNAIL: return 300;
-        case STORE_ITEM_PACKET_UPGRADE:
-            {
-                int aPurchase = gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE];
-                return aPurchase == 0 ? 75 : aPurchase == 1 ? 500 : aPurchase == 2 ? 2000 : 8000;
-            }
-        case STORE_ITEM_POOL_CLEANER: return 100;
-        case STORE_ITEM_ROOF_CLEANER: return 300;
-        case STORE_ITEM_RAKE: return 20;
-        case STORE_ITEM_AQUARIUM_GARDEN: return 3000;
-        case STORE_ITEM_TREE_OF_WISDOM: return 1000;
-        case STORE_ITEM_TREE_FOOD: return 250;
-        case STORE_ITEM_FIRSTAID: return 200;
-        default: TOD_ASSERT();
-            return 0;
+            // Fertilizer
+            return 75;
         }
+        if (theIndex == 1)
+        {
+            // Bugspray
+            return 100;
+        }
+        if (theIndex == 2)
+        {
+            //Tree Food
+            return 250;
+        }
+        return 0;
     }
     else
     {
