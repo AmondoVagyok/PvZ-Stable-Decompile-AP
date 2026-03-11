@@ -321,7 +321,7 @@ bool ZenGarden::IsZenGardenFull(bool theIncludeDroppedPresents)
 
 bool ZenGarden::CanDropPottedPlantLoot()
 {
-    return mApp->HasFinishedAdventure() && !IsZenGardenFull(true);
+    return (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0) && !IsZenGardenFull(true);
 }
 
 //0x51D7B0

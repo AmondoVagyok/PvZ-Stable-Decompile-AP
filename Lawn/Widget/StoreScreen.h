@@ -134,6 +134,7 @@ public:
     void                        SetupForIntro(int theDialogIndex);
     void SlideTo(int theX, int theY);
     virtual void                OrderInManagerChanged();
+	int ZenPageOffset();
 };
 
 class StoreScreenOverlay : public Widget

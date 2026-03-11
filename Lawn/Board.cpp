@@ -11852,7 +11852,7 @@ void Board::DropLootPiece(int thePosX, int thePosY, int theDropFactor)
 	{
 		aPottedPlantChance = 0;
 	}
-	else if (mApp->IsAdventureMode() && !mApp->IsFirstTimeAdventureMode())
+	else if (mApp->IsAdventureMode())
 	{
 		aPottedPlantChance = 24;
 	}

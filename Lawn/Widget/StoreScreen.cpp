@@ -260,7 +260,12 @@ StoreScreen::StoreScreen(LawnApp* theApp) : Dialog(nullptr, nullptr, DIALOG_STOR
     mEnergyMode = Idle;
     mZapTickCounter = 0;
 
-    if (!IsPageShown(1))
+    if (!IsPageShown(0))
+    {
+        mPage = 1;
+    }
+    
+    if (!IsPageShown(mPage + 1))
     {
         mPrevButton->mDisabledImage = Sexy::IMAGE_STORE_PREVBUTTONDISABLED;
         mPrevButton->SetDisabled(true);
@@ -301,8 +306,22 @@ StoreScreen::~StoreScreen()
 StoreItem StoreScreen::GetStoreItemType(int theSpotIndex)
 {
     // 这个函数原版是穷举判断的，这里优化一下……
+    if (mPage == 0)
+    {
+        switch (theSpotIndex)
+        {
+        case 0:
+            return STORE_ITEM_FERTILIZER;
+        case 1:
+            return STORE_ITEM_BUG_SPRAY;
+        case 2:
+            return STORE_ITEM_TREE_FOOD;
+        default:
+            return STORE_ITEM_INVALID;
+        }
+    }
 
-    if (mApp->mAP->IsLocationPresent(PVZRAPData::Locations::Twiddydinkie(theSpotIndex + mPage * 8)))
+    if (mApp->mAP->IsLocationPresent(PVZRAPData::Locations::Twiddydinkie(theSpotIndex + (mPage - 1) * 8)))
     {
         return STORE_ITEM_AP;
     }
@@ -363,7 +382,12 @@ bool StoreScreen::IsComingSoon(StoreItem theStoreItem)
 //0x48A9D0
 bool StoreScreen::IsItemSoldOut(int theIndex)
 {
-    return mApp->mAP->IsLocationChecked(PVZRAPData::Locations::Twiddydinkie(theIndex + mPage * 8));
+    if (mPage == 0)
+    {
+        return false;
+    }
+    
+    return mApp->mAP->IsLocationChecked(PVZRAPData::Locations::Twiddydinkie(theIndex + (mPage - 1) * 8));
 }
 
 //0x48AAD0
@@ -455,100 +479,105 @@ void StoreScreen::DrawItemIcon(Graphics* g, int theItemPosition, StoreItem theIt
     int aPosX, aPosY;
     GetStorePosition(theItemPosition, aPosX, aPosY);
 
-    DrawSeedPacket(g, aPosX, aPosY, SEED_AP_OFFWORLD_ITEM, SEED_NONE, 0, 255, false, false, mApp);
-
-    // if (theItemType == STORE_ITEM_PACKET_UPGRADE)
-    // {
-    //     g->SetColor(Color(255, 255, 255, 32));
-    //     g->DrawImage(Sexy::IMAGE_STORE_PACKETUPGRADE, aPosX - 7, aPosY + 7);
-    //     if (theIsForHighlight)
-    //     {
-    //         g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
-    //         g->SetColorizeImages(false);
-    //     }
-    //
-    //     SexyString aSlotText = TodReplaceNumberString(_S("[STORE_UPGRADE_SLOTS]"), _S("{SLOTS}"), min(mApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE] + 7, 10));
-    //     Rect aRect(aPosX, aPosY + 6, 55, 70);
-    //     TodDrawStringWrapped(g, aSlotText, aRect, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_CENTER_VERTICAL_MIDDLE);
-    // }
-    // else if (theItemType == STORE_ITEM_POOL_CLEANER)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_ICON_POOLCLEANER, aPosX + 1, aPosY + 7);
-    // }
-    // else if (theItemType == STORE_ITEM_RAKE)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_ICON_RAKE, aPosX - 5, aPosY + 10);
-    // }
-    // else if (theItemType == STORE_ITEM_ROOF_CLEANER)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_ICON_ROOFCLEANER, aPosX, aPosY + 28);
-    // }
-    // else if (theItemType == STORE_ITEM_PLANT_IMITATER)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_IMITATERSEED, aPosX, aPosY);
-    // }
-    // else if (theItemType == STORE_ITEM_MUSHROOM_GARDEN)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_STORE_MUSHROOMGARDENICON, aPosX - 8, aPosY + 2);
-    // }
-    // else if (theItemType == STORE_ITEM_AQUARIUM_GARDEN)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_STORE_AQUARIUMGARDENICON, aPosX - 8, aPosY + 2);
-    // }
-    // else if (theItemType == STORE_ITEM_TREE_OF_WISDOM)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_STORE_TREEOFWISDOMICON, aPosX - 8, aPosY + 2);
-    // }
-    // else if (theItemType == STORE_ITEM_FIRSTAID)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_STORE_FIRSTAIDWALLNUTICON, aPosX - 1, aPosY + 13);
-    // }
-    // else if (theItemType == STORE_ITEM_PVZ)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_STORE_PVZICON, aPosX, aPosY - 9);
-    // }
-    // else if (theItemType == STORE_ITEM_TREE_FOOD)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_TREEFOOD, aPosX - 8, aPosY - 2);
-    // }
-    // else if (theItemType == STORE_ITEM_STINKY_THE_SNAIL)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_REANIM_STINKY_TURN3, aPosX - 24, aPosY + 14);
-    // }
-    // else if (theItemType == STORE_ITEM_GOLD_WATERINGCAN)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_WATERINGCANGOLD, aPosX - 14, aPosY - 4);
-    // }
-    // else if (theItemType == STORE_ITEM_FERTILIZER)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_FERTILIZER, aPosX - 11, aPosY - 2);
-    //     TodDrawString(g, _S("x5"), aPosX + 56, aPosY + 62, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_RIGHT);
-    // }
-    // else if (theItemType == STORE_ITEM_PHONOGRAPH)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_PHONOGRAPH, aPosX - 12, aPosY + 3);
-    // }
-    // else if (theItemType == STORE_ITEM_BUG_SPRAY)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_BUG_SPRAY, aPosX - 12, aPosY + 3);
-    //     TodDrawString(g, _S("x5"), aPosX + 56, aPosY + 62, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_RIGHT);
-    // }
-    // else if (theItemType == STORE_ITEM_GARDENING_GLOVE)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_ZEN_GARDENGLOVE, aPosX - 12, aPosY + 3);
-    // }
-    // else if (theItemType == STORE_ITEM_WHEEL_BARROW)
-    // {
-    //     g->DrawImage(Sexy::IMAGE_ZEN_WHEELBARROW, aPosX - 12, aPosY + 3);
-    // }
-    // else if (IsPottedPlant(theItemType))
-    // {
-    //     mApp->mZenGarden->DrawPottedPlantIcon(g, aPosX, aPosY, &mPottedPlantSpecs);
-    // }
-    // else
-    // {
-    //     DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + 40), SEED_NONE, 0, 255, false, false);
-    // }
+    if (mPage != 0)
+    {
+        DrawSeedPacket(g, aPosX, aPosY, SEED_AP_OFFWORLD_ITEM, SEED_NONE, 0, 255, false, false, mApp);
+    } 
+    else
+    {
+        if (theItemType == STORE_ITEM_PACKET_UPGRADE)
+        {
+            g->SetColor(Color(255, 255, 255, 32));
+            g->DrawImage(Sexy::IMAGE_STORE_PACKETUPGRADE, aPosX - 7, aPosY + 7);
+            if (theIsForHighlight)
+            {
+                g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
+                g->SetColorizeImages(false);
+            }
+        
+            SexyString aSlotText = TodReplaceNumberString(_S("[STORE_UPGRADE_SLOTS]"), _S("{SLOTS}"), min(mApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE] + 7, 10));
+            Rect aRect(aPosX, aPosY + 6, 55, 70);
+            TodDrawStringWrapped(g, aSlotText, aRect, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_CENTER_VERTICAL_MIDDLE);
+        }
+        else if (theItemType == STORE_ITEM_POOL_CLEANER)
+        {
+            g->DrawImage(Sexy::IMAGE_ICON_POOLCLEANER, aPosX + 1, aPosY + 7);
+        }
+        else if (theItemType == STORE_ITEM_RAKE)
+        {
+            g->DrawImage(Sexy::IMAGE_ICON_RAKE, aPosX - 5, aPosY + 10);
+        }
+        else if (theItemType == STORE_ITEM_ROOF_CLEANER)
+        {
+            g->DrawImage(Sexy::IMAGE_ICON_ROOFCLEANER, aPosX, aPosY + 28);
+        }
+        else if (theItemType == STORE_ITEM_PLANT_IMITATER)
+        {
+            g->DrawImage(Sexy::IMAGE_IMITATERSEED, aPosX, aPosY);
+        }
+        else if (theItemType == STORE_ITEM_MUSHROOM_GARDEN)
+        {
+            g->DrawImage(Sexy::IMAGE_STORE_MUSHROOMGARDENICON, aPosX - 8, aPosY + 2);
+        }
+        else if (theItemType == STORE_ITEM_AQUARIUM_GARDEN)
+        {
+            g->DrawImage(Sexy::IMAGE_STORE_AQUARIUMGARDENICON, aPosX - 8, aPosY + 2);
+        }
+        else if (theItemType == STORE_ITEM_TREE_OF_WISDOM)
+        {
+            g->DrawImage(Sexy::IMAGE_STORE_TREEOFWISDOMICON, aPosX - 8, aPosY + 2);
+        }
+        else if (theItemType == STORE_ITEM_FIRSTAID)
+        {
+            g->DrawImage(Sexy::IMAGE_STORE_FIRSTAIDWALLNUTICON, aPosX - 1, aPosY + 13);
+        }
+        else if (theItemType == STORE_ITEM_PVZ)
+        {
+            g->DrawImage(Sexy::IMAGE_STORE_PVZICON, aPosX, aPosY - 9);
+        }
+        else if (theItemType == STORE_ITEM_TREE_FOOD)
+        {
+            g->DrawImage(Sexy::IMAGE_TREEFOOD, aPosX - 8, aPosY - 2);
+        }
+        else if (theItemType == STORE_ITEM_STINKY_THE_SNAIL)
+        {
+            g->DrawImage(Sexy::IMAGE_REANIM_STINKY_TURN3, aPosX - 24, aPosY + 14);
+        }
+        else if (theItemType == STORE_ITEM_GOLD_WATERINGCAN)
+        {
+            g->DrawImage(Sexy::IMAGE_WATERINGCANGOLD, aPosX - 14, aPosY - 4);
+        }
+        else if (theItemType == STORE_ITEM_FERTILIZER)
+        {
+            g->DrawImage(Sexy::IMAGE_FERTILIZER, aPosX - 11, aPosY - 2);
+            TodDrawString(g, _S("x5"), aPosX + 56, aPosY + 62, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_RIGHT);
+        }
+        else if (theItemType == STORE_ITEM_PHONOGRAPH)
+        {
+            g->DrawImage(Sexy::IMAGE_PHONOGRAPH, aPosX - 12, aPosY + 3);
+        }
+        else if (theItemType == STORE_ITEM_BUG_SPRAY)
+        {
+            g->DrawImage(Sexy::IMAGE_BUG_SPRAY, aPosX - 12, aPosY + 3);
+            TodDrawString(g, _S("x5"), aPosX + 56, aPosY + 62, Sexy::FONT_HOUSEOFTERROR16, Color::White, DS_ALIGN_RIGHT);
+        }
+        else if (theItemType == STORE_ITEM_GARDENING_GLOVE)
+        {
+            g->DrawImage(Sexy::IMAGE_ZEN_GARDENGLOVE, aPosX - 12, aPosY + 3);
+        }
+        else if (theItemType == STORE_ITEM_WHEEL_BARROW)
+        {
+            g->DrawImage(Sexy::IMAGE_ZEN_WHEELBARROW, aPosX - 12, aPosY + 3);
+        }
+        else if (IsPottedPlant(theItemType))
+        {
+            mApp->mZenGarden->DrawPottedPlantIcon(g, aPosX, aPosY, &mPottedPlantSpecs);
+        }
+        else
+        {
+            DrawSeedPacket(g, aPosX, aPosY, (SeedType)(theItemType + 40), SEED_NONE, 0, 255, false, false, mApp);
+        }
+    }
 
     g->SetDrawMode(Graphics::DRAWMODE_NORMAL);
     g->SetColorizeImages(false);
@@ -801,17 +830,24 @@ void StoreScreen::Draw(Graphics* g)
 
     if (!mPrevButton->mDisabled)
     {
-        int aNumPages = 0;
-        for (StorePages aPage = STORE_PAGE_SLOT_UPGRADES; aPage < NUM_STORE_PAGES; aPage = (StorePages)(aPage + 1))
+        // int aNumPages = 0;
+        // for (StorePages aPage = STORE_PAGE_SLOT_UPGRADES; aPage < NUM_STORE_PAGES; aPage = (StorePages)(aPage + 1))
+        // {
+        //     if (IsPageShown(aPage))
+        //     {
+        //         aNumPages++;
+        //     }
+        // }
+        int aNumPages = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1;
+        int mPageOffset = -1;
+        if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0)
         {
-            if (IsPageShown(aPage))
-            {
-                aNumPages++;
-            }
+            aNumPages++;
+            mPageOffset = 0;
         }
 
         SexyString aPageString = TodReplaceNumberString(
-            TodReplaceNumberString(_S("[STORE_PAGE]"), _S("{PAGE}"), mPage + 1), _S("{NUM_PAGES}"), aNumPages);
+            TodReplaceNumberString(_S("[STORE_PAGE]"), _S("{PAGE}"), mPage + 1 + mPageOffset), _S("{NUM_PAGES}"), aNumPages);
         TodDrawString(g, aPageString, STORESCREEN_PAGESTRING_X, STORESCREEN_COINBANK_Y - 60, Sexy::FONT_BRIANNETOD12,
                       Color(125, 125, 125), DS_ALIGN_CENTER);
     }
@@ -870,42 +906,92 @@ void StoreScreen::UpdateMouse()
             if (Rect(aItemX, aItemY, 50, 87).Contains(aMouseX, aMouseY))
             {
                 mMouseOverItem = aItemPos;
+                int aMessageIndex = -1;
+                std::string message;
+                
+                switch (aItemType)
+                {
+                case STORE_ITEM_PLANT_GATLINGPEA:       aMessageIndex = 2000;                           break;
+                case STORE_ITEM_PLANT_TWINSUNFLOWER:    aMessageIndex = 2001;                           break;
+                case STORE_ITEM_PLANT_GLOOMSHROOM:      aMessageIndex = 2002;                           break;
+                case STORE_ITEM_PLANT_CATTAIL:          aMessageIndex = 2003;                           break;
+                case STORE_ITEM_PLANT_WINTERMELON:      aMessageIndex = 2004;                           break;
+                case STORE_ITEM_PLANT_GOLD_MAGNET:      aMessageIndex = 2005;                           break;
+                case STORE_ITEM_PLANT_SPIKEROCK:        aMessageIndex = 2006;                           break;
+                case STORE_ITEM_PLANT_COBCANNON:        aMessageIndex = 2007;                           break;
+                case STORE_ITEM_PLANT_IMITATER:         aMessageIndex = 2008;                           break;
+                case STORE_ITEM_BONUS_LAWN_MOWER:       aMessageIndex = 2009;                           break;
+                case STORE_ITEM_POTTED_MARIGOLD_1:
+                case STORE_ITEM_POTTED_MARIGOLD_2:
+                case STORE_ITEM_POTTED_MARIGOLD_3:      aMessageIndex = 2010;                           break;
+                case STORE_ITEM_GOLD_WATERINGCAN:       aMessageIndex = 2019;                           break;
+                case STORE_ITEM_FERTILIZER:             aMessageIndex = 2020;                           break;
+                case STORE_ITEM_BUG_SPRAY:              aMessageIndex = 2022;                           break;
+                case STORE_ITEM_PHONOGRAPH:             aMessageIndex = 2021;                           break;
+                case STORE_ITEM_GARDENING_GLOVE:        aMessageIndex = 2023;                           break;
+                case STORE_ITEM_MUSHROOM_GARDEN:        aMessageIndex = 2032;                           break;
+                case STORE_ITEM_WHEEL_BARROW:           aMessageIndex = 2024;                           break;
+                case STORE_ITEM_STINKY_THE_SNAIL:       aMessageIndex = 2025;                           break;
+                case STORE_ITEM_PACKET_UPGRADE:
+                    if (mApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE] < 4)
+                        aMessageIndex = mApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE] + 2011;
+                    else
+                        aMessageIndex = 2014;                                                           break;
+                case STORE_ITEM_POOL_CLEANER:           aMessageIndex = 2026;                           break;
+                case STORE_ITEM_ROOF_CLEANER:           aMessageIndex = 2027;                           break;
+                case STORE_ITEM_RAKE:                   aMessageIndex = 2028;                           break;
+                case STORE_ITEM_AQUARIUM_GARDEN:        aMessageIndex = 2029;                           break;
+                case STORE_ITEM_CHOCOLATE:                                                              break;
+                case STORE_ITEM_TREE_OF_WISDOM:         aMessageIndex = 2030;                           break;
+                case STORE_ITEM_TREE_FOOD:              aMessageIndex = 2031;                           break;
+                case STORE_ITEM_FIRSTAID:               aMessageIndex = 2033;                           break;
+                case STORE_ITEM_PVZ:                    aMessageIndex = 2034;
+                case STORE_ITEM_AP:
+                    {
+                        auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::Twiddydinkie(aItemPos + (mPage - 1) * 8));
 
-                auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::Twiddydinkie(aItemPos + mPage * 8));
+                        const std::string* string_bank;
+                        std::string item_class;
+                        if (item.flags & APItem::ITEM_FLAG_PROGRESSION)
+                        {
+                            string_bank = progression_bank;
+                            item_class = "Progression";
+                        }
+                        else if (item.flags & APItem::ITEM_FLAG_USEFUL)
+                        {
+                            string_bank = useful_bank;
+                            item_class = "Useful";
+                        }
+                        else if (item.flags & APItem::ITEM_FLAG_TRAP)
+                        {
+                            string_bank = trap_bank;
+                            item_class = "Trap";
+                        }
+                        else
+                        {
+                            string_bank = standard_bank;
+                            item_class = "Filler";
+                        }
 
-                const std::string* string_bank;
-                std::string item_class;
-                if (item.flags & APItem::ITEM_FLAG_PROGRESSION)
-                {
-                    string_bank = progression_bank;
-                    item_class = "Progression";
+                        message = mApp->mAP->ItemName(item) + " for " + mApp->mAP->PlayerDisplayName(item.player) +
+                            " (" + item_class + ")\n\n" + string_bank[Rand(4)] + "{NO_CLICK}";
+                        break;
+                    }
                 }
-                else if (item.flags & APItem::ITEM_FLAG_USEFUL)
-                {
-                    string_bank = useful_bank;
-                    item_class = "Useful";
-                }
-                else if (item.flags & APItem::ITEM_FLAG_TRAP)
-                {
-                    string_bank = trap_bank;
-                    item_class = "Trap";
-                }
-                else
-                {
-                    string_bank = standard_bank;
-                    item_class = "Filler";
-                }
-
-                std::string message = mApp->mAP->ItemName(item) + " for " + mApp->mAP->PlayerDisplayName(item.player) +
-                    " (" + item_class + ")\n\n" + string_bank[Rand(4)] + "{NO_CLICK}";
 
                 if (oldMouseOverItem != aItemPos)
-                    SetBubbleText(message, 100, false);
+                    if (aMessageIndex == -1)
+                    {
+                        SetBubbleText(message, 100, false);
+                    }
+                    else
+                    {
+                        SetBubbleText(aMessageIndex, 100, false);
+                    }
                 else mBubbleCountDown = 100;
                 if (IsFullVersionOnly(aItemType) || (!IsItemSoldOut(aItemType) && !IsItemUnavailable(aItemType) && !
                     IsComingSoon(aItemType)))
                     aShowFinger = true;
-                break;
             }
         }
     }
@@ -1222,6 +1308,11 @@ void StoreScreen::OrderInManagerChanged()
     mWidgetManager->PutInfront(mOverlayWidget, this);
 }
 
+int StoreScreen::ZenPageOffset()
+{
+    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0 ? 1 : 0;
+}
+
 //0x48C3B0
 void StoreScreen::RemovedFromManager(WidgetManager* theWidgetManager)
 {
@@ -1276,7 +1367,11 @@ void StoreScreen::ButtonPress(int theId)
 //0x48C440
 bool StoreScreen::IsPageShown(int thePage)
 {
-    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) >= thePage;
+    if (thePage == 0)
+    {
+        return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0;
+    }
+    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) >= thePage - 1;
     // 试玩模式下，仅显示默认页
     if (mApp->IsTrialStageLocked()) return thePage == STORE_PAGE_SLOT_UPGRADES;
     // 一周目完成后，所有页全解锁
@@ -1308,13 +1403,13 @@ void StoreScreen::ButtonDepress(int theId)
                 mPage = mPage - 1;
                 if (mPage < 0)
                 {
-                    mPage = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK);
+                    mPage = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1;
                 }
             }
             else
             {
                 mPage = mPage + 1;
-                if (mPage > mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK))
+                if (mPage > mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1)
                 {
                     mPage = 0;
                 }
@@ -1467,63 +1562,68 @@ void StoreScreen::KeyChar(char theChar)
 //0x48C620
 int StoreScreen::GetItemCost(int theIndex)
 {
-    auto slot_data = mApp->mAP->SlotData();
-    auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::Twiddydinkie(theIndex + mPage * 8));
-
-    int shop_price = slot_data["shop_prices"][theIndex].get<int>();
-    if (item.flags & APItem::ITEM_FLAG_PROGRESSION)
+    if (mPage == 0)
     {
-        return shop_price + 90;
-    }
-    if (item.flags & APItem::ITEM_FLAG_USEFUL)
-    {
-        return shop_price + 50;
-    }
-    if (item.flags & APItem::ITEM_FLAG_TRAP)
-    {
-        return shop_price + 10;
-    }
-    return shop_price + 5;
-
-    if (theIndex == STORE_ITEM_BONUS_LAWN_MOWER) return gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_BONUS_LAWN_MOWER]
+        if (theIndex == STORE_ITEM_BONUS_LAWN_MOWER) return gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_BONUS_LAWN_MOWER]
                                                             ? 500
                                                             : 200;
-    switch (theIndex)
-    {
-    case STORE_ITEM_PLANT_GATLINGPEA: return 500;
-    case STORE_ITEM_PLANT_TWINSUNFLOWER: return 500;
-    case STORE_ITEM_PLANT_GLOOMSHROOM: return 750;
-    case STORE_ITEM_PLANT_CATTAIL: return 1000;
-    case STORE_ITEM_PLANT_WINTERMELON: return 1000;
-    case STORE_ITEM_PLANT_GOLD_MAGNET: return 300;
-    case STORE_ITEM_PLANT_SPIKEROCK: return 750;
-    case STORE_ITEM_PLANT_COBCANNON: return 2000;
-    case STORE_ITEM_PLANT_IMITATER: return 3000;
-    case STORE_ITEM_POTTED_MARIGOLD_1: return 250;
-    case STORE_ITEM_POTTED_MARIGOLD_2: return 250;
-    case STORE_ITEM_POTTED_MARIGOLD_3: return 250;
-    case STORE_ITEM_GOLD_WATERINGCAN: return 1000;
-    case STORE_ITEM_FERTILIZER: return 75;
-    case STORE_ITEM_BUG_SPRAY: return 100;
-    case STORE_ITEM_PHONOGRAPH: return 1500;
-    case STORE_ITEM_GARDENING_GLOVE: return 100;
-    case STORE_ITEM_MUSHROOM_GARDEN: return 3000;
-    case STORE_ITEM_WHEEL_BARROW: return 20;
-    case STORE_ITEM_STINKY_THE_SNAIL: return 300;
-    case STORE_ITEM_PACKET_UPGRADE:
+        switch (theIndex)
         {
-            int aPurchase = gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE];
-            return aPurchase == 0 ? 75 : aPurchase == 1 ? 500 : aPurchase == 2 ? 2000 : 8000;
+        case STORE_ITEM_PLANT_GATLINGPEA: return 500;
+        case STORE_ITEM_PLANT_TWINSUNFLOWER: return 500;
+        case STORE_ITEM_PLANT_GLOOMSHROOM: return 750;
+        case STORE_ITEM_PLANT_CATTAIL: return 1000;
+        case STORE_ITEM_PLANT_WINTERMELON: return 1000;
+        case STORE_ITEM_PLANT_GOLD_MAGNET: return 300;
+        case STORE_ITEM_PLANT_SPIKEROCK: return 750;
+        case STORE_ITEM_PLANT_COBCANNON: return 2000;
+        case STORE_ITEM_PLANT_IMITATER: return 3000;
+        case STORE_ITEM_POTTED_MARIGOLD_1: return 250;
+        case STORE_ITEM_POTTED_MARIGOLD_2: return 250;
+        case STORE_ITEM_POTTED_MARIGOLD_3: return 250;
+        case STORE_ITEM_GOLD_WATERINGCAN: return 1000;
+        case STORE_ITEM_FERTILIZER: return 75;
+        case STORE_ITEM_BUG_SPRAY: return 100;
+        case STORE_ITEM_PHONOGRAPH: return 1500;
+        case STORE_ITEM_GARDENING_GLOVE: return 100;
+        case STORE_ITEM_MUSHROOM_GARDEN: return 3000;
+        case STORE_ITEM_WHEEL_BARROW: return 20;
+        case STORE_ITEM_STINKY_THE_SNAIL: return 300;
+        case STORE_ITEM_PACKET_UPGRADE:
+            {
+                int aPurchase = gLawnApp->mPlayerInfo->mPurchases[STORE_ITEM_PACKET_UPGRADE];
+                return aPurchase == 0 ? 75 : aPurchase == 1 ? 500 : aPurchase == 2 ? 2000 : 8000;
+            }
+        case STORE_ITEM_POOL_CLEANER: return 100;
+        case STORE_ITEM_ROOF_CLEANER: return 300;
+        case STORE_ITEM_RAKE: return 20;
+        case STORE_ITEM_AQUARIUM_GARDEN: return 3000;
+        case STORE_ITEM_TREE_OF_WISDOM: return 1000;
+        case STORE_ITEM_TREE_FOOD: return 250;
+        case STORE_ITEM_FIRSTAID: return 200;
+        default: TOD_ASSERT();
+            return 0;
         }
-    case STORE_ITEM_POOL_CLEANER: return 100;
-    case STORE_ITEM_ROOF_CLEANER: return 300;
-    case STORE_ITEM_RAKE: return 20;
-    case STORE_ITEM_AQUARIUM_GARDEN: return 3000;
-    case STORE_ITEM_TREE_OF_WISDOM: return 1000;
-    case STORE_ITEM_TREE_FOOD: return 250;
-    case STORE_ITEM_FIRSTAID: return 200;
-    default: TOD_ASSERT();
-        return 0;
+    }
+    else
+    {
+        auto slot_data = mApp->mAP->SlotData();
+        auto item = mApp->mAP->ItemAtLocation(PVZRAPData::Locations::Twiddydinkie(theIndex + (mPage - 1) * 8));
+
+        int shop_price = slot_data["shop_prices"][theIndex].get<int>();
+        if (item.flags & APItem::ITEM_FLAG_PROGRESSION)
+        {
+            return shop_price + 90;
+        }
+        if (item.flags & APItem::ITEM_FLAG_USEFUL)
+        {
+            return shop_price + 50;
+        }
+        if (item.flags & APItem::ITEM_FLAG_TRAP)
+        {
+            return shop_price + 10;
+        }
+        return shop_price + 5;
     }
 }
 
@@ -1567,8 +1667,41 @@ void StoreScreen::PurchaseItem(int theIndex)
 
         if (aComfirmResult == ID_OK)
         {
-            mApp->mPlayerInfo->AddCoins(-GetItemCost(theIndex));
-            mApp->mAP->CheckLocations({PVZRAPData::Locations::Twiddydinkie(theIndex + mPage * 8)});
+            if (mPage == 0)
+            {
+                if (theIndex == 0)
+                {
+                    // Fertiliser
+                    if (mApp->mPlayerInfo->mPurchases[STORE_ITEM_FERTILIZER] < PURCHASE_COUNT_OFFSET)
+                    {
+                        mApp->mPlayerInfo->mPurchases[STORE_ITEM_FERTILIZER] = PURCHASE_COUNT_OFFSET;
+                    }
+                    mApp->mPlayerInfo->mPurchases[STORE_ITEM_FERTILIZER] += 5;
+                }
+                else if (theIndex == 1)
+                {
+                    // Bugspray
+                    if (mApp->mPlayerInfo->mPurchases[STORE_ITEM_BUG_SPRAY] < PURCHASE_COUNT_OFFSET)
+                    {
+                        mApp->mPlayerInfo->mPurchases[STORE_ITEM_BUG_SPRAY] = PURCHASE_COUNT_OFFSET;
+                    }
+                    mApp->mPlayerInfo->mPurchases[STORE_ITEM_BUG_SPRAY] += 5;
+                }
+                else if (theIndex == 2)
+                {
+                    // Tree Food
+                    if (mApp->mPlayerInfo->mPurchases[STORE_ITEM_TREE_FOOD] < PURCHASE_COUNT_OFFSET)
+                    {
+                        mApp->mPlayerInfo->mPurchases[STORE_ITEM_TREE_FOOD] = PURCHASE_COUNT_OFFSET;
+                    }
+                    mApp->mPlayerInfo->mPurchases[STORE_ITEM_TREE_FOOD]++;
+                }
+            }
+            else
+            {
+                mApp->mPlayerInfo->AddCoins(-GetItemCost(theIndex));
+                mApp->mAP->CheckLocations({PVZRAPData::Locations::Twiddydinkie(theIndex + (mPage - 1) * 8)});
+            }
             mApp->WriteCurrentUserConfig();
         }
     }
