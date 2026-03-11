@@ -16,7 +16,7 @@ const int CHAT_WIDTH = 600;
 ArchipelagoTextClient::ArchipelagoTextClient(LawnApp* theApp)
 {
     mApp = theApp;
-    mFirstCharTyped = false;
+    mFirstCharTyped = true;
     mScroll = 0;
     
     mMessageEditWidget = CreateEditWidget(0, this, nullptr);
