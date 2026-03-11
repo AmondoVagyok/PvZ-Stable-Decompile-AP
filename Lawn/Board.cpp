@@ -328,8 +328,106 @@ Board::Board(LawnApp* theApp)
 					break;
 				}
 			case PVZRAPData::Items::TRAP_ZOMBIE_AMBUSH:
-				this->SpawnZombiesFromGraves();
-				break;
+				{
+					this->SpawnZombiesFromGraves();
+					break;
+				}
+			case PVZRAPData::Items::RANDOM_SEED_PACKET:
+				{
+					// Choose a random seed
+					auto x = RandRangeInt(100, 650);
+					auto y = RandRangeInt(60, 500);
+
+					auto easy_upgrade_plants = mApp->mSlotData->easy_upgrade_plants();
+					
+					std::vector<SeedType> freeSeedTypes = {
+						SeedType::SEED_CHERRYBOMB,
+						SeedType::SEED_WALLNUT,
+						SeedType::SEED_POTATOMINE,
+						SeedType::SEED_CHOMPER,
+						SeedType::SEED_SQUASH,
+						SeedType::SEED_JALAPENO,
+						SeedType::SEED_TALLNUT,
+						SeedType::SEED_PUMPKINSHELL,
+						SeedType::SEED_CABBAGEPULT,
+						SeedType::SEED_KERNELPULT,
+						SeedType::SEED_GARLIC,
+						SeedType::SEED_MARIGOLD,
+						SeedType::SEED_MELONPULT
+					};
+					
+					if (!this->HasConveyorBeltSeedBank())
+					{
+						freeSeedTypes.push_back(SeedType::SEED_SUNFLOWER);
+						if (easy_upgrade_plants)
+						{
+							freeSeedTypes.push_back(SeedType::SEED_TWINSUNFLOWER);
+						}
+					}
+					
+					if (easy_upgrade_plants)
+					{
+						freeSeedTypes.push_back(SeedType::SEED_WINTERMELON);
+						freeSeedTypes.push_back(SeedType::SEED_GOLD_MAGNET);
+						freeSeedTypes.push_back(SeedType::SEED_COBCANNON);
+					}
+					
+					if (this->mBackground == BackgroundType::BACKGROUND_2_NIGHT || this->mBackground == BackgroundType::BACKGROUND_4_FOG)
+					{
+						freeSeedTypes.push_back(SeedType::SEED_PUFFSHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_SUNSHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_FUMESHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_HYPNOSHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_SCAREDYSHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_ICESHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_DOOMSHROOM);
+						freeSeedTypes.push_back(SeedType::SEED_MAGNETSHROOM);
+						if (easy_upgrade_plants)
+						{
+							freeSeedTypes.push_back(SeedType::SEED_GLOOMSHROOM);
+						}
+					}
+					
+					if (this->mBackground == BackgroundType::BACKGROUND_3_POOL || this->mBackground == BackgroundType::BACKGROUND_4_FOG)
+					{
+						freeSeedTypes.push_back(SeedType::SEED_LILYPAD);
+						freeSeedTypes.push_back(SeedType::SEED_TANGLEKELP);
+						if (this->mBackground == BackgroundType::BACKGROUND_4_FOG)
+						{
+							freeSeedTypes.push_back(SeedType::SEED_SEASHROOM);
+							freeSeedTypes.push_back(SeedType::SEED_PLANTERN);
+						}
+						if (easy_upgrade_plants)
+						{
+							freeSeedTypes.push_back(SeedType::SEED_CATTAIL);
+						}
+					}
+					
+					if (this->mBackground != BackgroundType::BACKGROUND_5_ROOF)
+					{
+						freeSeedTypes.push_back(SeedType::SEED_PEASHOOTER);
+						freeSeedTypes.push_back(SeedType::SEED_SNOWPEA);
+						freeSeedTypes.push_back(SeedType::SEED_REPEATER);
+						freeSeedTypes.push_back(SeedType::SEED_THREEPEATER);
+						freeSeedTypes.push_back(SeedType::SEED_TORCHWOOD);
+						freeSeedTypes.push_back(SeedType::SEED_SPIKEWEED);
+						freeSeedTypes.push_back(SeedType::SEED_CACTUS);
+						freeSeedTypes.push_back(SeedType::SEED_SPLITPEA);
+						freeSeedTypes.push_back(SeedType::SEED_STARFRUIT);
+						if (easy_upgrade_plants)
+						{
+							freeSeedTypes.push_back(SeedType::SEED_GATLINGPEA);
+							freeSeedTypes.push_back(SeedType::SEED_SPIKEROCK);
+						}
+					} else
+					{
+						freeSeedTypes.push_back(SeedType::SEED_FLOWERPOT);
+					}
+					
+					auto selected_seed_type = freeSeedTypes[Rand(static_cast<int>(freeSeedTypes.size()))];
+					AddCoin(x, y, COIN_USABLE_SEED_PACKET, COIN_MOTION_FROM_PLANT)->mUsableSeedType = selected_seed_type;
+					break;
+				}
 			}
 		}
 	});
