@@ -2448,8 +2448,12 @@ void Board::UpdateLevelEndSequence()
 		LawnMower* aLawnMower = GetBottomLawnMower();
 		if (aLawnMower)
 		{
-			Coin* aCoin = AddCoin(aLawnMower->mPosX + 40, aLawnMower->mPosY + 40, aIsReplaying ? CoinType::COIN_SILVER : CoinType::COIN_GOLD, CoinMotion::COIN_MOTION_LAWNMOWER_COIN);
-			aCoin->PlayCollectSound();
+			auto coin_loot = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::MOWER_REWARD_UPGRADE) + 1;
+			for (auto i = 0; i < coin_loot; i++)
+			{
+				Coin* aCoin = AddCoin(aLawnMower->mPosX + 40 + i * 20, aLawnMower->mPosY + 40, aIsReplaying ? CoinType::COIN_SILVER : CoinType::COIN_GOLD, CoinMotion::COIN_MOTION_LAWNMOWER_COIN);
+				aCoin->PlayCollectSound();
+			}
 			SoundInstance* aSoundInstance = mApp->mSoundManager->GetSoundInstance(Sexy::SOUND_POINTS);
 			if (aSoundInstance)
 			{
