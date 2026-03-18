@@ -1643,6 +1643,7 @@ void StoreScreen::PurchaseItem(int theIndex)
 
         if (aComfirmResult == ID_OK)
         {
+            mApp->mPlayerInfo->AddCoins(-GetItemCost(theIndex));
             if (mPage == 0)
             {
                 if (theIndex == 0)
@@ -1675,7 +1676,6 @@ void StoreScreen::PurchaseItem(int theIndex)
             }
             else
             {
-                mApp->mPlayerInfo->AddCoins(-GetItemCost(theIndex));
                 mApp->mAP->CheckLocations({PVZRAPData::Locations::Twiddydinkie(theIndex + (mPage - 1) * 8)});
             }
             mApp->WriteCurrentUserConfig();
