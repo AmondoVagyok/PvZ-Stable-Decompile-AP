@@ -700,18 +700,21 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mPlantHealth *= 2;
     }
     
-    // Override plant health from seed data
-    auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
-    auto seed_stats = mApp->mSlotData->seed_stats(seed_type);
-    if (seed_stats.has_value())
+    if (mApp->IsIZombieLevel())
     {
-        if (seed_stats->health.has_value())
+        // Override plant health from seed data
+        auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
+        auto seed_stats = mApp->mSlotData->seed_stats(seed_type);
+        if (seed_stats.has_value())
         {
-            mPlantHealth = seed_stats->health.value();
-        }
-        if (seed_stats->firing_rate.has_value())
-        {
-            mLaunchRate = seed_stats->firing_rate.value();
+            if (seed_stats->health.has_value())
+            {
+                mPlantHealth = seed_stats->health.value();
+            }
+            if (seed_stats->firing_rate.has_value())
+            {
+                mLaunchRate = seed_stats->firing_rate.value();
+            }
         }
     }
 
