@@ -46,9 +46,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: PlantsVsZombies-GOTY-${{ matrix.configuration }}-${{ matrix.platform }}
+          path: artifact-output
       - name: Archive
         run: |
-          zip -r PlantsVsZombies-GOTY-AP-${{ matrix.platform }}.zip PlantsVsZombies-GOTY-${{ matrix.configuration }}-${{ matrix.platform }}
+          zip -r PlantsVsZombies-GOTY-AP-${{ matrix.platform }}.zip artifact-output
       - name: Upload Release
         run: |
           curl -L \
