@@ -41,14 +41,13 @@ jobs:
     permissions:
       contents: write
     needs:
-      - archive
+      - build
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: PlantsVsZombies-GOTY-${{ matrix.configuration }}-${{ matrix.platform }}
       - name: Archive
         run: |
-          cd worlds
           zip -r PlantsVsZombies-GOTY-AP-${{ matrix.platform }}.zip PlantsVsZombies-GOTY-${{ matrix.configuration }}-${{ matrix.platform }}
       - name: Upload Release
         run: |
