@@ -174,6 +174,14 @@ void ZenGarden::PlantSetLaunchCounter(Plant* thePlant)
 Plant* ZenGarden::PlacePottedPlant(int thePottedPlantIndex)
 {
     PottedPlant* aPottedPlant = PottedPlantFromIndex(thePottedPlantIndex);
+    
+    // Ensure the plant is valid
+    if (aPottedPlant->mSeedType < 0 || aPottedPlant->mSeedType > 40 || aPottedPlant->mSeedType == SeedType::SEED_MARIGOLD || aPottedPlant->mSeedType == SeedType::SEED_FLOWERPOT)
+    {
+        // Reroll the plant because it is corrupt
+        aPottedPlant->mSeedType = this->PickRandomSeedType();
+    }
+    
     SeedType aSeedType = aPottedPlant->mSeedType;
     if (aPottedPlant->mPlantAge == PottedPlantAge::PLANTAGE_SPROUT)
     {
