@@ -5191,7 +5191,7 @@ bool LawnApp::IsLevelOpen(int level) const
 		{
 			return false;
 		}
-		if (gp.taco_goal < gp.taco_received)
+		if (gp.taco_received < gp.taco_goal)
 		{
 			return false;
 		}
