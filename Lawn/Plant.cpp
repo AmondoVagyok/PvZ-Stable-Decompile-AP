@@ -700,7 +700,7 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
         mPlantHealth *= 2;
     }
     
-    if (mApp->IsIZombieLevel())
+    if (!mApp->IsIZombieLevel())
     {
         // Override plant health from seed data
         auto seed_type = theSeedType == SeedType::SEED_IMITATER && theImitaterType != SeedType::SEED_NONE ? theImitaterType : theSeedType;
