@@ -6129,7 +6129,7 @@ void Challenge::TreeOfWisdomGiveWisdom()
 				
 				auto item = mApp->mAP->ItemAtLocation(selected_location);
 				
-				auto location_name = mApp->mAP->LocationName(item.location, mApp->mAP->PlayerGameName(item.player));
+				auto location_name = mApp->mAP->LocationName(item.location, mApp->mAP->PlayerGameName(mApp->mAP->MySlot()));
 				auto item_name = mApp->mAP->ItemName(item);
 				auto player_name_You = std::string("You");
 				auto player_name_your = std::string("your");
