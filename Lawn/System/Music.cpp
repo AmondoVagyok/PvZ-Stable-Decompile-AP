@@ -875,7 +875,7 @@ void Music::StartGameMusic()
 			if (levelIndex != -1)
 			{
 				auto music = music_map[levelIndex];
-				if (!music.is_discarded())
+				if (!music.is_discarded() && !music.is_null())
 				{
 					mTune = audio_list[music.get<int>()];
 				}
