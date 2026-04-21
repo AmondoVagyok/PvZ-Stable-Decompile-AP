@@ -857,7 +857,12 @@ void Music::StartGameMusic()
 		{
 			// Shuffle by type
 			auto current_track_index = std::distance(audio_list, std::find(std::begin(audio_list), std::end(audio_list), mTune));
-			mTune = audio_list[music_map[current_track_index].get<int>()];
+			
+			auto music = music_map[current_track_index];
+			if (!music.is_discarded() && !music.is_null())
+			{
+				mTune = audio_list[music.get<int>()];
+			}
 		}
 		else
 		{
