@@ -690,9 +690,10 @@ void QuickplayWidget::DrawButton(Graphics* g, int theLevelIndex)
 		auto trophy = Sexy::IMAGE_MINIGAME_TROPHY;
 		
 		auto all_flags_clear = true;
-		for (auto flag = PVZRAPData::Locations::LevelFlagList(aLevel + 1); *flag != -1; flag++)
+		for (auto wave = 0; wave < 100; wave++)
 		{
-			if (!mApp->mAP->IsLocationChecked(*flag) && mApp->mAP->IsLocationPresent(*flag))
+			auto wave_location = PVZRAPData::Locations::Wave(aLevel, wave);
+			if (!mApp->mAP->IsLocationChecked(wave_location) && mApp->mAP->IsLocationPresent(wave_location))
 			{
 				all_flags_clear = false;
 				break;

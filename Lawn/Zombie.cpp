@@ -21,6 +21,7 @@
 #include "../SexyAppFramework/APWrapper.h"
 #include "../Sexy.TodLib/TodStringFile.h"
 #include "../SexyAppFramework/APData.h"
+#include "Widget/ChallengeScreen.h"
 
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE") },
@@ -8608,41 +8609,8 @@ bool Zombie::TrySpawnLevelAward()
     {
         aCoinType = CoinType::COIN_NONE;
         
-        PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
-        switch (mApp->mGameMode)
-        {
-        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1:
-            cls = PVZRAPData::Locations::SurvivalClass::DAY;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_2:
-            cls = PVZRAPData::Locations::SurvivalClass::NIGHT;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_3:
-            cls = PVZRAPData::Locations::SurvivalClass::POOL;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_4:
-            cls = PVZRAPData::Locations::SurvivalClass::FOG;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5:
-            cls = PVZRAPData::Locations::SurvivalClass::ROOF;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1:
-            cls = PVZRAPData::Locations::SurvivalClass::DAY_HARD;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_2:
-            cls = PVZRAPData::Locations::SurvivalClass::NIGHT_HARD;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_3:
-            cls = PVZRAPData::Locations::SurvivalClass::POOL_HARD;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_4:
-            cls = PVZRAPData::Locations::SurvivalClass::FOG_HARD;
-            break;
-        case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5:
-            cls = PVZRAPData::Locations::SurvivalClass::ROOF_HARD;
-            break;
-        }
-        auto location = PVZRAPData::Locations::SurvivalFlag(cls, (mBoard->mChallenge->mSurvivalStage + 1) * (mBoard->GetNumWavesPerSurvivalStage() / mBoard->GetNumWavesPerFlag()));
+        auto game_mode = GetChallengeApId(mApp->mGameMode);
+        auto location = PVZRAPData::Locations::Wave(game_mode, (mBoard->mChallenge->mSurvivalStage + 1) * mBoard->GetNumWavesPerSurvivalStage());
         
         if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
         {
@@ -8665,21 +8633,21 @@ bool Zombie::TrySpawnLevelAward()
         
         if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
         {
-            PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
+            auto last_stand = GetChallengeApId(mApp->mGameMode);
             auto location = -1;
             switch (mBoard->GetSurvivalFlagsCompleted())
             {
             case 0:
-                location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
+                location = PVZRAPData::Locations::Wave(last_stand, 10);
                 break;
             case 1:
-                location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
+                location = PVZRAPData::Locations::Wave(last_stand, 20);
                 break;
             case 2:
-                location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
+                location = PVZRAPData::Locations::Wave(last_stand, 30);
                 break;
             case 3:
-                location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
+                location = PVZRAPData::Locations::Wave(last_stand, 40);
                 break;
             }
         
@@ -8808,8 +8776,8 @@ void Zombie::DropLoot()
     {
         bool shouldSpawnFlagReward = true;
         
-        auto flag = mFromWave / mBoard->GetNumWavesPerFlag();
-        if (mBoard->mFlagAwardSpawned >= flag)
+        auto wave = mFromWave;
+        if (mBoard->mFlagAwardSpawned >= wave)
         {
             shouldSpawnFlagReward = false;
         }
@@ -8826,221 +8794,10 @@ void Zombie::DropLoot()
 
         if (shouldSpawnFlagReward)
         {
-            mBoard->mFlagAwardSpawned = flag;
+            mBoard->mFlagAwardSpawned = wave;
             
             // Find out which flag location we need
-            int64_t location = -1;
-            if (mApp->IsLittleTroubleLevel())
-            {
-                if (mApp->IsAdventureMode())
-                {
-                    if (flag == 1)
-                    {
-                        location = PVZRAPData::Locations::FLAG_3_5_1;
-                    }
-                }
-                else
-                {
-                    if (flag == 1)
-                    {
-                        location = PVZRAPData::Locations::FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_1;
-                    }
-                    else if (flag == 2)
-                    {
-                        location = PVZRAPData::Locations::FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_2;
-                    }
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBOTANY_1;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_WALL_NUT_BOWLING_1;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_RAINING_SEEDS)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_RAINING_SEEDS_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_RAINING_SEEDS_2;
-                }
-                else if (flag == 3)
-                {
-                    location = PVZRAPData::Locations::FLAG_RAINING_SEEDS_3;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_INVISIGHOUL)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_INVISIGHOUL_1;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_PORTAL_COMBAT)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_PORTAL_COMBAT_1;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_COLUMN)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_COLUMN_SEE_EM_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_COLUMN_SEE_EM_2;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_BOBSLED_BONANZA)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_2;
-                }
-                else if (flag == 3)
-                {
-                    location = PVZRAPData::Locations::FLAG_BOBSLED_BONANZA_3;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SPEED)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_2;
-                }
-                else if (flag == 3)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_3;
-                }
-            }
-            // else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
-            // {
-            //     if (flag == 1)
-            //     {
-            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_1;
-            //     }
-            //     else if (flag == 2)
-            //     {
-            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_2;
-            //     }
-            //     else if (flag == 3)
-            //     {
-            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_3;
-            //     }
-            //     else if (flag == 3)
-            //     {
-            //         location = PVZRAPData::Locations::FLAG_LAST_STAND_4;
-            //     }
-            // }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS_2)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBOTANY_2_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_ZOMBOTANY_2_2;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_WALLNUT_BOWLING_2)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_WALL_NUT_BOWLING_2_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_WALL_NUT_BOWLING_2_2;
-                }
-            }
-            else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_POGO_PARTY)
-            {
-                if (flag == 1)
-                {
-                    location = PVZRAPData::Locations::FLAG_POGO_PARTY_1;
-                }
-                else if (flag == 2)
-                {
-                    location = PVZRAPData::Locations::FLAG_POGO_PARTY_2;
-                }
-            }
-            else if (mApp->IsSurvivalMode())
-            {
-                if (!mApp->IsSurvivalEndless(mApp->mGameMode))
-                {
-                    PVZRAPData::Locations::SurvivalClass cls = PVZRAPData::Locations::SurvivalClass::DAY;
-                    switch (mApp->mGameMode)
-                    {
-                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1:
-                        cls = PVZRAPData::Locations::SurvivalClass::DAY;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_2:
-                        cls = PVZRAPData::Locations::SurvivalClass::NIGHT;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_3:
-                        cls = PVZRAPData::Locations::SurvivalClass::POOL;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_4:
-                        cls = PVZRAPData::Locations::SurvivalClass::FOG;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_5:
-                        cls = PVZRAPData::Locations::SurvivalClass::ROOF;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_1:
-                        cls = PVZRAPData::Locations::SurvivalClass::DAY_HARD;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_2:
-                        cls = PVZRAPData::Locations::SurvivalClass::NIGHT_HARD;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_3:
-                        cls = PVZRAPData::Locations::SurvivalClass::POOL_HARD;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_4:
-                        cls = PVZRAPData::Locations::SurvivalClass::FOG_HARD;
-                        break;
-                    case GameMode::GAMEMODE_SURVIVAL_HARD_STAGE_5:
-                        cls = PVZRAPData::Locations::SurvivalClass::ROOF_HARD;
-                        break;
-                    }
-                    location = PVZRAPData::Locations::SurvivalFlag(cls, flag + mBoard->mChallenge->mSurvivalStage * (mBoard->GetNumWavesPerSurvivalStage() / mBoard->GetNumWavesPerFlag()));
-                }
-            }
-            else if (mApp->IsAdventureMode())
-            {
-                auto flag_count = 1;
-                for (auto flag_location = PVZRAPData::Locations::LevelFlagList(mBoard->mLevel); *flag_location != -1; flag_location++, flag_count++)
-                {
-                    if (flag_count == flag)
-                    {
-                        location = *flag_location;
-                        break;
-                    }
-                }
-            }
-
+            int64_t location = PVZRAPData::Locations::Wave(mApp->CurrentAPLevelId(), wave);
             if (location != -1)
             {
                 if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))

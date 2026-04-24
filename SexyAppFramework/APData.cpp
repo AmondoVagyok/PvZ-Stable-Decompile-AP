@@ -6,6 +6,7 @@
 #include "APSlotData/SlotData1_4.h"
 #include "APSlotData/SlotData1_5.h"
 #include "APSlotData/SlotData1_6.h"
+#include "APSlotData/SlotData1_7.h"
 
 
 class SlotDataInvalid : public PVZRAPData::SlotData::SlotDataInner
@@ -109,6 +110,21 @@ public:
         return {};
     }
     
+    bool ringlink_enabled() override
+    {
+        return {};
+    }
+    
+    bool progressive_sun_capacity_items() override
+    {
+        return {};
+    }
+    
+    bool individual_tile_unlock_items() override
+    {
+        return {};
+    }
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         return {};
@@ -146,21 +162,9 @@ PVZRAPData::SlotData PVZRAPData::SlotData::get_slot_data(const nlohmann::json& s
         gen_version_string = gen_version.get<std::string>();
     }
 
-    if (gen_version_string == "1.3")
+    if (gen_version_string == "1.7")
     {
-        return SlotData(std::make_shared<SlotData1_3>(slot_data));
-    }
-    if (gen_version_string == "1.4")
-    {
-        return SlotData(std::make_shared<SlotData1_4>(slot_data));
-    }
-    if (gen_version_string == "1.5")
-    {
-        return SlotData(std::make_shared<SlotData1_5>(slot_data));
-    }
-    if (gen_version_string == "1.6")
-    {
-        return SlotData(std::make_shared<SlotData1_6>(slot_data));
+        return SlotData(std::make_shared<SlotData1_7>(slot_data));
     }
 
     return SlotData(std::make_shared<SlotDataInvalid>(gen_version_string));

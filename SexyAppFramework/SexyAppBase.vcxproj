@@ -1341,6 +1341,7 @@ EXIT /B 0</Command>
     <ClInclude Include="APSlotData\SlotData1_4.h" />
     <ClInclude Include="APSlotData\SlotData1_5.h" />
     <ClInclude Include="APSlotData\SlotData1_6.h" />
+    <ClInclude Include="APSlotData\SlotData1_7.h" />
     <ClInclude Include="APSlotData\SlotDataInner.h" />
     <ClInclude Include="APWrapper.h" />
     <ClInclude Include="AutoCrit.h" />

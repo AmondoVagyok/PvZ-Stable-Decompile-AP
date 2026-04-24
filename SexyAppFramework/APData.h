@@ -12,20 +12,6 @@ namespace PVZRAPData
 {
     namespace Locations
     {
-        enum class SurvivalClass
-        {
-            DAY,
-            NIGHT,
-            POOL,
-            FOG,
-            ROOF,
-            DAY_HARD,
-            NIGHT_HARD,
-            POOL_HARD,
-            FOG_HARD,
-            ROOF_HARD
-        };
-        
         /// Get the AP location ID for clearing a level
         /// For example, LevelClear(3, 2) will get the AP location ID for Level 2-2
         /// Dr. Zomboss is 5-10
@@ -69,45 +55,6 @@ namespace PVZRAPData
             return 5000 + index;
         }
         
-        // Flag is 1-based
-        inline int64_t SurvivalFlag(SurvivalClass cls, int flag)
-        {
-            switch (cls)
-            {
-            case SurvivalClass::DAY:
-                if (flag < 1 || flag > 4) return -1;
-                return 2063 + flag;
-            case SurvivalClass::NIGHT:
-                if (flag < 1 || flag > 4) return -1;
-                return 2067 + flag;
-            case SurvivalClass::POOL:
-                if (flag < 1 || flag > 4) return -1;
-                return 2071 + flag;
-            case SurvivalClass::FOG:
-                if (flag < 1 || flag > 4) return -1;
-                return 2075 + flag;
-            case SurvivalClass::ROOF:
-                if (flag < 1 || flag > 4) return -1;
-                return 2079 + flag;
-            case SurvivalClass::DAY_HARD:
-                if (flag < 1 || flag > 9) return -1;
-                return 2083 + flag;
-            case SurvivalClass::NIGHT_HARD:
-                if (flag < 1 || flag > 9) return -1;
-                return 2092 + flag;
-            case SurvivalClass::POOL_HARD:
-                if (flag < 1 || flag > 9) return -1;
-                return 2101 + flag;
-            case SurvivalClass::FOG_HARD:
-                if (flag < 1 || flag > 9) return -1;
-                return 2110 + flag;
-            case SurvivalClass::ROOF_HARD:
-                if (flag < 1 || flag > 9) return -1;
-                return 2119 + flag;
-            }
-            return -1;
-        }
-        
         inline int64_t GamemodeClear(GameMode game_mode)
         {
             if (game_mode >= GameMode::GAMEMODE_CHALLENGE_WAR_AND_PEAS && game_mode <= GameMode::GAMEMODE_CHALLENGE_FINAL_BOSS)
@@ -133,232 +80,9 @@ namespace PVZRAPData
             return -1;
         }
         
-        constexpr int64_t FLAG_1_7_1 = 2000;
-        constexpr int64_t FLAG_1_9_1 = 2001;
-        constexpr int64_t FLAG_1_10_1 = 2002;
-        constexpr int64_t FLAG_2_2_1 = 2003;
-        constexpr int64_t FLAG_2_4_1 = 2004;
-        constexpr int64_t FLAG_2_7_1 = 2005;
-        constexpr int64_t FLAG_2_9_1 = 2006;
-        constexpr int64_t FLAG_2_10_1 = 2007;
-        constexpr int64_t FLAG_3_2_1 = 2008;
-        constexpr int64_t FLAG_3_3_1 = 2009;
-        constexpr int64_t FLAG_3_4_1 = 2010;
-        constexpr int64_t FLAG_3_4_2 = 2011;
-        constexpr int64_t FLAG_3_5_1 = 2012;
-        constexpr int64_t FLAG_3_6_1 = 2013;
-        constexpr int64_t FLAG_3_7_1 = 2014;
-        constexpr int64_t FLAG_3_7_2 = 2015;
-        constexpr int64_t FLAG_3_8_1 = 2016;
-        constexpr int64_t FLAG_3_9_1 = 2017;
-        constexpr int64_t FLAG_3_9_2 = 2018;
-        constexpr int64_t FLAG_3_10_1 = 2019;
-        constexpr int64_t FLAG_3_10_2 = 2020;
-        constexpr int64_t FLAG_4_2_1 = 2021;
-        constexpr int64_t FLAG_4_4_1 = 2022;
-        constexpr int64_t FLAG_4_7_1 = 2023;
-        constexpr int64_t FLAG_4_9_1 = 2024;
-        constexpr int64_t FLAG_4_10_1 = 2025;
-        constexpr int64_t FLAG_5_2_1 = 2026;
-        constexpr int64_t FLAG_5_3_1 = 2027;
-        constexpr int64_t FLAG_5_4_1 = 2028;
-        constexpr int64_t FLAG_5_4_2 = 2029;
-        constexpr int64_t FLAG_5_5_1 = 2030;
-        constexpr int64_t FLAG_5_6_1 = 2031;
-        constexpr int64_t FLAG_5_7_1 = 2032;
-        constexpr int64_t FLAG_5_7_2 = 2033;
-        constexpr int64_t FLAG_5_8_1 = 2034;
-        constexpr int64_t FLAG_5_9_1 = 2035;
-        constexpr int64_t FLAG_5_9_2 = 2036;
-        
-        constexpr int64_t FLAG_ZOMBOTANY_1 = 2037;
-        constexpr int64_t FLAG_WALL_NUT_BOWLING_1 = 2038;
-        constexpr int64_t FLAG_RAINING_SEEDS_1 = 2039;
-        constexpr int64_t FLAG_RAINING_SEEDS_2 = 2040;
-        constexpr int64_t FLAG_RAINING_SEEDS_3 = 2041;
-        constexpr int64_t FLAG_INVISIGHOUL_1 = 2042;
-        constexpr int64_t FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_1 = 2043;
-        constexpr int64_t FLAG_BIG_TROUBLE_LITTLE_ZOMBIE_2 = 2044;
-        constexpr int64_t FLAG_PORTAL_COMBAT_1 = 2045;
-        constexpr int64_t FLAG_COLUMN_SEE_EM_1 = 2046;
-        constexpr int64_t FLAG_COLUMN_SEE_EM_2 = 2047;
-        constexpr int64_t FLAG_BOBSLED_BONANZA_1 = 2048;
-        constexpr int64_t FLAG_BOBSLED_BONANZA_2 = 2049;
-        constexpr int64_t FLAG_BOBSLED_BONANZA_3 = 2050;
-        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_1 = 2051;
-        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_2 = 2052;
-        constexpr int64_t FLAG_ZOMBIE_NIMBLE_ZOMBIE_QUICK_3 = 2053;
-        constexpr int64_t FLAG_LAST_STAND_1 = 2054;
-        constexpr int64_t FLAG_LAST_STAND_2 = 2055;
-        constexpr int64_t FLAG_LAST_STAND_3 = 2056;
-        constexpr int64_t FLAG_LAST_STAND_4 = 2057;
-        constexpr int64_t FLAG_ZOMBOTANY_2_1 = 2058;
-        constexpr int64_t FLAG_ZOMBOTANY_2_2 = 2059;
-        constexpr int64_t FLAG_WALL_NUT_BOWLING_2_1 = 2060;
-        constexpr int64_t FLAG_WALL_NUT_BOWLING_2_2 = 2061;
-        constexpr int64_t FLAG_POGO_PARTY_1 = 2062;
-        constexpr int64_t FLAG_POGO_PARTY_2 = 2063;
-        
-        inline const int64_t* LevelFlagList(const int level)
+        inline int64_t Wave(int64_t apLevelId, int64_t wave)
         {
-            static constexpr int64_t null_set[] = {-1};
-            
-            if (level < 1 || level > 50)
-            {
-                return null_set;
-            }
-            if (level == 7)
-            {
-                static constexpr int64_t flags[] = {FLAG_1_7_1, -1};
-                return flags;
-            }
-            if (level == 9)
-            {
-                static constexpr int64_t flags[] = {FLAG_1_9_1, -1};
-                return flags;
-            }
-            if (level == 10)
-            {
-                static constexpr int64_t flags[] = {FLAG_1_10_1, -1};
-                return flags;
-            }
-            if (level == 12)
-            {
-                static constexpr int64_t flags[] = {FLAG_2_2_1, -1};
-                return flags;
-            }
-            if (level == 14)
-            {
-                static constexpr int64_t flags[] = {FLAG_2_4_1, -1};
-                return flags;
-            }
-            if (level == 17)
-            {
-                static constexpr int64_t flags[] = {FLAG_2_7_1, -1};
-                return flags;
-            }
-            if (level == 19)
-            {
-                static constexpr int64_t flags[] = {FLAG_2_9_1, -1};
-                return flags;
-            }
-            if (level == 20)
-            {
-                static constexpr int64_t flags[] = {FLAG_2_10_1, -1};
-                return flags;
-            }
-            if (level == 22)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_2_1, -1};
-                return flags;
-            }
-            if (level == 23)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_3_1, -1};
-                return flags;
-            }
-            if (level == 24)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_4_1, FLAG_3_4_2, -1};
-                return flags;
-            }
-            if (level == 25)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_5_1, -1};
-                return flags;
-            }
-            if (level == 26)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_6_1, -1};
-                return flags;
-            }
-            if (level == 27)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_7_1, FLAG_3_7_2, -1};
-                return flags;
-            }
-            if (level == 28)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_8_1, -1};
-                return flags;
-            }
-            if (level == 29)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_9_1, FLAG_3_9_2, -1};
-                return flags;
-            }
-            if (level == 30)
-            {
-                static constexpr int64_t flags[] = {FLAG_3_10_1, FLAG_3_10_2, -1};
-                return flags;
-            }
-            if (level == 32)
-            {
-                static constexpr int64_t flags[] = {FLAG_4_2_1, -1};
-                return flags;
-            }
-            if (level == 34)
-            {
-                static constexpr int64_t flags[] = {FLAG_4_4_1, -1};
-                return flags;
-            }
-            if (level == 37)
-            {
-                static constexpr int64_t flags[] = {FLAG_4_7_1, -1};
-                return flags;
-            }
-            if (level == 39)
-            {
-                static constexpr int64_t flags[] = {FLAG_4_9_1, -1};
-                return flags;
-            }
-            if (level == 40)
-            {
-                static constexpr int64_t flags[] = {FLAG_4_10_1, -1};
-                return flags;
-            }
-            if (level == 42)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_2_1, -1};
-                return flags;
-            }
-            if (level == 43)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_3_1, -1};
-                return flags;
-            }
-            if (level == 44)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_4_1, FLAG_5_4_2, -1};
-                return flags;
-            }
-            if (level == 45)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_5_1, -1};
-                return flags;
-            }
-            if (level == 46)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_6_1, -1};
-                return flags;
-            }
-            if (level == 47)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_7_1, FLAG_5_7_2, -1};
-                return flags;
-            }
-            if (level == 48)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_8_1, -1};
-                return flags;
-            }
-            if (level == 49)
-            {
-                static constexpr int64_t flags[] = {FLAG_5_9_1, FLAG_5_9_2, -1};
-                return flags;
-            }
-            
-            return null_set;
+            return apLevelId * 10000 + wave;
         }
     }
     
@@ -429,6 +153,8 @@ namespace PVZRAPData
         constexpr int64_t TRAP_MOWER_DEPLOY = 70;
         constexpr int64_t TRAP_PACKET_COOLDOWN = 71;
         constexpr int64_t TRAP_ZOMBIE_AMBUSH = 72;
+        constexpr int64_t TRAP_ZOMBIE_SHUFFLE = 73;
+        constexpr int64_t ZEN_GARDEN_SPROUT = 74;
         
         inline SeedType SeedItem(int64_t item)
         {
@@ -471,6 +197,19 @@ namespace PVZRAPData
                 return 294 + game_mode - GAMEMODE_SURVIVAL_HARD_STAGE_1;
             }
             return -1;
+        }
+        
+        inline int TileUnlock(int row, int col)
+        {
+            if (row > 5 || row < 0)
+            {
+                return -1;
+            }
+            if (col < 0 || col > 9)
+            {
+                return -1;
+            }
+            return 1000 + row * 10 + col;
         }
     }
     

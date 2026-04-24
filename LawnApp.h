@@ -417,6 +417,7 @@ public:
 	void							UpdateArchipelagoOverlayElements();
 	bool                            IsLevelOpen(int level) const;
 	PVZRAPData::SlotData::GoalProgress GetGoalProgress() const;
+	int                             CurrentAPLevelId();
 	
 private:
 	void							SetupArchipelago();

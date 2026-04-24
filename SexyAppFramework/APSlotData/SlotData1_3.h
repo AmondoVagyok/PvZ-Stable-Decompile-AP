@@ -133,7 +133,25 @@ public:
     {
         // Not supported in 1.3
         return true;
-    }   
+    }
+    
+    bool ringlink_enabled() override
+    {
+        // Not supported in 1.3
+        return false;
+    }
+    
+    bool progressive_sun_capacity_items() override
+    {
+        // Not supported in 1.3
+        return false;
+    }
+    
+    bool individual_tile_unlock_items() override
+    {
+        // Not supported in 1.3
+        return false;
+    }
     
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {

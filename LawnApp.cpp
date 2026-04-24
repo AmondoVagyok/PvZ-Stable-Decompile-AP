@@ -5343,6 +5343,15 @@ PVZRAPData::SlotData::GoalProgress LawnApp::GetGoalProgress() const
 	return gp;
 }
 
+int LawnApp::CurrentAPLevelId()
+{
+	if (this->IsAdventureMode())
+	{
+		return this->mBoard->mLevel;
+	}
+	return GetChallengeApId(this->mGameMode);
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
