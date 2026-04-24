@@ -125,6 +125,11 @@ public:
         return {};
     }
     
+    bool is_eligible_for_individual_tile_unlock_items(int level) override
+    {
+        return {};
+    }
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         return {};
@@ -265,9 +270,29 @@ int PVZRAPData::SlotData::sun_per_upgrade() const
     return inner->sun_per_upgrade();
 }
 
+bool PVZRAPData::SlotData::progressive_sun_capacity_items() const
+{
+    return inner->progressive_sun_capacity_items();
+}
+
+bool PVZRAPData::SlotData::individual_tile_unlock_items() const
+{
+    return inner->progressive_sun_capacity_items();
+}
+
+bool PVZRAPData::SlotData::is_eligible_for_individual_tile_unlock_items(int level) const
+{
+    return inner->is_eligible_for_individual_tile_unlock_items(level);
+}
+
 bool PVZRAPData::SlotData::energylink_enabled() const
 {
     return inner->energylink_enabled();
+}
+
+bool PVZRAPData::SlotData::ringlink_enabled() const
+{
+    return inner->ringlink_enabled();
 }
 
 std::optional<PVZRAPData::SlotData::SeedStats> PVZRAPData::SlotData::seed_stats(const SeedType seed) const

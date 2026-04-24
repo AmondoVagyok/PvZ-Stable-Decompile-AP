@@ -296,8 +296,12 @@ namespace PVZRAPData
         bool imitater_open() const;
         
         int sun_per_upgrade() const;
+        bool progressive_sun_capacity_items() const;
+        bool individual_tile_unlock_items() const;
+        bool is_eligible_for_individual_tile_unlock_items(int level) const;
         
         bool energylink_enabled() const;
+        bool ringlink_enabled() const;
         
         std::optional<SeedStats> seed_stats(SeedType seed) const;
         std::optional<ProjectileStats> projectile_stats(ProjectileType projectile) const;

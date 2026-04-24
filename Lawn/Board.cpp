@@ -1543,15 +1543,35 @@ void Board::PickBackground()
 	}
 	PickSpecialGraveStone();
 
+	int rows = 0;
 	switch (mBackground) 
 	{
 		case BackgroundType::BACKGROUND_1_DAY:
 		case BackgroundType::BACKGROUND_2_NIGHT:
+		case BackgroundType::BACKGROUND_5_ROOF:
+		case BackgroundType::BACKGROUND_6_BOSS:
+		{
+			rows = 5;
+			break;
+		}
 		case BackgroundType::BACKGROUND_3_POOL:
 		case BackgroundType::BACKGROUND_4_FOG:
 		{
-			InitBushes();
+			rows = 6;
 			break;
+		}
+	}
+	
+	for (auto row = 0; row < rows; row++)
+	{
+		for (auto col = 0; col < 9; col++)
+		{
+			GridItem* aApCrater = mGridItems.DataArrayAlloc();
+			aApCrater->mGridItemType = GridItemType::GRIDITEM_AP_CRATER;
+			aApCrater->mGridItemCounter = -Rand(50);
+			aApCrater->mRenderOrder = MakeRenderOrder(RenderLayer::RENDER_LAYER_GRAVE_STONE, row, 3);
+			aApCrater->mGridX = col;
+			aApCrater->mGridY = row;
 		}
 	}
 }
@@ -3541,6 +3561,14 @@ PlantingReason Board::CanPlantAt(int theGridX, int theGridY, SeedType theSeedTyp
 		if (theGridX < 0 || theGridX >= MAX_GRID_SIZE_X || theGridY < 0 || theGridY >= MAX_GRID_SIZE_Y)
 		{
 			return PlantingReason::PLANTING_NOT_HERE;
+		}
+		
+		if (mApp->mSlotData->individual_tile_unlock_items() && mApp->mSlotData->is_eligible_for_individual_tile_unlock_items(mApp->CurrentAPLevelId()))
+		{
+			if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TileUnlock(theGridY, theGridX)) == 0)
+			{
+				return PlantingReason::PLANTING_NOT_HERE;
+			}
 		}
 
 		// 从关卡玩法上，判断能否种植

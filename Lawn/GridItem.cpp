@@ -11,6 +11,7 @@
 #include "../Sexy.TodLib/TodFoley.h"
 #include "../Sexy.TodLib/Reanimator.h"
 #include "../Sexy.TodLib/TodParticle.h"
+#include "../SexyAppFramework/APWrapper.h"
 #include "../SexyAppFramework/WidgetManager.h"
 
 using namespace Sexy;
@@ -90,6 +91,15 @@ void GridItem::DrawGridItem(Graphics* g)
     case GridItemType::GRIDITEM_SQUIRREL:           DrawSquirrel(g);                                return;
     case GridItemType::GRIDITEM_STINKY:             DrawStinky(g);                                  return;
     case GridItemType::GRIDITEM_IZOMBIE_BRAIN:      DrawIZombieBrain(g);                            return;
+    case GridItemType::GRIDITEM_AP_CRATER:
+        {
+            if (this->mGridItemType == GridItemType::GRIDITEM_AP_CRATER && mApp->mSlotData->individual_tile_unlock_items() && mApp->mSlotData->is_eligible_for_individual_tile_unlock_items(mApp->CurrentAPLevelId()) && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TileUnlock(this->mGridY, this->mGridX)) == 0)
+            {
+                mGridItemCounter = 10000;
+                DrawCrater(g);
+            }
+            return;
+        }
     default:                                        TOD_ASSERT();                                   break;
     }
 

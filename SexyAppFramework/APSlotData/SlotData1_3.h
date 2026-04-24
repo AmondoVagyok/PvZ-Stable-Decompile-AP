@@ -153,6 +153,12 @@ public:
         return false;
     }
     
+    bool is_eligible_for_individual_tile_unlock_items(int level) override
+    {
+        // Not supported in 1.3
+        return false;
+    }
+    
     std::optional<PVZRAPData::SlotData::SeedStats> seed_stats(SeedType seed) override
     {
         // Apply easy upgrade tax
