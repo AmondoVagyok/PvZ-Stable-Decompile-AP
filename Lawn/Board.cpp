@@ -1914,6 +1914,10 @@ void Board::InitLevel()
 	}
 	
 	mSunMoney += mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ADDITIONAL_STARTING_SUN) * mApp->mSlotData->sun_per_upgrade();
+	if (mApp->mSlotData->progressive_sun_capacity_items() && mSunMoney > mApp->SunLimit())
+	{
+		mSunMoney = mApp->SunLimit();
+	}
 
 	// 初始化行选择数组
 	memset(mRowPickingArray, 0, sizeof(mRowPickingArray));
@@ -10914,6 +10918,10 @@ void Board::AddSunMoney(int theAmount)
 	if (mSunMoney > 9990)
 	{
 		mSunMoney = 9990;
+	}
+	if (mApp->mSlotData->progressive_sun_capacity_items() && mSunMoney > mApp->SunLimit())
+	{
+		mSunMoney = mApp->SunLimit();
 	}
 	if (mSunMoney >= 8000)
 		// if ( !*(mApp->mPlayerInfo + 48) ) todo @Patoke: figure this out

@@ -131,6 +131,7 @@ namespace PVZRAPData
         constexpr int64_t PHONOGRAPH = 32;
         constexpr int64_t STINKY = 33;
         constexpr int64_t WHEELBARROW = 34;
+        constexpr int64_t PROGRESSIVE_SUN_CAPACITY = 35;
         
         constexpr int64_t MUSTACHE_MODE = 50;
         constexpr int64_t FUTURE_ZOMBIES_MODE = 51;

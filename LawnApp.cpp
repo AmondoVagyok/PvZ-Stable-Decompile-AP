@@ -5352,6 +5352,11 @@ int LawnApp::CurrentAPLevelId()
 	return GetChallengeApId(this->mGameMode);
 }
 
+int LawnApp::SunLimit() const
+{
+	return 150 * pow(2., this->mAP->ReceivedItemCount(PVZRAPData::Items::PROGRESSIVE_SUN_CAPACITY));
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)

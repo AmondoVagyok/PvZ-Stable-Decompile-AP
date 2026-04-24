@@ -418,6 +418,7 @@ public:
 	bool                            IsLevelOpen(int level) const;
 	PVZRAPData::SlotData::GoalProgress GetGoalProgress() const;
 	int                             CurrentAPLevelId();
+	int                             SunLimit() const;
 	
 private:
 	void							SetupArchipelago();
