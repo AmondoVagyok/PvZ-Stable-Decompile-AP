@@ -277,7 +277,7 @@ bool PVZRAPData::SlotData::progressive_sun_capacity_items() const
 
 bool PVZRAPData::SlotData::individual_tile_unlock_items() const
 {
-    return inner->progressive_sun_capacity_items();
+    return inner->individual_tile_unlock_items();
 }
 
 bool PVZRAPData::SlotData::is_eligible_for_individual_tile_unlock_items(int level) const
