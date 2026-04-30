@@ -9981,18 +9981,54 @@ void Board::DoTypingCheck(KeyCode theKey)
 	}
 	if (mApp->mMustacheCheck->Check(theKey) || mApp->mMoustacheCheck->Check(theKey))
 	{
-		SetMustacheMode(!mMustacheMode);
-		return;
+		if (mApp->CanDoMustacheMode())
+		{
+			SetMustacheMode(!mMustacheMode);
+			return;
+		}
+		else
+		{
+			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
+			{
+				DisplayAdvice("Receive the 'Mustache Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+			}
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mSuperMowerCheck->Check(theKey) || mApp->mSuperMowerCheck2->Check(theKey))
 	{
-		SetSuperMowerMode(!mSuperMowerMode);
-		return;
+		if (mApp->CanDoTrickedOutMode())
+		{
+			SetSuperMowerMode(!mSuperMowerMode);
+			return;
+		}
+		else
+		{
+			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
+			{
+				DisplayAdvice("Receive the 'Tricked Out Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+			}
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mFutureCheck->Check(theKey))
 	{
-		SetFutureMode(!mFutureMode);
-		return;
+		if (mApp->CanDoFutureMode())
+		{
+			SetFutureMode(!mFutureMode);
+			return;
+		}
+		else
+		{
+			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
+			{
+				DisplayAdvice("Receive the 'Future Zombies Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+			}
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mPinataCheck->Check(theKey))
 	{
@@ -10005,7 +10041,7 @@ void Board::DoTypingCheck(KeyCode theKey)
 		{
 			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
 			{
-				DisplayAdvice(_S("[CANT_USE_CODE]"), MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+				DisplayAdvice("Receive the 'Pinata Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
 			}
 			mApp->PlaySample(Sexy::SOUND_BUZZER);
 			return;
@@ -10022,7 +10058,7 @@ void Board::DoTypingCheck(KeyCode theKey)
 		{
 			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
 			{
-				DisplayAdvice(_S("[CANT_USE_CODE]"), MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+				DisplayAdvice("Receive the 'Dancing Zombies Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
 			}
 			mApp->PlaySample(Sexy::SOUND_BUZZER);
 			return;
@@ -10039,7 +10075,7 @@ void Board::DoTypingCheck(KeyCode theKey)
 		{
 			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
 			{
-				DisplayAdvice(_S("[CANT_USE_CODE]"), MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+				DisplayAdvice("Receive the 'Daisies Mode' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
 			}
 			mApp->PlaySample(Sexy::SOUND_BUZZER);
 			return;

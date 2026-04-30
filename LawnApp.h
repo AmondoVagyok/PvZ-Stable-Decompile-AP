@@ -378,6 +378,9 @@ public:
 	/*inline*/ bool					CanDoPinataMode();
 	/*inline*/ bool					CanDoDanceMode();
 	/*inline*/ bool					CanDoDaisyMode();
+	/*inline*/ bool					CanDoTrickedOutMode();
+	/*inline*/ bool					CanDoMustacheMode();
+	/*inline*/ bool					CanDoFutureMode();
 	virtual void					SwitchScreenMode(bool wantWindowed, bool is3d, bool force = false);
 	static /*inline*/ void			CenterDialog(Dialog* theDialog, int theWidth, int theHeight);
 #ifdef _HAS_ZOMBATAR

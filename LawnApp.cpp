@@ -4829,7 +4829,7 @@ bool LawnApp::CanDoPinataMode()
 	if (mPlayerInfo == nullptr)
 		return false;
 
-	return mPlayerInfo->mChallengeRecords[(int)GameMode::GAMEMODE_TREE_OF_WISDOM - (int)GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1] >= 1000;
+	return mAP->ReceivedItemCount(PVZRAPData::Items::PINATA_MODE) > 0;
 }
 
 //0x456080
@@ -4838,7 +4838,7 @@ bool LawnApp::CanDoDanceMode()
 	if (mPlayerInfo == nullptr)
 		return false;
 
-	return mPlayerInfo->mChallengeRecords[(int)GameMode::GAMEMODE_TREE_OF_WISDOM - (int)GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1] >= 500;
+	return mAP->ReceivedItemCount(PVZRAPData::Items::DANCING_ZOMBIES_MODE) > 0;
 }
 
 //0x4560A0
@@ -4847,7 +4847,31 @@ bool LawnApp::CanDoDaisyMode()
 	if (mPlayerInfo == nullptr)
 		return false;
 
-	return mPlayerInfo->mChallengeRecords[(int)GameMode::GAMEMODE_TREE_OF_WISDOM - (int)GameMode::GAMEMODE_SURVIVAL_NORMAL_STAGE_1] >= 100;
+	return mAP->ReceivedItemCount(PVZRAPData::Items::DAISIES_MODE) > 0;
+}
+
+bool LawnApp::CanDoTrickedOutMode()
+{
+	if (mPlayerInfo == nullptr)
+		return false;
+
+	return mAP->ReceivedItemCount(PVZRAPData::Items::TRICKED_OUT_MODE) > 0;
+}
+
+bool LawnApp::CanDoMustacheMode()
+{
+	if (mPlayerInfo == nullptr)
+		return false;
+
+	return mAP->ReceivedItemCount(PVZRAPData::Items::MUSTACHE_MODE) > 0;
+}
+
+bool LawnApp::CanDoFutureMode()
+{
+	if (mPlayerInfo == nullptr)
+		return false;
+
+	return mAP->ReceivedItemCount(PVZRAPData::Items::FUTURE_ZOMBIES_MODE) > 0;
 }
 
 //0x4560C0
