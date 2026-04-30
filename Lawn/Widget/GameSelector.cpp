@@ -1683,22 +1683,46 @@ void GameSelector::KeyDown(KeyCode theKey)
 	}
 	if (mApp->mMustacheCheck->Check(theKey) || mApp->mMoustacheCheck->Check(theKey))
 	{
-		mApp->PlayFoley(FoleyType::FOLEY_POLEVAULT);
-		mApp->mMustacheMode = !mApp->mMustacheMode;
-		ReportAchievement::GiveAchievement(mApp, AchievementId::MustacheMode, false);
-		return;
+		if (mApp->CanDoMustacheMode())
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_POLEVAULT);
+			mApp->mMustacheMode = !mApp->mMustacheMode;
+			ReportAchievement::GiveAchievement(mApp, AchievementId::MustacheMode, false);
+			return;
+		}
+		else
+		{
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mSuperMowerCheck->Check(theKey) || mApp->mSuperMowerCheck2->Check(theKey))
 	{
-		mApp->PlayFoley(FoleyType::FOLEY_ZAMBONI);
-		mApp->mSuperMowerMode = !mApp->mSuperMowerMode;
-		return;
+		if (mApp->CanDoTrickedOutMode())
+		{
+			mApp->PlayFoley(FoleyType::FOLEY_ZAMBONI);
+			mApp->mSuperMowerMode = !mApp->mSuperMowerMode;
+			return;
+		}
+		else
+		{
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mFutureCheck->Check(theKey))
 	{
-		mApp->PlaySample(Sexy::SOUND_BOING);
-		mApp->mFutureMode = !mApp->mFutureMode;
-		return;
+		if (mApp->CanDoFutureMode())
+		{
+			mApp->PlaySample(Sexy::SOUND_BOING);
+			mApp->mFutureMode = !mApp->mFutureMode;
+			return;
+		}
+		else
+		{
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 	if (mApp->mPinataCheck->Check(theKey))
 	{
