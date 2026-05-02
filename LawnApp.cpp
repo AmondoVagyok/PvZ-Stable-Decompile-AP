@@ -5652,6 +5652,14 @@ void LawnApp::ProcessAPItem(const APItem& item)
 				mPlayerInfo->mPurchases[(int)StoreItem::STORE_ITEM_TREE_FOOD]++;
 				break;
 			}
+			
+		case PVZRAPData::Items::ZEN_GARDEN_SPROUT:
+			{
+				PottedPlant plant;
+				SeedType aSeedType = mZenGarden->PickRandomSeedType();
+				plant.InitializePottedPlant(aSeedType);
+				mZenGarden->AddPottedPlant(&plant);
+			}
 		}
 		
 		WriteCurrentUserConfig();
