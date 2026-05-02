@@ -18,6 +18,7 @@ ArchipelagoTextClient::ArchipelagoTextClient(LawnApp* theApp)
     mApp = theApp;
     mFirstCharTyped = true;
     mScroll = 0;
+    mCurrentHistoryItem = -1;
     
     mMessageEditWidget = CreateEditWidget(0, this, nullptr);
     mMessageEditWidget->DisableAutocap();
@@ -80,6 +81,8 @@ void ArchipelagoTextClient::EditWidgetText(int theId, const SexyString& theStrin
 {
     EditListener::EditWidgetText(theId, theString);
     mApp->mAP->SendAPMessage(theString);
+    mApp->mAP->PushMessageHistory(theString);
+    mCurrentHistoryItem = -1;
     mMessageEditWidget->SetText("");
 }
 
@@ -102,6 +105,46 @@ void ArchipelagoTextClient::MouseWheel(int theDelta)
     mScroll = std::max<int64_t>(mScroll, 0);
     
     UpdateLines();
+}
+
+void ArchipelagoTextClient::Up()
+{
+    if (mCurrentHistoryItem == -1)
+    {
+        mCurrentHistoryItem = mApp->mAP->HistoryLength() - 1;
+    } else
+    {
+        mCurrentHistoryItem -= 1;
+    }
+    
+    if (mCurrentHistoryItem == -1)
+    {
+        mMessageEditWidget->SetText("");
+    }
+    else
+    {
+        mMessageEditWidget->SetText(mApp->mAP->HistoryItem(mCurrentHistoryItem));
+    }
+}
+
+void ArchipelagoTextClient::Down()
+{
+    if (mCurrentHistoryItem == mApp->mAP->HistoryLength() - 1)
+    {
+        mCurrentHistoryItem = -1;
+    } else
+    {
+        mCurrentHistoryItem += 1;
+    }
+    
+    if (mCurrentHistoryItem == -1)
+    {
+        mMessageEditWidget->SetText("");
+    }
+    else
+    {
+        mMessageEditWidget->SetText(mApp->mAP->HistoryItem(mCurrentHistoryItem));
+    }
 }
 
 void ArchipelagoTextClient::UpdateLines()

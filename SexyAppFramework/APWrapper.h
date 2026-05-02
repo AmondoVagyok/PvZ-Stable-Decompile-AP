@@ -148,6 +148,9 @@ public:
     
     std::list<std::string> ChatMessages() const;
     void SendAPMessage(const std::string& message) const;
+    void PushMessageHistory(const std::string& message) const;
+    std::string HistoryItem(int index) const;
+    int HistoryLength() const;
     
     std::string DataStorageSlotPrefixed(std::string key) const;
     std::string DataStorageSlot(KnownDataStorageKey key) const;

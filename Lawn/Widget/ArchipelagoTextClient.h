@@ -19,6 +19,7 @@ public:
     int64_t                     mScroll;
     std::list<std::string>      mLines;
     ListenerHandle*             mAnyChatHandler;
+    int                         mCurrentHistoryItem;
     
 public:
     void Draw(Sexy::Graphics* g) override;
@@ -27,6 +28,8 @@ public:
     void EditWidgetText(int theId, const SexyString& theString) override;
     bool AllowChar(int theId, SexyChar theChar) override;
     void MouseWheel(int theDelta) override;
+    void Up() override;
+    void Down() override;
     
     void UpdateLines();
 };

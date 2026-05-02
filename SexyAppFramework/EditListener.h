@@ -18,6 +18,8 @@ public:
 	
 	virtual void            Tab() {};
 	virtual void            BackTab() {};
+	virtual void            Up() {};
+	virtual void            Down() {};
 };
 
 }

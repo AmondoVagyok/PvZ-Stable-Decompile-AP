@@ -41,6 +41,7 @@ public:
     std::string last_deathlink_cause;
     
     std::list<std::string> chat_messages;
+    std::vector<std::string> message_history;
     std::map<std::string, nlohmann::json> data_storage;
     
     bool delete_on_next_poll = false;
@@ -490,6 +491,21 @@ void APWrapper::SendAPMessage(const std::string& message) const
 {
     if (!d->mAP) return;
     d->mAP->Say(message);
+}
+
+void APWrapper::PushMessageHistory(const std::string& message) const
+{
+    d->message_history.push_back(message);
+}
+
+std::string APWrapper::HistoryItem(int index) const
+{
+    return d->message_history[index];
+}
+
+int APWrapper::HistoryLength() const
+{
+    return d->message_history.size();
 }
 
 std::string APWrapper::DataStorageSlotPrefixed(std::string key) const
