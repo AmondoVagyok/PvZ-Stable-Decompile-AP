@@ -150,6 +150,7 @@ namespace PVZRAPData
         constexpr int64_t FERTILIZER = 66;
         constexpr int64_t BUG_SPRAY = 67;
         constexpr int64_t CHOCOLATE = 68;
+        constexpr int64_t MASS_ZOMBIE_FREEZE = 69;
         
         constexpr int64_t TRAP_MOWER_DEPLOY = 70;
         constexpr int64_t TRAP_PACKET_COOLDOWN = 71;

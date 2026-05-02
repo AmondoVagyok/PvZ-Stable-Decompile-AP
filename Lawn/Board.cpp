@@ -436,6 +436,32 @@ Board::Board(LawnApp* theApp)
 						aZombie->ShuffleRow();
 					}
 				}
+			case PVZRAPData::Items::MASS_ZOMBIE_FREEZE:
+				{
+					mApp->PlayFoley(FoleyType::FOLEY_FROZEN);
+					
+					Zombie* aZombie = nullptr;
+					while (IterateZombies(aZombie))
+					{
+						aZombie->HitIceTrap();
+					}
+
+					mIceTrapCounter = 300;
+					TodParticleSystem* aPoolSparklyParticle = mApp->ParticleTryToGet(mPoolSparklyParticleID);
+					if (aPoolSparklyParticle)
+					{
+						aPoolSparklyParticle->mDontUpdate = false;
+					}
+
+					Zombie* aBossZombie = nullptr;
+					while (IterateZombies(aBossZombie))
+					{
+						if (aBossZombie->mZombieType == ZOMBIE_BOSS)
+						{
+							aBossZombie->BossDestroyFireball();
+						}
+					}
+				}
 			}
 		}
 	});
