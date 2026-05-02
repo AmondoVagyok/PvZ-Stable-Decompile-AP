@@ -838,7 +838,7 @@ void StoreScreen::Draw(Graphics* g)
         //         aNumPages++;
         //     }
         // }
-        int aNumPages = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1;
+        int aNumPages = this->AvailableRestocks();
         int mPageOffset = -1;
         if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0)
         {
@@ -1313,6 +1313,17 @@ int StoreScreen::ZenPageOffset()
     return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0 ? 1 : 0;
 }
 
+int StoreScreen::AvailableRestocks()
+{
+    auto progressives = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PROGRESSIVE_TWIDDYDINKIES);
+    if (progressives > 0)
+    {
+        return progressives;
+    }
+    
+    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1;
+}
+
 //0x48C3B0
 void StoreScreen::RemovedFromManager(WidgetManager* theWidgetManager)
 {
@@ -1371,7 +1382,7 @@ bool StoreScreen::IsPageShown(int thePage)
     {
         return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::ZEN_GARDEN) > 0;
     }
-    return mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) >= thePage - 1;
+    return this->AvailableRestocks() >= thePage;
     // 试玩模式下，仅显示默认页
     if (mApp->IsTrialStageLocked()) return thePage == STORE_PAGE_SLOT_UPGRADES;
     // 一周目完成后，所有页全解锁
@@ -1403,13 +1414,13 @@ void StoreScreen::ButtonDepress(int theId)
                 mPage = mPage - 1;
                 if (mPage < 0)
                 {
-                    mPage = mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1;
+                    mPage = this->AvailableRestocks();
                 }
             }
             else
             {
                 mPage = mPage + 1;
-                if (mPage > mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TWIDDYDINKIES_RESTOCK) + 1)
+                if (mPage > this->AvailableRestocks())
                 {
                     mPage = 0;
                 }

@@ -135,6 +135,7 @@ public:
     void SlideTo(int theX, int theY);
     virtual void                OrderInManagerChanged();
 	int ZenPageOffset();
+	int AvailableRestocks();
 };
 
 class StoreScreenOverlay : public Widget

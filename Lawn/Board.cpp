@@ -245,7 +245,7 @@ Board::Board(LawnApp* theApp)
 			mMenuButton->Resize(-1000, -1000, 163, 46);
 		}
 
-		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0)
+		if (mApp->mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0 || mApp->mAP->ReceivedItemCount(PVZRAPData::Items::PROGRESSIVE_TWIDDYDINKIES) > 0)
 		{
 			mStoreButton = new GameButton(1);
 			mStoreButton->mButtonImage = IMAGE_ZENSHOPBUTTON;

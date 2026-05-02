@@ -3872,7 +3872,7 @@ bool LawnApp::CanShowStore()
 	if (mAP->ConnectionStatus() != APWrapper::ConnectionStatus::Connected)
 		return false;
 	
-	return mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0;
+	return mAP->ReceivedItemCount(PVZRAPData::Items::CAR_KEYS) > 0 || mAP->ReceivedItemCount(PVZRAPData::Items::PROGRESSIVE_TWIDDYDINKIES) > 0;
 }
 
 //0x4540C0
