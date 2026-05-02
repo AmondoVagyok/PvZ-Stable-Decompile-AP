@@ -13241,3 +13241,35 @@ void Zombie::DropAllParticles(bool hasBody)
     DropPogoGlasses();
     if (hasBody)    DropHead(0u);
 }
+
+void Zombie::ShuffleRow()
+{
+    if (this->mZombieType == ZombieType::ZOMBIE_BUNGEE)
+    {
+        return;
+    }
+    
+    StartWalkAnim(20);
+    
+    bool aIsPool = mBoard->mPlantRow[mRow] == PlantRowType::PLANTROW_POOL;
+    for (;;)
+    {
+        auto nextRow = RandRangeInt(0, MAX_GRID_SIZE_Y);
+        if (!mBoard->RowCanHaveZombies(nextRow))
+        {
+            continue;
+        }
+        if (mBoard->mPlantRow[nextRow] == PlantRowType::PLANTROW_POOL && !aIsPool)
+        {
+            continue;
+        }
+        if (mBoard->mPlantRow[nextRow] != PlantRowType::PLANTROW_POOL && aIsPool)
+        {
+            continue;
+        }
+        
+        SetRow(nextRow);
+        
+        return;
+    }
+}

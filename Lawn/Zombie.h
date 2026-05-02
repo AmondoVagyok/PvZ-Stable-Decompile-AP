@@ -431,6 +431,7 @@ public:
     void                            DropJackInTheBox();
     void                            DropDiggerAxe();
     void                            DropAllParticles(bool hasBody = false);
+    void                            ShuffleRow();
 };
 
 class ZombieDefinition

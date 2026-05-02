@@ -428,6 +428,14 @@ Board::Board(LawnApp* theApp)
 					AddCoin(x, y, COIN_USABLE_SEED_PACKET, COIN_MOTION_FROM_PLANT)->mUsableSeedType = selected_seed_type;
 					break;
 				}
+			case PVZRAPData::Items::TRAP_ZOMBIE_SHUFFLE:
+				{
+					Zombie* aZombie = nullptr;
+					while (IterateZombies(aZombie))
+					{
+						aZombie->ShuffleRow();
+					}
+				}
 			}
 		}
 	});
