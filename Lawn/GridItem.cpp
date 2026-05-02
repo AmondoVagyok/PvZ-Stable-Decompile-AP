@@ -96,7 +96,7 @@ void GridItem::DrawGridItem(Graphics* g)
             if (this->mGridItemType == GridItemType::GRIDITEM_AP_CRATER && mApp->mSlotData->individual_tile_unlock_items() && mApp->mSlotData->is_eligible_for_individual_tile_unlock_items(mApp->CurrentAPLevelId()) && mApp->mAP->ReceivedItemCount(PVZRAPData::Items::TileUnlock(this->mGridY, this->mGridX)) == 0)
             {
                 mGridItemCounter = 10000;
-                DrawCrater(g);
+                DrawAPCrater(g);
             }
             return;
         }
@@ -302,6 +302,95 @@ void GridItem::DrawCrater(Graphics* g)
 
 
     TodDrawImageCelF(g, aImage, aXPos, aYPos, aCelCol, 0);
+    g->SetColorizeImages(false);
+}
+
+void GridItem::DrawAPCrater(Sexy::Graphics* g)
+{
+    float aXPos = mBoard->GridToPixelX(mGridX, mGridY) - 8.0f;
+    float aYPos = mBoard->GridToPixelY(mGridX, mGridY) + 40.0f;
+    if (mGridItemCounter < 25)
+    {
+        int anAlpha = TodAnimateCurve(25, 0, mGridItemCounter, 255, 0, TodCurves::CURVE_LINEAR);
+        g->SetColor(Color(255, 255, 255, anAlpha));
+        g->SetColorizeImages(true);
+    }
+
+    bool fading = mGridItemCounter < 9000;
+    Image* aImage = IMAGE_CRATER;
+    int aCelCol = 0;
+
+    if (mBoard->IsPoolSquare(mGridX, mGridY))
+    {
+        if (mBoard->StageIsNight())
+        {
+            aImage = IMAGE_CRATER_WATER_NIGHT;
+        }
+        else
+        {
+            aImage = IMAGE_CRATER_WATER_DAY;
+        }
+
+        if (fading)
+        {
+            aCelCol = 1;
+        }
+
+        float aPos = mGridY * PI + mGridX * PI * 0.25f;
+        float aTime = mBoard->mMainCounter * PI * 2.0f / 200.0f;
+        aYPos += sin(aPos + aTime) * 2.0f;
+    }
+    else if (mBoard->StageHasRoof())
+    {
+        if (mGridX < 5)
+        {
+            aImage = IMAGE_CRATER_ROOF_LEFT;
+            aXPos += 16.0f;
+            aYPos += -16.0f;
+        }
+        else
+        {
+            aImage = IMAGE_CRATER_ROOF_CENTER;
+            aXPos += 18.0f;
+            aYPos += -9.0f;
+        }
+
+        if (fading)
+        {
+            aCelCol = 1;
+        }
+    }
+    else if (mBoard->StageIsNight())
+    {
+        aCelCol = 1;
+        if (fading)
+        {
+            aImage = IMAGE_CRATER_FADING;
+        }
+    }
+    else if (fading)
+    {
+        aImage = IMAGE_CRATER_FADING;
+    }
+
+    // Draw a hexagon
+    auto scale = 0.4;
+    auto aXCenter = aXPos + (aImage->GetCelWidth() / 2);
+    auto aYCenter = aYPos + (aImage->GetCelHeight() / 2);
+    auto imageHeight = aImage->GetCelHeight() * scale;
+    auto imageWidth = aImage->GetCelWidth() * scale;
+    auto circleRadius = aImage->GetCelHeight() / 2 - imageHeight / 2; 
+    for (auto angle : {0, 60, 300, 120, 240, 180})
+    {
+        // Calculate position from center
+        auto xCircleCenter = circleRadius * cos((angle - 90) * PI / 180);
+        auto yCircleCenter = circleRadius * sin((angle - 90) * PI / 180);
+        auto circleX = xCircleCenter - imageWidth / 2 + aXCenter;
+        auto circleY = yCircleCenter - imageHeight / 2 + aYCenter;
+        
+        TodDrawImageCelScaledF(g, aImage, circleX, circleY, aCelCol, 0, scale, scale);
+    }
+
     g->SetColorizeImages(false);
 }
 
