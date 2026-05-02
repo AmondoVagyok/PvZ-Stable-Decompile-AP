@@ -28,6 +28,8 @@
 #include "../../SexyAppFramework/APData.h"
 #include "../../SexyAppFramework/APWrapper.h"
 
+#include "../../SexyAppFramework/generated/git_version.h"
+
 static float gFlowerCenter[3][2] = { { 765.0f, 483.0f }, { 663.0f, 455.0f }, { 701.0f, 439.0f } };  //0x665430
 
 //0x448C80
@@ -1065,9 +1067,6 @@ void GameSelector::DrawOverlay(Graphics* g)
 
 	mApp->ReanimationGet(mLeafReanimID)->Draw(g);
 
-#ifndef _DEBUG 
-	if (mApp->mBetaValidate)
-#endif
 	{
 		g->SetFont(Sexy::FONT_BRIANNETOD16);
 		g->SetColor(Color(200, 200, 200, 255));
@@ -1080,10 +1079,19 @@ void GameSelector::DrawOverlay(Graphics* g)
 		int posX = (int)(aTransform.mTransX);
 		int posY = (int)(aTransform.mTransY);
 
-		if (gIsPartnerBuild)
-			g->DrawString(TodStringTranslate(_S("[PREVIEW_BUILD]")), posX + 27 - 71, posY + 594 - 41);
-		else
-			g->DrawString(TodStringTranslate(_S("[BETA_BUILD]")), posX + 27 - 71, posY + 594 - 41);
+		std::string system_information;
+		system_information += "PvZ: GOTY (AP)";
+		
+		std::string commit_hash = GIT_COMMIT_HASH;
+		if (!commit_hash.empty())
+		{
+			system_information += "  Build: " + commit_hash;
+		}
+		g->DrawString(system_information, posX + 27 - 71, posY + 594 - 41);
+		// if (gIsPartnerBuild)
+		// 	g->DrawString(TodStringTranslate(_S("[PREVIEW_BUILD]")), posX + 27 - 71, posY + 594 - 41);
+		// else
+		// 	g->DrawString(TodStringTranslate(_S("[BETA_BUILD]")), posX + 27 - 71, posY + 594 - 41);
 	}
 
 	Reanimation* aSpotLightReanim = mApp->ReanimationTryToGet(mSpotLightID);

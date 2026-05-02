@@ -22,3 +22,5 @@ portaudio/*
 enc_temp_folder/*
 build/*
 Plants Vs. Zombies/*
+
+SexyAppFramework/generated/*
