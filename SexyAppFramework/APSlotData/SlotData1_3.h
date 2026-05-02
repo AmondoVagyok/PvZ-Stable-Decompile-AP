@@ -114,6 +114,12 @@ public:
         return {};
     }
     
+    std::optional<std::map<ZombieType, int>> zombie_weights_for_level(int level) override
+    {
+        // Not supported in 1.3
+        return {};
+    }
+    
     bool easy_upgrade_plants() override
     {
         return slot_data["easy_upgrade_plants"].get<int>() > 0;

@@ -89,6 +89,11 @@ public:
     {
         return {};        
     }
+    
+    std::optional<std::map<ZombieType, int>> zombie_weights_for_level(int level) override
+    {
+        return {};
+    }
 
     bool easy_upgrade_plants() override
     {
@@ -248,6 +253,11 @@ std::optional<std::map<SeedType, int>> PVZRAPData::SlotData::conveyor_seeds_for_
 std::optional<std::vector<SeedType>> PVZRAPData::SlotData::conveyor_order_for_level(int level) const
 {
     return inner->conveyor_order_for_level(level);
+}
+
+std::optional<std::map<ZombieType, int>> PVZRAPData::SlotData::zombie_weights_for_level(int level) const
+{
+    return inner->zombie_weights_for_level(level);
 }
 
 bool PVZRAPData::SlotData::easy_upgrade_plants() const

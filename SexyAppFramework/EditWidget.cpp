@@ -415,6 +415,14 @@ void EditWidget::ProcessKey(KeyCode theKey, SexyChar theChar)
 		else
 			mCursorPos = max(mCursorPos, mHilitePos);
 	}
+	else if (theKey == KEYCODE_UP)
+	{
+		mEditListener->Up();
+	}
+	else if (theKey == KEYCODE_DOWN)
+	{
+		mEditListener->Down();
+	}
 	else if (theKey == KEYCODE_BACK)
 	{
 		if (mString.length() > 0)

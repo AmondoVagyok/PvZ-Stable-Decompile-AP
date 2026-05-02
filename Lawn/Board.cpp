@@ -3173,7 +3173,7 @@ bool Board::CanZombieSpawnOnLevel(ZombieType theZombieType, int theLevel)
 		}
 	}
 
-	if (theLevel < aZombieDef.mStartingLevel || aZombieDef.mPickWeight == 0)
+	if (theLevel < aZombieDef.mStartingLevel || aZombieDef.WeightForLevel(mApp, mApp->CurrentAPLevelId()) == 0)
 	{
 		return false;
 	}
@@ -3207,13 +3207,13 @@ ZombieType Board::PickGraveRisingZombieType(int theZombiePoints)
 	TodWeightedArray aZombieWeightArray[(int)ZombieType::NUM_ZOMBIE_TYPES];
 	int aCount = 2;
 	aZombieWeightArray[0].mItem = ZombieType::ZOMBIE_NORMAL;
-	aZombieWeightArray[0].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_NORMAL).mPickWeight;
+	aZombieWeightArray[0].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_NORMAL).WeightForLevel(mApp, mApp->CurrentAPLevelId());
 	aZombieWeightArray[1].mItem = ZombieType::ZOMBIE_TRAFFIC_CONE;
-	aZombieWeightArray[1].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_TRAFFIC_CONE).mPickWeight;
+	aZombieWeightArray[1].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_TRAFFIC_CONE).WeightForLevel(mApp, mApp->CurrentAPLevelId());
 	if (!StageHasGraveStones())
 	{
 		aZombieWeightArray[2].mItem = ZombieType::ZOMBIE_PAIL;
-		aZombieWeightArray[2].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_PAIL).mPickWeight;
+		aZombieWeightArray[2].mWeight = GetZombieDefinition(ZombieType::ZOMBIE_PAIL).WeightForLevel(mApp, mApp->CurrentAPLevelId());
 		aCount++;
 	}
 
@@ -3280,7 +3280,7 @@ ZombieType Board::PickZombieType(int theZombiePoints, int theWaveIndex, ZombiePi
 		// ================================================================================================
 		// ▲ 生存模式中，根据当前旗帜数等重新计算僵尸的权重
 		// ================================================================================================
-		int aPickWeight = aZombieDef.mPickWeight;
+		int aPickWeight = aZombieDef.WeightForLevel(mApp, mApp->CurrentAPLevelId());
 		if (mApp->IsSurvivalMode() || mApp->IsLastStand())
 		{
 			int aFlags = GetSurvivalFlagsCompleted();

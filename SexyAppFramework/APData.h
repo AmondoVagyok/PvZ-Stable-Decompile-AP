@@ -292,6 +292,7 @@ namespace PVZRAPData
         std::optional<std::set<ZombieType>> zombies_on_level(int level) const;
         std::optional<std::map<SeedType, int>> conveyor_seeds_for_level(int level) const;
         std::optional<std::vector<SeedType>> conveyor_order_for_level(int level) const;
+        std::optional<std::map<ZombieType, int>> zombie_weights_for_level(int level) const;
         
         bool easy_upgrade_plants() const;
         bool disable_storm_flashes() const;

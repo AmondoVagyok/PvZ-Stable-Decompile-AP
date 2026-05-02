@@ -36,4 +36,41 @@ public:
         }
         return true;
     }
+    
+    std::optional<std::map<ZombieType, int>> zombie_weights_for_level(int level) override
+    {
+        auto weight_map = slot_data["zombie_weight_map"];
+        switch (slot_data["zombie_weight_randomisation"].get<int>())
+        {
+        case 0:
+            // Off
+            return {};
+        case 2:
+            {
+                // Per Level
+                auto level_weight_map = weight_map[std::to_string(level)];
+                if (level_weight_map.is_discarded())
+                {
+                    // No map for this level
+                    return {};
+                }
+                weight_map = level_weight_map;
+                
+                [[fallthrough]];
+            }
+        case 1:
+            {
+                // Randomise Once
+                std::map<ZombieType, int> result;
+                for (const auto& [zombie_json, weight_json] : weight_map.items())
+                {
+                    auto seed = static_cast<ZombieType>(std::stoi(zombie_json));
+                    result.insert_or_assign(seed, weight_json.get<int>());
+                }
+                return result;
+            }
+        }
+        
+        return {};
+    }
 };

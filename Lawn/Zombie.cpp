@@ -23,6 +23,19 @@
 #include "../SexyAppFramework/APData.h"
 #include "Widget/ChallengeScreen.h"
 
+int ZombieDefinition::WeightForLevel(LawnApp* app, int theLevel) const
+{
+    auto weights = app->mSlotData->zombie_weights_for_level(theLevel);
+    if (weights.has_value())
+    {
+        if (weights.value().contains(mZombieType))
+        {
+            return weights.value()[mZombieType];
+        }
+    }
+    return this->mPickWeight;
+}
+
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  //0x69DA80
     { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE") },
     { ZOMBIE_FLAG,              REANIM_ZOMBIE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE") },

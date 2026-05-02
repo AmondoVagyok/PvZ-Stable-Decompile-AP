@@ -444,6 +444,8 @@ public:
     int                             mFirstAllowedWave;
     int                             mPickWeight;
     const SexyChar*                 mZombieName;
+    
+    int WeightForLevel(LawnApp* app, int theLevel) const;
 };
 extern ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES];  //0x69DA80
 
