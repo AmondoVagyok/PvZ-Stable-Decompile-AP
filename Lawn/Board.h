@@ -126,6 +126,7 @@ public:
 	LawnApp*						mApp;													//+0x8C
 	ListenerHandle*                 mItemReceivedListener;
 	ListenerHandle*                 mAPDisconnectListener;
+	ListenerHandle*                 mAPRingLinkListener;
 	DataArray<Zombie>				mZombies;												//+0x90
 	DataArray<Plant>				mPlants;												//+0xAC
 	DataArray<Projectile>			mProjectiles;											//+0xC8
@@ -326,8 +327,8 @@ public:
 	virtual void					ButtonMouseEnter(int theId) { ; }
 	virtual void					ButtonMouseLeave(int theId) { ; }
 	virtual void					ButtonPress(int theId) { ; }
-	/*inline*/ void					AddSunMoney(int theAmount);
-	bool							TakeSunMoney(int theAmount);
+	/*inline*/ void					AddSunMoney(int theAmount, bool skipRingLink = false);
+	bool							TakeSunMoney(int theAmount, bool skipRingLink = false);
 	/*inline*/ bool					CanTakeSunMoney(int theAmount);
 	/*inline*/ void					Pause(bool thePause);
 	inline bool						MakeEasyZombieType() { /* 未发现 */return false; }

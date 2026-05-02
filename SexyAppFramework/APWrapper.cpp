@@ -21,6 +21,7 @@ public:
     std::map<uint64_t, std::function<void()>> disconnection_listener;
     std::map<uint64_t, std::function<void(const std::string&)>> slot_refused_listeners;
     std::map<uint64_t, std::function<void(const std::string&, const std::string&)>> deathlink_listeners;
+    std::map<uint64_t, std::function<void(const long&)>> ringlink_listeners;
     std::map<uint64_t, std::function<void(const std::string&)>> any_chat_listeners;
     std::map<uint64_t, std::function<void(const std::string&, const nlohmann::json&)>> data_storage_value_change_listeners;
     
@@ -39,6 +40,7 @@ public:
     double last_sent_deathlink;
     std::string last_deathlink_source;
     std::string last_deathlink_cause;
+    long our_ringlink_source;
     
     std::list<std::string> chat_messages;
     std::vector<std::string> message_history;
@@ -213,9 +215,14 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
         return;
     }
     
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> distribution(0, std::numeric_limits<long>::max());
+    
     d->server_name = server_name;
     d->slot_name = slot_name;
     d->password = password;
+    d->our_ringlink_source = distribution(generator);
     d->tags.clear();
     d->chat_messages.clear();
     d->data_storage.clear();
@@ -374,28 +381,55 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
     d->mAP->set_bounced_handler([this](const nlohmann::json& bounce_data)
     {
         auto tags = bounce_data["tags"];
-        if (tags.size() > 0 && tags[0] == "DeathLink")
+        if (tags.size() > 0)
         {
-            // Handle DeathLink packet
-            auto data = bounce_data["data"];
-            std::string source = data["source"];
-            auto cause = data["cause"]; // string
-            double time = data["time"]; // number_float
-            
-            if (abs(time - d->last_sent_deathlink) > 0.001)
+            if (tags[0] == "DeathLink")
             {
-                d->last_deathlink_source = source;
-                if (cause.is_string())
+                // Handle DeathLink packet
+                auto data = bounce_data["data"];
+                std::string source = data["source"];
+                auto cause = data["cause"]; // string
+                double time = data["time"]; // number_float
+                
+                if (abs(time - d->last_sent_deathlink) > 0.001)
                 {
-                    d->last_deathlink_cause = cause;
-                } else
-                {
-                    d->last_deathlink_cause = "";
+                    d->last_deathlink_source = source;
+                    if (cause.is_string())
+                    {
+                        d->last_deathlink_cause = cause;
+                    } else
+                    {
+                        d->last_deathlink_cause = "";
+                    }
+                        
+                    for (const auto& deathlink_listener : this->d->deathlink_listeners)
+                    {
+                        deathlink_listener.second(source, d->last_deathlink_cause);
+                    }
                 }
-                    
-                for (const auto& deathlink_listener : this->d->deathlink_listeners)
+            }
+            
+            if (tags[0] == "RingLnik")
+            {
+                // Handle DeathLink packet
+                auto data = bounce_data["data"];
+                auto source_json = data["source"];
+                auto amount_json = data["amount"];
+                
+                if (!source_json.is_number_integer() || !amount_json.is_number_integer())
                 {
-                    deathlink_listener.second(source, d->last_deathlink_cause);
+                    return;
+                }
+                
+                auto source = source_json.get<long>();
+                auto amount = amount_json.get<long>();
+                
+                if (source != d->our_ringlink_source)
+                {
+                    for (const auto& ringlink_listener : this->d->ringlink_listeners)
+                    {
+                        ringlink_listener.second(amount);
+                    }
                 }
             }
         }
@@ -786,6 +820,41 @@ std::string APWrapper::LastDeathLinkCause() const
     return d->last_deathlink_cause;
 }
 
+void APWrapper::EnableRingLink(bool enable) const
+{
+    if (!enable)
+    {
+        d->tags.remove_if([](std::string tag)
+        {
+            return tag == "RingLink";
+        });
+    }
+    else
+    {
+        d->tags.emplace_back("RingLink");
+    }
+    
+    this->UpdateConnectionInformation();
+}
+
+void APWrapper::SendRingLink(long delta) const
+{
+    // Ensure RingLink is on
+    for (const auto& tag : d->tags)
+    {
+        if (tag == "RingLink")
+        {
+            auto time = d->mAP->get_server_time();
+            d->mAP->Bounce({
+                {"time", time},
+                {"source", d->our_ringlink_source},
+                {"amount", delta}
+            }, {}, {}, {"RingLink"});
+            return;
+        }
+    }
+}
+
 std::list<std::string> APWrapper::ChatMessages() const
 {
     return d->chat_messages;
@@ -853,6 +922,14 @@ ListenerHandle* APWrapper::AddDeathLinkListener(std::function<void(const std::st
     this->d->deathlink_listeners.insert_or_assign(id, listener);
     
     return new ListenerHandle([this, id] { this->d->deathlink_listeners.erase(id); });
+}
+
+ListenerHandle* APWrapper::AddRingLinkListener(std::function<void(const long&)> listener) const
+{
+    auto id = d->next_listener_id++;
+    this->d->ringlink_listeners.insert_or_assign(id, listener);
+    
+    return new ListenerHandle([this, id] { this->d->ringlink_listeners.erase(id); });
 }
 
 ListenerHandle* APWrapper::AddAnyChatMessageListener(std::function<void(const std::string&)> listener) const

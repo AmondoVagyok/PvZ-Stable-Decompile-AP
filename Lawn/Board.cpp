@@ -474,6 +474,17 @@ Board::Board(LawnApp* theApp)
 			mApp->DoArchipelagoStatusDialog();
 		}
 	});
+	mAPRingLinkListener = mApp->mAP->AddRingLinkListener([this](long amount)
+	{
+		if (amount > 0)
+		{
+			this->AddSunMoney(amount);
+		}
+		else
+		{
+			this->TakeSunMoney(-amount);
+		}
+	});
 }
 
 //0x408670、0x408690
@@ -481,6 +492,7 @@ Board::~Board()
 {
 	delete mItemReceivedListener;
 	delete mAPDisconnectListener;
+	delete mAPRingLinkListener;
 	delete mAdvice;
 	delete mCursorObject;
 	delete mCursorPreview;
@@ -10982,9 +10994,13 @@ void Board::KeyChar(SexyChar theChar)
 }
 
 //0x41B960
-void Board::AddSunMoney(int theAmount)
+void Board::AddSunMoney(int theAmount, bool skipRingLink)
 {
 	mSunMoney += theAmount;
+	if (!skipRingLink)
+	{
+		mApp->mAP->SendRingLink(theAmount);
+	}
 	if (mSunMoney > 9990)
 	{
 		mSunMoney = 9990;
@@ -11029,11 +11045,22 @@ int Board::CountCoinsBeingCollected()
 }
 
 //0x41BA60
-bool Board::TakeSunMoney(int theAmount)
+bool Board::TakeSunMoney(int theAmount, bool skipRingLink)
 {
 	if (CanTakeSunMoney(theAmount))
 	{
 		mSunMoney -= theAmount;
+		if (!skipRingLink)
+		{
+			mApp->mAP->SendRingLink(-theAmount);
+		}
+		return true;
+	}
+	
+	if (skipRingLink)
+	{
+		// Remove whatever we have left
+		mSunMoney = 0;
 		return true;
 	}
 
