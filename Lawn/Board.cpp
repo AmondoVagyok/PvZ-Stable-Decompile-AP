@@ -2804,6 +2804,16 @@ bool Board::IsPoolSquare(int theGridX, int theGridY)
 	return false;
 }
 
+bool Board::IsDirtSquare(int theGridX, int theGridY)
+{
+	if (theGridX >= 0 && theGridY >= 0)
+	{
+		TOD_ASSERT(theGridX < MAX_GRID_SIZE_X && theGridY < MAX_GRID_SIZE_Y);
+		return mGridSquareType[theGridX][theGridY] == GridSquareType::GRIDSQUARE_DIRT;
+	}
+	return false;
+}
+
 //0x40CE20
 Plant* Board::NewPlant(int theGridX, int theGridY, SeedType theSeedType, SeedType theImitaterType)
 {

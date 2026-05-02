@@ -400,6 +400,7 @@ public:
 	bool							IterateGridItems(GridItem*& theGridItem);
 	/*inline*/ Zombie*				AddZombieInRow(ZombieType theZombieType, int theRow, int theFromWave);
 	/*inline*/ bool					IsPoolSquare(int theGridX, int theGridY);
+	bool							IsDirtSquare(int theGridX, int theGridY);
 	void							PickZombieWaves();
 	void							StopAllZombieSounds();
 	/*inline*/ bool					HasLevelAwardDropped();

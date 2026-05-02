@@ -319,6 +319,12 @@ void GridItem::DrawAPCrater(Sexy::Graphics* g)
     bool fading = mGridItemCounter < 9000;
     Image* aImage = IMAGE_CRATER;
     int aCelCol = 0;
+    
+    if (mBoard->IsDirtSquare(mGridX, mGridY))
+    {
+        // Don't draw anything on dirt squares
+        return;
+    }
 
     if (mBoard->IsPoolSquare(mGridX, mGridY))
     {
