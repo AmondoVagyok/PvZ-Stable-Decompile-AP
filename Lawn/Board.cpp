@@ -10139,8 +10139,20 @@ void Board::DoTypingCheck(KeyCode theKey)
 	}
 	if (mApp->mSukhbirCheck->Check(theKey))
 	{
-		SetSukhbirMode(!mSukhbirMode);
-		return;
+		if (mApp->CanDoSukhbir())
+		{
+			SetSukhbirMode(!mSukhbirMode);
+			return;
+		}
+		else
+		{
+			if (mApp->mGameScene == GameScenes::SCENE_PLAYING)
+			{
+				DisplayAdvice("Receive the 'Alternate Brains Sound' item to use this code!", MessageStyle::MESSAGE_STYLE_BIG_MIDDLE_FAST, AdviceType::ADVICE_NONE);
+			}
+			mApp->PlaySample(Sexy::SOUND_BUZZER);
+			return;
+		}
 	}
 }
 

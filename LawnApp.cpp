@@ -4874,6 +4874,14 @@ bool LawnApp::CanDoFutureMode()
 	return mAP->ReceivedItemCount(PVZRAPData::Items::FUTURE_ZOMBIES_MODE) > 0;
 }
 
+bool LawnApp::CanDoSukhbir()
+{
+	if (mPlayerInfo == nullptr)
+		return false;
+
+	return mAP->ReceivedItemCount(PVZRAPData::Items::ALTERNATE_BRAINS_SOUND) > 0;
+}
+
 //0x4560C0
 void LawnApp::PlaySample(int theSoundNum)
 {
@@ -5381,6 +5389,17 @@ int LawnApp::SunLimit() const
 	return 150 * pow(2., this->mAP->ReceivedItemCount(PVZRAPData::Items::PROGRESSIVE_SUN_CAPACITY));
 }
 
+void LawnApp::ResetBonusModes()
+{
+	mMustacheMode = 0;
+	mSuperMowerMode = 0;
+	mFutureMode = 0;
+	mPinataMode = 0;
+	mDanceMode = 0;
+	mDaisyMode = 0;
+	mSukhbirMode = 0;
+}
+
 void LawnApp::SetupArchipelago()
 {
 	this->mAP->AddItemsReceivedListener([this](const std::list<APItem>& items)
@@ -5493,7 +5512,7 @@ void LawnApp::SetupArchipelago()
 						this->DoDialog(Dialogs::DIALOG_ARCHIPELAGO_CONNECTING, true, "Unable to connect to Archipelago", "The slot that was connected to is not the current game.", "OK", Dialog::BUTTONS_FOOTER);
 						return;
 					}
-					
+
 					LoadProfile(aProfile);
 					
 					if (mBoard)

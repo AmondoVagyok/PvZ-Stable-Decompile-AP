@@ -6781,6 +6781,10 @@ SexyString Plant::GetStatDeltasTooltip(LawnApp* app, SeedType theSeedType)
         {
             write_seed_stat("Rate", aPlantDef.mLaunchRate / static_cast<double>(seed_stats->firing_rate.value()), true);
         }
+        if (seed_stats->health.has_value())
+        {
+            write_seed_stat("Toughness", static_cast<double>(seed_stats->health.value()) / aPlantDef.mLaunchRate, true);
+        }
         
         for (auto projectile : Projectiles(theSeedType))
         {
