@@ -5552,6 +5552,9 @@ void LawnApp::SetupArchipelago()
 			auto profile = mProfileMgr->AddProfile(profile_guid);
 			mProfileMgr->Save();
 			LoadProfile(profile);
+
+			// Reset all bonus codes to 0 upon connection to any slot from title screen
+			ResetBonusModes();
 		}
 	});
 }

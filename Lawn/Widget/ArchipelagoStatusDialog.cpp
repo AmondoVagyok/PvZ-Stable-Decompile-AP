@@ -222,9 +222,6 @@ void ArchipelagoStatusDialog::UpdateArchipelagoStatus()
 		mPasswordEditWidget->SetVisible(false);
 		
 		mDialogLines = "Connected to Archipelago";
-
-		// Reset all bonus codes to 0 upon connection to any slot from title screen
-		mApp->ResetBonusModes();
 	}
 }
 

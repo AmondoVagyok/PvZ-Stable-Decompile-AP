@@ -6783,7 +6783,19 @@ SexyString Plant::GetStatDeltasTooltip(LawnApp* app, SeedType theSeedType)
         }
         if (seed_stats->health.has_value())
         {
-            write_seed_stat("Toughness", static_cast<double>(seed_stats->health.value()) / aPlantDef.mLaunchRate, true);
+            int tempHealth = 300;
+
+            switch (theSeedType)
+            {
+            case SeedType::SEED_WALLNUT: tempHealth = 4000; break;
+            case SeedType::SEED_TALLNUT: tempHealth = 8000; break;
+            case SeedType::SEED_GARLIC: tempHealth = 400; break;
+            case SeedType::SEED_PUMPKINSHELL: tempHealth = 4000; break;
+            case SeedType::SEED_SPIKEROCK: tempHealth = 450; break;
+            default: tempHealth = 300; break;
+            }
+
+            write_seed_stat("Toughness", static_cast<double>(seed_stats->health.value()) / tempHealth, true);
         }
         
         for (auto projectile : Projectiles(theSeedType))
