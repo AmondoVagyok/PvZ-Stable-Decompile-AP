@@ -381,6 +381,7 @@ public:
 	/*inline*/ bool					CanDoTrickedOutMode();
 	/*inline*/ bool					CanDoMustacheMode();
 	/*inline*/ bool					CanDoFutureMode();
+	/*inline*/ bool					CanDoSukhbir();
 	virtual void					SwitchScreenMode(bool wantWindowed, bool is3d, bool force = false);
 	static /*inline*/ void			CenterDialog(Dialog* theDialog, int theWidth, int theHeight);
 #ifdef _HAS_ZOMBATAR
@@ -422,6 +423,7 @@ public:
 	PVZRAPData::SlotData::GoalProgress GetGoalProgress() const;
 	int                             CurrentAPLevelId();
 	int                             SunLimit() const;
+	void							ResetBonusModes();
 	
 private:
 	void							SetupArchipelago();
