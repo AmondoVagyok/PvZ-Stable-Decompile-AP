@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - archipelago
+  pull_request:
   release:
     types:
       - created
