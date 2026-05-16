@@ -697,7 +697,7 @@ void Projectile::DoSplashDamage(Zombie* theZombie)
 	auto projectile_stats = mApp->mSlotData->projectile_stats(mProjectileType);
 	if (projectile_stats.has_value())
 	{
-		if (projectile_stats->damage.has_value())
+		if (projectile_stats->damage.has_value() && !mApp->IsIZombieLevel())
 		{
 			aOriginalDamage = projectile_stats->damage.value();
 		}
@@ -1150,7 +1150,7 @@ void Projectile::DoImpact(Zombie* theZombie)
 	auto projectile_stats = mApp->mSlotData->projectile_stats(mProjectileType);
 	if (projectile_stats.has_value())
 	{
-		if (projectile_stats->damage.has_value())
+		if (projectile_stats->damage.has_value() && !mApp->IsIZombieLevel())
 		{
 			damage = projectile_stats->damage.value();
 		}
