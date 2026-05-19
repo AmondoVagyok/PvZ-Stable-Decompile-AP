@@ -11027,7 +11027,7 @@ void Board::AddSunMoney(int theAmount, bool skipRingLink)
 	{
 		mSunMoney = 9990;
 	}
-	if (mApp->mSlotData->progressive_sun_capacity_items() && mSunMoney > mApp->SunLimit() && mApp->mSlotData->is_eligible_for_individual_tile_unlock_items(this->mLevel))
+	if (mApp->mSlotData->progressive_sun_capacity_items() && mSunMoney > mApp->SunLimit() && mApp->mSlotData->is_eligible_for_individual_tile_unlock_items(mApp->CurrentAPLevelId()))
 	{
 		mSunMoney = mApp->SunLimit();
 	}
