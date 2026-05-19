@@ -409,9 +409,9 @@ void APWrapper::Connect(const std::string& server_name, const std::string& slot_
                 }
             }
             
-            if (tags[0] == "RingLnik")
+            if (tags[0] == "RingLink")
             {
-                // Handle DeathLink packet
+                // Handle RingLink packet
                 auto data = bounce_data["data"];
                 auto source_json = data["source"];
                 auto amount_json = data["amount"];
