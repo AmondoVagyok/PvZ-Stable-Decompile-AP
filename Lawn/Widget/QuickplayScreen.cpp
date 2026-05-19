@@ -175,11 +175,15 @@ QuickplayWidget::QuickplayWidget(LawnApp* theApp) {
 	mItemListener = mApp->mAP->AddItemsReceivedListener([this](const std::list<APItem>&)
 	{
 		this->UpdateLevelButtons();
+		this->CalculateLevelFullyCleared();
 	});
 	mItemSentListener = mApp->mAP->AddItemsSentListener([this](const APItem&, const int&)
 	{
 		this->UpdateLevelButtons();
+		this->CalculateLevelFullyCleared();
 	});
+	
+	this->CalculateLevelFullyCleared();
 }
 
 QuickplayWidget::~QuickplayWidget() {
@@ -689,17 +693,7 @@ void QuickplayWidget::DrawButton(Graphics* g, int theLevelIndex)
 	{
 		auto trophy = Sexy::IMAGE_MINIGAME_TROPHY;
 		
-		auto all_flags_clear = true;
-		for (auto wave = 0; wave < 100; wave++)
-		{
-			auto wave_location = PVZRAPData::Locations::Wave(aLevel, wave);
-			if (!mApp->mAP->IsLocationChecked(wave_location) && mApp->mAP->IsLocationPresent(wave_location))
-			{
-				all_flags_clear = false;
-				break;
-			}
-		}
-		
+		auto all_flags_clear = mLevelFullyCleared[aLevel];
 		if (!all_flags_clear)
 		{
 			trophy = FilterEffectGetImage(Sexy::IMAGE_MINIGAME_TROPHY, FilterEffect::FILTER_EFFECT_GREYSCALE);
@@ -764,6 +758,25 @@ void QuickplayWidget::DisableButtons(bool isDisabled)
 	mBackButton->SetDisabled(isDisabled);
 
 	for (ButtonWidget* aLevelButton : mLevelButtons)	aLevelButton->SetDisabled(isDisabled);
+}
+
+void QuickplayWidget::CalculateLevelFullyCleared()
+{
+	for (int level = 0; level < 50; level++)
+	{
+		auto all_flags_clear = true;
+		for (auto wave = 0; wave < 100; wave++)
+		{
+			auto wave_location = PVZRAPData::Locations::Wave(level, wave);
+			if (!mApp->mAP->IsLocationChecked(wave_location) && mApp->mAP->IsLocationPresent(wave_location))
+			{
+				all_flags_clear = false;
+				break;
+			}
+		}
+		
+		this->mLevelFullyCleared[level] = all_flags_clear;
+	}
 }
 
 void QuickplayWidget::UpdateLevelButtons()

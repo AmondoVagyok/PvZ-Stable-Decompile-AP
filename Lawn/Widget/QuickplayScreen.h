@@ -54,6 +54,7 @@ public:
 	bool						mIsSlidingOut;
 	int							mSlidingOutCounter;
 	float						mPreviousScrollPosition;
+	bool                        mLevelFullyCleared[50];
 	
 	ListenerHandle*				mItemListener;
 	ListenerHandle*				mItemSentListener;
@@ -76,6 +77,7 @@ public:
 	virtual void				MouseMove(int theX, int theY);
 	void						DisableButtons(bool isDisabled);
 	
+	void						CalculateLevelFullyCleared();
 	void						UpdateLevelButtons();
 };
 #endif
