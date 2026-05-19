@@ -113,7 +113,7 @@ Board::Board(LawnApp* theApp)
 	mCameraColor = Color::White;
 	mDrawOnlyCamera = true;
 	mPaused = false;
-	mFlagAwardSpawned = 0;
+	ranges::fill(mFlagAwardSpawned, false);
 	mLevelAwardSpawned = false;
 	mFlagRaiseCounter = 0;
 	mIceTrapCounter = 0;
@@ -1780,7 +1780,7 @@ void Board::InitZombieWaves()
 	mLastBungeeWave = 0;
 	mProgressMeterWidth = 0;
 	mHugeWaveCountDown = 0;
-	mFlagAwardSpawned = 0;
+	ranges::fill(mFlagAwardSpawned, false);
 	mLevelAwardSpawned = false;
 	mZombieCountDownStart = mZombieCountDown;
 	mZombieHealthToNextWave = -1;

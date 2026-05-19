@@ -8785,38 +8785,35 @@ void Zombie::DropLoot()
     int aCenterX = aZombieRect.mX + aZombieRect.mWidth / 2;
     int aCenterY = aZombieRect.mY + aZombieRect.mHeight / 4;
     
-    if (mFromWave % mBoard->GetNumWavesPerFlag() == 0)
+    bool shouldSpawnFlagReward = true;
+    
+    auto wave = mFromWave;
+    if (mBoard->mFlagAwardSpawned[wave])
     {
-        bool shouldSpawnFlagReward = true;
-        
-        auto wave = mFromWave;
-        if (mBoard->mFlagAwardSpawned >= wave)
-        {
+        shouldSpawnFlagReward = false;
+    }
+    
+    // Are we the last zombie?
+    Zombie* aZombie = nullptr;
+    while (mBoard->IterateZombies(aZombie))
+    {
+        if (aZombie->mZombieType == ZombieType::ZOMBIE_BOSS && !aZombie->IsDeadOrDying() && aZombie->mFromWave == mFromWave && !aZombie->mMindControlled) {
             shouldSpawnFlagReward = false;
+            break;
         }
-        
-        // Are we the last zombie?
-        Zombie* aZombie = nullptr;
-        while (mBoard->IterateZombies(aZombie))
-        {
-            if (aZombie->mZombieType == ZombieType::ZOMBIE_BOSS && !aZombie->IsDeadOrDying() && aZombie->mFromWave == mFromWave && !aZombie->mMindControlled) {
-                shouldSpawnFlagReward = false;
-                break;
-            }
-        }
+    }
 
-        if (shouldSpawnFlagReward)
+    if (shouldSpawnFlagReward)
+    {
+        mBoard->mFlagAwardSpawned[wave] = true;
+        
+        // Find out which flag location we need
+        int64_t location = PVZRAPData::Locations::Wave(mApp->CurrentAPLevelId(), wave);
+        if (location != -1)
         {
-            mBoard->mFlagAwardSpawned = wave;
-            
-            // Find out which flag location we need
-            int64_t location = PVZRAPData::Locations::Wave(mApp->CurrentAPLevelId(), wave);
-            if (location != -1)
+            if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
             {
-                if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
-                {
-                    mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
-                }
+                mBoard->AddCoin(aCenterX, aCenterY, CoinType::COIN_FLAG_SEED_PACKET, CoinMotion::COIN_MOTION_COIN, location);
             }
         }
     }
