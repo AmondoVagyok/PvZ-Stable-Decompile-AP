@@ -1993,6 +1993,7 @@ void GameSelector::ClickedTrophy()
 		goal_status << std::format("Minigame Levels: {}/{}", std::to_string(gp.minigame_levels_complete), std::to_string(gp.minigame_levels_goal)) << "\n";
 		goal_status << std::format("Puzzle Levels: {}/{}", std::to_string(gp.puzzle_levels_complete), std::to_string(gp.puzzle_levels_goal)) << "\n";
 		goal_status << std::format("Survival Levels: {}/{}", std::to_string(gp.survival_levels_complete), std::to_string(gp.survival_levels_goal)) << "\n";
+		goal_status << std::format("Total Levels: {}/{}", std::to_string(gp.overall_levels_complete), std::to_string(gp.overall_levels_goal)) << "\n";
 		if (gp.taco_goal > 0)
 		{
 			goal_status << std::format("Tacos: {}/{}", std::to_string(gp.taco_received), std::to_string(gp.taco_goal));
