@@ -8808,7 +8808,11 @@ void Zombie::DropLoot()
         mBoard->mFlagAwardSpawned[wave] = true;
         
         // Find out which flag location we need
-        int64_t location = PVZRAPData::Locations::Wave(mApp->CurrentAPLevelId(), wave);
+        int64_t absoluteWave = mApp->IsSurvivalMode()
+            ? static_cast<int64_t>(mBoard->mChallenge->mSurvivalStage) * mBoard->GetNumWavesPerSurvivalStage() + wave
+            : static_cast<int64_t>(wave);
+        int64_t location = PVZRAPData::Locations::Wave(mApp->CurrentAPLevelId(), absoluteWave);
+
         if (location != -1)
         {
             if (!mApp->mAP->IsLocationChecked(location) && mApp->mAP->IsLocationPresent(location))
