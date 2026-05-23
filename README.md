@@ -3,7 +3,7 @@
 # Disclaimer
 This client was built upon a [stable decompilation](https://github.com/InLiothixi/stabledecompile) project of 
 Plants vs. Zombies: Game of The Year, made by InLiothixi.
-If you would like to build the client yourself, refer to the [guide](blob/archipelago/README.md) 
+If you would like to build the client yourself, refer to the [guide](BUILD.md) 
 found in the project's repository. 
 
 # Requirements
