@@ -3,7 +3,7 @@
 # Disclaimer
 This client was built upon a [stable decompilation](https://github.com/InLiothixi/stabledecompile) project of 
 Plants vs. Zombies: Game of The Year, made by InLiothixi.
-If you would like to build the client yourself, refer to the [guide](https://github.com/InLiothixi/stabledecompile/blob/master/README.md) 
+If you would like to build the client yourself, refer to the [guide](blob/archipelago/README.md) 
 found in the project's repository. 
 
 # Requirements
@@ -14,14 +14,14 @@ found in the project's repository.
 # Setting up the Randomizer
 **To set up Archipelago and host a multiworld, refer to the [Official Archipelago Setup Guide](https://archipelago.gg/tutorial/Archipelago/setup_en)** \
 For the client, you have two choices how you obtain it:
-1. Download the latest client from the [releases page](https://github.com/vicr123/PvZ-Stable-Decompile-AP/releases/latest) (Recommended, might not have the latest hotfixes).
-2. You log into Github and download the latest from the project's [actions page](https://github.com/vicr123/PvZ-Stable-Decompile-AP/actions) (Always has the latest fixes).
+1. Download the latest client from the [releases page](releases/latest) (Recommended, might not have the latest hotfixes).
+2. You log into Github and download the latest from the project's [actions page](actions) (Always has the latest fixes).
 
 The following steps are the same, no matter what you choose in the last step:
 - Download the zip file appropriate to your system (32 bit: Win32, 64 bit: x64) to your chosen directory
 - Unzip the contents to the choosen directory.
 - On first launch the mod will ask for your PvZ install.
-  - Alternatively:  Copy the `main.pak` file and `properties` folder from your PvZ install into the folder with the rest of the unzipped mod files.
+  - Alternatively if the automatic detection fails:  Copy the `main.pak` file and `properties` folder from your PvZ install into the folder with the rest of the unzipped mod files.
 - Now open `PlantsVsZombies.exe` to launch the Archipelago Mod!
 
 **To update the mod**, simply download the latest version and overwrite the old files with the new ones.
