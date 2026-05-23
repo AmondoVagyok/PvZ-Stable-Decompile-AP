@@ -8,13 +8,13 @@ found in the project's repository.
 
 # Requirements
 - A legally obtained copy of Plants vs. Zombies: Game of The Year Edition (Steam, EA launcher, disc version all should work).
-- [The Plants vs. Zombies apworld](github.com/dannybonz/replanted_archipelago/releases/latest)
+- [The Plants vs. Zombies apworld](https://github.com/dannybonz/replanted_archipelago/releases/latest)
   - The apworld is maintained by dannybonz, both GOTY and Replanted use the same apworld!
 
 # Setting up the Randomizer
 **To set up Archipelago and host a multiworld, refer to the [Official Archipelago Setup Guide](https://archipelago.gg/tutorial/Archipelago/setup_en)** \
 For the client, you have two choices how you obtain it:
-1. Download the latest client from the [releases page](github.com/vicr123/PvZ-Stable-Decompile-AP/releases/latest) (Recommended, might not have the latest hotfixes).
+1. Download the latest client from the [releases page](https://github.com/vicr123/PvZ-Stable-Decompile-AP/releases/latest) (Recommended, might not have the latest hotfixes).
 2. You log into Github and download the latest from the project's [actions page](https://github.com/vicr123/PvZ-Stable-Decompile-AP/actions) (Always has the latest fixes).
 
 The following steps are the same, no matter what you choose in the last step:
