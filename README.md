@@ -34,5 +34,5 @@ The following steps are the same, no matter what you choose in the last step:
 If you need further help, join the [Archipelago Discord](https://discord.gg/archipelago) and visit the `Plants Vs Zombies GOTY` 
 thread in the `future-game-design` forum channel (located at the bottom). \
 Depending on your issue you should contact the following developer (these are their discord names):
-- If you have **client related issues** contact Victor Tran
-- If you have **apworld related issues** contact Bonzorio (PvZ/K-On! AP Dev)
+- If you have **client related issues** contact Victor Tran.
+- If you have **apworld related issues** contact Bonzorio (PvZ/K-On! AP Dev).
